@@ -7,6 +7,7 @@ import org.iaeste.szakal2.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@DirtiesContext
 public class RegistrationIntegrationTest extends IntegrationTestBase {
 
     @Autowired
