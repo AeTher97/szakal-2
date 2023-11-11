@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "35dbdd73-381d-4af8-a957-33a94c70c763",
+		"name": "Szakal2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6663409"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"AeTher3\",\r\n    \"email\": \"emtail3@gmail.com\",\r\n    \"password\": \"weakweak\",\r\n    \"repeatPassword\": \"weakweak\",\r\n    \"name\": \"Michal\",\r\n    \"surname\": \"Wozniak\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{address}}/api/users",
+					"host": [
+						"{{address}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "administrator@szakal.org",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "administrator",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{address}}/api/login",
+					"host": [
+						"{{address}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{address}}/api/refresh?refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNTA2YTJlOS1jMzEwLTQ2N2QtODkwMy05YTAzYjNhODE2YmEiLCJpc3MiOiJzemFrYWxfYXBwIiwiZXhwIjoxNzA5NjY0MDg4fQ.Ma13Mtlr304lJwMI6aqk1g0CR7qSbQ_zxinELlgtVI0sRASyj8wHfD1V1xQT27w96e5Lx06jB-VJVrgWIZSo1g",
+					"host": [
+						"{{address}}"
+					],
+					"path": [
+						"api",
+						"refresh"
+					],
+					"query": [
+						{
+							"key": "refreshToken",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNTA2YTJlOS1jMzEwLTQ2N2QtODkwMy05YTAzYjNhODE2YmEiLCJpc3MiOiJzemFrYWxfYXBwIiwiZXhwIjoxNzA5NjY0MDg4fQ.Ma13Mtlr304lJwMI6aqk1g0CR7qSbQ_zxinELlgtVI0sRASyj8wHfD1V1xQT27w96e5Lx06jB-VJVrgWIZSo1g"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5YTliNWIyOS1mMTQwLTQxMDUtOTA5NC1lNmE0MjU5YjRkYWEiLCJhY2Nlc3NfcmlnaHRzIjpbInJvbGVfbW9kaWZpY2F0aW9uIl0sImVtYWlsIjoiYWRtaW5pc3RyYXRvckBzemFrYWwub3JnIiwiaXNzIjoic3pha2FsX2FwcCIsImV4cCI6MTY5OTcwODg5OH0.wuePJiT6i_YtL02TeDYIyQ-0Rha-slQch1ZFF4jRWKxrXKXdiSSAWQXs1v3vmJo3s91i9qN0xNMgn_nVnR6PWg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Role for a user\",\r\n    \"accessRights\": [\"08de38fc-e6be-4711-9333-d3a32e359bd5\", \"d8c224c6-7c85-402f-8880-34480abb9ce6\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{address}}/api/roles",
+					"host": [
+						"{{address}}"
+					],
+					"path": [
+						"api",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
