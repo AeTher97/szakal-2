@@ -1,0 +1,39 @@
+package org.iaeste.szakal2.models.entities;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Table(name = "contact_journeys")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ContactJourney {
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+    @ManyToOne
+    @JoinColumn(name = "campaign_id", nullable = false)
+    private Campaign campaign;
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney")
+    private List<ContactEvent> contactEvents;
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney")
+    private List<Comment> comments;
+}

@@ -3,12 +3,12 @@ package org.iaeste.szakal2.controller;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
+import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -26,6 +26,11 @@ public class UsersController {
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreationDTO createUserDto) {
         log.info("Creating user");
         return ResponseEntity.ok(userService.registerUser(createUserDto));
+    }
+
+    @GetMapping("/{user}")
+    public User getUser(@PathVariable("user") UUID id) {
+        return userService.getUserById(id);
     }
 
 }

@@ -3,6 +3,7 @@ package org.iaeste.szakal2.services;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.exceptions.UsernameTakenException;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
@@ -29,17 +30,28 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<User> getUserById(UUID id) {
-        return usersRepository.findUserById(id);
-
+    public User getUserById(UUID id) {
+        Optional<User> userOptional = usersRepository.findUserById(id);
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException("User with id " + id + " not found");
+        }
+        return userOptional.get();
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return usersRepository.findUserByEmail(email);
+    public User getUserByEmail(String email) {
+        Optional<User> userOptional = usersRepository.findUserByEmail(email);
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException("User with email " + email + " not found");
+        }
+        return userOptional.get();
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return usersRepository.findUserByUsername(username);
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = usersRepository.findUserByUsername(username);
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException("User with username " + username + " not found");
+        }
+        return userOptional.get();
     }
 
     public UserDTO registerUser(UserCreationDTO userCreationDTO) {

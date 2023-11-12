@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
@@ -37,14 +38,12 @@ public class SecurityConfiguration {
     private final RoleService roleService;
     private final UserService userService;
     private final JwtConfiguration jwtConfiguration;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();;
 
-    public SecurityConfiguration(RoleService roleService, UserService userService, JwtConfiguration jwtConfiguration,
-                                 PasswordEncoder passwordEncoder) {
+    public SecurityConfiguration(RoleService roleService, UserService userService, JwtConfiguration jwtConfiguration) {
         this.roleService = roleService;
         this.userService = userService;
         this.jwtConfiguration = jwtConfiguration;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean

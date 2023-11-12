@@ -1,6 +1,10 @@
 package org.iaeste.szakal2;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.hamcrest.Matchers;
+import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 import org.iaeste.szakal2.services.UserService;
@@ -13,7 +17,7 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DirtiesContext
 public class RegistrationIntegrationTest extends IntegrationTestBase {
@@ -28,9 +32,9 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void userRegistersWithCorrectRequest() {
-        UUID userId = UUID.fromString(given()
+        UUID userId = UUID.fromString(RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(StringTemplate.STR."""
                             {
                             "username": "AeTher",
                             "email" : "emtail@gmail.com",
@@ -46,23 +50,23 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .statusCode(200)
                 .extract()
                 .path("id"));
-        assertThat(userService.getUserById(userId)).isPresent();
-        User user = userService.getUserById(userId).get();
-        assertThat(user.getUsername()).isEqualTo("AeTher");
-        assertThat(user.getName()).isEqualTo("Michal");
-        assertThat(user.getSurname()).isEqualTo("Wozniak");
-        assertThat(user.getCreatedAt()).isNotNull();
-        assertThat(user.getEmail()).isEqualTo("emtail@gmail.com");
-        assertThat(user.isAccepted()).isFalse();
-        assertThat(user.isActive()).isFalse();
+        assertDoesNotThrow(() -> userService.getUserById(userId));
+        User user = userService.getUserById(userId);
+        AssertionsForClassTypes.assertThat(user.getUsername()).isEqualTo("AeTher");
+        AssertionsForClassTypes.assertThat(user.getName()).isEqualTo("Michal");
+        AssertionsForClassTypes.assertThat(user.getSurname()).isEqualTo("Wozniak");
+        AssertionsForClassTypes.assertThat(user.getCreatedAt()).isNotNull();
+        AssertionsForClassTypes.assertThat(user.getEmail()).isEqualTo("emtail@gmail.com");
+        AssertionsForClassTypes.assertThat(user.isAccepted()).isFalse();
+        AssertionsForClassTypes.assertThat(user.isActive()).isFalse();
     }
 
     @Test
     public void failsToRegisterWithWeakPassword() {
 
-        given()
+        RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(StringTemplate.STR."""
                             {
                             "username": "TakenUsername",
                             "email" : "not-taken-email@gmail.com",
@@ -81,9 +85,9 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
     @Test
     public void failsToRegisterWithNotMatchingPasswords() {
 
-        given()
+        RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(StringTemplate.STR."""
                             {
                             "username": "TakenUsername",
                             "email" : "not-taken-email@gmail.com",
@@ -108,9 +112,9 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .repeatPassword("Password123!")
                 .username("TakenUsername")
                 .build());
-        given()
+        RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(StringTemplate.STR."""
                             {
                             "username": "TakenUsername",
                             "email" : "not-taken-email@gmail.com",
@@ -124,7 +128,7 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .post("/api/users")
                 .then()
                 .statusCode(400)
-                .body("error", equalTo("Username already taken"));
+                .body("error", Matchers.equalTo("Username already taken"));
     }
 
     @Test
@@ -135,9 +139,9 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .repeatPassword("Password123!")
                 .username("TakenUsername")
                 .build());
-        given()
+        RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(StringTemplate.STR."""
                             {
                             "username": "NotTakenUsername",
                             "email" : "taken-email@gmail.com",
@@ -151,7 +155,7 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .post("/api/users")
                 .then()
                 .statusCode(400)
-                .body("error", equalTo("Email already taken"));
+                .body("error", Matchers.equalTo("Email already taken"));
     }
 
 }

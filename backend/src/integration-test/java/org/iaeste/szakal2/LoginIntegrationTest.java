@@ -1,16 +1,15 @@
 package org.iaeste.szakal2;
 
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 import org.iaeste.szakal2.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.not;
 
 public class LoginIntegrationTest extends IntegrationTestBase {
 
@@ -31,7 +30,7 @@ public class LoginIntegrationTest extends IntegrationTestBase {
                 .repeatPassword("Password123!")
                 .username("testLogin")
                 .build());
-        given()
+        RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-login@gmail.com")
                 .multiPart("password", "Password123!")
@@ -39,8 +38,8 @@ public class LoginIntegrationTest extends IntegrationTestBase {
                 .post("/api/login")
                 .then()
                 .statusCode(200)
-                .body("authToken", not(emptyString()))
-                .body("refreshToken", not(emptyString()));
+                .body("authToken", Matchers.not(Matchers.emptyString()))
+                .body("refreshToken", Matchers.not(Matchers.emptyString()));
     }
 
     @Test
@@ -51,7 +50,7 @@ public class LoginIntegrationTest extends IntegrationTestBase {
                 .repeatPassword("Password123!")
                 .username("testFailedLogin")
                 .build());
-        given()
+        RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-failed-login@gmail.com")
                 .multiPart("password", "Password1")
@@ -69,7 +68,7 @@ public class LoginIntegrationTest extends IntegrationTestBase {
                 .repeatPassword("Password123!")
                 .username("testLogin")
                 .build());
-        String refreshToken = given()
+        String refreshToken = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-login@gmail.com")
                 .multiPart("password", "Password123!")
@@ -80,13 +79,13 @@ public class LoginIntegrationTest extends IntegrationTestBase {
                 .extract()
                 .path("refreshToken");
 
-        given().contentType(ContentType.MULTIPART)
+        RestAssured.given().contentType(ContentType.MULTIPART)
                 .multiPart("refreshToken", refreshToken)
                 .when()
                 .post("/api/refresh")
                 .then()
                 .statusCode(200)
-                .body("accessToken", not(emptyString()));
+                .body("accessToken", Matchers.not(Matchers.emptyString()));
     }
 
 }

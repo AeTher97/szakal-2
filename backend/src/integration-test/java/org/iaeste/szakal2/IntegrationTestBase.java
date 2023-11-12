@@ -55,7 +55,7 @@ public abstract class IntegrationTestBase {
     }
 
     protected io.restassured.specification.RequestSpecification withAdminAuth(){
-        String authToken = given()
+        String authToken = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "administrator@szakal.org")
                 .multiPart("password", "administrator")
@@ -65,7 +65,7 @@ public abstract class IntegrationTestBase {
                 .statusCode(200)
                 .extract()
                 .path("authToken");
-        return given()
+        return RestAssured.given()
                 .header(new Header("Authorization" , "Bearer " + authToken));
     }
 }

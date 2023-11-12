@@ -7,9 +7,11 @@ import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.repositories.RolesRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Service
@@ -21,11 +23,11 @@ public class InitService {
     private final UsersRepository usersRepository;
     private final AccessRightRepository accessRightRepository;
 
-    public InitService(RolesRepository rolesRepository, PasswordEncoder passwordEncoder, UsersRepository usersRepository, AccessRightRepository accessRightRepository) {
+    public InitService(RolesRepository rolesRepository, UsersRepository usersRepository, AccessRightRepository accessRightRepository) {
         this.rolesRepository = rolesRepository;
-        this.passwordEncoder = passwordEncoder;
         this.usersRepository = usersRepository;
         this.accessRightRepository = accessRightRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();;
     }
 
     public void initializeDatabase() {
@@ -37,15 +39,15 @@ public class InitService {
     private AccessRight createRolesModificationAccessRight() {
         log.info("Creating default access rights");
         return accessRightRepository.save(AccessRight.builder()
-                        .description("Right to modify roles")
-                        .code("role_modification")
+                .description("Right to modify roles")
+                .code("role_modification")
                 .build());
     }
 
     private Role createDefaultRole(AccessRight accessRight) {
         log.info("Creating default role");
         Role adminRole = Role.builder()
-                .name("ADMIM")
+                .name("ADMIN")
                 .description("System administrator")
                 .accessRights(Arrays.asList(accessRight))
                 .build();
@@ -61,6 +63,7 @@ public class InitService {
                 .roles(Arrays.asList(role))
                 .name("Admin")
                 .surname("Admin")
+                .createdAt(LocalDateTime.now())
                 .build());
     }
 }

@@ -3,7 +3,7 @@ package org.iaeste.szakal2.security.providers;
 
 import io.jsonwebtoken.*;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
-import org.iaeste.szakal2.models.entities.Role;
+import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.security.RefreshTokenAuthentication;
 import org.iaeste.szakal2.security.TokenFactory;
@@ -15,11 +15,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class JwtRefreshProvider implements AuthenticationProvider {
 
@@ -52,31 +53,29 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
-            Optional<User> userOptional = userService.getUserById(UUID.fromString(claims.getSubject()));
+            User user = userService.getUserById(UUID.fromString(claims.getSubject()));
 
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                List<String> authoritiesStrings = new ArrayList<>();
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            List<String> authoritiesStrings = new ArrayList<>();
 
-                user.getRoles().forEach(role ->
+            user.getRoles().forEach(role ->
                     role.getAccessRights().forEach(accessRight -> {
-                            authorities.add(new SimpleGrantedAuthority(accessRight.getCode()));
-                            authoritiesStrings.add(accessRight.getCode());
-                }));
+                        authorities.add(new SimpleGrantedAuthority(accessRight.getCode()));
+                        authoritiesStrings.add(accessRight.getCode());
+                    }));
 
-                return new RefreshTokenAuthentication(claims.getSubject(),
-                        TokenFactory.generateAuthToken(user.getId(),
-                                authoritiesStrings,
-                                user.getEmail(),
-                                jwtConfiguration), authorities);
-            } else {
-                throw new UsernameNotFoundException("User with this id doesn't exist");
-            }
+            return new RefreshTokenAuthentication(claims.getSubject(),
+                    TokenFactory.generateAuthToken(user.getId(),
+                            authoritiesStrings,
+                            user.getEmail(),
+                            jwtConfiguration), authorities);
+
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage(), e);
         } catch (IOException | NullPointerException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
+        } catch (UserNotFoundException e) {
+            throw new BadCredentialsException("User not found");
         }
 
     }

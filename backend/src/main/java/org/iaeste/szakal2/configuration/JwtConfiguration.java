@@ -11,11 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableConfigurationProperties(JwtConfiguration.class)
 @ConfigurationProperties(prefix = "jwt")
 public class JwtConfiguration {
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
     private String issuer;
     private String secret;
     private String authExpirationTime;
