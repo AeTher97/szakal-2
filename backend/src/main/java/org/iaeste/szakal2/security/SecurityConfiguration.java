@@ -9,7 +9,6 @@ import org.iaeste.szakal2.security.filters.UsernamePasswordFilter;
 import org.iaeste.szakal2.security.providers.JwtAuthenticationProvider;
 import org.iaeste.szakal2.security.providers.JwtRefreshProvider;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
-import org.iaeste.szakal2.services.RoleService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,20 +63,20 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/api/users/*/accept").hasAuthority("user_acceptance")
                         .requestMatchers(HttpMethod.PUT, "/api/users/*/password").permitAll()
 
-                        .requestMatchers(HttpMethod.POST,"/api/roles").hasAuthority("role_modification")
-                        .requestMatchers(HttpMethod.PUT,"/api/roles/*").hasAuthority("role_modification")
-                        .requestMatchers(HttpMethod.DELETE,"/api/roles/*").hasAuthority("role_modification")
+                        .requestMatchers(HttpMethod.POST, "/api/roles").hasAuthority("role_modification")
+                        .requestMatchers(HttpMethod.PUT, "/api/roles/*").hasAuthority("role_modification")
+                        .requestMatchers(HttpMethod.DELETE, "/api/roles/*").hasAuthority("role_modification")
 
-                        .requestMatchers(HttpMethod.POST,"/api/companies").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.DELETE,"/api/companies/*").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.PUT,"/api/companies/*").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.PUT,"/api/companies/*/contactPerson").hasAuthority("company_modification")
+                        .requestMatchers(HttpMethod.POST, "/api/companies").hasAuthority("company_modification")
+                        .requestMatchers(HttpMethod.DELETE, "/api/companies/*").hasAuthority("company_modification")
+                        .requestMatchers(HttpMethod.PUT, "/api/companies/*").hasAuthority("company_modification")
+                        .requestMatchers(HttpMethod.PUT, "/api/companies/*/contactPerson").hasAuthority("company_modification")
 
-                        .requestMatchers(HttpMethod.POST,"/api/categories").hasAuthority("category_modification")
-                        .requestMatchers(HttpMethod.PUT,"/api/categories/*").hasAuthority("category_modification")
-                        .requestMatchers(HttpMethod.DELETE,"/api/categories/*").hasAuthority("category_modification")
+                        .requestMatchers(HttpMethod.POST, "/api/categories").hasAuthority("category_modification")
+                        .requestMatchers(HttpMethod.PUT, "/api/categories/*").hasAuthority("category_modification")
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/*").hasAuthority("category_modification")
 
-                        .requestMatchers(HttpMethod.POST,"/api/journeys").hasAuthority("journey_modification")
+                        .requestMatchers(HttpMethod.POST, "/api/journeys").hasAuthority("journey_modification")
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/**").permitAll()

@@ -12,7 +12,7 @@ import org.iaeste.szakal2.validation.ValidPassword;
 @NoArgsConstructor
 @AllArgsConstructor
 @PasswordsMatch
-public class UserPasswordChangingDTO extends PasswordChangeDTO{
+public class UserPasswordChangingDTO extends PasswordChangeDTO {
 
     private String currentPassword;
     @ValidPassword

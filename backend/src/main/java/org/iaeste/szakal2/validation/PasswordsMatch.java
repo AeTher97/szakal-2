@@ -7,11 +7,13 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = PasswordsMatchValidator.class)
-@Target( { ElementType.TYPE, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordsMatch {
 
     String message() default "Passwords don't match";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

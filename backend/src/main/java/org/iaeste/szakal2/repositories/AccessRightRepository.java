@@ -9,5 +9,6 @@ import java.util.UUID;
 public interface AccessRightRepository extends JpaRepository<AccessRight, UUID> {
 
     Optional<AccessRight> findAccessRightById(UUID id);
+
     Optional<AccessRight> findAccessRightByCode(String code);
 }

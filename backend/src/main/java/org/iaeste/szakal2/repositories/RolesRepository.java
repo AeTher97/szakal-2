@@ -4,12 +4,16 @@ import org.iaeste.szakal2.models.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface RolesRepository extends JpaRepository<Role, UUID> {
 
     Optional<Role> findRoleById(UUID id);
+
     Optional<Role> findRoleByNameIgnoreCase(String name);
+
     List<Role> findAllByNameIn(List<String> names);
 }

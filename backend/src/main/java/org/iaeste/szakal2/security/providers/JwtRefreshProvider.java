@@ -3,7 +3,6 @@ package org.iaeste.szakal2.security.providers;
 
 import io.jsonwebtoken.*;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
-import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.RefreshTokenAuthentication;
@@ -55,7 +54,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     .parseClaimsJws(jwtToken).getBody();
 
             Optional<User> userOptional = usersRepository.findUserById(UUID.fromString(claims.getSubject()));
-            if(userOptional.isEmpty()){
+            if (userOptional.isEmpty()) {
                 throw new BadCredentialsException("User not found");
             }
             User user = userOptional.get();

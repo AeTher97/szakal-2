@@ -21,14 +21,14 @@ public class SzakalAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
-            httpServletResponse.addHeader("Authorization", authentication.getCredentials().toString());
-            if(authentication.getCredentials() instanceof TokenHolder) {
-                httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
-                        authentication.getCredentials()));
-                httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            } else {
-                throw new IOException("Credentials are wrong class");
-            }
+        httpServletResponse.addHeader("Authorization", authentication.getCredentials().toString());
+        if (authentication.getCredentials() instanceof TokenHolder) {
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
+                    authentication.getCredentials()));
+            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        } else {
+            throw new IOException("Credentials are wrong class");
+        }
 
     }
 

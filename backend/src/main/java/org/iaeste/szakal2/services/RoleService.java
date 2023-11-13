@@ -90,7 +90,7 @@ public class RoleService {
     private Role fromRoleCreationDTO(RoleCreationDto roleCreationDto) {
         List<AccessRight> accessRights = roleCreationDto.getAccessRights()
                 .stream().map(accessRight -> {
-                    if(accessRightRepository.findAccessRightById(accessRight).isPresent()){
+                    if (accessRightRepository.findAccessRightById(accessRight).isPresent()) {
                         return accessRightRepository.findAccessRightById(accessRight).get();
                     } else {
                         throw new ResourceNotFoundException("Access right with id " + accessRight + " does not exist");
@@ -106,7 +106,7 @@ public class RoleService {
     private List<AccessRight> getAccessRights(RoleUpdateDTO roleUpdateDto) {
         return roleUpdateDto.getAccessRights()
                 .stream().map(accessRight -> {
-                    if(accessRightRepository.findAccessRightById(accessRight).isPresent()){
+                    if (accessRightRepository.findAccessRightById(accessRight).isPresent()) {
                         return accessRightRepository.findAccessRightById(accessRight).get();
                     } else {
                         throw new ResourceNotFoundException("Access right with id " + accessRight + " does not exist");

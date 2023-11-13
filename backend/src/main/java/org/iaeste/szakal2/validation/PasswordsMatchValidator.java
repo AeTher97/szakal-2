@@ -4,7 +4,6 @@ package org.iaeste.szakal2.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.iaeste.szakal2.models.dto.user.PasswordChangeDTO;
-import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 
 public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, PasswordChangeDTO> {
     @Override
@@ -14,6 +13,6 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
 
     @Override
     public boolean isValid(PasswordChangeDTO passwordChangeDTO, ConstraintValidatorContext constraintValidatorContext) {
-         return passwordChangeDTO.getPassword().equals(passwordChangeDTO.getRepeatPassword());
+        return passwordChangeDTO.getPassword().equals(passwordChangeDTO.getRepeatPassword());
     }
 }

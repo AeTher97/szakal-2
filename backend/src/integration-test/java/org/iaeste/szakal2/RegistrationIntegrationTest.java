@@ -7,9 +7,7 @@ import org.hamcrest.Matchers;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.services.UserService;
-import org.iaeste.szakal2.util.IntegrationTest;
 import org.iaeste.szakal2.util.IntegrationTestWithTools;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

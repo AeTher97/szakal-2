@@ -15,23 +15,11 @@ import org.springframework.util.StringUtils;
 
 public class JwtRefreshFilter extends UsernamePasswordAuthenticationFilter {
 
-    private JwtRefreshFilter(){
+    private JwtRefreshFilter() {
 
     }
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String refreshToken = request.getParameter(getPasswordParameter());
-
-        if(StringUtils.isEmpty(refreshToken)){
-            throw new AuthenticationCredentialsNotFoundException("Refresh token not found");
-        }
-
-        RefreshTokenAuthentication authenticationToken = new RefreshTokenAuthentication(null,refreshToken,null);
-        return getAuthenticationManager().authenticate(authenticationToken);
-    }
-
-    public static JwtRefreshFilter getJwtRefreshFilter(AuthenticationManager authenticationManager, String path){
+    public static JwtRefreshFilter getJwtRefreshFilter(AuthenticationManager authenticationManager, String path) {
         JwtRefreshFilter jwtRefreshFilter = new JwtRefreshFilter();
         jwtRefreshFilter.setAuthenticationSuccessHandler(new SzakalRefreshSuccessHandler());
         jwtRefreshFilter.setAuthenticationFailureHandler(new SzakalAuthenticationFailureHandler());
@@ -39,5 +27,17 @@ public class JwtRefreshFilter extends UsernamePasswordAuthenticationFilter {
         jwtRefreshFilter.setFilterProcessesUrl(path);
         jwtRefreshFilter.setPasswordParameter("refreshToken");
         return jwtRefreshFilter;
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        String refreshToken = request.getParameter(getPasswordParameter());
+
+        if (StringUtils.isEmpty(refreshToken)) {
+            throw new AuthenticationCredentialsNotFoundException("Refresh token not found");
+        }
+
+        RefreshTokenAuthentication authenticationToken = new RefreshTokenAuthentication(null, refreshToken, null);
+        return getAuthenticationManager().authenticate(authenticationToken);
     }
 }

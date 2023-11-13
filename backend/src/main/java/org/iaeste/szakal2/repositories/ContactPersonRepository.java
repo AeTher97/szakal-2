@@ -1,7 +1,6 @@
 package org.iaeste.szakal2.repositories;
 
 import jakarta.persistence.Table;
-import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

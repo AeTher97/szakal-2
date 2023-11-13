@@ -18,18 +18,12 @@ import java.util.List;
 @Log4j2
 public class InitService {
 
-    private final RolesRepository rolesRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UsersRepository usersRepository;
-    private final AccessRightRepository accessRightRepository;
-
     private static final List<AccessRight> viewingRights = List.of(
             AccessRight.builder().code("user_viewing").description("View users").build(),
             AccessRight.builder().code("role_viewing").description("View roles").build(),
             AccessRight.builder().code("company_viewing").description("View companies").build(),
             AccessRight.builder().code("category_viewing").description("View categories").build()
     );
-
     private static final List<AccessRight> modificationRights = List.of(
             AccessRight.builder().code("campaign_modification").description("Modify campaigns").build(),
             AccessRight.builder().code("role_modification").description("Modify roles").build(),
@@ -38,6 +32,10 @@ public class InitService {
             AccessRight.builder().code("user_acceptance").description("Accept users").build(),
             AccessRight.builder().code("journey_modification").description("Modify journeys").build()
     );
+    private final RolesRepository rolesRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UsersRepository usersRepository;
+    private final AccessRightRepository accessRightRepository;
 
     public InitService(RolesRepository rolesRepository, UsersRepository usersRepository, AccessRightRepository accessRightRepository) {
         this.rolesRepository = rolesRepository;

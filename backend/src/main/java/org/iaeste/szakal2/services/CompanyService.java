@@ -8,7 +8,6 @@ import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.iaeste.szakal2.repositories.CategoryRepository;
 import org.iaeste.szakal2.repositories.CompanyRepository;
-import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
@@ -92,7 +91,7 @@ public class CompanyService {
         return company;
     }
 
-    private ContactPerson contactPersonFromDTO(UUID companyUUID, ContactPersonCreationDTO contactPersonCreationDTO){
+    private ContactPerson contactPersonFromDTO(UUID companyUUID, ContactPersonCreationDTO contactPersonCreationDTO) {
         Company company = getCompanyById(companyUUID);
         return ContactPerson.builder()
                 .company(company)

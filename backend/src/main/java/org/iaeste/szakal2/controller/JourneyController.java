@@ -6,9 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
-import org.iaeste.szakal2.models.entities.ContactEvent;
 import org.iaeste.szakal2.models.entities.ContactJourney;
-import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.iaeste.szakal2.services.JourneyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +30,13 @@ public class JourneyController {
 
     @PutMapping("/{id}/status")
     public ContactJourney updateContactJourneyStatus(@PathVariable("id") UUID id,
-                                                    @RequestBody @Valid ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
+                                                     @RequestBody @Valid ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         return journeyService.updateJourneyStatus(id, contactJourneyStatusUpdatingDTO);
     }
 
     @PostMapping("/{id}/events")
     public ContactJourney addContactEvent(@PathVariable("id") UUID id,
-                                                     @RequestBody @Valid ContactEventDTO contactEventDTO) {
+                                          @RequestBody @Valid ContactEventDTO contactEventDTO) {
         return journeyService.addContactEventDTO(id, contactEventDTO);
     }
 }

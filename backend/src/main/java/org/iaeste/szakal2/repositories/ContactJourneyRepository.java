@@ -12,5 +12,6 @@ import java.util.UUID;
 public interface ContactJourneyRepository extends JpaRepository<ContactJourney, UUID> {
 
     Optional<ContactJourney> findContactJourneyById(UUID id);
+
     Optional<ContactJourney> findContactJourneyByCampaignAndUserAndCompany(Campaign campaign, User user, Company company);
 }

@@ -1,7 +1,6 @@
 package org.iaeste.szakal2;
 
 import io.restassured.http.ContentType;
-import org.checkerframework.checker.guieffect.qual.UI;
 import org.iaeste.szakal2.models.AccessRight;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
@@ -143,7 +142,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
                         {
                             "name" : "ADMIN-2",
                             "description" : "Role for a better admin",
-                            "accessRights" : ["\{ accessRight.getId() }", "\{UUID.randomUUID() }"]
+                            "accessRights" : ["\{ accessRight.getId() }", "\{ UUID.randomUUID() }"]
                         }
                         """ )
                 .when()
@@ -155,7 +154,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
     @Test
     public void testAddRoleWithNonExistenAccessRightThrows404() {
 
-       withAccessRights("role_modification")
+        withAccessRights("role_modification")
                 .contentType(ContentType.JSON)
                 .body(StringTemplate.STR. """
                         {

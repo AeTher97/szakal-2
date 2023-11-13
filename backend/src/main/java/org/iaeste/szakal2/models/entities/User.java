@@ -8,7 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,7 +17,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User{
+public class User {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -56,11 +57,7 @@ public class User{
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
 
-    public List<UUID> contactJourneys(){
-        return contactJourneys.stream().map(ContactJourney::getId).toList();
-    }
-
-    public static User fromCreationDTO(UserCreationDTO userCreationDTO){
+    public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()
                 .email(userCreationDTO.getEmail())
                 .username(userCreationDTO.getUsername())
@@ -71,6 +68,10 @@ public class User{
                 .accepted(false)
                 .active(false)
                 .build();
+    }
+
+    public List<UUID> contactJourneys() {
+        return contactJourneys.stream().map(ContactJourney::getId).toList();
     }
 
 }

@@ -39,7 +39,7 @@ public class CampaignService {
         return campaignOptional.get();
     }
 
-    public void truncate(){
+    public void truncate() {
         campaignRepository.deleteAll();
     }
 

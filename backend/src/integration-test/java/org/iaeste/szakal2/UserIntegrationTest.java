@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
@@ -73,11 +72,11 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
 
         UserDTO userDTO = withAccessRights("role_modification")
                 .contentType(ContentType.JSON)
-                .body(STR."""
+                .body(STR. """
                         {
-                        "roles": ["\{role.getId()}"]
+                        "roles": ["\{ role.getId() }"]
                         }
-                        """)
+                        """ )
                 .when()
                 .put(STR. """
                         /api/users/\{ userId }/roles

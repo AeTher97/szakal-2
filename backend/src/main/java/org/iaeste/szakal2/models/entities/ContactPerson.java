@@ -45,7 +45,7 @@ public class ContactPerson {
     @NotNull
     private String comment;
 
-    public UUID company(){
+    public UUID company() {
         return company.getId();
     }
 

@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
     Optional<Company> findCompanyById(UUID id);
+
     List<Company> findCompanyByCategoriesIn(Iterable<CompanyCategory> companyCategories);
 }

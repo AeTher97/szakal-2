@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class Campaign {
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
 
-    public List<UUID> contactJourneys(){
+    public List<UUID> contactJourneys() {
         return contactJourneys.stream().map(ContactJourney::getId).toList();
     }
 }

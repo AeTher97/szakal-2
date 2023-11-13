@@ -1,20 +1,12 @@
 package org.iaeste.szakal2.models.dto.journey;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.iaeste.szakal2.models.entities.ContactEventType;
-import org.iaeste.szakal2.models.entities.ContactJourney;
-import org.iaeste.szakal2.models.entities.ContactPerson;
-import org.iaeste.szakal2.models.entities.User;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data

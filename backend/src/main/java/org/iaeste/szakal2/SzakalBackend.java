@@ -22,7 +22,7 @@ public class SzakalBackend {
     }
 
     @PostConstruct
-    public void initializeDatabase(){
+    public void initializeDatabase() {
         initService.initializeDatabase();
     }
 

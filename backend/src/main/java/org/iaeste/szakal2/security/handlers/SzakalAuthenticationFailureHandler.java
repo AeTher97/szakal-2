@@ -15,7 +15,7 @@ public class SzakalAuthenticationFailureHandler implements AuthenticationFailure
 
     private final ObjectMapper objectMapper;
 
-    public SzakalAuthenticationFailureHandler(){
+    public SzakalAuthenticationFailureHandler() {
         this.objectMapper = new ObjectMapper();
     }
 

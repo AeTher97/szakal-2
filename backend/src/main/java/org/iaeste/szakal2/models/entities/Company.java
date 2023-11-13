@@ -41,7 +41,7 @@ public class Company {
     private String www;
     @Setter
     @NotNull
-    private String  email;
+    private String email;
     @Setter
     @NotNull
     private LocalDateTime insertDate;
@@ -72,7 +72,7 @@ public class Company {
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
 
-    public List<UUID> contactJourneys(){
+    public List<UUID> contactJourneys() {
         return contactJourneys.stream().map(ContactJourney::getId).toList();
     }
 

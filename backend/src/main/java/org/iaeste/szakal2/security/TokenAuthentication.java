@@ -8,10 +8,10 @@ import java.util.Collection;
 
 public abstract class TokenAuthentication implements Authentication {
 
-    private boolean isAuthenticated;
     private final String principal;
     private final String token;
     private final Collection<? extends GrantedAuthority> authorities;
+    private boolean isAuthenticated;
 
     public TokenAuthentication(String principal, String token, Collection<? extends GrantedAuthority> grantedAuthorityList) {
         this.authorities = grantedAuthorityList;

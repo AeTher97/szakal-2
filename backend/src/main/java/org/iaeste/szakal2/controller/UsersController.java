@@ -34,7 +34,7 @@ public class UsersController {
     }
 
     @GetMapping
-    public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber){
+    public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
@@ -45,19 +45,19 @@ public class UsersController {
 
     @PutMapping("/{id}/roles")
     public UserDTO updateUserRoles(@PathVariable("id") UUID id,
-                                   @RequestBody UserRoleModificationDTO userRoleModificationDTO){
+                                   @RequestBody UserRoleModificationDTO userRoleModificationDTO) {
         return userService.modifyUserRoles(id, userRoleModificationDTO);
     }
 
     @PutMapping("/{id}/accept")
-    public UserDTO acceptUser(@PathVariable("id") UUID id){
+    public UserDTO acceptUser(@PathVariable("id") UUID id) {
         return userService.acceptUser(id);
     }
 
     @PutMapping("/{id}/password")
     @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
     public UserDTO changePassword(@PathVariable("id") UUID id,
-                                  @RequestBody @Valid UserPasswordChangingDTO userPasswordChangingDTO){
+                                  @RequestBody @Valid UserPasswordChangingDTO userPasswordChangingDTO) {
         return userService.changePassword(id, userPasswordChangingDTO);
     }
 
