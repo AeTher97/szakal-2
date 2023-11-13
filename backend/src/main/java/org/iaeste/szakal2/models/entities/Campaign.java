@@ -1,10 +1,12 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +29,12 @@ public class Campaign {
     private String name;
     @Setter
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campaign")
+    @JsonIgnore
     private List<ContactJourney> contactJourneys;
+
+    public List<UUID> contactJourneys(){
+        return contactJourneys.stream().map(ContactJourney::getId).toList();
+    }
 }

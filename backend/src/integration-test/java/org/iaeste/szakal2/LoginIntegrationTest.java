@@ -4,18 +4,14 @@ package org.iaeste.szakal2;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
-import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
-import org.iaeste.szakal2.services.UserService;
+import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 
-public class LoginIntegrationTest extends IntegrationTestBase {
-
-
-    @Autowired
-    UserService userService;
+public class LoginIntegrationTest extends IntegrationTestWithTools {
 
     @AfterEach
     public void truncateUserService() {
@@ -24,12 +20,10 @@ public class LoginIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void loginsCorrectly() {
-        userService.registerUser(UserCreationDTO.builder()
-                .email("test-login@gmail.com")
-                .password("Password123!")
-                .repeatPassword("Password123!")
-                .username("testLogin")
-                .build());
+        createUser("test-login@gmail.com",
+                "testLogin",
+                "Password123!",
+                List.of());
         RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-login@gmail.com")
@@ -44,12 +38,10 @@ public class LoginIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void failsToLoginWithWrongPassword() {
-        userService.registerUser(UserCreationDTO.builder()
-                .email("test-failed-login@gmail.com")
-                .password("Password123!")
-                .repeatPassword("Password123!")
-                .username("testFailedLogin")
-                .build());
+        createUser("test-failed-login@gmail.com",
+                "testFailedLogin",
+                "Password123!",
+                List.of());
         RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-failed-login@gmail.com")
@@ -62,12 +54,10 @@ public class LoginIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void refreshesCorrectly() {
-        userService.registerUser(UserCreationDTO.builder()
-                .email("test-login@gmail.com")
-                .password("Password123!")
-                .repeatPassword("Password123!")
-                .username("testLogin")
-                .build());
+        createUser("test-login@gmail.com",
+                "testLogin",
+                "Password123!",
+                List.of());
         String refreshToken = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-login@gmail.com")

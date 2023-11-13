@@ -4,31 +4,23 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.hamcrest.Matchers;
-import org.iaeste.szakal2.exceptions.UserNotFoundException;
-import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
+import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.services.UserService;
+import org.iaeste.szakal2.util.IntegrationTest;
+import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.UUID;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DirtiesContext
-public class RegistrationIntegrationTest extends IntegrationTestBase {
+public class RegistrationIntegrationTest extends IntegrationTestWithTools {
 
     @Autowired
     UserService userService;
-
-    @AfterEach
-    public void truncateUserService() {
-        userService.truncate();
-    }
 
     @Test
     public void userRegistersWithCorrectRequest() {
@@ -111,6 +103,8 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .password("Password123!")
                 .repeatPassword("Password123!")
                 .username("TakenUsername")
+                .name("Name")
+                .surname("Surname")
                 .build());
         RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -138,6 +132,8 @@ public class RegistrationIntegrationTest extends IntegrationTestBase {
                 .password("Password123!")
                 .repeatPassword("Password123!")
                 .username("TakenUsername")
+                .name("Name")
+                .surname("Surname")
                 .build());
         RestAssured.given()
                 .contentType(ContentType.JSON)

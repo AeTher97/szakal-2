@@ -11,7 +11,7 @@ import org.springframework.lang.NonNull;
 @Data
 @Builder
 @PasswordsMatch
-public class UserCreationDTO {
+public class UserCreationDTO extends PasswordChangeDTO{
 
     @ValidPassword
     private String password;

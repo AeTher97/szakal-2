@@ -5,9 +5,9 @@ import io.jsonwebtoken.*;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.entities.User;
+import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.RefreshTokenAuthentication;
 import org.iaeste.szakal2.security.TokenFactory;
-import org.iaeste.szakal2.services.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,18 +20,19 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class JwtRefreshProvider implements AuthenticationProvider {
 
     private final JwtConfiguration jwtConfiguration;
     private final SecretKeySpec key;
-    private final UserService userService;
+    private final UsersRepository usersRepository;
 
-    public JwtRefreshProvider(JwtConfiguration jwtConfiguration, UserService userService) {
+    public JwtRefreshProvider(JwtConfiguration jwtConfiguration, UsersRepository usersRepository) {
         this.jwtConfiguration = jwtConfiguration;
-        this.userService = userService;
         this.key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), SignatureAlgorithm.HS512.getJcaName());
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -53,20 +54,19 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
-            User user = userService.getUserById(UUID.fromString(claims.getSubject()));
+            Optional<User> userOptional = usersRepository.findUserById(UUID.fromString(claims.getSubject()));
+            if(userOptional.isEmpty()){
+                throw new BadCredentialsException("User not found");
+            }
+            User user = userOptional.get();
 
             List<GrantedAuthority> authorities = new ArrayList<>();
-            List<String> authoritiesStrings = new ArrayList<>();
 
-            user.getRoles().forEach(role ->
-                    role.getAccessRights().forEach(accessRight -> {
-                        authorities.add(new SimpleGrantedAuthority(accessRight.getCode()));
-                        authoritiesStrings.add(accessRight.getCode());
-                    }));
+            user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
             return new RefreshTokenAuthentication(claims.getSubject(),
                     TokenFactory.generateAuthToken(user.getId(),
-                            authoritiesStrings,
+                            authorities.stream().map(GrantedAuthority::getAuthority).toList(),
                             user.getEmail(),
                             jwtConfiguration), authorities);
 
@@ -74,8 +74,6 @@ public class JwtRefreshProvider implements AuthenticationProvider {
             throw new BadCredentialsException(e.getMessage(), e);
         } catch (IOException | NullPointerException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
-        } catch (UserNotFoundException e) {
-            throw new BadCredentialsException("User not found");
         }
 
     }

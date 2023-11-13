@@ -63,8 +63,7 @@ public abstract class TokenAuthentication implements Authentication {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TokenAuthentication) {
-            TokenAuthentication secondObj = (TokenAuthentication) obj;
+        if (obj instanceof TokenAuthentication secondObj) {
             return secondObj.isAuthenticated == this.isAuthenticated && ObjectUtils.nullSafeEquals(this.getCredentials(), secondObj.getCredentials())
                     && ObjectUtils.nullSafeEquals(this.getPrincipal(), secondObj.getPrincipal()) && ObjectUtils.nullSafeEquals(this.getAuthorities(), secondObj.getAuthorities());
 

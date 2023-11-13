@@ -3,8 +3,8 @@ package org.iaeste.szakal2.security.providers;
 
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.models.entities.User;
+import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.TokenFactory;
-import org.iaeste.szakal2.services.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,30 +18,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UsernamePasswordProvider implements AuthenticationProvider {
 
-    private final UserService userService;
+    private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtConfiguration jwtConfiguration;
 
-    public UsernamePasswordProvider(UserService userService, PasswordEncoder passwordEncoder, JwtConfiguration jwtConfiguration) {
-        this.userService = userService;
+    public UsernamePasswordProvider(UsersRepository usersRepository, PasswordEncoder passwordEncoder, JwtConfiguration jwtConfiguration) {
+        this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfiguration = jwtConfiguration;
-        userService.setUsernamePasswordProvider(this);
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        User user = userService.getUserByEmail(authentication.getPrincipal().toString());
+        Optional<User> userOptional = usersRepository.findUserByEmailIgnoreCase(authentication.getPrincipal().toString());
+        if (userOptional.isEmpty()) {
+            throw new BadCredentialsException(STR. """
+                    User \{ authentication.getPrincipal().toString() } not found
+                    """ );
+        }
+        User user = userOptional.get();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        user.getRoles().forEach(role ->
-                role.getAccessRights().forEach(accessRight -> {
-                    authorities.add(new SimpleGrantedAuthority(accessRight.getCode()));
-                }));
+
         if (passwordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             try {
                 return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),

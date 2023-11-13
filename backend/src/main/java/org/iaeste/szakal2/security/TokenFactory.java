@@ -17,7 +17,7 @@ public class TokenFactory {
         String key = jwtConfiguration.getSecret();
         long authExp = Long.parseLong(jwtConfiguration.getAuthExpirationTime());
 
-        return Jwts.builder().setSubject(id.toString()).claim("access_rights", roles).claim("email", email).setIssuer(jwtIssuer)
+        return Jwts.builder().setSubject(id.toString()).claim("roles", roles).claim("email", email).setIssuer(jwtIssuer)
                 .setExpiration(new Date(System.currentTimeMillis() + authExp))
                 .signWith(new SecretKeySpec(key.getBytes(), SignatureAlgorithm.HS512.getJcaName())).compact();
     }

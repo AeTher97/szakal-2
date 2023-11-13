@@ -4,9 +4,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.repositories.RolesRepository;
 import org.iaeste.szakal2.security.JwtTokenAuthentication;
-import org.iaeste.szakal2.services.RoleService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -14,20 +13,20 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Log4j2
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtConfiguration jwtConfiguration;
-    private final RoleService roleService;
+    private final RolesRepository rolesRepository;
     private final SecretKeySpec key;
 
-    public JwtAuthenticationProvider(JwtConfiguration jwtConfiguration, RoleService roleService) {
+    public JwtAuthenticationProvider(JwtConfiguration jwtConfiguration, RolesRepository rolesRepository) {
         this.jwtConfiguration = jwtConfiguration;
-        this.roleService = roleService;
+        this.rolesRepository = rolesRepository;
         key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), SignatureAlgorithm.HS512.getJcaName());
     }
 
@@ -50,11 +49,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
-            List<String> roles = (List<String>) claims.get("access_rights");
-            List<SimpleGrantedAuthority> simpleGrantedAuthorities
-                    = roles.stream().map(SimpleGrantedAuthority::new).toList();
+            List<String> roles = (List<String>) claims.get("roles");
+            Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 
-            return new JwtTokenAuthentication(claims.getSubject(), jwtToken, simpleGrantedAuthorities);
+            rolesRepository.findAllByNameIn(roles).forEach(role ->
+                    grantedAuthorities.addAll(role.getAccessRights().stream().map(accessRight
+                            -> new SimpleGrantedAuthority(accessRight.getCode())).toList()));
+
+            return new JwtTokenAuthentication(claims.getSubject(), jwtToken, grantedAuthorities);
 
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
                  IllegalArgumentException e) {

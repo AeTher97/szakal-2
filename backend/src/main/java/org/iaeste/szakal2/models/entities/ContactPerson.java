@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -23,6 +24,7 @@ public class ContactPerson {
     @Setter
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
+    @JsonIgnore
     @NotNull
     private Company company;
     @Setter
@@ -38,10 +40,13 @@ public class ContactPerson {
     @NotNull
     private String phone;
     @Setter
-    @NotNull
     private String phone2;
     @Setter
     @NotNull
     private String comment;
+
+    public UUID company(){
+        return company.getId();
+    }
 
 }

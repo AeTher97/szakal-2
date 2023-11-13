@@ -53,7 +53,12 @@ public class User{
     private List<Role> roles;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     private List<ContactJourney> contactJourneys;
+
+    public List<UUID> contactJourneys(){
+        return contactJourneys.stream().map(ContactJourney::getId).toList();
+    }
 
     public static User fromCreationDTO(UserCreationDTO userCreationDTO){
         return User.builder()

@@ -26,9 +26,9 @@ public class RoleController {
         return roleService.createRole(roleCreationDto);
     }
 
-    @PutMapping
-    public Role updateRole(@RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
-        return roleService.updateRole(roleUpdateDTO);
+    @PutMapping("/{id}")
+    public Role updateRole(@PathVariable("id") UUID id, @RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
+        return roleService.updateRole(id, roleUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

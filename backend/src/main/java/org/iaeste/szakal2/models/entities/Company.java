@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -48,27 +49,32 @@ public class Company {
     @NotNull
     private LocalDateTime updateDate;
     @Setter
-    @OneToOne
+    @ManyToOne
     @NotNull
     private User updatedBy;
     @Setter
     @NotNull
     private boolean deleted;
     @Setter
-    @NotNull
     private LocalDateTime deletedDate;
     @Setter
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "categories_companies",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<CompanyCategory> categories;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
     private List<ContactPerson> contactPeople;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<ContactJourney> contactJourneys;
+
+    public List<UUID> contactJourneys(){
+        return contactJourneys.stream().map(ContactJourney::getId).toList();
+    }
+
 
 }
