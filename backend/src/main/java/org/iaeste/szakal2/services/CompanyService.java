@@ -11,6 +11,8 @@ import org.iaeste.szakal2.repositories.CompanyRepository;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -70,6 +72,10 @@ public class CompanyService {
                     Company with id \{ id } does not exist""" );
         }
         return companyOptional.get();
+    }
+
+    public Page<Company> getCompanies(Pageable pageable) {
+        return companyRepository.findAllByDeletedFalseOrderByNameDesc(pageable);
     }
 
     public void truncate() {

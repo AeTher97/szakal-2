@@ -5,6 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.category.CompanyCategoryCreationDTO;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.services.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -31,9 +33,13 @@ public class CategoryController {
         return categoryService.modifyCategory(id, companyCategoryCreationDTO);
     }
 
-
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable("id") UUID categoryId) {
         categoryService.deleteCategory(categoryId);
+    }
+
+    @GetMapping
+    public Page<CompanyCategory> getCategories(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+        return categoryService.getCategories(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

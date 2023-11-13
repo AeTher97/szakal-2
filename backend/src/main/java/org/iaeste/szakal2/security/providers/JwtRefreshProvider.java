@@ -67,6 +67,9 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     TokenFactory.generateAuthToken(user.getId(),
                             authorities.stream().map(GrantedAuthority::getAuthority).toList(),
                             user.getEmail(),
+                            user.getUsername(),
+                            user.getName(),
+                            user.getSurname(),
                             jwtConfiguration), authorities);
 
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {

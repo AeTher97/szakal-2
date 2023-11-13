@@ -39,6 +39,25 @@
 				{
 					"name": "Modify Campaign",
 					"request": {
+                      "method": "PUT",
+                      "header": [],
+                      "url": {
+                        "raw": "{{address}}/api/campaigns/{{campaignId}}",
+                        "host": [
+                          "{{address}}"
+                        ],
+                        "path": [
+                          "api",
+                          "campaigns",
+                          "{{campaignId}}"
+                        ]
+                      }
+                    },
+                  "response": []
+                },
+              {
+                "name": "Get Campaign",
+                "request": {
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -54,6 +73,50 @@
 						}
 					},
 					"response": []
+              },
+              {
+                "name": "Get Campaigns",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/campaigns",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "campaigns"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get contact journeys",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/campaigns/{{campaignId}}/journeys?pageNumber=0",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "campaigns",
+                      "{{campaignId}}",
+                      "journeys"
+                    ],
+                    "query": [
+                      {
+                        "key": "pageNumber",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                },
+                "response": []
 				}
 			]
 		},
@@ -133,6 +196,30 @@
 						}
 					},
 					"response": []
+                },
+              {
+                "name": "GetCategories",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/categories?pageNumber=0",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "categories"
+                    ],
+                    "query": [
+                      {
+                        "key": "pageNumber",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                },
+                "response": []
 				}
 			]
 		},
@@ -232,6 +319,49 @@
 							"raw": "{{address}}/api/companies/{{companyId}}",
 							"host": [
 								"{{address}}"
+                            ],
+                          "path": [
+                            "api",
+                            "companies",
+                            "{{companyId}}"
+                          ]
+                        }
+                    },
+                  "response": []
+                },
+              {
+                "name": "GetCompanies",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/companies?pageNumber=0",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "companies"
+                    ],
+                    "query": [
+                      {
+                        "key": "pageNumber",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get Company",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/companies/{{companyId}}",
+                    "host": [
+                      "{{address}}"
 							],
 							"path": [
 								"api",
@@ -359,6 +489,49 @@
 							]
 						}
 					},
+                  "response": []
+                },
+              {
+                "name": "Get Contact Journey",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/journeys/{{journeyId}}",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "journeys",
+                      "{{journeyId}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get Contact Journeys",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/journeys?pageNumber=0",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "journeys"
+                    ],
+                    "query": [
+                      {
+                        "key": "pageNumber",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                },
 					"response": []
 				}
 			]
@@ -439,6 +612,49 @@
 						}
 					},
 					"response": []
+                },
+              {
+                "name": "Get Roles",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/roles?pageNumber=0",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "roles"
+                    ],
+                    "query": [
+                      {
+                        "key": "pageNumber",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get Role",
+                "request": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{address}}/api/roles/{{roleId}}",
+                    "host": [
+                      "{{address}}"
+                    ],
+                    "path": [
+                      "api",
+                      "roles",
+                      "{{roleId}}"
+                    ]
+                  }
+                },
+                "response": []
 				}
 			]
 		},
@@ -683,6 +899,35 @@
 					},
 					"response": []
 				}
+            ]
+        },
+      {
+        "name": "Access Rights",
+        "item": [
+          {
+            "name": "Get Access Rights",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{address}}/api/accessRights?pageNumber=0",
+                "host": [
+                  "{{address}}"
+                ],
+                "path": [
+                  "api",
+                  "accessRights"
+                ],
+                "query": [
+                  {
+                    "key": "pageNumber",
+                    "value": "0"
+                  }
+                ]
+              }
+            },
+            "response": []
+          }
 			]
 		}
 	],

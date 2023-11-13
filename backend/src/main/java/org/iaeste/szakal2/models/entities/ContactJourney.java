@@ -2,9 +2,11 @@ package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +30,7 @@ public class ContactJourney {
     private User user;
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
-    @JsonIgnoreProperties(value = {"updatedBy"})
+    @JsonIgnoreProperties(value = {"updatedBy", "contactJourneys"})
     private Company company;
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
@@ -41,4 +43,7 @@ public class ContactJourney {
     private List<Comment> comments;
     @Setter
     private ContactStatus contactStatus;
+    @Setter
+    @NotNull
+    private LocalDateTime journeyStart;
 }

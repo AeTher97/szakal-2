@@ -6,6 +6,8 @@ import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.services.RoleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,6 +31,16 @@ public class RoleController {
     @PutMapping("/{id}")
     public Role updateRole(@PathVariable("id") UUID id, @RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
         return roleService.updateRole(id, roleUpdateDTO);
+    }
+
+    @GetMapping
+    public Page<Role> getRoles(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+        return roleService.getRoles(Pageable.ofSize(pageSize).withPage(pageNumber));
+    }
+
+    @GetMapping("/{id}")
+    public Role getRole(@PathVariable("id") UUID id) {
+        return roleService.getRoleById(id);
     }
 
     @DeleteMapping("/{id}")

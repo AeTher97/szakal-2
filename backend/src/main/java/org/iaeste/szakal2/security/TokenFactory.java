@@ -12,12 +12,22 @@ import java.util.UUID;
 
 public class TokenFactory {
 
-    public static String generateAuthToken(UUID id, List<String> roles, String email, JwtConfiguration jwtConfiguration) throws IOException {
+    public static String generateAuthToken(UUID id,
+                                           List<String> roles,
+                                           String email,
+                                           String username,
+                                           String name,
+                                           String surname,
+                                           JwtConfiguration jwtConfiguration) throws IOException {
         String jwtIssuer = jwtConfiguration.getIssuer();
         String key = jwtConfiguration.getSecret();
         long authExp = Long.parseLong(jwtConfiguration.getAuthExpirationTime());
 
-        return Jwts.builder().setSubject(id.toString()).claim("roles", roles).claim("email", email).setIssuer(jwtIssuer)
+        return Jwts.builder().setSubject(id.toString()).claim("roles", roles)
+                .claim("email", email)
+                .claim("username", username)
+                .claim("name", name)
+                .claim("surname", surname).setIssuer(jwtIssuer)
                 .setExpiration(new Date(System.currentTimeMillis() + authExp))
                 .signWith(new SecretKeySpec(key.getBytes(), SignatureAlgorithm.HS512.getJcaName())).compact();
     }

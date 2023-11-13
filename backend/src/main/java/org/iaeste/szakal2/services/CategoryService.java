@@ -6,6 +6,8 @@ import org.iaeste.szakal2.models.dto.category.CompanyCategoryCreationDTO;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.repositories.CategoryRepository;
 import org.iaeste.szakal2.repositories.CompanyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +45,10 @@ public class CategoryService {
         CompanyCategory companyCategory = companyCategoryOptional.get();
         companyCategory.setName(companyCategoryCreationDTO.getName());
         return categoryRepository.save(companyCategory);
+    }
+
+    public Page<CompanyCategory> getCategories(Pageable pageable) {
+        return categoryRepository.findAllByOrderByName(pageable);
     }
 
     public void deleteCategory(UUID categoryId) {

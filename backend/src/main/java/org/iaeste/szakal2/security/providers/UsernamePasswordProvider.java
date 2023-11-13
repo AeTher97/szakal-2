@@ -52,7 +52,11 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                         new TokenHolder(
                                 TokenFactory.generateAuthToken(user.getId(),
                                         authorities.stream().map(GrantedAuthority::getAuthority).toList(),
-                                        user.getEmail(), jwtConfiguration),
+                                        user.getEmail(),
+                                        user.getUsername(),
+                                        user.getName(),
+                                        user.getSurname(),
+                                        jwtConfiguration),
                                 TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration)),
                         authorities);
             } catch (IOException | NullPointerException e) {

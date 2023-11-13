@@ -10,6 +10,8 @@ import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,8 +45,7 @@ public class JourneyService {
         if (contactJourneyRepository.findContactJourneyByCampaignAndUserAndCompany(campaign, user, company).isPresent()) {
             throw new ResourceExistsException("Contact journey for that company already happended in this campaign");
         }
-        return contactJourneyRepository.save(contactJourneyFromDto(contactJourneyCreationDTO,
-                user, company, campaign));
+        return contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
     }
 
     public ContactJourney updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
@@ -72,6 +73,10 @@ public class JourneyService {
                     ContactJourney with id \{ id } does not exist""" );
         }
         return journeyOptional.get();
+    }
+
+    public Page<ContactJourney> getJourneys(Pageable pageable) {
+        return contactJourneyRepository.findAllByOrderByJourneyStart(pageable);
     }
 
     public void truncate() {
@@ -105,14 +110,14 @@ public class JourneyService {
                 .build();
     }
 
-    private ContactJourney contactJourneyFromDto(ContactJourneyCreationDTO contactJourneyCreationDTO,
-                                                 User user,
+    private ContactJourney contactJourneyFromDto(User user,
                                                  Company company,
                                                  Campaign campaign) {
         return ContactJourney.builder()
                 .user(user)
                 .company(company)
                 .campaign(campaign)
+                .journeyStart(LocalDateTime.now())
                 .build();
     }
 }

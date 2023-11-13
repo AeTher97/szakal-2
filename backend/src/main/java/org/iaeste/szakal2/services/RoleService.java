@@ -3,7 +3,6 @@ package org.iaeste.szakal2.services;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.AccessRight;
 import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
@@ -13,6 +12,8 @@ import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.repositories.RolesRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,11 +46,7 @@ public class RoleService {
     }
 
     public Role updateRole(UUID id, RoleUpdateDTO roleUpdateDTO) {
-        Optional<Role> roleOptional = rolesRepository.findRoleById(id);
-        if (roleOptional.isEmpty()) {
-            throw new UserNotFoundException("Role not found");
-        }
-        Role role = roleOptional.get();
+        Role role = getRoleById(id);
         if (roleUpdateDTO.getAccessRights() != null && !roleUpdateDTO.getAccessRights().isEmpty()) {
             List<AccessRight> accessRights = getAccessRights(roleUpdateDTO);
             role.getAccessRights().clear();
@@ -58,6 +55,18 @@ public class RoleService {
         BeanUtils.copyProperties(roleUpdateDTO, role, getNullPropertyNames(roleUpdateDTO));
 
         return rolesRepository.save(role);
+    }
+
+    public Role getRoleById(UUID id) {
+        Optional<Role> roleOptional = rolesRepository.findRoleById(id);
+        if (roleOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Role with id" + id + " not found");
+        }
+        return roleOptional.get();
+    }
+
+    public Page<Role> getRoles(Pageable pageable) {
+        return rolesRepository.findAll(pageable);
     }
 
     public void deleteRole(UUID id) {
