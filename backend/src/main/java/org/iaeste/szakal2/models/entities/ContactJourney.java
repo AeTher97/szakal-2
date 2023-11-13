@@ -34,10 +34,10 @@ public class ContactJourney {
     @JoinColumn(name = "campaign_id", nullable = false)
     private Campaign campaign;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ContactEvent> contactEvents;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Comment> comments;
     @Setter
     private ContactStatus contactStatus;

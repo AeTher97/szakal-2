@@ -15,8 +15,10 @@ import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 import org.iaeste.szakal2.models.dto.user.UserRoleModificationDTO;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
+import org.iaeste.szakal2.repositories.CommentRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.services.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,17 +49,25 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     protected CategoryService categoryService;
     @Autowired
     protected JourneyService journeyService;
+    @Autowired
+    protected CommentRepository commentRepository;
 
     @BeforeEach
-    public void cleanUpAfter() {
+    public void cleanUpBefore() {
+        cleanUp();
+    }
+
+    @AfterEach
+    public void CleanUpAfter() {
         cleanUp();
     }
 
     protected void cleanUp() {
+        commentRepository.truncate();
+        journeyService.truncate();
         companyService.truncate();
         userService.truncate();
         campaignService.truncate();
-        journeyService.truncate();
         roleService.truncate();
         accessRightRepository.deleteAll();
         categoryService.truncate();
@@ -196,10 +206,10 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     }
 
     protected ContactJourney createContactJourney() {
-        Company company = createCompany("IAESTE");
         User user = createUser("company-creator@gmail.com", "company-creator", "password",
                 List.of("company_modification"));
         Campaign campaign = createCampaign("PPP2023", LocalDate.now());
+        Company company = createCompany("IAESTE");
         return journeyService.createJourney(ContactJourneyCreationDTO
                 .builder()
                 .campaign(campaign.getId())

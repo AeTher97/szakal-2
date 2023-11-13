@@ -21,7 +21,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Comment {
 
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID",

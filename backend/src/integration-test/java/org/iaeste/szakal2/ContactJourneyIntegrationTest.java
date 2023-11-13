@@ -1,9 +1,13 @@
 package org.iaeste.szakal2;
 
 import io.restassured.http.ContentType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.iaeste.szakal2.models.entities.*;
+import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+    @Autowired
+    private ContactJourneyRepository contactJourneyRepository;
 
     @Test
     public void testCreatingContactJourney() {
@@ -108,6 +117,8 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     public void testAddContactJourneyComment() {
         ContactJourney contactJourney = createContactJourney();
 
+        contactJourneyRepository.deleteById(contactJourney.getId());
+
         withAccessRights("journey_modification")
                 .contentType(ContentType.JSON)
                 .body(STR."""
@@ -122,6 +133,9 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
         ContactJourney contactJourney1 = journeyService.getJourneyById(contactJourney.getId());
         assertEquals(1, contactJourney1.getComments().size());
         assertEquals("Nie idzie za dobrze", contactJourney1.getComments().get(0).getComment());
+        contactJourneyRepository.deleteById(contactJourney1.getId());
+        contactJourneyRepository.flush();
+
     }
 
     @Test
