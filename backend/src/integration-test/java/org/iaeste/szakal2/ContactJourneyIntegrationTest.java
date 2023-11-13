@@ -86,7 +86,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     }
 
     @Test
-    public void testAddingContactJourneyEvent() {
+    public void testCantAddTwoJourneysForTheSameCampaignAndCompany() {
         ContactJourney contactJourney = createContactJourney();
 
         withAccessRights("journey_modification")
@@ -105,7 +105,27 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     }
 
     @Test
-    public void testCantAddTwoJourneysForTheSameCampaignAndCompany() {
+    public void testAddContactJourneyComment() {
+        ContactJourney contactJourney = createContactJourney();
+
+        withAccessRights("journey_modification")
+                .contentType(ContentType.JSON)
+                .body(STR."""
+                        {
+                              "comment" : "Nie idzie za dobrze"
+                        }
+                        """)
+                .when()
+                .post("/api/journeys/" + contactJourney.getId() + "/comments")
+                .then().statusCode(200);
+
+        ContactJourney contactJourney1 = journeyService.getJourneyById(contactJourney.getId());
+        assertEquals(1, contactJourney1.getComments().size());
+        assertEquals("Nie idzie za dobrze", contactJourney1.getComments().get(0).getComment());
+    }
+
+    @Test
+    public void testAddContactJourneyEvent() {
         ContactJourney contactJourney = createContactJourney();
 
         withAccessRights("journey_modification")

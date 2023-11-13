@@ -7,667 +7,713 @@
 	},
 	"item": [
 		{
-          "name": "User",
-          "item": [
-            {
-              "name": "Register User",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"username\": \"AeTher3\",\r\n    \"email\": \"emtail3@gmail.com\",\r\n    \"password\": \"weakweak\",\r\n    \"repeatPassword\": \"weakweak\",\r\n    \"name\": \"Michal\",\r\n    \"surname\": \"Wozniak\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{address}}/api/users",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Login",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "var jsonData = pm.response.json();\r",
-                      "if(jsonData.authToken){\r",
-                      "pm.environment.set(\"authToken\", jsonData.authToken);\r",
-                      "pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
-                      "}"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "username",
-                      "value": "administrator@szakal.org",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "administrator",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{address}}/api/login",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "login"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Refresh",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "var jsonData = pm.response.json();\r",
-                      "if(jsonData.authToken){\r",
-                      "pm.environment.set(\"authToken\", jsonData.authToken);\r",
-                      "}"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{address}}/api/refresh?refreshToken={{refreshToken}}",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "refresh"
-                  ],
-                  "query": [
-                    {
-                      "key": "refreshToken",
-                      "value": "{{refreshToken}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get User",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{address}}/api/users/579da9f6-1e82-411a-90ae-1c50ccef0d25",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    "579da9f6-1e82-411a-90ae-1c50ccef0d25"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get Users",
-              "request": {
-                "method": "GET",
-                "header": []
-              },
-              "response": []
-            },
-            {
-              "name": "Modify Roles",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"roles\" : []\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{address}}/api/users/579da9f6-1e82-411a-90ae-1c50ccef0d25/roles",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    "579da9f6-1e82-411a-90ae-1c50ccef0d25",
-                    "roles"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Change Password",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"currentPassword\": \"administrator\",\r\n    \"password\": \"newPassword\",\r\n    \"repeatPassword\": \"newPassword\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{address}}/api/users/579da9f6-1e82-411a-90ae-1c50ccef0d25/password",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    "579da9f6-1e82-411a-90ae-1c50ccef0d25",
-                    "password"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Accept User",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "url": {
-                  "raw": "{{address}}/api/users/579da9f6-1e82-411a-90ae-1c50ccef0d25/accept",
-                  "host": [
-                    "{{address}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    "579da9f6-1e82-411a-90ae-1c50ccef0d25",
-                    "accept"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-      {
-        "name": "Roles",
-        "item": [
-          {
-            "name": "Create Role",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Role for a user\",\r\n    \"accessRights\": [\"08de38fc-e6be-4711-9333-d3a32e359bd5\", \"d8c224c6-7c85-402f-8880-34480abb9ce6\"]\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/roles",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "roles"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Update Role",
-            "request": {
-              "method": "PUT",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Role for a user\",\r\n    \"accessRights\": [\"08de38fc-e6be-4711-9333-d3a32e359bd5\", \"d8c224c6-7c85-402f-8880-34480abb9ce6\"]\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/roles/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "roles",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Delete Role",
-            "request": {
-              "method": "DELETE",
-              "header": [],
-              "url": {
-                "raw": "{{address}}/api/roles/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "roles",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Companies",
-        "item": [
-          {
-            "name": "Create Company",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\" : \"IAESTE\",\r\n    \"address\" : {\r\n        \"street\" : \"Reymonta\",\r\n        \"city\" : \"Krakow\",\r\n        \"postalCode\": \"30-123\"\r\n    },\r\n    \"phone\" : \"+481235543543\",\r\n    \"fax\" : \"+4843243242\",\r\n    \"www\" : \"iaeste.pl\",\r\n    \"email\": \"company@email.com\",\r\n    \"categories\" : [\"330602a4-d6e9-44d6-90f6-b12c6e888825\"]\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/companies",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "companies"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Add Contact Person",
-            "protocolProfileBehavior": {
-              "disableBodyPruning": true
-            },
-            "request": {
-              "method": "GET",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"Asia Kowalska\",\r\n    \"position\": \"HR admin\",\r\n    \"phone\": \"+481239321\",\r\n    \"comment\": \"HRy...\",\r\n    \"email\": \"asia@firma.com\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/companies/b5d5b3ab-5876-4519-9ab6-f509ffd267f6/contactPerson",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "companies",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                  "contactPerson"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Modify Company",
-            "request": {
-              "method": "PUT",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"IAESTE\",\r\n    \"address\": {\r\n        \"street\": \"Reymonta\",\r\n        \"city\": \"Krakow\",\r\n        \"postalCode\": \"30-123\"\r\n    },\r\n    \"phone\": \"+481235543543\",\r\n    \"fax\": \"+4843243242\",\r\n    \"www\": \"iaeste.pl\",\r\n    \"email\": \"company@email.com\",\r\n    \"categories\": [\r\n        \"330602a4-d6e9-44d6-90f6-b12c6e888825\"\r\n    ]\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/companies/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "companies",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Delete Company",
-            "request": {
-              "method": "DELETE",
-              "header": [],
-              "url": {
-                "raw": "{{address}}/api/companies/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "companies",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Campaigns",
-        "item": [
-          {
-            "name": "Create Campaign",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"PPP2023\",\r\n    \"startDate\": \"2023-11-12\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/campaigns",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "campaigns"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Modify Campaign",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{address}}/api/campaigns/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "campaigns",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Contact Journeys",
-        "item": [
-          {
-            "name": "Create Contact Journey",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"user\": \"8b796160-b950-40db-9205-48e3ff0f3746\",\r\n    \"company\": \"b5d5b3ab-5876-4519-9ab6-f509ffd267f6\",\r\n    \"campaign\": \"dfd466b0-1587-4aa8-ba4d-b88e9b6fce13\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/journeys",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "journeys"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Update Status",
-            "request": {
-              "method": "PUT",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"contactStatus\" : \"IN_PROGRESS\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/journeys/fb6601ec-cc5f-4417-83ec-bee96dada9b8/status",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "journeys",
-                  "fb6601ec-cc5f-4417-83ec-bee96dada9b8",
-                  "status"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Add contact event",
-            "request": {
-              "method": "PUT",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "                        {\r\n                              \"contactPerson\" : \"b5d5b3ab-5876-4519-9ab6-f509ffd267f6\",\r\n                              \"user\" : \"b5d5b3ab-5876-4519-9ab6-f509ffd267f6\",\r\n                              \"contactJourney\" : \"b5d5b3ab-5876-4519-9ab6-f509ffd267f6\",\r\n                              \"subject\" : \"Kicked off the contact\",\r\n                              \"description\" : \"Tried calling\",\r\n                              \"eventType\" : \"START_CONTACT\"\r\n                        }",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/journeys/fb6601ec-cc5f-4417-83ec-bee96dada9b8/events",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "journeys",
-                  "fb6601ec-cc5f-4417-83ec-bee96dada9b8",
-                  "events"
-                ]
-              }
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Categories",
-        "item": [
-          {
-            "name": "Create Category",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"Gardening\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/categories",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "categories"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Update Category",
-            "request": {
-              "method": "PUT",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\r\n    \"name\": \"Gardening\"\r\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{address}}/api/categories/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "categories",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          },
-          {
-            "name": "Delete Category",
-            "request": {
-              "method": "DELETE",
-              "header": [],
-              "url": {
-                "raw": "{{address}}/api/categories/b5d5b3ab-5876-4519-9ab6-f509ffd267f6",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "categories",
-                  "b5d5b3ab-5876-4519-9ab6-f509ffd267f6"
-                ]
-              }
-            },
-            "response": []
-          }
-        ]
-      }
-    ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{authToken}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
+			"name": "Campaigns",
+			"item": [
+				{
+					"name": "Create Campaign",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"PPP2023\",\r\n    \"startDate\": \"2023-11-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/campaigns",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"campaigns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Campaign",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/campaigns/{{campaignId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"campaigns",
+								"{{campaignId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gardening\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/categories",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gardening\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/categories/{{categoryId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/categories/{{categoryId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"IAESTE\",\r\n    \"address\" : {\r\n        \"street\" : \"Reymonta\",\r\n        \"city\" : \"Krakow\",\r\n        \"postalCode\": \"30-123\"\r\n    },\r\n    \"phone\" : \"+481235543543\",\r\n    \"fax\" : \"+4843243242\",\r\n    \"www\" : \"iaeste.pl\",\r\n    \"email\": \"company@email.com\",\r\n    \"categories\" : [\"330602a4-d6e9-44d6-90f6-b12c6e888825\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/companies",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Person",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Asia Kowalska\",\r\n    \"position\": \"HR admin\",\r\n    \"phone\": \"+481239321\",\r\n    \"comment\": \"HRy...\",\r\n    \"email\": \"asia@firma.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/companies/{{companyId}}/contactPerson",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies",
+								"{{companyId}}",
+								"contactPerson"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Company",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"IAESTE\",\r\n    \"address\": {\r\n        \"street\": \"Reymonta\",\r\n        \"city\": \"Krakow\",\r\n        \"postalCode\": \"30-123\"\r\n    },\r\n    \"phone\": \"+481235543543\",\r\n    \"fax\": \"+4843243242\",\r\n    \"www\": \"iaeste.pl\",\r\n    \"email\": \"company@email.com\",\r\n    \"categories\": [\r\n        \"330602a4-d6e9-44d6-90f6-b12c6e888825\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/companies/{{companyId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/companies/{{companyId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Journeys",
+			"item": [
+				{
+					"name": "Create Contact Journey",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"1ed75d40-c80f-47d9-a662-4b9b2ed7d785\",\r\n    \"company\": \"5cf21472-ff44-42a5-a297-7177aa5a5d65\",\r\n    \"campaign\": \"b65e9bbd-ceea-4b80-8ba2-e6666d3d2d35\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/journeys",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactStatus\" : \"IN_PROGRESS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/journeys/{{$randomJobDescriptor}}/status",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{$randomJobDescriptor}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add contact event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "                        {\r\n                              \"contactPerson\" : \"13eee00e-4c6e-40be-a01f-3126c9377dbf\",\r\n                              \"user\" : \"1ed75d40-c80f-47d9-a662-4b9b2ed7d785\",\r\n                              \"contactJourney\" : \"468a38b4-9fd2-49c0-8422-4435056e6617\",\r\n                              \"subject\" : \"Kicked off the contact\",\r\n                              \"description\" : \"Tried calling\",\r\n                              \"eventType\" : \"START_CONTACT\"\r\n                        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/journeys/{{journeyId}}/events",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{journeyId}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"Nie idzie za dobrze\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/journeys/{{journeyId}}/comments",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{journeyId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Role for a user\",\r\n    \"accessRights\": [{{accessRightId}}]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/roles",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Role for a user\",\r\n    \"accessRights\": [{{accessRightId}}]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/roles/{{roleId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{roleId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/roles/{{roleId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{roleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"AeTher3\",\r\n    \"email\": \"emtail3@gmail.com\",\r\n    \"password\": \"weakweak\",\r\n    \"repeatPassword\": \"weakweak\",\r\n    \"name\": \"Michal\",\r\n    \"surname\": \"Wozniak\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/users",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"if(jsonData.authToken){\r",
+									"pm.environment.set(\"authToken\", jsonData.authToken);\r",
+									"pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "administrator@szakal.org",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "administrator",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{address}}/api/login",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"if(jsonData.authToken){\r",
+									"pm.environment.set(\"authToken\", jsonData.authToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/refresh?refreshToken={{refreshToken}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"refresh"
+							],
+							"query": [
+								{
+									"key": "refreshToken",
+									"value": "{{refreshToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/users/579da9f6-1e82-411a-90ae-1c50ccef0d25",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"579da9f6-1e82-411a-90ae-1c50ccef0d25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/users?pageNumber=0&pageSize=10",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Roles",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roles\" : []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/users/{{userId}}/roles",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"administrator\",\r\n    \"password\": \"newPassword\",\r\n    \"repeatPassword\": \"newPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/users/{{userId}}/password",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/users/{{userId}}/accept",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

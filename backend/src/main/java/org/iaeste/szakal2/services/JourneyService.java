@@ -2,12 +2,14 @@ package org.iaeste.szakal2.services;
 
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
+import org.iaeste.szakal2.models.dto.journey.CommentCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
+import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,6 +59,12 @@ public class JourneyService {
         return contactJourneyRepository.save(contactJourney);
     }
 
+    public ContactJourney addComment(UUID id, CommentCreationDTO commentCreationDTO) {
+        ContactJourney contactJourney = getJourneyById(id);
+        contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
+        return contactJourneyRepository.save(contactJourney);
+    }
+
     public ContactJourney getJourneyById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
         if (journeyOptional.isEmpty()) {
@@ -68,6 +76,15 @@ public class JourneyService {
 
     public void truncate() {
         contactJourneyRepository.deleteAll();
+    }
+
+    private Comment commentFromDTO(ContactJourney contactJourney, CommentCreationDTO commentCreationDTO) {
+        return Comment.builder()
+                .user(userService.getUserById(SecurityUtils.getUserId()))
+                .contactJourney(contactJourney)
+                .comment(commentCreationDTO.getComment())
+                .date(LocalDateTime.now())
+                .build();
     }
 
     private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventDTO contactEventDTO) {

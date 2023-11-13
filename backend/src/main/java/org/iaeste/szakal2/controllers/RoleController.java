@@ -1,4 +1,4 @@
-package org.iaeste.szakal2.controller;
+package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;

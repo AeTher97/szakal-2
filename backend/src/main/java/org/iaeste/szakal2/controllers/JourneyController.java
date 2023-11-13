@@ -1,8 +1,9 @@
-package org.iaeste.szakal2.controller;
+package org.iaeste.szakal2.controllers;
 
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.models.dto.journey.CommentCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
@@ -38,5 +39,11 @@ public class JourneyController {
     public ContactJourney addContactEvent(@PathVariable("id") UUID id,
                                           @RequestBody @Valid ContactEventDTO contactEventDTO) {
         return journeyService.addContactEventDTO(id, contactEventDTO);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ContactJourney addComment(@PathVariable("id") UUID id,
+                                     @RequestBody @Valid CommentCreationDTO commentCreationDTO) {
+        return journeyService.addComment(id, commentCreationDTO);
     }
 }

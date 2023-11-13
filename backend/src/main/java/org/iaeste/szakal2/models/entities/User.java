@@ -56,6 +56,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Comment> comments;
 
     public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()
@@ -70,8 +73,5 @@ public class User {
                 .build();
     }
 
-    public List<UUID> contactJourneys() {
-        return contactJourneys.stream().map(ContactJourney::getId).toList();
-    }
 
 }

@@ -1,4 +1,4 @@
-package org.iaeste.szakal2.controller;
+package org.iaeste.szakal2.controllers;
 
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.SzakalException;

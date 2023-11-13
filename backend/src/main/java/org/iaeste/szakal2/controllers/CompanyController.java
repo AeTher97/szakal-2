@@ -1,4 +1,4 @@
-package org.iaeste.szakal2.controller;
+package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -32,12 +32,12 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public void modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyCreationDTO companyCreationDTO) {
-        companyService.updateCompany(id, companyCreationDTO);
+    public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyCreationDTO companyCreationDTO) {
+        return companyService.updateCompany(id, companyCreationDTO);
     }
 
     @PutMapping("/{id}/contactPerson")
-    public void addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
-        companyService.addContactPerson(id, contactPersonCreationDTO);
+    public Company addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
+        return companyService.addContactPerson(id, contactPersonCreationDTO);
     }
 }

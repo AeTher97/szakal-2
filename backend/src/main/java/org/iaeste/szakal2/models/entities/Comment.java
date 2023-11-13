@@ -1,5 +1,7 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,8 +31,19 @@ public class Comment {
     private String comment;
     @NotNull
     private LocalDateTime date;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
     @ManyToOne
     @JoinColumn(name = "contact_journey_id", nullable = false)
+    @JsonIgnore
     private ContactJourney contactJourney;
+
+    @JsonProperty("user")
+    public String user() {
+        return user.getEmail();
+    }
 
 }
