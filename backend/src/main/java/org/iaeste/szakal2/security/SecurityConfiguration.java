@@ -74,6 +74,7 @@ public class SecurityConfiguration {
 
                         .requestMatchers(HttpMethod.POST, "/api/campaigns").hasAuthority("campaign_modification")
                         .requestMatchers(HttpMethod.PUT, "/api/campaigns/*").hasAuthority("campaign_modification")
+                        .requestMatchers(HttpMethod.GET, "/api/campaigns").hasAuthority("campaign_viewing")
 
                         .requestMatchers(HttpMethod.POST, "/api/categories").hasAuthority("category_modification")
                         .requestMatchers(HttpMethod.PUT, "/api/categories/*").hasAuthority("category_modification")

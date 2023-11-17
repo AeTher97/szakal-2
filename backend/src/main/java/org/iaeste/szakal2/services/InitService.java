@@ -22,7 +22,8 @@ public class InitService {
             AccessRight.builder().code("user_viewing").description("View users").build(),
             AccessRight.builder().code("role_viewing").description("View roles").build(),
             AccessRight.builder().code("company_viewing").description("View companies").build(),
-            AccessRight.builder().code("category_viewing").description("View categories").build()
+            AccessRight.builder().code("category_viewing").description("View categories").build(),
+            AccessRight.builder().code("campaign_viewing").description("View campaigns").build()
     );
     private static final List<AccessRight> modificationRights = List.of(
             AccessRight.builder().code("campaign_modification").description("Modify campaigns").build(),

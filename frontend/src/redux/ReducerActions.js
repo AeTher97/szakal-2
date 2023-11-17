@@ -5,8 +5,10 @@ import {
     LOGOUT,
     REFRESH_ATTEMPT,
     REFRESH_FAILED,
-    REFRESH_SUCCESS
-} from "./AuthStore";
+    REFRESH_SUCCESS,
+    SWITCH_CAMPAIGN,
+    SWITCH_THEME
+} from "./Stores";
 import axios from "axios";
 import {decodeToken} from "../utils/TokenUtils";
 
@@ -56,7 +58,9 @@ export const refreshAction = (refreshToken, onSuccessCallback = () => null) => d
                 ...decodeToken(data.authToken),
                 accessToken: data.authToken,
             };
+            console.log(data.authToken)
             console.log("refreshed")
+            console.log(payload)
 
             dispatch({type: REFRESH_SUCCESS, payload: payload});
             onSuccessCallback(data.authToken, data.refreshToken);
@@ -70,4 +74,12 @@ export const refreshAction = (refreshToken, onSuccessCallback = () => null) => d
 
 export const logoutAction = () => dispatch => {
     dispatch({type: LOGOUT});
+}
+
+export const changeThemeAction = () => dispatch => {
+    dispatch({type: SWITCH_THEME});
+}
+
+export const changeCampaignAction = (campaignId) => dispatch => {
+    dispatch({type: SWITCH_CAMPAIGN, payload: {currentCampaign: campaignId}});
 }

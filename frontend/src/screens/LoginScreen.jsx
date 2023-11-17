@@ -1,10 +1,16 @@
 import React from 'react';
 import LoginForm from "../components/LoginForm";
 import {useMobileSize} from "../utils/SizeQuery";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
-const LoginScreen = () => {
+const LoginScreen = props => {
 
     const isMobile = useMobileSize();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const {theme} = useSelector(state => state.theme);
+    const isLightTheme = theme === "light";
 
     return (
         <div style={{
@@ -15,10 +21,22 @@ const LoginScreen = () => {
         }}>
             {!isMobile && <div style={{flex: 1, overflow: "hidden", height: "100vh"}}>
                 <img src={"/iaeste.svg"}
-                     style={{opacity: "0.1", height: 2500, position: "relative", left: -1200, top: -400}}/>
+                     style={{
+                         opacity: isLightTheme ? "0.1" : "0.3",
+                         height: 2500,
+                         position: "relative",
+                         left: -1200,
+                         top: -400
+                     }}/>
             </div>}
             <div style={{flex: 1}}>
-                <LoginForm/>
+                <LoginForm redirectBack={() => {
+                    if (location.state && location.state.from) {
+                        navigate(location.state.from);
+                    } else {
+                        navigate("/")
+                    }
+                }}/>
             </div>
         </div>
     );

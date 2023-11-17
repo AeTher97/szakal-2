@@ -1,37 +1,49 @@
 import './App.css';
 import '@fontsource/inter';
 import * as React from 'react';
+import {useEffect} from 'react';
 import Button from '@mui/joy/Button';
-import {CssVarsProvider} from "@mui/joy";
-import {Provider} from "react-redux";
-import {authStore} from "./redux/AuthStore";
+import {CssVarsProvider, useColorScheme} from "@mui/joy";
+import {Provider, useSelector} from "react-redux";
+import {stores} from "./redux/Stores";
 import AuthProvider from "./utils/AuthProvider";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import LoginScreen from "./screens/LoginScreen";
-import SignUpScreen from "./screens/SignUpScreen";
+import {RouterWrapper} from "./navigation/MainNavigation";
 
-const router = createBrowserRouter([
-    {
-        path: "/login",
-        element: <LoginScreen/>,
-    },
-    {
-        path: "sign-up",
-        element: <SignUpScreen/>
-    }
-])
+const AppWithoutCss = () => {
+
+    const {theme} = useSelector(state => state.theme);
+    const {mode, setMode} = useColorScheme();
+
+    useEffect(() => {
+        setMode(theme)
+    }, [theme]);
+
+    return <><AuthProvider/>
+        <main style={{
+            backgroundColor: theme === "light" ? "rgb(255,255,255)" : "rgb(11, 13, 14)",
+            minHeight: "100vh",
+            fontSize: "calc(10px + 2vmin)",
+            color: "white"
+        }}>
+            <RouterWrapper/>
+        </main>
+    </>
+}
+
+const AppWithoutRedux = () => {
+    return (
+        <CssVarsProvider>
+            <AppWithoutCss/>
+        </CssVarsProvider>
+    );
+};
 
 function App() {
 
     return (
-        <CssVarsProvider defaultMode={"dark"}>
-            <Provider store={authStore}>
-                <AuthProvider/>
-                <main className={"App-header"}>
-                    <RouterProvider router={router}/>
-                </main>
-            </Provider>
-        </CssVarsProvider>
+        <Provider store={stores}>
+            <AppWithoutRedux/>
+        </Provider>
     );
 }
 

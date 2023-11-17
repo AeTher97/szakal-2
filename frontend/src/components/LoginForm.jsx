@@ -2,13 +2,12 @@ import React, {useState} from "react";
 import {FormControl, FormLabel, Input, Link, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useDispatch} from "react-redux";
-import {saveTokenInStorage} from "../utils/TokenUtils";
-import {loginAction} from "../redux/AuthActions";
-import {Form} from "react-router-dom";
+import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
+import {loginAction} from "../redux/ReducerActions";
 
-const LoginForm = () => {
+const LoginForm = ({redirectBack}) => {
 
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const dispatch = useDispatch();
@@ -16,16 +15,19 @@ const LoginForm = () => {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginAction({
-            username: username,
+            username: email,
             password: password
         }, (authToken, refreshToken, email) => {
-            saveTokenInStorage(authToken, refreshToken, email, username)
+            const user = decodeToken(authToken);
+            saveTokenInStorage(authToken, refreshToken, user.email,
+                user.username, user.name, user.surname);
+            redirectBack();
         }))
     }
 
 
     return (
-        <Form onSubmit={(e) => handleLogin(e)} style={{
+        <form onSubmit={(e) => handleLogin(e)} style={{
             display: "flex",
             justifyContent: "center"
         }}>
@@ -40,12 +42,12 @@ const LoginForm = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: 2,
-                    borderRadius: "sm",
+                    borderRadius: "lg",
                     boxShadow: "md",
                 }}
                 variant="outlined">
-                <div style={{display: "flex", justifyContent: "center"}}>
-                    <img src={"/logo.png"} style={{height: 150, width: 160}}/>
+                <div style={{display: "flex", justifyContent: "center", marginBottom: 40, marginTop: 30}}>
+                    <img src={"/logo.svg"} style={{height: 150, width: 150}}/>
                 </div>
                 <div>
                     <Typography level="h4" component="h1">
@@ -60,8 +62,8 @@ const LoginForm = () => {
                         name="email"
                         type="email"
                         placeholder="johndoe@email.com"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </FormControl>
                 <FormControl>
@@ -89,7 +91,7 @@ const LoginForm = () => {
                 </Typography>
             </Sheet>
 
-        </Form>
+        </form>
     );
 };
 

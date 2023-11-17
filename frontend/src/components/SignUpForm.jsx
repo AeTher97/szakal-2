@@ -1,18 +1,43 @@
 import React, {useState} from 'react';
-import {Form} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {FormControl, FormLabel, Input, Link, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {useRegister} from "../data/UserData";
+
 
 const SignUpForm = () => {
 
+    const {registerUser} = useRegister();
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
+    const [name, setName] = useState();
+    const [surname, setSurname] = useState();
 
     return (
-        <Form style={{
+        <form style={{
             display: "flex",
             justifyContent: "center"
-        }}>
+        }}
+              onSubmit={(e) => {
+                  e.preventDefault();
+                  registerUser({
+                      email,
+                      username,
+                      name,
+                      surname,
+                      password,
+                      repeatPassword
+                  }).then(() => {
+                      navigate("/login")
+                  }).catch(e => {
+                      console.log(e)
+                  });
+
+              }}>
             <Sheet
                 sx={{
                     maxWidth: 330,
@@ -28,9 +53,6 @@ const SignUpForm = () => {
                     boxShadow: "md",
                 }}
                 variant="outlined">
-                <div style={{display: "flex", justifyContent: "center"}}>
-                    <img src={"/logo.png"} style={{height: 150, width: 160}}/>
-                </div>
                 <div>
                     <Typography level="h4" component="h1">
                         <b>Szakal 2.0</b>
@@ -38,27 +60,72 @@ const SignUpForm = () => {
                     <Typography level="body-sm">Zarejestruj się</Typography>
                 </div>
                 <FormControl>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>E-mail</FormLabel>
                     <Input
                         // html input attribute
                         name="email"
                         type="email"
-                        placeholder="johndoe@email.com"
+                        placeholder="jankowalski@email.com"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Nazwa użytkownika</FormLabel>
+                    <Input
+                        // html input attribute
+                        name="username"
+                        type="text"
+                        placeholder="jankowalski"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
                 </FormControl>
                 <FormControl>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Imię</FormLabel>
+                    <Input
+                        // html input attribute
+                        name="name"
+                        type="text"
+                        placeholder="Jan"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Nazwisko</FormLabel>
+                    <Input
+                        // html input attribute
+                        name="surname"
+                        type="text"
+                        placeholder="Kowalski"
+                        value={surname}
+                        onChange={e => setSurname(e.target.value)}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Hasło</FormLabel>
                     <Input
                         // html input attribute
                         name="password"
                         type="password"
-                        placeholder="password"
+                        placeholder="haslo"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
                 </FormControl>
+                <FormControl>
+                    <FormLabel>Powtórz Hasło</FormLabel>
+                    <Input
+                        // html input attribute
+                        name="password"
+                        type="password"
+                        placeholder="haslo"
+                        value={repeatPassword}
+                        onChange={e => setRepeatPassword(e.target.value)}
+                    />
+                </FormControl>
+
 
                 <Button sx={{mt: 1 /* margin top */}} type={"submit"}>Zaloguj</Button>
                 <Typography
@@ -73,7 +140,7 @@ const SignUpForm = () => {
                 </Typography>
             </Sheet>
 
-        </Form>
+        </form>
     );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {isTokenOutdated} from "./TokenUtils";
-import {refreshAction} from "../redux/AuthActions";
+import {refreshAction} from "../redux/ReducerActions";
 
 const AuthProvider = () => {
 
@@ -13,7 +13,7 @@ const AuthProvider = () => {
     }
 
 
-    const {refreshToken, expirationTime} = useSelector(state => {
+    const {refreshToken, accessToken, expirationTime} = useSelector(state => {
         return state.auth
     });
     const dispatch = useDispatch();
@@ -35,6 +35,7 @@ const AuthProvider = () => {
     }
 
     axios.interceptors.request.use(async request => {
+
         if (expirationTime && isTokenOutdated(expirationTime)) {
             console.log("Refreshing token");
             const result = await getAuthToken()
@@ -48,6 +49,10 @@ const AuthProvider = () => {
             if (result) {
                 request.headers['Authorization'] = `Bearer ${result.authToken}`;
             }
+        }
+
+        if (!request.headers['Authorization'] && accessToken) {
+            request.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
         return request;

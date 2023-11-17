@@ -14,6 +14,8 @@ export const REFRESH_SUCCESS = "REFRESH_SUCCESS"
 export const REFRESH_FAILED = "REFRESH_FAILED"
 
 export const LOGOUT = "LOGOUT"
+export const SWITCH_THEME = "SWITCH_THEME"
+export const SWITCH_CAMPAIGN = "SWITCH_CAMPAIGN"
 
 const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -85,7 +87,8 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_SUCCESS:
         case REFRESH_SUCCESS:
-            saveTokenInStorage(action.payload.accessToken, state.refreshToken, state.email, state.username)
+            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.email,
+                action.payload.username, action.payload.name, action.payload.surname)
             return {
                 ...state,
                 ...action.payload,
@@ -120,6 +123,42 @@ function authReducer(state = initialState, action) {
     }
 }
 
-export let authStore = configureStore({
-    reducer: combineReducers({auth: authReducer})
+const getThemeFromStorage = () => {
+    return localStorage.getItem("joy-mode") === "light" ? "light" : "dark";
+}
+
+const themeInitialState = {
+    theme: getThemeFromStorage()
+};
+
+function themeReducer(state = themeInitialState, action) {
+    switch (action.type) {
+        case SWITCH_THEME:
+            return {
+                theme: state.theme === "light" ? "dark" : "light"
+            }
+        default:
+            return state;
+
+    }
+}
+
+function campaignReducer(state = {currentCampaign: null}, action) {
+    switch (action.type) {
+        case SWITCH_CAMPAIGN:
+            return {
+                currentCampaign: action.payload.currentCampaign
+            }
+        default:
+            return state;
+
+    }
+}
+
+
+export let stores = configureStore({
+    reducer: combineReducers({
+        auth: authReducer,
+        theme: themeReducer, campaigns: campaignReducer
+    })
 });

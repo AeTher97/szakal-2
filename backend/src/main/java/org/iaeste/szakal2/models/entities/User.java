@@ -50,7 +50,7 @@ public class User {
     @Setter
     @NotNull
     private boolean active;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
