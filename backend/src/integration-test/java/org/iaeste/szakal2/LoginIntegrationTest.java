@@ -15,12 +15,12 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
 
     @AfterEach
     public void truncateUserService() {
-        userService.truncate();
+        integrationTestDatabaseApi.getUsersRepository().deleteAll();
     }
 
     @Test
     public void loginsCorrectly() {
-        createUser("test-login@gmail.com",
+        integrationTestDatabaseApi.createUser("test-login@gmail.com",
                 "testLogin",
                 "Password123!",
                 List.of());
@@ -38,7 +38,7 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void failsToLoginWithWrongPassword() {
-        createUser("test-failed-login@gmail.com",
+        integrationTestDatabaseApi.createUser("test-failed-login@gmail.com",
                 "testFailedLogin",
                 "Password123!",
                 List.of());
@@ -54,7 +54,7 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void refreshesCorrectly() {
-        createUser("test-login@gmail.com",
+        integrationTestDatabaseApi.createUser("test-login@gmail.com",
                 "testLogin",
                 "Password123!",
                 List.of());

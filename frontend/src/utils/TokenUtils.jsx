@@ -38,6 +38,10 @@ export const saveTokenInStorage = (accessToken, refreshToken, email, username, n
     localStorage.setItem('surname', surname);
 }
 
+export const saveAccessRightsInStorage = (accessRights) => {
+    localStorage.setItem('accessRights', accessRights.join(","));
+}
+
 export const saveUserParametersInStorage = (email, username, name, surname) => {
     localStorage.setItem('email', email);
     localStorage.setItem('username', username);

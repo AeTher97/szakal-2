@@ -4,14 +4,15 @@ import SzakalLogo from "./SzakalLogo";
 import {Autocomplete} from "@mui/joy";
 import {useMobileSize} from "../../utils/SizeQuery";
 import UserMenu from "./UserMenu";
-import {useGetCampaignsList} from "../../data/CampaignData";
+import {useCampaignsList} from "../../data/CampaignData";
 import {changeCampaignAction} from "../../redux/ReducerActions";
+import DrawerMenu from "./DrawerMenu";
 
 const TopBar = () => {
 
     const {name, surname} = useSelector(state => state.auth);
     const {currentCampaign} = useSelector(state => state.campaigns);
-    const {campaigns, loading} = useGetCampaignsList();
+    const {campaigns, loading} = useCampaignsList();
     const dispatch = useDispatch();
     const mobile = useMobileSize();
 
@@ -36,11 +37,13 @@ const TopBar = () => {
             width: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            flex: 1
         }}>
             {!mobile && <div style={{flex: 1}}>
                 <SzakalLogo/>
             </div>}
+            {mobile && <DrawerMenu/>}
             <Autocomplete loading={loading}
                           disableClearable
                           options={campaignsOptions}

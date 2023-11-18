@@ -1,4 +1,5 @@
 import {
+    ADD_ITEM,
     LOGIN_ATTEMPT,
     LOGIN_FAILED,
     LOGIN_SUCCESS,
@@ -6,14 +7,15 @@ import {
     REFRESH_ATTEMPT,
     REFRESH_FAILED,
     REFRESH_SUCCESS,
+    REMOVE_ITEM,
     SWITCH_CAMPAIGN,
-    SWITCH_THEME
+    SWITCH_THEME,
+    UPDATE_ACCESS_RIGHTS
 } from "./Stores";
 import axios from "axios";
 import {decodeToken} from "../utils/TokenUtils";
 
 const baseURL = process.env.REACT_APP_BACKEND_URL;
-console.log(baseURL)
 
 const axiosInstance = axios.create(
     {baseURL: baseURL}
@@ -38,6 +40,17 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
             onSuccessCallback(data.authToken, data.refreshToken, payload.email);
+            axiosInstance.get("/roles?pageNumber=0", {
+                headers: {
+                    'Authorization': `Bearer ${data.authToken}`
+                }
+            }).then((res) => {
+                const userAccessRights = res.data.content.map(role => {
+                    return role.accessRights.map(accessRight => accessRight.code);
+                })
+                const uniqueAccessRights = [...new Set(userAccessRights)];
+                dispatch(setAccessRightsAction(uniqueAccessRights))
+            })
         })
         .catch(err => {
             console.error('Login unsuccessful');
@@ -58,9 +71,6 @@ export const refreshAction = (refreshToken, onSuccessCallback = () => null) => d
                 ...decodeToken(data.authToken),
                 accessToken: data.authToken,
             };
-            console.log(data.authToken)
-            console.log("refreshed")
-            console.log(payload)
 
             dispatch({type: REFRESH_SUCCESS, payload: payload});
             onSuccessCallback(data.authToken, data.refreshToken);
@@ -72,6 +82,10 @@ export const refreshAction = (refreshToken, onSuccessCallback = () => null) => d
         });
 };
 
+export const setAccessRightsAction = (accessRights) => dispatch => {
+    dispatch({type: UPDATE_ACCESS_RIGHTS, payload: {accessRights}})
+}
+
 export const logoutAction = () => dispatch => {
     dispatch({type: LOGOUT});
 }
@@ -82,4 +96,12 @@ export const changeThemeAction = () => dispatch => {
 
 export const changeCampaignAction = (campaignId) => dispatch => {
     dispatch({type: SWITCH_CAMPAIGN, payload: {currentCampaign: campaignId}});
+}
+
+export const addKnownItem = (itemId, itemName) => dispatch => {
+    dispatch({type: ADD_ITEM, payload: {item: {id: itemId, name: itemName}}});
+}
+
+export const removeKnownItem = (itemId) => dispatch => {
+    dispatch({type: REMOVE_ITEM, payload: {item: {id: itemId}}});
 }

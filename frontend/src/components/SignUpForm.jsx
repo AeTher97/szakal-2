@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {FormControl, FormLabel, Input, Link, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useRegister} from "../data/UserData";
+import {useRegister} from "../data/AuthenticationData";
 
 
 const SignUpForm = () => {

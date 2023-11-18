@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,7 +57,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Comment> comments;
 
@@ -70,6 +71,7 @@ public class User {
                 .surname(userCreationDTO.getSurname())
                 .accepted(false)
                 .active(false)
+                .roles(new ArrayList<>())
                 .build();
     }
 

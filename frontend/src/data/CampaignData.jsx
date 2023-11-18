@@ -1,29 +1,20 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useState} from "react";
+import {useData, usePost} from "./UseData";
 
-export const useGetCampaignsList = () => {
+export const useCampaignsList = () => {
 
     const [campaigns, setCampaigns] = useState([])
-    const [loading, setLoading] = useState(true)
+    const {loading} = useData(`/campaigns?pageNumber=0`, (data) => setCampaigns(data.content))
 
-    useEffect(() => {
-        let mounted = true;
-        axios.get(`/campaigns?pageNumber=0`).then((res) => {
-            if (mounted) {
-                setCampaigns(res.data.content)
-            }
-        }).catch(e => {
-            console.log(e.response.data.error);
-        }).finally(() => {
-            if (mounted) {
-                setLoading(false);
-            }
+    const post = usePost(`/campaigns`, (data) => setCampaigns(current => {
+        return [...current, data]
+    }))
+    const addCampaign = (name, startDate) => {
+        post({
+            name,
+            startDate
         })
-        return () => {
-            mounted = false;
-        }
-    }, []);
+    }
 
-
-    return {campaigns, loading}
+    return {campaigns, loading, addCampaign}
 }

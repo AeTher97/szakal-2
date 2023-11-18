@@ -1,5 +1,5 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit"
-import {decodeToken, isTokenOutdated, saveTokenInStorage} from "../utils/TokenUtils";
+import {decodeToken, isTokenOutdated, saveAccessRightsInStorage, saveTokenInStorage} from "../utils/TokenUtils";
 
 export const LOGIN_ATTEMPT = "LOGIN_ATTEMPT"
 
@@ -10,12 +10,15 @@ export const LOGIN_FAILED = "LOGIN_FAILED"
 export const REFRESH_ATTEMPT = "REFRESH_ATTEMPT"
 
 export const REFRESH_SUCCESS = "REFRESH_SUCCESS"
+export const UPDATE_ACCESS_RIGHTS = "UPDATE_ACCESS_RIGHTS"
 
 export const REFRESH_FAILED = "REFRESH_FAILED"
 
 export const LOGOUT = "LOGOUT"
 export const SWITCH_THEME = "SWITCH_THEME"
 export const SWITCH_CAMPAIGN = "SWITCH_CAMPAIGN"
+export const ADD_ITEM = "ADD_ITEM"
+export const REMOVE_ITEM = "REMOVE_ITEM"
 
 const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -24,12 +27,11 @@ const getAuthFromStorage = () => {
     const username = localStorage.getItem("username");
     const name = localStorage.getItem("name");
     const surname = localStorage.getItem("surname");
+    const accessRights = localStorage.getItem("accessRights") ? localStorage.getItem("accessRights").split(",") : [];
 
 
     if (accessToken) {
         const result = {...decodeToken(accessToken)};
-
-
         const refreshResult = {...decodeToken(refreshToken)}
 
         if (isTokenOutdated(refreshResult.expirationTime)) {
@@ -43,6 +45,7 @@ const getAuthFromStorage = () => {
                 ...result,
                 accessToken: accessToken,
                 refreshToken: refreshToken,
+                accessRights: accessRights,
                 isAuthenticated: true,
                 username: username,
                 name: name,
@@ -62,6 +65,7 @@ const clearLocalStorage = () => {
     localStorage.removeItem("surname")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("accessToken")
+    localStorage.removeItem("accessRights")
 }
 
 const emptyState = {
@@ -69,6 +73,7 @@ const emptyState = {
     roles: null,
     accessToken: null,
     refreshToken: null,
+    accessRights: [],
     expirationTime: null,
     isAuthenticated: false,
     error: null,
@@ -94,6 +99,12 @@ function authReducer(state = initialState, action) {
                 ...action.payload,
                 isAuthenticated: true,
                 error: null,
+            }
+        case UPDATE_ACCESS_RIGHTS:
+            saveAccessRightsInStorage(action.payload.accessRights)
+            return {
+                ...state,
+                accessRights: action.payload.accessRights
             }
         case LOGIN_FAILED:
             clearLocalStorage();
@@ -155,10 +166,29 @@ function campaignReducer(state = {currentCampaign: null}, action) {
     }
 }
 
+function knownItemReducer(state = {items: []}, action) {
+    switch (action.type) {
+        case ADD_ITEM:
+            return {
+                items: [...state.items, action.payload.item]
+            }
+        case REMOVE_ITEM:
+            const newItems = state.items.filter(item => item.id !== action.payload.item.id)
+            return {
+                items: newItems
+            }
+        default:
+            return state;
+
+    }
+}
+
 
 export let stores = configureStore({
-    reducer: combineReducers({
-        auth: authReducer,
-        theme: themeReducer, campaigns: campaignReducer
-    })
+    reducer: combineReducers(
+        {
+            auth: authReducer,
+            theme: themeReducer, campaigns: campaignReducer,
+            knownItems: knownItemReducer
+        })
 });

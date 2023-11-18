@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.company.CompanyCreationDTO;
 import org.iaeste.szakal2.models.dto.company.ContactPersonCreationDTO;
@@ -39,6 +40,7 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
+    @Transactional
     public Company addContactPerson(UUID id, ContactPersonCreationDTO contactPersonCreationDTO) {
         Company company = getCompanyById(id);
         ContactPerson contactPerson = contactPersonFromDTO(company.getId(), contactPersonCreationDTO);
@@ -91,6 +93,7 @@ public class CompanyService {
                 .categories(categoriesList)
                 .updateDate(LocalDateTime.now())
                 .insertDate(LocalDateTime.now())
+                .contactPeople(new ArrayList<>())
                 .updatedBy(userService.getUserById(SecurityUtils.getUserId()))
                 .build();
         BeanUtils.copyProperties(companyCreationDTO, company, Utils.getNullPropertyNames(companyCreationDTO));

@@ -40,7 +40,7 @@ public class JourneyController {
     @PostMapping("/{id}/events")
     public ContactJourney addContactEvent(@PathVariable("id") UUID id,
                                           @RequestBody @Valid ContactEventDTO contactEventDTO) {
-        return journeyService.addContactEventDTO(id, contactEventDTO);
+        return journeyService.addContactEvent(id, contactEventDTO);
     }
 
     @PostMapping("/{id}/comments")

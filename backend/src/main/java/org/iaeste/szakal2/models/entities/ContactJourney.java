@@ -31,17 +31,20 @@ public class ContactJourney {
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     @JsonIgnoreProperties(value = {"updatedBy", "contactJourneys"})
+    @Setter
     private Company company;
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
     private Campaign campaign;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", orphanRemoval = true)
     private List<ContactEvent> contactEvents;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", orphanRemoval = true)
     private List<Comment> comments;
     @Setter
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
     private ContactStatus contactStatus;
     @Setter
     @NotNull

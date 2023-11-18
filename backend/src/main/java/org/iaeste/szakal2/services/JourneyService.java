@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.journey.CommentCreationDTO;
@@ -38,6 +39,7 @@ public class JourneyService {
         this.contactPersonRepository = contactPersonRepository;
     }
 
+    @Transactional
     public ContactJourney createJourney(ContactJourneyCreationDTO contactJourneyCreationDTO) {
         User user = userService.getUserById(contactJourneyCreationDTO.getUser());
         Company company = companyService.getCompanyById(contactJourneyCreationDTO.getCompany());
@@ -48,13 +50,15 @@ public class JourneyService {
         return contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
     }
 
+    @Transactional
     public ContactJourney updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
         return contactJourneyRepository.save(contactJourney);
     }
 
-    public ContactJourney addContactEventDTO(UUID id, ContactEventDTO contactEventDTO) {
+    @Transactional
+    public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
         return contactJourneyRepository.save(contactJourney);
@@ -66,6 +70,7 @@ public class JourneyService {
         return contactJourneyRepository.save(contactJourney);
     }
 
+    @Transactional
     public ContactJourney getJourneyById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
         if (journeyOptional.isEmpty()) {

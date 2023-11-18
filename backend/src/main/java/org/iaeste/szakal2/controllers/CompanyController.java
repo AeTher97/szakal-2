@@ -50,8 +50,10 @@ public class CompanyController {
     }
 
     @GetMapping
-    public Page<CompanyListingDTO> getCompanies(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+    public Page<CompanyListingDTO> getCompanies(@RequestParam(defaultValue = "10") int pageSize,
+                                                @RequestParam int pageNumber,
+                                                @RequestParam(required = false) UUID campaign) {
         return companyService.getCompanies(Pageable.ofSize(pageSize).withPage(pageNumber))
-                .map(CompanyListingDTO::fromCompany);
+                .map(company -> CompanyListingDTO.fromCompany(company, campaign));
     }
 }

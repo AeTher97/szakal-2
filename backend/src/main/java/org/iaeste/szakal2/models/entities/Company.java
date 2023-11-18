@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -66,11 +65,10 @@ public class Company {
     )
     private List<CompanyCategory> categories;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<ContactPerson> contactPeople;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<ContactJourney> contactJourneys;
 
     @JsonProperty("contactJourneys")

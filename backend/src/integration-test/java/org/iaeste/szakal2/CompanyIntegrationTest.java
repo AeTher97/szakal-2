@@ -22,7 +22,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testCreateCompany() {
-        UUID categoryId = createCategory("Gardening").getId();
+        UUID categoryId = integrationTestDatabaseApi.createCategory("Gardening").getId();
 
         String companyId = withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -63,7 +63,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testUpdateCompany() {
-        UUID categoryId = createCategory("Gardening").getId();
+        UUID categoryId = integrationTestDatabaseApi.createCategory("Gardening").getId();
 
         String companyId = withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -90,7 +90,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
                 .path("id");
 
         UUID companyUUID = UUID.fromString(companyId);
-        UUID categoryId2 = createCategory("Gardening2").getId();
+        UUID categoryId2 = integrationTestDatabaseApi.createCategory("Gardening2").getId();
 
 
         withAccessRights("company_modification")
@@ -130,7 +130,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddContactPerson() {
-        Company company = createCompany("IAESTE", false);
+        Company company = integrationTestDatabaseApi.createCompany("IAESTE", false);
 
         withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -164,7 +164,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
                 .then()
                 .statusCode(200);
 
-        Company company2 = companyService.getCompanyById(company.getId());
+        Company company2 = integrationTestDatabaseApi.getCompany(company.getId());
 
         assertEquals(2, company2.getContactPeople().size());
     }
