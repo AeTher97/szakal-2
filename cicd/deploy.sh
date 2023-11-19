@@ -16,15 +16,26 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 #Install java
-sudo sh -c "echo 'deb http://archive.ubuntu.com/ubuntu/ precise-proposed restricted main multiverse universe' >> /etc/apt/sources.list.d/proposed-repositories.list"
-sudo apt-get update
-sudo apt-get -t precise-proposed install some-package
-apt install openjdk-21
+sudo apt install wget
+wget https://download.java.net/java/early_access/jdk21/28/GPL/openjdk-21-ea+xx_linux-x64_bin.tar.gz
+tar -xvf openjdk-21-ea+28_linux-x64_bin.tar.gz
+cd jdk-21
+sudo mkdir -p /usr/local/jdk-21
+sudo mv * /usr/local/jdk-21
+export JAVA_HOME=/usr/local/jdk-21
+export PATH=$JAVA_HOME/bin:$PATH
+echo 'export JAVA_HOME=/usr/local/jdk-21' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
 
 # Launch backend integration test
 cd backend
-sudo sh mvnw integration-test
-cd ..
+if sudo sh mvnw integration-test then
+  cd ..
+else
+  echo "Integration tests failed"
+  exit 125
+fi
 
 cd frontend || exit
 mkdir node_modules
