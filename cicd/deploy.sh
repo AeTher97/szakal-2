@@ -21,10 +21,12 @@ wget https://download.java.net/java/GA/jdk21.0.1/415e3f918a1f4062a0074a2794853d0
 tar -xvf openjdk-21.0.1_linux-x64_bin.tar.gz
 
 java -version
-cat /etc/java/maven.conf
 
 # Launch backend integration test
 cd backend
+
+sh mvnw -v
+
 sudo JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 sh mvnw integration-test
 if [[ "$?" -ne 0 ]] ; then
   echo "Integration tests failed"
