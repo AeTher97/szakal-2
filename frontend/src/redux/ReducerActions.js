@@ -13,13 +13,29 @@ import {
     UPDATE_ACCESS_RIGHTS
 } from "./Stores";
 import axios from "axios";
-import {decodeToken} from "../utils/TokenUtils";
+import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
 
 const baseURL = process.env.REACT_APP_BACKEND_URL;
 
 const axiosInstance = axios.create(
     {baseURL: baseURL}
 )
+
+const updateAccessRights = (user, authToken, dispatch) => {
+    return axiosInstance.get("/roles?pageNumber=0", {
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
+    }).then((res) => {
+        const userAccessRights = res.data.content
+            .filter(role => user.roles.includes(role.name))
+            .flatMap(role => {
+                return role.accessRights.map(accessRight => accessRight.code);
+            })
+        const uniqueAccessRights = [...new Set(userAccessRights)];
+        dispatch(setAccessRightsAction(uniqueAccessRights))
+    })
+}
 
 export const loginAction = ({username, password}, onSuccessCallback = () => null) => dispatch => {
     dispatch({type: LOGIN_ATTEMPT});
@@ -39,18 +55,11 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
             };
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
-            onSuccessCallback(data.authToken, data.refreshToken, payload.email);
-            axiosInstance.get("/roles?pageNumber=0", {
-                headers: {
-                    'Authorization': `Bearer ${data.authToken}`
-                }
-            }).then((res) => {
-                const userAccessRights = res.data.content.map(role => {
-                    return role.accessRights.map(accessRight => accessRight.code);
-                })
-                const uniqueAccessRights = [...new Set(userAccessRights)];
-                dispatch(setAccessRightsAction(uniqueAccessRights))
-            })
+            const user = decodeToken(data.authToken);
+            saveTokenInStorage(data.authToken, data.refreshToken, user.email,
+                user.username, user.name, user.surname);
+            onSuccessCallback();
+            updateAccessRights(user, data.authToken, dispatch)
         })
         .catch(err => {
             console.error('Login unsuccessful');
@@ -74,6 +83,7 @@ export const refreshAction = (refreshToken, onSuccessCallback = () => null) => d
 
             dispatch({type: REFRESH_SUCCESS, payload: payload});
             onSuccessCallback(data.authToken, data.refreshToken);
+            updateAccessRights(decodeToken(data.authToken), data.authToken, dispatch)
             return data;
         })
         .catch(err => {

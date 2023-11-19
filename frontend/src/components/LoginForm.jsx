@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {FormControl, FormLabel, Input, Link, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useDispatch} from "react-redux";
-import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
 import {loginAction} from "../redux/ReducerActions";
 
 const LoginForm = ({redirectBack}) => {
@@ -17,10 +16,7 @@ const LoginForm = ({redirectBack}) => {
         dispatch(loginAction({
             username: email,
             password: password
-        }, (authToken, refreshToken, email) => {
-            const user = decodeToken(authToken);
-            saveTokenInStorage(authToken, refreshToken, user.email,
-                user.username, user.name, user.surname);
+        }, () => {
             redirectBack();
         }))
     }
