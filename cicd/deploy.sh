@@ -20,15 +20,7 @@ sudo apt install wget
 wget https://download.java.net/java/GA/jdk21.0.1/415e3f918a1f4062a0074a2794853d0d/12/GPL/openjdk-21.0.1_linux-x64_bin.tar.gz
 tar -xvf openjdk-21.0.1_linux-x64_bin.tar.gz
 
-export JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1
-export PATH=$JAVA_HOME/bin:$PATH
-echo 'export JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1' >> ~/.bashrc
-echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
-
-java -version
-echo $JAVA_HOME
-
+sudo JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 java -v
 
 # Launch backend integration test
 cd backend
