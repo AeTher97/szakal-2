@@ -25,7 +25,7 @@ java -version
 # Launch backend integration test
 cd backend
 
-sh JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 mvnw -v
+export JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 sh mvnw -v
 
 sudo JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 sh mvnw integration-test
 if [[ "$?" -ne 0 ]] ; then
