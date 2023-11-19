@@ -29,6 +29,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
 
       # Runs a single command using the runners shell
       - name: Heroku bash
