@@ -24,17 +24,18 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: maven
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
       # Runs a single command using the runners shell
-      - name: Set Java env
-        run: export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
+      - name: Run integration test
+        run: mvn integration-test "${GITHUB_WORKSPACE}/backend/pom.xml"
       - name: Heroku bash
         run: |  
           export JAVA_HOME=JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
