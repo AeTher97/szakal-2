@@ -29,7 +29,6 @@ source ~/.bashrc
 java -version
 echo $JAVA_HOME
 
-cd ..
 
 # Launch backend integration test
 cd backend
