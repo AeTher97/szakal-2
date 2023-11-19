@@ -9,7 +9,7 @@ cd ..
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir temp
 cp -r backend/. temp/
-rm backend/.gitignore
+rm temp/.gitignore
 
 HEROKU_API_TOKEN=$1
 
