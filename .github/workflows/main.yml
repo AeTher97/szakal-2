@@ -37,6 +37,7 @@ jobs:
         run: export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
       - name: Heroku bash
         run: |  
+          sudo export JAVA_HOME=JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
           sudo chmod +x "${GITHUB_WORKSPACE}/cicd/deploy.sh"
           sudo "${GITHUB_WORKSPACE}/cicd/deploy.sh" ${HEROKU_API_TOKEN} ${LAST_COMMIT_MESSAGE}
         shell: bash
