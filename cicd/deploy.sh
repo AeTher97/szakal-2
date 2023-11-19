@@ -26,7 +26,9 @@ java -version
 cd backend
 
 export JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1
+echo $JAVA_HOME
 sh mvnw -v
+echo /home/runner/.mavenrc
 
 sudo JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 sh mvnw integration-test
 if [[ "$?" -ne 0 ]] ; then
