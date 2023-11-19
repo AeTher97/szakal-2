@@ -32,7 +32,7 @@ echo $JAVA_HOME
 
 # Launch backend integration test
 cd backend
-sudo sh mvnw integration-test
+sudo JAVA_HOME=/home/runner/work/szakal-2/szakal-2/jdk-21.0.1 sh mvnw integration-test
 if [[ "$?" -ne 0 ]] ; then
   echo "Integration tests failed"
   exit 125
