@@ -13,11 +13,13 @@ echo \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
-$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+#Install java
+apt install openjdk-21
 
 # Launch backend integration test
-cd backend
-sudo ./mvnw integration-test
+sudo sh backend/mvnw integration-test
 cd ..
 
 cd frontend || exit
