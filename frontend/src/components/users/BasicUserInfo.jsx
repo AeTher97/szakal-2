@@ -20,7 +20,7 @@ const BasicUserInfo = ({user, localUser}) => {
 
 
     return (
-        <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 640, flex: 1, display: "flex"}} color={"primary"}
+        <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 450, flex: 1, display: "flex"}} color={"primary"}
               variant={"solid"}
               invertedColors>
 
