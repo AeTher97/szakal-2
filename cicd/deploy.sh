@@ -22,7 +22,8 @@ sudo apt-get -t precise-proposed install some-package
 apt install openjdk-21
 
 # Launch backend integration test
-sudo sh backend/mvnw integration-test
+cd backend
+sudo sh mvnw integration-test
 cd ..
 
 cd frontend || exit
