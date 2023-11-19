@@ -32,7 +32,7 @@ const UserDetails = () => {
 
 
     return (
-        <div style={{overflow: "scroll"}}>
+        <div style={{overflow: "auto"}}>
             {user && localUser && <div>
                 <TabHeader>
                     <div>
