@@ -29,6 +29,7 @@ echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 
 java -version
+echo $JAVA_HOME
 
 cd ..
 
