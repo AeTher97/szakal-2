@@ -175,6 +175,7 @@ public class IntegrationTestDatabaseApi {
                 .user(user)
                 .company(company)
                 .journeyStart(LocalDateTime.now())
+                .contactStatus(ContactStatus.ASSIGNED)
                 .build());
         contactJourney.setCompany(company);
         return contactJourney;

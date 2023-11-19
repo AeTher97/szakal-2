@@ -123,6 +123,7 @@ public class JourneyService {
                 .company(company)
                 .campaign(campaign)
                 .journeyStart(LocalDateTime.now())
+                .contactStatus(ContactStatus.ASSIGNED)
                 .build();
     }
 }

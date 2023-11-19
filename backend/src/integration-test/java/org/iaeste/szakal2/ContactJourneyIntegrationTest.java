@@ -11,9 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static org.iaeste.szakal2.models.entities.ContactStatus.ASSIGNED;
 import static org.iaeste.szakal2.models.entities.ContactStatus.IN_PROGRESS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
@@ -46,7 +46,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
         assertEquals(user.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getUser().getId());
         assertEquals(campaign.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCampaign().getId());
         assertEquals(company.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCompany().getId());
-        assertNull(integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
+        assertEquals(ASSIGNED, integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
     }
 
     @Test
