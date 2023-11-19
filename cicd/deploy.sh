@@ -2,15 +2,14 @@
 
 cd frontend || exit
 mkdir node_modules
-#sudo chown -R $USER "./node_modules"
-#sudo npm install
-npm install
-#CI='' sudo npm run build
-CI='' npm run build
+sudo chown -R $USER "./node_modules"
+sudo npm install
+CI='' sudo npm run build
 cd ..
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir temp
 cp -r backend/. temp/
+rm backend/.gitignore
 
 HEROKU_API_TOKEN=$1
 
