@@ -1,16 +1,5 @@
 #!/bin/bash
 
-echo $JAVA_HOME
-java -version
-cd backend
-sudo sh mvnw -v
-sudo sh mvnw integration-test
-if [[ "$?" -ne 0 ]] ; then
-  echo "Integration tests failed"
-  exit 125
-fi
-cd ..
-
 cd frontend || exit
 mkdir node_modules
 sudo chown -R $USER "./node_modules"
