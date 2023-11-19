@@ -16,6 +16,9 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 #Install java
+sudo sh -c "echo 'deb http://archive.ubuntu.com/ubuntu/ precise-proposed restricted main multiverse universe' >> /etc/apt/sources.list.d/proposed-repositories.list"
+sudo apt-get update
+sudo apt-get -t precise-proposed install some-package
 apt install openjdk-21
 
 # Launch backend integration test
