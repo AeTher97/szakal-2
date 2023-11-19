@@ -1,5 +1,6 @@
 #!/bin/bash
 
+java -v
 cd backend
 sudo sh mvnw -v
 sudo sh mvnw integration-test
