@@ -33,6 +33,8 @@ jobs:
         timeout-minutes: 12
 
       # Runs a single command using the runners shell
+      - name: Set Java env
+        run: export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
       - name: Heroku bash
         run: |  
           sudo chmod +x "${GITHUB_WORKSPACE}/cicd/deploy.sh"
