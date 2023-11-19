@@ -16,7 +16,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 cd backend
-
+sudo sh mvnw -v
 sudo sh mvnw integration-test
 if [[ "$?" -ne 0 ]] ; then
   echo "Integration tests failed"
