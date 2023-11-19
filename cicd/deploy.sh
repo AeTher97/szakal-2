@@ -28,6 +28,8 @@ echo 'export JAVA_HOME=/usr/local/jdk-21' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 
+cd ..
+
 # Launch backend integration test
 cd backend
 sudo sh mvnw integration-test
