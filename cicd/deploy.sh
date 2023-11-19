@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
+echo $JAVA_HOME
 java -version
 cd backend
 sudo sh mvnw -v
