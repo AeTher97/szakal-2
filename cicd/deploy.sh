@@ -19,7 +19,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo apt install wget
 wget https://download.java.net/java/GA/jdk21.0.1/415e3f918a1f4062a0074a2794853d0d/12/GPL/openjdk-21.0.1_linux-x64_bin.tar.gz
 tar -xvf openjdk-21.0.1_linux-x64_bin.tar.gz
-cd jdk-21
+cd jdk-21.0.1
 sudo mkdir -p /usr/local/jdk-21
 sudo mv * /usr/local/jdk-21
 export JAVA_HOME=/usr/local/jdk-21
@@ -30,12 +30,12 @@ source ~/.bashrc
 
 # Launch backend integration test
 cd backend
-if sudo sh mvnw integration-test then
-  cd ..
-else
+sudo sh mvnw integration-test
+if [[ "$?" -ne 0 ]] ; then
   echo "Integration tests failed"
-  exit 125
+  exit 125ó
 fi
+cd ..
 
 cd frontend || exit
 mkdir node_modules
