@@ -15,7 +15,6 @@ import java.util.UUID;
 @Builder
 public class ContactEventDTO {
 
-    @NotNull
     private UUID contactPerson;
     @NotNull
     private UUID user;

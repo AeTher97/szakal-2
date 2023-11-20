@@ -18,6 +18,7 @@ const CustomBreadcrumbs = () => {
         {path: "secure", component: <HomeIcon/>},
         {path: "companies", component: "Firmy"},
         {path: "categories", component: "Branże"},
+        {path: "journeys", component: "Kontakty w tej akcji"},
         {path: "users", component: "Użytkownicy"},
         {path: "campaigns", component: "Akcje"},
         {path: "roles", component: "Role", pathOverride: "/secure/users"},

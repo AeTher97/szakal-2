@@ -1,11 +1,25 @@
 import React from 'react';
 import Top10 from "./Top10";
-import {tabContent} from "../../styles/ContainerStyles";
+import TabHeader from "../main/TabHeader";
+import {Typography} from "@mui/joy";
 
 const SummaryHome = () => {
     return (
-        <div style={tabContent}>
-            <Top10/>
+        <div>
+            <TabHeader>
+                <Typography level={"h2"}>Witaj w Szakal 2.0</Typography>
+            </TabHeader>
+            <div style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                alignItems: "stretch",
+                gap: 10,
+                paddingBottom: 100,
+                overflow: "hidden"
+            }}>
+                <Top10/>
+            </div>
         </div>
     );
 };

@@ -26,14 +26,25 @@ const UserManagement = ({user, localUser, setLocalUser, acceptUser}) => {
                             })
                         }}/>
             </CardContent>
-            {!user.accepted && <CardActions>
+            <CardContent orientation={"horizontal"}>
+                <Typography>Użytkownik aktywny</Typography>
+                <Switch checked={localUser.active}
+                        onClick={() => {
+                            setLocalUser(old => {
+                                return {
+                                    ...old,
+                                    accepted: true
+                                }
+                            })
+                        }}/>
+            </CardContent>
+            <CardActions>
                 <Button onClick={() => {
                     if (localUser.accepted) {
                         acceptUser();
                     }
                 }}>Zapisz</Button>
             </CardActions>
-            }
         </Card>
     );
 };

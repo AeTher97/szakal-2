@@ -4,8 +4,8 @@ import {useData, usePost} from "./UseData";
 export const useCompanyListWithCampaign = (campaignId) => {
 
     const [companies, setCompanies] = useState([])
-    const {loading} = useData(`/companies?pageNumber=0${campaignId ? `&campaign=${campaignId}` : ""}`,
-        (data) => setCompanies(data.content), [campaignId])
+    const {loading} = useData(`/companies?pageNumber=0&${campaignId}`,
+        (data) => setCompanies(data.content), [campaignId], [campaignId])
 
     const post = usePost(`/companies`, (data) => setCompanies(current => {
         return [...current, data]

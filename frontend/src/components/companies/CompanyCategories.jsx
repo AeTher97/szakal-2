@@ -17,7 +17,9 @@ const CompanyCategories = ({localCompany, setLocalCompany}) => {
             <Divider/>
             <CardContent>
                 {localCompany.categories.map(category =>
-                    <Typography key={category.id}>{category.name}</Typography>)}
+                    <Typography key={category.id}>• {category.name}</Typography>)}
+                {localCompany.categories.length === 0 &&
+                    <Typography style={{alignSelf: "center"}}>Brak branż</Typography>}
             </CardContent>
             <Divider/>
             <CardActions sx={{flexWrap: "wrap"}}>

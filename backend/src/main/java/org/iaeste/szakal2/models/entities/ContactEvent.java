@@ -1,7 +1,7 @@
 package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,11 +29,11 @@ public class ContactEvent {
     private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "contact_person_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"company"})
     private ContactPerson contactPerson;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"createdAt", "accepted", "roles", "contactJourneys", "comments"})
     private User user;
     @ManyToOne
     @JoinColumn(name = "contact_journey_id", nullable = false)
@@ -46,8 +46,4 @@ public class ContactEvent {
     @Enumerated(EnumType.STRING)
     private ContactEventType eventType;
 
-    @JsonProperty("contactPerson")
-    public UUID contactPerson() {
-        return contactPerson.getId();
-    }
 }

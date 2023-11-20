@@ -30,7 +30,7 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                         <Typography>Nazwa</Typography>
                     </th>
                     <th>
-                        <Typography>Działania</Typography>
+                        <Typography>Akcje</Typography>
                     </th>
                 </tr>
                 </thead>

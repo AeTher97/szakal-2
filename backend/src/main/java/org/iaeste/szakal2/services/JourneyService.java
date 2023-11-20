@@ -100,12 +100,9 @@ public class JourneyService {
     private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventDTO contactEventDTO) {
         User user = userService.getUserById(contactEventDTO.getUser());
         Optional<ContactPerson> contactPersonOptional = contactPersonRepository.findContactPersonById(contactEventDTO.getContactPerson());
-        if (contactPersonOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Contact person with id "
-                    + contactEventDTO.getContactPerson() + " does not exist");
-        }
+
         return ContactEvent.builder()
-                .contactPerson(contactPersonOptional.get())
+                .contactPerson(contactPersonOptional.orElse(null))
                 .contactJourney(contactJourney)
                 .user(user)
                 .date(LocalDateTime.now())

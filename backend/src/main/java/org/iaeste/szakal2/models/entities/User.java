@@ -33,7 +33,6 @@ public class User {
     @Setter
     @NotNull
     private String password;
-    @JsonIgnore
     @NotNull
     private String email;
     @Setter

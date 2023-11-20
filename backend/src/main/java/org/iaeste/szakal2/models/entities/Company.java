@@ -1,7 +1,6 @@
 package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -36,7 +35,6 @@ public class Company {
     @Setter
     private String fax;
     @Setter
-    @NotNull
     private String www;
     @Setter
     @NotNull
@@ -69,15 +67,8 @@ public class Company {
     private List<ContactPerson> contactPeople;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    @JsonIgnoreProperties(value = {"company"})
     private List<ContactJourney> contactJourneys;
-
-    @JsonProperty("contactJourneys")
-    public List<UUID> contactJourneys() {
-        if (contactJourneys == null) {
-            return List.of();
-        }
-        return contactJourneys.stream().map(ContactJourney::getId).toList();
-    }
 
 
 }

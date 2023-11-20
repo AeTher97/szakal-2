@@ -1,11 +1,16 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export const useData = (url, updateFunction, triggers = []) => {
+export const useData = (url, updateFunction, triggers = [], locks = []) => {
 
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        for (let lock of locks) {
+            if (!lock) {
+                return;
+            }
+        }
         let mounted = true;
         axios.get(url).then((res) => {
             if (mounted) {
@@ -21,25 +26,28 @@ export const useData = (url, updateFunction, triggers = []) => {
         return () => {
             mounted = false;
         }
-    }, [...triggers]);
+    }, [...triggers, url]);
 
 
     return {loading}
 }
 
 
-export const usePut = (url, updateFunction = () => {}) => {
+export const usePut = (url, updateFunction = () => {
+}) => {
     return (data, overrideUrl = undefined) => {
-        axios.put(overrideUrl ? overrideUrl : url, data).then(res => {
+        return axios.put(overrideUrl ? overrideUrl : url, data).then(res => {
             updateFunction(res.data)
         })
     }
 }
 
-export const usePost = (url, updateFunction = () => {}) => {
+export const usePost = (url, updateFunction = () => {
+}) => {
     return (data, overrideUrl) => {
-        axios.post(overrideUrl ? overrideUrl : url, data).then(res => {
+        return axios.post(overrideUrl ? overrideUrl : url, data).then(res => {
             updateFunction(res.data)
+            return res.data;
         })
     }
 }

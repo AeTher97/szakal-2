@@ -55,7 +55,7 @@ public class JourneyController {
     }
 
     @GetMapping
-    public Page<ContactJourney> getContactJourney(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+    public Page<ContactJourney> getContactJourneys(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return journeyService.getJourneys(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

@@ -92,7 +92,7 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_SUCCESS:
         case REFRESH_SUCCESS:
-            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.email,
+            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.userId, action.payload.email,
                 action.payload.username, action.payload.name, action.payload.surname)
             return {
                 ...state,

@@ -56,7 +56,7 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
             const user = decodeToken(data.authToken);
-            saveTokenInStorage(data.authToken, data.refreshToken, user.email,
+            saveTokenInStorage(data.authToken, data.refreshToken, payload.userId, user.email,
                 user.username, user.name, user.surname);
             onSuccessCallback();
             updateAccessRights(user, data.authToken, dispatch)
