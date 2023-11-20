@@ -7,7 +7,7 @@ const UserManagement = ({user, localUser, setLocalUser, acceptUser}) => {
 
     const mobile = useMobileSize();
     return (
-        <Card sx={{flexGrow: mobile ? 1 : 0}}>
+        <Card sx={{flexGrow: mobile ? 1 : 0, minWidth: 200}}>
             <CardContent>
                 <Typography level={"title-md"}>Zarządzanie użytkownikiem</Typography>
                 <Typography level={"body-sm"}>Opcje administracyjne</Typography>

@@ -37,7 +37,7 @@ const UserDetails = () => {
                 <TabHeader>
                     <div>
                         <Typography level={"h2"}>{user.name} {user.surname}</Typography>
-                        <Typography>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
+                        <Typography level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
                     </div>
                 </TabHeader>
                 <div style={{

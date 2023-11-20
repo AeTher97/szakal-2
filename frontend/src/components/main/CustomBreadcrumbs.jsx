@@ -20,21 +20,21 @@ const CustomBreadcrumbs = () => {
         {path: "categories", component: "Branże"},
         {path: "users", component: "Użytkownicy"},
         {path: "campaigns", component: "Akcje"},
-        {path: "zmywak", component: "Ludzie na zmywaku"},
+        {path: "roles", component: "Role", pathOverride: "/secure/users"},
     ]
 
     const getPathMatch = (path, matchPath, last) => {
         let matched = pathMatches.find(match => match.path === matchPath);
         if (!matched) {
-            matched = {
-                ...items.find(item => item.id === matchPath)
-            };
-            if (matched) {
+            if (items.find(item => item.id === matchPath)) {
+                matched = {...items.find(item => item.id === matchPath)}
                 matched.component = matched.name;
             }
         }
         if (matched && !last) {
-            return <LinkWithRouter color={"neutral"} to={path}>{matched.component}</LinkWithRouter>;
+            return <LinkWithRouter color={"neutral"} to={matched.pathOverride ? matched.pathOverride : path}>
+                {matched.component}
+            </LinkWithRouter>;
         } else if (matched && last) {
             return <Typography color={"primary"}>{matched.component}</Typography>
         } else {
@@ -43,6 +43,10 @@ const CustomBreadcrumbs = () => {
     }
 
     let currentLevel = ""
+
+    if (location.pathname.includes("home")) {
+        return <></>
+    }
 
     if (slice.length > 0) {
         return <Box sx={{display: 'flex', alignItems: 'center'}}>

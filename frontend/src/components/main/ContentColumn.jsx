@@ -8,7 +8,7 @@ const ContentColumn = props => {
         }}>
             <div style={{
                 maxWidth: 1200, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column",
-                padding: 10
+                padding: 10, paddingBottom: 0
             }}>
                 {props.children}
             </div>

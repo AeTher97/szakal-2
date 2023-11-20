@@ -1,15 +1,12 @@
 import React from 'react';
-import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 import {Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
-import {useSelector} from "react-redux";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const CompaniesTable = () => {
+const CompaniesTable = ({companies}) => {
 
     const mobile = useMobileSize();
-    const {currentCampaign} = useSelector(state => state.campaigns);
-    const {companies} = useCompanyListWithCampaign(currentCampaign);
+
 
     return (
         <Sheet sx={{

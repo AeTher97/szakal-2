@@ -2,19 +2,19 @@ import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 
-const AddCompanyDialog = ({open, addCompany, close}) => {
+const AddRoleDialog = ({open, addRole, close}) => {
 
     const [name, setName] = useState("");
-    const [startDate, setStartDate] = useState("");
+    const [description, setDescription] = useState("");
 
     return (
         <Modal open={open}>
             <ModalDialog>
-                <DialogTitle>Dodaj akcję</DialogTitle>
+                <DialogTitle>Dodaj rolę</DialogTitle>
                 <form
                     onSubmit={(event, value) => {
                         event.preventDefault();
-                        addCompany(name, startDate);
+                        addRole(name, description);
                         close();
                     }}>
                     <Stack spacing={2}>
@@ -24,14 +24,15 @@ const AddCompanyDialog = ({open, addCompany, close}) => {
                                    value={name}
                                    onChange={(e) => {
                                        setName(e.target.value)
-                                   }} placeholder={"Nazwa akcji"}/>
+                                   }} placeholder={"Nazwa roli"}/>
                         </FormControl>
                         <FormControl>
-                            <FormLabel>Data rozpoczęcia</FormLabel>
+                            <FormLabel>Opis</FormLabel>
                             <Input required
-                                   value={startDate}
+                                   value={description}
+                                   placeholder={"Opis"}
                                    onChange={(e) => {
-                                       setStartDate(e.target.value)
+                                       setDescription(e.target.value)
                                    }}/>
                         </FormControl>
                         <Button type="submit">Zapisz</Button>
@@ -43,4 +44,4 @@ const AddCompanyDialog = ({open, addCompany, close}) => {
     );
 };
 
-export default AddCompanyDialog;
+export default AddRoleDialog;

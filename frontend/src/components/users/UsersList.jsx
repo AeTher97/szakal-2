@@ -22,8 +22,8 @@ const UsersList = () => {
     const {users} = useUsersList();
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, flex: 2}}>
-            {users && <CardContent>
+        <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 200}}>
+            <CardContent>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
                         <ListItemContent>
@@ -31,7 +31,7 @@ const UsersList = () => {
                         </ListItemContent>
                     </ListItem>
                     <ListDivider/>
-                    {users.map((user, index) => {
+                    {users && users.map((user, index) => {
                         return <div key={user.id}>
                             <ListItem>
                                 <ListItemButton>
@@ -61,7 +61,7 @@ const UsersList = () => {
                         </div>
                     })}
                 </List>
-            </CardContent>}
+            </CardContent>
         </Card>
     );
 };

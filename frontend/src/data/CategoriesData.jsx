@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useData, usePost} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 
 export const useCategories = () => {
 
@@ -9,13 +9,26 @@ export const useCategories = () => {
     const post = usePost(`/categories`, (content) => setCategories(current => {
         return [...current, content]
     }))
+
+    const put = usePut(`/categories/id`, content => {
+        setCategories(old => {
+            return [...old.filter(category => category.id !== content.id), content]
+        })
+    })
+
     const addCategory = (name) => {
         post({
             name
         })
     }
 
-    return {categories, loading, addCategory}
+    const modifyCategory = (id, name) => {
+        put({
+            name
+        }, `/categories/${id}`)
+    }
+
+    return {categories, loading, addCategory, modifyCategory}
 }
 
 

@@ -1,15 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 
-const AddCategoryDialog = ({open, addCategory, close}) => {
+const CategoryDialog = ({open, addCategory, close, localCategory}) => {
 
     const [name, setName] = useState("");
+
+    useEffect(() => {
+        if (localCategory) {
+            setName(localCategory.name);
+        }
+    }, [localCategory]);
 
     return (
         <Modal open={open}>
             <ModalDialog>
-                <DialogTitle>Dodaj branżę</DialogTitle>
+                <DialogTitle>{localCategory ? "Edytuj branżę" : "Dodaj branżę"}</DialogTitle>
                 <form
                     onSubmit={(event, value) => {
                         event.preventDefault();
@@ -25,7 +31,7 @@ const AddCategoryDialog = ({open, addCategory, close}) => {
                                        setName(e.target.value)
                                    }} placeholder={"Nazwa branży"}/>
                         </FormControl>
-                        <Button type="submit">Dodaj</Button>
+                        <Button type="submit">Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>
                     </Stack>
                 </form>
@@ -34,4 +40,4 @@ const AddCategoryDialog = ({open, addCategory, close}) => {
     );
 };
 
-export default AddCategoryDialog;
+export default CategoryDialog;

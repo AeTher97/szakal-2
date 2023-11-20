@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -27,14 +28,12 @@ public class Company {
     @NotNull
     private String name;
     @Setter
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     @Setter
     @NotNull
     private String phone;
     @Setter
-    @NotNull
     private String fax;
     @Setter
     @NotNull
@@ -51,6 +50,7 @@ public class Company {
     @Setter
     @ManyToOne
     @NotNull
+    @JsonIgnoreProperties(value = {"roles"})
     private User updatedBy;
     @Setter
     @NotNull

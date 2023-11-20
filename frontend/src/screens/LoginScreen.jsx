@@ -34,7 +34,7 @@ const LoginScreen = props => {
                     if (location.state && location.state.from) {
                         navigate(location.state.from);
                     } else {
-                        navigate("/")
+                        navigate("/secure/home")
                     }
                 }}/>
             </div>

@@ -30,7 +30,7 @@ const BasicUserInfo = ({user, localUser}) => {
             </CardContent>
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}}>
-                <CardContent orientation={"horizontal"} style={{flex: 1}}>
+                <CardContent orientation={"horizontal"} style={{flex: 1, flexWrap: "wrap"}}>
                     <Avatar size={"lg"} sx={{width: 80, height: 80}}>
                         {user.name[0]} {user.surname[0]}
                     </Avatar>

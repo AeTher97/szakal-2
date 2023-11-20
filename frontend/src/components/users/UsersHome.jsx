@@ -5,12 +5,13 @@ import UsersList from "./UsersList";
 import RolesList from "./RolesList";
 import TabHeader from "../main/TabHeader";
 import UserDetails from "./UserDetails";
+import RoleDetails from "./RoleDetails";
 
 const UsersHome = () => {
     return (
         <Routes>
             <Route path={"/"} element={
-                <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
+                <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 30}}>
                     <TabHeader>
                         <Typography level="h2">Użytkownicy</Typography>
                     </TabHeader>
@@ -20,6 +21,8 @@ const UsersHome = () => {
                     </div>
                 </div>}/>
             <Route path={"/:id"} element={<UserDetails/>}/>
+            <Route path={"/roles/:id"} element={<RoleDetails/>}/>
+
         </Routes>
     );
 };

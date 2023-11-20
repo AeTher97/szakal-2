@@ -1,0 +1,43 @@
+<svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 600 600">
+    <defs>
+        <style>
+            .cls-1{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{fill:url(#Gradient_bez_nazwy_94);}.cls-4{clip-path:url(#clip-path-2);}.cls-5{clip-path:url(#clip-path-3);}.cls-6{fill:url(#Gradient_bez_nazwy);}.cls-7{opacity:0.4;}
+        </style>
+        <clipPath id="clip-path">
+            <path class="cls-1"
+                  d="M266.8,368.67c-39,32.07-88.28,18.45-95.18,13.36-9.76-7.19-6.52-18.8-14.34-20.25-6.39-1.19-15.41,3.81-16.12,8.28-.95,6,10,18.87,12.38,20.77,10.69,8.35,55.82,32.22,111-1.48,18.25-10.37,78.12-68.93,78.12-68.93l-12.25-10s-31.62,31.93-63.58,58.21M369.57,217.59a49.88,49.88,0,1,0,0,99.76h4.28a49.88,49.88,0,0,0,0-99.76Zm28.95-3.05,10,6.18c6.44,4,10.88,9.68,15.24,15.87l4.2,7.27,31.52-36.62L432,180.62Z"/>
+        </clipPath>
+        <radialGradient id="Gradient_bez_nazwy_94" cx="303.36" cy="291.69" r="285.18" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#575757"/>
+            <stop offset="0.22" stop-color="#5a5a5a"/>
+            <stop offset="0.42" stop-color="#656565"/>
+            <stop offset="0.6" stop-color="#777"/>
+            <stop offset="0.77" stop-color="#909090"/>
+            <stop offset="0.94" stop-color="#b0b0b0"/>
+            <stop offset="1" stop-color="#bdbdbd"/>
+        </radialGradient>
+        <clipPath id="clip-path-2">
+            <rect class="cls-1" width="600" height="600"/>
+        </clipPath>
+        <clipPath id="clip-path-3">
+            <path class="cls-1"
+                  d="M103.84,293.86l8.81,14.9,17.5-7.3-5.08-14.52Zm357.81-66,60.94,61.48L307,505.29V377l-14,12V539.13L542.39,289.35,470.33,216.8ZM233.38,197.77l-21.52,46.11-129,42,30.73,51.94,145.15,16.56,12.06-12.72-148.71-17-9.45-16-.09,0-8.81-14.91.09,0,0,0L222,255.31l21.38-45.8,49.65-14V181ZM216,204.06l8.14-13.82-43.93-75.19,103.22,34.41V134.7L149.41,90Zm53.27,38.05L293,253.66Zm-2.48-1.21,2.41,1.18Zm-1.42-.69.06,0ZM293,181v65.15c-1.42-.87-29.16-9.67-29.16-9.67v12.93c-2-.67,24.69,9.35,29.16,10.69V267l14,6.1V260.74l.4-.06c-.13-.25-.26-.49-.4-.73V74.4L412,180.62l9.74-10L293,40.67Z"/>
+        </clipPath>
+        <linearGradient id="Gradient_bez_nazwy" y1="600.01" x2="1" y2="600.01"
+                        gradientTransform="matrix(459.52, 0, 0, -459.52, 82.87, 276003.08)"
+                        gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#40a196"/>
+            <stop offset="1" stop-color="#1166a1"/>
+        </linearGradient>
+    </defs>
+    <title>logo</title>
+    <g class="cls-2">
+        <rect class="cls-3" x="17.88" y="16.98" width="567.91" height="548.22"/>
+    </g>
+    <g class="cls-4">
+        <g class="cls-5">
+            <rect class="cls-6" x="82.87" y="37.71" width="459.52" height="498.46"/>
+        </g>
+    </g>
+</svg>

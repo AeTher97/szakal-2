@@ -29,16 +29,16 @@ export const useData = (url, updateFunction, triggers = []) => {
 
 
 export const usePut = (url, updateFunction) => {
-    return (data) => {
-        axios.put(url, data).then(res => {
+    return (data, overrideUrl = undefined) => {
+        axios.put(overrideUrl ? overrideUrl : url, data).then(res => {
             updateFunction(res.data)
         })
     }
 }
 
 export const usePost = (url, updateFunction) => {
-    return (data) => {
-        axios.post(url, data).then(res => {
+    return (data, overrideUrl) => {
+        axios.post(overrideUrl ? overrideUrl : url, data).then(res => {
             updateFunction(res.data)
         })
     }

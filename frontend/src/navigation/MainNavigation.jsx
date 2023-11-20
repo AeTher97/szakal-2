@@ -1,9 +1,9 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import {Typography} from "@mui/joy";
 import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import * as React from "react";
 import AppContainer from "../screens/AppContainer";
+import NotFoundScreen from "../screens/NotFoundScreen";
 
 
 export const RouterWrapper = () => {
@@ -15,7 +15,7 @@ export const RouterWrapper = () => {
             <Route path={"/login"} element={<LoginScreen/>}/>
             <Route path={"/sign-up"} element={<SignUpScreen/>}/>
             <Route path={"/secure/*"} element={<AppContainer/>}/>
-            <Route path={"/*"} element={<Typography>Not found</Typography>}/>
+            <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     </BrowserRouter>
 

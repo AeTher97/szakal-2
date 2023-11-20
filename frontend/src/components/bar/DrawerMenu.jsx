@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Divider, Drawer, IconButton, List, ListItem, ListItemButton, Sheet} from "@mui/joy";
 import MenuIcon from '@mui/icons-material/Menu';
-import {useAccessRights} from "../../data/UseAccessRights";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import SzakalLogo from "./SzakalLogo";
 import {useLocation, useNavigate} from "react-router-dom";
-import {USER_VIEWING} from "../../utils/AccessRights";
+import {menuItems} from "./MenuBar";
 
 
 const MenuItem = ({children, to, close}) => {
@@ -37,7 +37,7 @@ const MenuItem = ({children, to, close}) => {
 const DrawerMenu = () => {
 
     const [open, setOpen] = useState(false);
-    const {hasRight} = useAccessRights();
+    const {hasRight} = useAccessRightsHelper();
 
     const close = () => {
         setOpen(false);
@@ -55,12 +55,13 @@ const DrawerMenu = () => {
                 </Sheet>
                 <Divider/>
                 <List>
-                    <MenuItem to={"/"} close={close}>Start</MenuItem>
-                    <MenuItem to={"companies"} close={close}>Wszystkie Firmy</MenuItem>
-                    <MenuItem to={"campaignCompanies"} close={close}>Firmy w tej akcji</MenuItem>
-                    <MenuItem to={"categories"} close={close}>Branże</MenuItem>
-                    <MenuItem to={"campaigns"} close={close}>Akcje</MenuItem>
-                    {hasRight(USER_VIEWING) && <MenuItem to={"users"} close={close}>Użytkownicy</MenuItem>}
+                    {menuItems.map(item => {
+                        if (item.right && !hasRight(item.right)) {
+                            return undefined;
+                        } else {
+                            return <MenuItem key={item.name} to={item.path} close={close}>{item.name}</MenuItem>;
+                        }
+                    })}
                 </List>
             </Drawer>
         </>

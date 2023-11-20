@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 
-export const useAccessRights = () => {
+export const useAccessRightsHelper = () => {
 
     const {accessRights} = useSelector(state => state.auth);
 

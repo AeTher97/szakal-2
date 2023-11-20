@@ -6,6 +6,8 @@ import CompaniesHome from "../components/companies/CompaniesHome";
 import CustomBreadcrumbs from "../components/main/CustomBreadcrumbs";
 import CategoriesHome from "../components/categories/CategoriesHome";
 import CampaignsHome from "../components/campaigns/CampaingsHome";
+import NotFoundScreen from "../screens/NotFoundScreen";
+import JourneysHome from "../components/journeys/JourneysHome";
 
 const InnerNavigation = () => {
 
@@ -13,10 +15,12 @@ const InnerNavigation = () => {
         <CustomBreadcrumbs/>
         <Routes>
             <Route path={"companies/*"} element={<CompaniesHome/>}/>
+            <Route path={"journeys/*"} element={<JourneysHome/>}/>
             <Route path={"users/*"} element={<UsersHome/>}/>
             <Route path={"categories/*"} element={<CategoriesHome/>}/>
             <Route path={"campaigns/*"} element={<CampaignsHome/>}/>
-            <Route path={"/"} element={<SummaryHome/>}/>
+            <Route path={"home"} element={<SummaryHome/>}/>
+            <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     </>);
 };

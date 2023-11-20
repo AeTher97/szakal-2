@@ -42,8 +42,8 @@ const LoginForm = ({redirectBack}) => {
                     boxShadow: "md",
                 }}
                 variant="outlined">
-                <div style={{display: "flex", justifyContent: "center", marginBottom: 40, marginTop: 30}}>
-                    <img src={"/logo.svg"} style={{height: 150, width: 150}}/>
+                <div style={{display: "flex", justifyContent: "center", marginBottom: 0, marginTop: 5}}>
+                    <img src={"/szakal_logo.svg"} style={{height: 250, width: 250}}/>
                 </div>
                 <div>
                     <Typography level="h4" component="h1">

@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.models.dto.role;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +19,7 @@ public class RoleCreationDto {
     private String name;
     @NotNull
     private String description;
-    @NotEmpty
+    @NotNull
     private List<UUID> accessRights;
 
 }

@@ -1,9 +1,37 @@
 import {useState} from "react";
-import {useData} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 
 export const useRolesList = () => {
     const [roles, setRoles] = useState([]);
     const {loading} = useData(`/roles?pageNumber=0`, (data) => setRoles(data.content));
 
-    return {roles, loading}
+    const post = usePost(`/roles`, (data) => setRoles(current => {
+        return [...current, data]
+    }))
+
+    const addRole = (name, description) => {
+        post({
+            name, description, accessRights: []
+        })
+    }
+
+    return {roles, loading, addRole}
+}
+
+export const useRole = (id) => {
+
+    const [role, setRole] = useState(null);
+    const {loading} = useData(`/roles/${id}`, (data) => setRole(data));
+
+    const put = usePut(`/roles/${id}`, (data) => setRole(data));
+
+    const updateRole = (name, description, accessRights) => {
+        put({
+            name,
+            description,
+            accessRights: accessRights
+        })
+    }
+
+    return {role, loading, updateRole}
 }
