@@ -25,11 +25,13 @@ const CompanyDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(addKnownItem(location.pathname.split("/")[3], "IAESTE"));
-        return () => {
-            dispatch(removeKnownItem(location.pathname.split("/")[3]))
+        if (company) {
+            dispatch(addKnownItem(location.pathname.split("/")[3], company.name));
+            return () => {
+                dispatch(removeKnownItem(location.pathname.split("/")[3]))
+            }
         }
-    }, [location]);
+    }, [location, company]);
 
     useEffect(() => {
         if (company) {

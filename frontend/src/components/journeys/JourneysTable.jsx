@@ -7,7 +7,6 @@ const JourneysTable = ({journeys}) => {
 
     const mobile = useMobileSize();
 
-    console.log(journeys)
     return (
         <Sheet sx={{
             width: '100%',
