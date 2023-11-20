@@ -21,6 +21,12 @@ const CompanyContactData = ({localCompany}) => {
                     <div>
                         <Stack spacing={1}>
                             <FormLabel>
+                                <Typography level={"title-sm"}>Nazwa</Typography>
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder={"Nazwa"} value={localCompany.email}/>
+                            </FormControl>
+                            <FormLabel>
                                 <Typography level={"title-sm"}>Email</Typography>
                             </FormLabel>
                             <FormControl>
