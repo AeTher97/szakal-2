@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 
-const AddCompanyDialog = ({open, addCompany, close}) => {
+const AddCompanyDialog = ({open, addCampaign, close}) => {
 
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -14,7 +14,7 @@ const AddCompanyDialog = ({open, addCompany, close}) => {
                 <form
                     onSubmit={(event, value) => {
                         event.preventDefault();
-                        addCompany(name, startDate);
+                        addCampaign(name, startDate);
                         close();
                     }}>
                     <Stack spacing={2}>
@@ -29,6 +29,7 @@ const AddCompanyDialog = ({open, addCompany, close}) => {
                         <FormControl>
                             <FormLabel>Data rozpoczęcia</FormLabel>
                             <Input required
+                                   type={"date"}
                                    value={startDate}
                                    onChange={(e) => {
                                        setStartDate(e.target.value)

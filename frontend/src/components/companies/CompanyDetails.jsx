@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useCompany} from "../../data/CompaniesData";
 import TabHeader from "../main/TabHeader";
@@ -10,13 +10,17 @@ import {formatLocalDateTime} from "../../utils/DateUtils";
 import CompanyAddress from "./CompanyAddress";
 import CompanyCategories from "./CompanyCategories";
 import Button from "@mui/joy/Button";
+import {useAddContactJourney} from "../../data/JourneyData";
 
 const CompanyDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
     const [localCompany, setLocalCompany] = useState();
+    const {currentCampaign} = useSelector(state => state.campaigns);
+    // const {currentCampaign} = useSelector(state => state.campaigns);
     const {company, loading} = useCompany(location.pathname.split("/")[3])
+    const {addJourney} = useAddContactJourney();
 
     useEffect(() => {
         dispatch(addKnownItem(location.pathname.split("/")[3], "IAESTE"));
@@ -40,7 +44,7 @@ const CompanyDetails = () => {
                         <Typography level={"title-sm"}>Dodana {formatLocalDateTime(company.insertDate)}</Typography>
                     </div>
                     <div>
-                        <Button>Przypisz</Button>
+                        <Button onClick={() => addJourney(currentCampaign, company.id,"f8f80ab3-785f-4903-833f-1dd0abc43e61")}>Przypisz</Button>
                     </div>
                 </TabHeader>
                 <div style={{

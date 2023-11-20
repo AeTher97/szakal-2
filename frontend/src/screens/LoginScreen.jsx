@@ -32,7 +32,11 @@ const LoginScreen = props => {
             <div style={{flex: 1}}>
                 <LoginForm redirectBack={() => {
                     if (location.state && location.state.from) {
-                        navigate(location.state.from);
+                        if (location.state.from === "/secure" || location.state.from === "/") {
+                            navigate("/secure/home")
+                        } else {
+                            navigate(location.state.from);
+                        }
                     } else {
                         navigate("/secure/home")
                     }
