@@ -46,7 +46,7 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
         AssertionsForClassTypes.assertThat(user.getCreatedAt()).isNotNull();
         AssertionsForClassTypes.assertThat(user.getEmail()).isEqualTo("emtail@gmail.com");
         AssertionsForClassTypes.assertThat(user.isAccepted()).isFalse();
-        AssertionsForClassTypes.assertThat(user.isActive()).isFalse();
+        AssertionsForClassTypes.assertThat(user.isActive()).isTrue();
     }
 
     @Test
