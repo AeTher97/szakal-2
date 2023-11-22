@@ -6,11 +6,11 @@ export const useCategories = () => {
     const [categories, setCategories] = useState();
     const {loading} = useData(`/categories?pageNumber=0`, (data) => setCategories(data.content))
 
-    const post = usePost(`/categories`, (content) => setCategories(current => {
+    const {post} = usePost(`/categories`, (content) => setCategories(current => {
         return [...current, content]
     }))
 
-    const put = usePut(`/categories/id`, content => {
+    const {put} = usePut(`/categories/id`, content => {
         setCategories(old => {
             return [...old.filter(category => category.id !== content.id), content]
         })

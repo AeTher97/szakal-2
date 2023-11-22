@@ -1,16 +1,5 @@
 import React, {useState} from 'react';
-import {
-    Card,
-    CardContent,
-    CardOverflow,
-    Chip,
-    Divider,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemContent,
-    Typography
-} from "@mui/joy";
+import {Card, CardContent, CardOverflow, Chip, Divider, Typography} from "@mui/joy";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useRolesList} from "../../data/RolesData";
@@ -38,38 +27,51 @@ const RolesList = () => {
                         </div>
                     </CardContent>
                     <CardContent>
-                        <List variant={"plain"} sx={{padding: 0}}>
-                            <Divider inset={"context"}/>
-                            {roles.map((role, index) => {
-                                return <div key={role.id}>
-                                    <ListItem sx={{paddingLeft: 0}}>
-                                        <ListItemButton>
-                                            <ListItemContent>
-                                                <div style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center"
-                                                }}>
-                                                    <Typography style={{flex: 2}}>{role.name}</Typography>
-                                                    <div style={{flex: 5}}>
-                                                        {role.accessRights.map(accessRight =>
-                                                            <Chip key={accessRight.id}
-                                                                  sx={{backgroundColor: uuidToColor(accessRight.id)}}>
-                                                                {accessRight.description}
-                                                            </Chip>)}
-                                                    </div>
-                                                </div>
-                                            </ListItemContent>
-                                        </ListItemButton>
-                                        <LinkWithRouter to={`roles/${role.id}`}
-                                                        key={role.id}
-                                                        overlay
-                                                        underline={"none"}/>
-                                    </ListItem>
-                                    {index !== roles.length - 1 && <Divider inset={"context"}/>}
-                                </div>
-                            })}
-                        </List>
+                        <Divider inset={"context"}/>
+                        {roles.map((role, index) => {
+                            return <div key={role.id}>
+                                <LinkWithRouter to={`roles/${role.id}`}
+                                                key={role.id}
+                                                style={{width: "100%"}}
+                                                underline={"none"}>
+                                    <div style={{
+                                        display: "flex",
+                                        width: "100%",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        paddingBottom: 10,
+                                        paddingTop: 10,
+                                        gap: 10
+                                    }}>
+                                        <div style={{
+                                            display: "flex",
+                                            flex: 2,
+                                            flexDirection: "column",
+                                            justifyContent: "center"
+                                        }}>
+                                            <Typography level={"title-md"}>{role.name}</Typography>
+                                            <Typography level={"body-sm"}>{role.description}</Typography>
+                                        </div>
+                                        <div style={{
+                                            flex: 5,
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                            flexWrap: "wrap"
+                                        }}>
+                                            {role.accessRights.map(accessRight =>
+                                                <Chip key={accessRight.id}
+                                                      sx={{backgroundColor: uuidToColor(accessRight.id)}}>
+                                                    {accessRight.description}
+                                                </Chip>)}
+                                        </div>
+
+                                    </div>
+                                </LinkWithRouter>
+
+                                {index !== roles.length - 1 && <Divider inset={"context"}/>}
+
+                            </div>
+                        })}
                     </CardContent>
                 </CardOverflow>}
             <AddRoleDialog open={addRoleOpen} addRole={addRole} close={() => setAddRoleOpen(false)}/>

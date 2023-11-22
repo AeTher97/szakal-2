@@ -16,8 +16,6 @@ public class UserCreationDTO extends PasswordChangeDTO {
     @ValidPassword
     private String repeatPassword;
     @NotNull
-    private String username;
-    @NotNull
     private String name;
     @NotNull
     private String surname;

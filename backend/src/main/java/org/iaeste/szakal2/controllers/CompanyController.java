@@ -2,10 +2,9 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.iaeste.szakal2.models.dto.company.CompanyCreationDTO;
-import org.iaeste.szakal2.models.dto.company.CompanyListingDTO;
-import org.iaeste.szakal2.models.dto.company.ContactPersonCreationDTO;
+import org.iaeste.szakal2.models.dto.company.*;
 import org.iaeste.szakal2.models.entities.Company;
+import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.iaeste.szakal2.services.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,8 +34,8 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyCreationDTO companyCreationDTO) {
-        return companyService.updateCompany(id, companyCreationDTO);
+    public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
+        return companyService.updateCompany(id, companyModificationDTO);
     }
 
     @PutMapping("/{id}/contactPerson")
@@ -52,8 +51,17 @@ public class CompanyController {
     @GetMapping
     public Page<CompanyListingDTO> getCompanies(@RequestParam(defaultValue = "10") int pageSize,
                                                 @RequestParam int pageNumber,
-                                                @RequestParam(required = false) UUID campaign) {
-        return companyService.getCompanies(Pageable.ofSize(pageSize).withPage(pageNumber))
+                                                @RequestParam(required = false) UUID campaign,
+                                                @RequestParam(required = false) String name,
+                                                @RequestParam(required = false) ContactStatus contactStatus,
+                                                @RequestParam(required = false) String category
+    ) {
+        return companyService.getCompanies(CompanySearch.builder()
+                                .category(category)
+                                .contactStatus(contactStatus)
+                                .campaign(campaign)
+                                .name(name).build(),
+                        Pageable.ofSize(pageSize).withPage(pageNumber))
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));
     }
 }

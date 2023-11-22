@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Avatar,
     Card,
@@ -14,10 +14,21 @@ import {
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const BasicUserInfo = ({user, localUser}) => {
+const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading}) => {
 
     const mobile = useMobileSize();
 
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [email, setEmail] = useState("");
+
+    useEffect(() => {
+        if (localUser) {
+            setName(localUser.name);
+            setSurname(localUser.surname);
+            setEmail(localUser.email);
+        }
+    }, [localUser]);
 
     return (
         <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 450, flex: 1, display: "flex"}} color={"primary"}
@@ -29,7 +40,10 @@ const BasicUserInfo = ({user, localUser}) => {
                 <Typography level={"body-sm"}>Detale na temat użytkownika</Typography>
             </CardContent>
             <Divider/>
-            <form style={{display: "flex", flexDirection: "column", flex: 1}}>
+            <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
+                e.preventDefault()
+                updateUserDetails(name, surname, email)
+            }}>
                 <CardContent orientation={"horizontal"} style={{flex: 1, flexWrap: "wrap"}}>
                     <Avatar size={"lg"} sx={{width: 80, height: 80}}>
                         {user.name[0]} {user.surname[0]}
@@ -42,10 +56,14 @@ const BasicUserInfo = ({user, localUser}) => {
                         <Stack spacing={1}>
                             <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                                 <FormControl>
-                                    <Input style={{width: 180}} placeholder={"Imię"} value={localUser.name}/>
+                                    <Input style={{width: 180}} placeholder={"Imię"} value={name} onChange={(e) => {
+                                        setName(e.target.value)
+                                    }}/>
                                 </FormControl>
                                 <FormControl>
-                                    <Input placeholder={"Nazwisko"} value={localUser.surname}/>
+                                    <Input placeholder={"Nazwisko"} value={surname} onChange={(e) => {
+                                        setSurname(e.target.value)
+                                    }}/>
                                 </FormControl>
                             </div>
                             <FormLabel>
@@ -53,7 +71,9 @@ const BasicUserInfo = ({user, localUser}) => {
                             </FormLabel>
                             <FormControl>
                                 <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
-                                    <Input placeholder={"Email"} value={localUser.email}/>
+                                    <Input placeholder={"Email"} value={email} onChange={(e) => {
+                                        setEmail(e.target.value)
+                                    }}/>
                                 </div>
                             </FormControl>
                         </Stack>
@@ -61,7 +81,7 @@ const BasicUserInfo = ({user, localUser}) => {
 
                 </CardContent>
                 <CardActions>
-                    <Button>Zapisz</Button>
+                    <Button type={"submit"} loading={updateUserDetailsLoading}>Zapisz</Button>
                 </CardActions>
             </form>
         </Card>

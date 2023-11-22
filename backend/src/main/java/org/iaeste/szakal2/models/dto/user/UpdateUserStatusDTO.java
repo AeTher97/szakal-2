@@ -1,0 +1,15 @@
+package org.iaeste.szakal2.models.dto.user;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UpdateUserStatusDTO {
+
+    public boolean active;
+}

@@ -26,7 +26,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(StringTemplate.STR."""
                             {
-                            "username": "AeTher",
                             "email" : "emtail@gmail.com",
                             "password" :"Test123!",
                             "repeatPassword": "Test123!",
@@ -42,7 +41,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .path("id"));
         assertDoesNotThrow(() -> userService.getUserById(userId));
         User user = userService.getUserById(userId);
-        AssertionsForClassTypes.assertThat(user.getUsername()).isEqualTo("AeTher");
         AssertionsForClassTypes.assertThat(user.getName()).isEqualTo("Michal");
         AssertionsForClassTypes.assertThat(user.getSurname()).isEqualTo("Wozniak");
         AssertionsForClassTypes.assertThat(user.getCreatedAt()).isNotNull();
@@ -58,7 +56,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(StringTemplate.STR."""
                             {
-                            "username": "TakenUsername",
                             "email" : "not-taken-email@gmail.com",
                             "password" :"weak",
                             "repeatPassword": "weak",
@@ -79,7 +76,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(StringTemplate.STR."""
                             {
-                            "username": "TakenUsername",
                             "email" : "not-taken-email@gmail.com",
                             "password" :"Password123!",
                             "repeatPassword": "Password13!",
@@ -94,34 +90,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
     }
 
 
-    @Test
-    public void failsToRegisterIfUsernameTaken() {
-        userService.registerUser(UserCreationDTO.builder()
-                .email("taken-email@gmail.com")
-                .password("Password123!")
-                .repeatPassword("Password123!")
-                .username("TakenUsername")
-                .name("Name")
-                .surname("Surname")
-                .build());
-        RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(StringTemplate.STR."""
-                            {
-                            "username": "TakenUsername",
-                            "email" : "not-taken-email@gmail.com",
-                            "password" :"Test123!",
-                            "repeatPassword": "Test123!",
-                            "name" : "Michal",
-                            "surname" : "Wozniak"
-                            }
-                        """)
-                .when()
-                .post("/api/users")
-                .then()
-                .statusCode(400)
-                .body("error", Matchers.equalTo("Username already taken"));
-    }
 
     @Test
     public void failsToRegisterIfEmailTaken() {
@@ -129,7 +97,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .email("taken-email@gmail.com")
                 .password("Password123!")
                 .repeatPassword("Password123!")
-                .username("TakenUsername")
                 .name("Name")
                 .surname("Surname")
                 .build());
@@ -137,7 +104,6 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(StringTemplate.STR."""
                             {
-                            "username": "NotTakenUsername",
                             "email" : "taken-email@gmail.com",
                             "password" :"Test123!",
                             "repeatPassword": "Test123!",

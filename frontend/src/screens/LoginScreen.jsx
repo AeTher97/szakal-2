@@ -2,7 +2,8 @@ import React from 'react';
 import LoginForm from "../components/LoginForm";
 import {useMobileSize} from "../utils/SizeQuery";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {logoutAction} from "../redux/ReducerActions";
 
 const LoginScreen = props => {
 
@@ -11,6 +12,8 @@ const LoginScreen = props => {
     const location = useLocation();
     const {theme} = useSelector(state => state.theme);
     const isLightTheme = theme === "light";
+    const dispatch = useDispatch();
+
 
     return (
         <div style={{
@@ -30,15 +33,24 @@ const LoginScreen = props => {
                      }}/>
             </div>}
             <div style={{flex: 1}}>
-                <LoginForm redirectBack={() => {
-                    if (location.state && location.state.from) {
-                        if (location.state.from === "/secure" || location.state.from === "/") {
-                            navigate("/secure/home")
+                <LoginForm redirectBack={(active) => {
+                    if (active) {
+                        if (location.state && location.state.from) {
+                            if (location.state.from === "/secure" || location.state.from === "/") {
+                                navigate("/secure/home")
+                            } else {
+                                navigate(location.state.from);
+                            }
                         } else {
-                            navigate(location.state.from);
+                            navigate("/secure/home")
                         }
                     } else {
-                        navigate("/secure/home")
+                        dispatch(logoutAction());
+                        navigate("/not-accepted", {
+                            state: {
+                                from: location.pathname
+                            }
+                        })
                     }
                 }}/>
             </div>

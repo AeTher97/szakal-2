@@ -7,7 +7,7 @@ const SecureRoute = ({children, ...props}) => {
     const {isAuthenticated} = useSelector(state => state.auth)
     const location = useLocation();
 
-    return (isAuthenticated) ?
+    return isAuthenticated || (location.pathname === "/not-accepted" && location.state && location.state.from) ?
         children :
         <Navigate
             to="/login"

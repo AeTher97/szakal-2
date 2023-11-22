@@ -5,7 +5,7 @@ import {useMobileSize} from "../../utils/SizeQuery";
 import {useAccessRightsList} from "../../data/UseAccessRightsList";
 import Button from "@mui/joy/Button";
 
-const RoleAuthorities = ({role, localRole, setLocalRole, updateRole}) => {
+const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleLoading}) => {
 
     const {accessRights, loading} = useAccessRightsList();
     const mobile = useMobileSize();
@@ -57,7 +57,7 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole}) => {
                 </Chip>)}
             </CardContent>
             <CardActions>
-                <Button
+                <Button loading={updateRoleLoading}
                     onClick={() => updateRole(localRole.accessRights.map(localAccessRight => localAccessRight.id))}>Zapisz
                 </Button>
             </CardActions>

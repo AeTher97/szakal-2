@@ -1,5 +1,6 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit"
 import {decodeToken, isTokenOutdated, saveAccessRightsInStorage, saveTokenInStorage} from "../utils/TokenUtils";
+import alertReducer from "./AlertReducer";
 
 export const LOGIN_ATTEMPT = "LOGIN_ATTEMPT"
 
@@ -24,7 +25,6 @@ const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const email = localStorage.getItem("email");
-    const username = localStorage.getItem("username");
     const name = localStorage.getItem("name");
     const surname = localStorage.getItem("surname");
     const accessRights = localStorage.getItem("accessRights") ? localStorage.getItem("accessRights").split(",") : [];
@@ -47,7 +47,6 @@ const getAuthFromStorage = () => {
                 refreshToken: refreshToken,
                 accessRights: accessRights,
                 isAuthenticated: true,
-                username: username,
                 name: name,
                 surname: surname,
                 email: email,
@@ -60,7 +59,6 @@ const getAuthFromStorage = () => {
 
 const clearLocalStorage = () => {
     localStorage.removeItem("email")
-    localStorage.removeItem("username")
     localStorage.removeItem("name")
     localStorage.removeItem("surname")
     localStorage.removeItem("refreshToken")
@@ -78,7 +76,6 @@ const emptyState = {
     isAuthenticated: false,
     error: null,
     email: null,
-    username: null,
     name: null,
     surname: null
 }
@@ -92,8 +89,7 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_SUCCESS:
         case REFRESH_SUCCESS:
-            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.userId, action.payload.email,
-                action.payload.username, action.payload.name, action.payload.surname)
+            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.userId, action.payload.email, action.payload.name, action.payload.surname)
             return {
                 ...state,
                 ...action.payload,
@@ -189,6 +185,7 @@ export let stores = configureStore({
         {
             auth: authReducer,
             theme: themeReducer, campaigns: campaignReducer,
-            knownItems: knownItemReducer
+            knownItems: knownItemReducer,
+            alert: alertReducer
         })
 });

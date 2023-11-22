@@ -1,23 +1,25 @@
 import React, {useState} from "react";
-import {FormControl, FormLabel, Input, Link, Sheet, Typography} from "@mui/joy";
+import {FormControl, FormLabel, Input, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginAction} from "../redux/ReducerActions";
+import LinkWithRouter from "../utils/LinkWithRouter";
 
 const LoginForm = ({redirectBack}) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const {error} = useSelector(state => state.auth)
     const dispatch = useDispatch();
+
 
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginAction({
             username: email,
             password: password
-        }, () => {
-            redirectBack();
+        }, (isAccepted) => {
+            redirectBack(isAccepted);
         }))
     }
 
@@ -54,7 +56,7 @@ const LoginForm = ({redirectBack}) => {
                 <FormControl>
                     <FormLabel>Email</FormLabel>
                     <Input
-                        // html input attribute
+                        color={error ? "danger" : "neutral"}
                         name="email"
                         type="email"
                         placeholder="johndoe@email.com"
@@ -65,7 +67,7 @@ const LoginForm = ({redirectBack}) => {
                 <FormControl>
                     <FormLabel>Password</FormLabel>
                     <Input
-                        // html input attribute
+                        color={error ? "danger" : "neutral"}
                         name="password"
                         type="password"
                         placeholder="password"
@@ -76,7 +78,7 @@ const LoginForm = ({redirectBack}) => {
 
                 <Button sx={{mt: 1 /* margin top */}} type={"submit"}>Zaloguj</Button>
                 <Typography
-                    endDecorator={<Link href="/sign-up">Zarejestruj się</Link>}
+                    endDecorator={<LinkWithRouter to="/sign-up">Zarejestruj się</LinkWithRouter>}
                     fontSize="sm"
                     sx={{alignSelf: "center"}}
                 >

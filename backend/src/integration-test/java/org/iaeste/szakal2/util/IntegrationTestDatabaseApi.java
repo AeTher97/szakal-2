@@ -72,7 +72,6 @@ public class IntegrationTestDatabaseApi {
         Role role = createRole(accessRightList, username, username);
         return usersRepository.save(User.builder()
                 .email(email)
-                .username(username)
                 .password(passwordEncoder.encode(password))
                 .createdAt(LocalDateTime.now())
                 .name(username)

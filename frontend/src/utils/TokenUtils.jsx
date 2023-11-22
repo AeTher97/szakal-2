@@ -7,7 +7,6 @@ export const decodeToken = (accessToken) => {
             sub,
             roles,
             email,
-            username,
             name,
             surname,
             exp
@@ -18,7 +17,6 @@ export const decodeToken = (accessToken) => {
             roles: roles,
             expirationTime: exp,
             email: email,
-            username: username,
             name: name,
             surname: surname
         };
@@ -29,12 +27,11 @@ export const decodeToken = (accessToken) => {
     }
 }
 
-export const saveTokenInStorage = (accessToken, refreshToken, userId, email, username, name, surname) => {
+export const saveTokenInStorage = (accessToken, refreshToken, userId, email, name, surname) => {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('userId', userId);
     localStorage.setItem('email', email);
-    localStorage.setItem('username', username);
     localStorage.setItem('name', name);
     localStorage.setItem('surname', surname);
 }

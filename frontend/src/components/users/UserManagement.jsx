@@ -3,7 +3,15 @@ import {Card, CardActions, CardContent, Divider, Switch, Typography} from "@mui/
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const UserManagement = ({user, localUser, setLocalUser, acceptUser}) => {
+const UserManagement = ({
+                            user,
+                            localUser,
+                            setLocalUser,
+                            acceptUser,
+                            changeUserState,
+                            acceptUserLoading,
+                            changeUserStatusLoading
+                        }) => {
 
     const mobile = useMobileSize();
     return (
@@ -33,17 +41,25 @@ const UserManagement = ({user, localUser, setLocalUser, acceptUser}) => {
                             setLocalUser(old => {
                                 return {
                                     ...old,
-                                    accepted: true
+                                    active: !localUser.active
                                 }
                             })
                         }}/>
             </CardContent>
             <CardActions>
                 <Button onClick={() => {
-                    if (localUser.accepted) {
-                        acceptUser();
+                    if (localUser.accepted && !user.accepted) {
+                        acceptUser().then(e => {
+                            if (localUser.active && !user.active) {
+                                changeUserState(localUser.active);
+                            }
+                        });
+                        return;
                     }
-                }}>Zapisz</Button>
+                    if (localUser.active !== user.active) {
+                        changeUserState(localUser.active);
+                    }
+                }} loading={acceptUserLoading || changeUserStatusLoading}>Zapisz</Button>
             </CardActions>
         </Card>
     );

@@ -12,8 +12,9 @@ const RoleDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
-    const {role, loading, updateRole} = useRole(location.pathname.split("/")[4]);
+    const {role, loading, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
     const [localRole, setLocalRole] = useState(null);
+    const [udpateRoleDetailsLoading, setUpdateRoleDetailsLoading] = useState(false);
 
     useEffect(() => {
         if (role) {
@@ -45,11 +46,19 @@ const RoleDetails = () => {
                 paddingBottom: 100,
                 overflow: "hidden"
             }}>
-                <RoleBasicInfo role={role} localRole={localRole}/>
+                <RoleBasicInfo
+                    role={role} localRole={localRole} updateRoleInfo={(name, description) => {
+                    setUpdateRoleDetailsLoading(true)
+                    updateRole(name, description).then(() => {
+                        setUpdateRoleDetailsLoading(false);
+                    })
+                }} updateRoleDetailsLoading={setUpdateRoleDetailsLoading}
+                />
                 <RoleAuthorities
                     role={role}
                     localRole={localRole}
                     setLocalRole={setLocalRole}
+                    updateRoleLoading={updateRoleLoading}
                     updateRole={(accessRights) => {
                         updateRole(undefined, undefined, accessRights)
                     }}/>

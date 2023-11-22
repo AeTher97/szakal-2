@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 
-const CompanyContactData = ({localCompany}) => {
+const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
 
     const mobile = useMobileSize();
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [www, setWWW] = useState("")
+
+    useEffect(() => {
+        setName(localCompany.name)
+        setEmail(localCompany.email)
+        setPhone(localCompany.phone)
+        setWWW(localCompany.www)
+    }, [localCompany]);
 
     return (
         <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 350, flex: 1, display: "flex"}} color={"primary"}
@@ -18,38 +29,46 @@ const CompanyContactData = ({localCompany}) => {
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
-                    <div>
-                        <Stack spacing={1}>
+                    <Stack spacing={1} sx={{flex: mobile ? 1 : 0}}>
                             <FormLabel>
                                 <Typography level={"title-sm"}>Nazwa</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Nazwa"} value={localCompany.email}/>
+                                <Input placeholder={"Nazwa"} value={name} onChange={(e) => {
+                                    setName(e.target.value)
+                                }}/>
                             </FormControl>
                             <FormLabel>
                                 <Typography level={"title-sm"}>Email</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Email"} value={localCompany.email}/>
+                                <Input placeholder={"Email"} value={email} onChange={(e) => {
+                                    setEmail(e.target.value)
+                                }}/>
                             </FormControl>
                             <FormLabel>
                                 <Typography level={"title-sm"}>Telefon</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Telefon"} value={localCompany.phone}/>
+                                <Input placeholder={"Telefon"} value={phone} onChange={(e) => {
+                                    setPhone(e.target.value)
+                                }}/>
                             </FormControl>
                             <FormControl>
                                 <FormLabel>
                                     <Typography level={"title-sm"}>Strona</Typography>
                                 </FormLabel>
-                                <Input placeholder={"WWW"} value={localCompany.www}/>
+                                <Input placeholder={"WWW"} value={www} onChange={(e) => {
+                                    setWWW(e.target.value)
+                                }}/>
                             </FormControl>
                         </Stack>
-                    </div>
 
                 </CardContent>
                 <CardActions>
-                    <Button>Zapisz</Button>
+                    <Button loading={updateContactDataLoading} onClick={() => {
+                        updateContactData(name, email, phone, www)
+                    }}>Zapisz</Button>
                 </CardActions>
             </form>
         </Card>

@@ -3,11 +3,12 @@ import '@fontsource/inter';
 import * as React from 'react';
 import {useEffect} from 'react';
 import Button from '@mui/joy/Button';
-import {CssVarsProvider, useColorScheme} from "@mui/joy";
-import {Provider, useSelector} from "react-redux";
+import {CssVarsProvider, Snackbar, useColorScheme} from "@mui/joy";
+import {Provider, useDispatch, useSelector} from "react-redux";
 import {stores} from "./redux/Stores";
 import AuthProvider from "./utils/AuthProvider";
 import {RouterWrapper} from "./navigation/MainNavigation";
+import {closeAlert} from "./redux/AlertActions";
 
 const AppWithoutCss = () => {
 
@@ -31,9 +32,17 @@ const AppWithoutCss = () => {
 }
 
 const AppWithoutRedux = () => {
+    const dispatch = useDispatch();
+    const {severity, message, isOpen} = useSelector(state => state.alert);
+
     return (
         <CssVarsProvider>
             <AppWithoutCss/>
+            {severity && <Snackbar open={isOpen} autoHideDuration={3000} color={severity} onClose={() => {
+                dispatch(closeAlert())
+            }}>
+                {message}
+            </Snackbar>}
         </CssVarsProvider>
     );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, Divider, Typography} from "@mui/joy";
+import {Card, CardContent, CircularProgress, Divider, Typography} from "@mui/joy";
 import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
 import {useMobileSize} from "../../utils/SizeQuery";
 
@@ -26,25 +26,28 @@ const Top10 = () => {
     })
 
 
-    if (journeys.length > 0) {
-        return (
-            <Card invertedColors color={"primary"} variant={"solid"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>
-                <CardContent>
-                    <Typography level={"title-lg"}>Top 10</Typography>
-                </CardContent>
+    return (
+        <Card invertedColors color={"primary"} variant={"solid"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>
+            <CardContent>
+                <Typography level={"title-lg"}>Top 10</Typography>
+            </CardContent>
+            {!loading && <>
                 <Divider inset={"context"}/>
-                <CardContent>
+                {journeys.length > 0 && <CardContent>
                     {Array.from(top10, ([name, value]) => ({...value, id: name}))
                         .map((user, i) => {
                             return <Typography
                                 key={user.id}>{i + 1}. {user.name} {user.surname} - {user.count}</Typography>
                         })}
-                </CardContent>
-            </Card>
-        );
-    } else {
+                </CardContent>}
+                {journeys.length === 0 && <Typography>Brak kontatków w akcji</Typography>}
+            </>}
+            {loading && <div style={{display: "flex", justifyContent: "center"}}>
+                <CircularProgress/>
+            </div>}
+        </Card>
+    );
 
-    }
 };
 
 export default Top10;

@@ -5,7 +5,7 @@ import Button from "@mui/joy/Button";
 import {useRolesList} from "../../data/RolesData";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const UserRoles = ({user, localUser, setLocalUser, updateUserRoles}) => {
+const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesLoading}) => {
 
     const {roles, loading: rolesLoading} = useRolesList();
     const mobile = useMobileSize();
@@ -37,24 +37,26 @@ const UserRoles = ({user, localUser, setLocalUser, updateUserRoles}) => {
             <CardContent>
                 <Typography level={"title-md"}>Dostępne role</Typography>
                 <Typography level={"body-sm"}>Wybierz role dla użytkownika</Typography>
-                {roles.filter(role => {
-                    return !localUser.roles.find(userRole => userRole.id === role.id);
-                }).map(role => <Chip sx={{backgroundColor: uuidToColor(role.id)}}
-                                     key={role.id}
-                                     onClick={() => {
-                                         setLocalUser(old => {
-                                             return {
-                                                 ...old,
-                                                 roles: [...old.roles, role]
-                                             }
-                                         })
-                                     }}
-                                     variant={"soft"}>
-                    {role.name}
-                </Chip>)}
+                <div>
+                    {roles.filter(role => {
+                        return !localUser.roles.find(userRole => userRole.id === role.id);
+                    }).map(role => <Chip sx={{backgroundColor: uuidToColor(role.id)}}
+                                         key={role.id}
+                                         onClick={() => {
+                                             setLocalUser(old => {
+                                                 return {
+                                                     ...old,
+                                                     roles: [...old.roles, role]
+                                                 }
+                                             })
+                                         }}
+                                         variant={"soft"}>
+                        {role.name}
+                    </Chip>)}
+                </div>
             </CardContent>
             <CardActions>
-                <Button
+                <Button loading={updateRolesLoading}
                     onClick={() => updateUserRoles(localUser.roles.map(localRole => localRole.id))}>Zapisz</Button>
             </CardActions>
         </Card>

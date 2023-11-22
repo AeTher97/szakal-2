@@ -14,7 +14,7 @@ export const useCurrentCampaignJourneyList = () => {
 }
 
 export const useAddContactJourney = () => {
-    const post = usePost(`/journeys`)
+    const {post} = usePost(`/journeys`)
 
     const addJourney = (campaign, company, user) => {
         return post({
@@ -31,7 +31,7 @@ export const useJourney = (id) => {
     const {loading} = useData(`/journeys/${id}`, (data) => setJourney(data),
         [id], [id])
 
-    const post = usePost(`/journeys/${id}/events`, (data) => {
+    const {post} = usePost(`/journeys/${id}/events`, (data) => {
         setJourney(data);
     })
 

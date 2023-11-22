@@ -14,9 +14,9 @@ import java.util.UUID;
 public class UserDTO {
 
     private UUID id;
-    private String username;
     private String email;
     private boolean accepted;
+    private boolean active;
     private String name;
     private String surname;
     private LocalDateTime createdAt;
@@ -25,9 +25,9 @@ public class UserDTO {
     public static UserDTO fromUser(User user) {
         return UserDTO.builder()
                 .id(user.getId())
-                .username(user.getUsername())
                 .email(user.getEmail())
                 .accepted(user.isAccepted())
+                .active(user.isActive())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .createdAt(user.getCreatedAt())

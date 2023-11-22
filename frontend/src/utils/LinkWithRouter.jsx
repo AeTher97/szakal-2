@@ -10,7 +10,7 @@ const LinkWithRouter = ({to, children, overlay, underline, sx, style, color}) =>
     return (
         <Link to={to} component={RouterLink} color={color} overlay={overlay} underline={underline} sx={sx}
               style={style}><span
-            style={{display: "flex", alignItems: "center", flexDirection: "row"}}>{children}</span></Link>
+            style={{display: "flex", alignItems: "center", flexDirection: "row", flex: 1}}>{children}</span></Link>
     );
 };
 

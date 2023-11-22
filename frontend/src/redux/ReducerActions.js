@@ -14,6 +14,7 @@ import {
 } from "./Stores";
 import axios from "axios";
 import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
+import {showError} from "./AlertActions";
 
 const baseURL = process.env.REACT_APP_BACKEND_URL;
 
@@ -45,25 +46,25 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
     formData.append('password', password);
 
 
-    axiosInstance.post('/login', formData)
+    return axiosInstance.post('/login', formData)
         .then(({data}) => {
             const payload = {
                 ...decodeToken(data.authToken),
                 accessToken: data.authToken,
-                refreshToken: data.refreshToken,
-                username: username
+                refreshToken: data.refreshToken
             };
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
             const user = decodeToken(data.authToken);
-            saveTokenInStorage(data.authToken, data.refreshToken, payload.userId, user.email,
-                user.username, user.name, user.surname);
-            onSuccessCallback();
+            saveTokenInStorage(data.authToken, data.refreshToken, payload.userId, user.email, user.name, user.surname);
+            onSuccessCallback(data.accepted);
             updateAccessRights(user, data.authToken, dispatch)
+            return data.accepted
         })
         .catch(err => {
             console.error('Login unsuccessful');
             dispatch({type: LOGIN_FAILED, error: "Invalid username or password"});
+            dispatch(showError("Nieprawidłowy email lub hasło"));
         });
 };
 

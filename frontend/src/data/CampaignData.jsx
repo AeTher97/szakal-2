@@ -6,7 +6,7 @@ export const useCampaignsList = () => {
     const [campaigns, setCampaigns] = useState([])
     const {loading} = useData(`/campaigns?pageNumber=0`, (data) => setCampaigns(data.content))
 
-    const post = usePost(`/campaigns`, (data) => setCampaigns(current => {
+    const {loading: loadingPost, post} = usePost(`/campaigns`, (data) => setCampaigns(current => {
         return [...current, data]
     }))
     const addCampaign = (name, startDate) => {
@@ -16,5 +16,5 @@ export const useCampaignsList = () => {
         })
     }
 
-    return {campaigns, loading, addCampaign}
+    return {campaigns, addLoading: loadingPost, addCampaign}
 }

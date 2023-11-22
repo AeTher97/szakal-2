@@ -1,17 +1,28 @@
 import {useState} from "react";
-import {useData, usePost} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 
-export const useCompanyListWithCampaign = (campaignId) => {
+export const useCompanyListWithCampaign = (campaignId, currentPage, search, category) => {
+    const base = `/companies?pageNumber=${currentPage}&campaign=${campaignId}`;
+    const companyName = search ? `&name=${search}` : "";
+    const categoryQuery = category ? `&category=${category}` : "";
 
     const [companies, setCompanies] = useState([])
-    const {loading} = useData(`/companies?pageNumber=0&${campaignId}`,
-        (data) => setCompanies(data.content), [campaignId], [campaignId])
+    const [pageNumber, setPageNumber] = useState([])
 
-    const post = usePost(`/companies`, (data) => setCompanies(current => {
-        return [...current, data]
-    }))
+    const {loading} = useData(base + companyName + categoryQuery,
+        (data) => {
+            setCompanies(data.content)
+            setPageNumber(data.totalPages)
+        },
+        [campaignId, search, category],
+        [campaignId])
 
-    const addCompany = (name, phone, email, www, street, city, postalCode) => {
+    const post = usePost(`/companies`,
+        (data) => setCompanies(current => {
+            return [...current, data]
+        }))
+
+    const addCompany = (name, phone, email, www, categories, street, city, postalCode) => {
         post({
             name,
             phone,
@@ -21,18 +32,49 @@ export const useCompanyListWithCampaign = (campaignId) => {
                 street,
                 city,
                 postalCode
-            }
+            },
+            categories
         })
     }
 
-    return {companies, loading, addCompany}
+    return {companies, loading, pageNumber, addCompany}
 }
 
 export const useCompany = (id) => {
 
     const [company, setCompany] = useState(null)
-    const {loading} = useData(`/companies/${id}`, (data) => setCompany(data));
+    const {loading} = useData(`/companies/${id}`, (data) => setCompany(data),
+        [id], [id]);
 
-    return {company, loading}
+    const {loading: updatingContactDetails, put} = usePut(`/companies/${id}`, (data) => setCompany(data))
+    const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
+    const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
+
+    const updateContactDetails = (name, email, phone, website) => {
+        put({
+            name, email, phone, website
+        })
+    }
+
+    const updateAddress = (city, street, postalCode) => {
+        putAddress({
+            address: {
+                city,
+                street,
+                postalCode
+            }
+        })
+    }
+
+    const updateCategories = (categories) => {
+        putCategories({
+            categories: categories.map(category => category.id)
+        })
+    }
+
+    return {
+        company, loading, updateContactDetails, updatingContactDetails, updateAddress, updatingAddress,
+        updateCategories, updatingCategories
+    }
 
 }

@@ -15,7 +15,6 @@ public class TokenFactory {
     public static String generateAuthToken(UUID id,
                                            List<String> roles,
                                            String email,
-                                           String username,
                                            String name,
                                            String surname,
                                            JwtConfiguration jwtConfiguration) throws IOException {
@@ -25,7 +24,6 @@ public class TokenFactory {
 
         return Jwts.builder().setSubject(id.toString()).claim("roles", roles)
                 .claim("email", email)
-                .claim("username", username)
                 .claim("name", name)
                 .claim("surname", surname).setIssuer(jwtIssuer)
                 .setExpiration(new Date(System.currentTimeMillis() + authExp))

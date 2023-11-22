@@ -5,13 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.exceptions.UsernameTakenException;
-import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
-import org.iaeste.szakal2.models.dto.user.UserDTO;
-import org.iaeste.szakal2.models.dto.user.UserPasswordChangingDTO;
-import org.iaeste.szakal2.models.dto.user.UserRoleModificationDTO;
+import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
+import org.iaeste.szakal2.utils.Utils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,21 +64,11 @@ public class UserService {
         return userOptional.get();
     }
 
-    public User getUserByUsername(String username) {
-        Optional<User> userOptional = usersRepository.findUserByUsernameIgnoreCase(username);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("User with username " + username + " not found");
-        }
-        return userOptional.get();
-    }
-
     public UserDTO registerUser(UserCreationDTO userCreationDTO) {
         if (usersRepository.findUserByEmailIgnoreCase(userCreationDTO.getEmail()).isPresent()) {
             throw new UsernameTakenException("Email already taken");
         }
-        if (usersRepository.findUserByUsernameIgnoreCase(userCreationDTO.getUsername()).isPresent()) {
-            throw new UsernameTakenException("Username already taken");
-        }
+
         User user = User.fromCreationDTO(userCreationDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return UserDTO.fromUser(usersRepository.save(user));
@@ -95,6 +84,18 @@ public class UserService {
     public UserDTO acceptUser(UUID userId) {
         User user = getUserById(userId);
         user.setAccepted(true);
+        return UserDTO.fromUser(usersRepository.save(user));
+    }
+
+    public UserDTO updateUser(UUID userId, UserUpdateDTO userUpdateDTO) {
+        User user = getUserById(userId);
+        BeanUtils.copyProperties(userUpdateDTO, user, Utils.getNullPropertyNames(userUpdateDTO));
+        return UserDTO.fromUser(usersRepository.save(user));
+    }
+
+    public UserDTO updateUserStatus(UUID userId, UpdateUserStatusDTO updateUserStatusDTO) {
+        User user = getUserById(userId);
+        user.setActive(updateUserStatusDTO.isActive());
         return UserDTO.fromUser(usersRepository.save(user));
     }
 

@@ -5,7 +5,7 @@ import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useCompany} from "../../data/CompaniesData";
 import TabHeader from "../main/TabHeader";
 import CompanyContactData from "./CompanyContactData";
-import {Typography} from "@mui/joy";
+import {LinearProgress, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import CompanyAddress from "./CompanyAddress";
 import CompanyCategories from "./CompanyCategories";
@@ -20,7 +20,10 @@ const CompanyDetails = () => {
     const [localCompany, setLocalCompany] = useState();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {userId} = useSelector(state => state.auth);
-    const {company, loading} = useCompany(location.pathname.split("/")[3])
+    const {
+        company, loading, updateContactDetails, updatingContactDetails, updateAddress,
+        updatingAddress, updateCategories, updatingCategories
+    } = useCompany(location.pathname.split("/")[3])
     const {addJourney} = useAddContactJourney();
     const navigate = useNavigate();
 
@@ -39,7 +42,8 @@ const CompanyDetails = () => {
         }
     }, [company]);
 
-    const thisCampaignJourney = company ? company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
+    const thisCampaignJourney = company ?
+        company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
 
     return (
         <div style={{overflow: "auto"}}>
@@ -71,15 +75,36 @@ const CompanyDetails = () => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
+                    padding: 5,
                     paddingBottom: 100,
                     overflow: "hidden"
                 }}>
-                    <CompanyContactData localCompany={localCompany}/>
-                    <CompanyAddress localCompany={localCompany}/>
+                    <CompanyContactData localCompany={localCompany}
+                                        updateContactData={updateContactDetails}
+                                        updateContactDataLoading={updatingContactDetails}
+                    />
+                    <CompanyAddress localCompany={localCompany}
+                                    updateAddress={updateAddress}
+                                    updateAddressLoading={updatingAddress}/>
                     <CompanyJourneys localCompany={localCompany}/>
-                    <CompanyCategories localCompany={localCompany} setLocalCompany={setLocalCompany}/>
+                    <CompanyCategories categoriesList={localCompany.categories}
+                                       setCategories={(getCategories) => {
+                                           setLocalCompany(old => {
+                                               return {
+                                                   ...old,
+                                                   categories: getCategories(localCompany.categories)
+                                               }
+                                           })
+                                       }}
+                                       updateCategories={updateCategories}
+                                       updateCategoriesLoading={updatingCategories}
+                    />
                 </div>
             </>}
+            {loading &&
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <LinearProgress/>
+                </div>}
         </div>
     );
 };

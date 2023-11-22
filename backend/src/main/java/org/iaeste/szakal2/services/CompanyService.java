@@ -1,14 +1,20 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Validator;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.company.CompanyCreationDTO;
+import org.iaeste.szakal2.models.dto.company.CompanyModificationDTO;
+import org.iaeste.szakal2.models.dto.company.CompanySearch;
 import org.iaeste.szakal2.models.dto.company.ContactPersonCreationDTO;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.iaeste.szakal2.repositories.CategoryRepository;
 import org.iaeste.szakal2.repositories.CompanyRepository;
+import org.iaeste.szakal2.repositories.CompanySpecification;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
@@ -25,11 +31,15 @@ import java.util.UUID;
 @Service
 public class CompanyService {
 
+    private final Validator validator;
+    @PersistenceContext
+    private EntityManager entityManager;
     private final UserService userService;
     private final CompanyRepository companyRepository;
     private final CategoryRepository categoryRepository;
 
-    public CompanyService(UserService userService, CompanyRepository companyRepository, CategoryRepository categoryRepository) {
+    public CompanyService(Validator validator, UserService userService, CompanyRepository companyRepository, CategoryRepository categoryRepository) {
+        this.validator = validator;
         this.userService = userService;
         this.companyRepository = companyRepository;
         this.categoryRepository = categoryRepository;
@@ -49,14 +59,14 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public Company updateCompany(UUID id, CompanyCreationDTO companyCreationDTO) {
+    public Company updateCompany(UUID id, CompanyModificationDTO companyModificationDTO) {
         Company company = getCompanyById(id);
-        if (companyCreationDTO.getCategories() != null && !companyCreationDTO.getCategories().isEmpty()) {
+        if (companyModificationDTO.getCategories() != null) {
             company.getCategories().clear();
-            company.getCategories().addAll(categoryRepository.findAllById(companyCreationDTO.getCategories()));
+            company.getCategories().addAll(categoryRepository.findAllById(companyModificationDTO.getCategories()));
         }
         company.setUpdatedBy(userService.getUserById(SecurityUtils.getUserId()));
-        BeanUtils.copyProperties(companyCreationDTO, company, Utils.getNullPropertyNames(companyCreationDTO));
+        BeanUtils.copyProperties(companyModificationDTO, company, Utils.getNullPropertyNames(companyModificationDTO));
         return companyRepository.save(company);
     }
 
@@ -77,8 +87,13 @@ public class CompanyService {
     }
 
     public Page<Company> getCompanies(Pageable pageable) {
-        return companyRepository.findAllByDeletedFalseOrderByNameDesc(pageable);
+        return companyRepository.findAll(pageable);
     }
+
+    public Page<Company> getCompanies(CompanySearch companySearch, Pageable pageable) {
+        return companyRepository.findAll(new CompanySpecification(companySearch, entityManager), pageable);
+    }
+
 
     public void truncate() {
         companyRepository.deleteAll();

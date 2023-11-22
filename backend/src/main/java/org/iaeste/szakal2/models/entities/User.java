@@ -26,14 +26,12 @@ public class User {
             strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    @Setter
-    @NotNull
-    private String username;
     @JsonIgnore
     @Setter
     @NotNull
     private String password;
     @NotNull
+    @Setter
     private String email;
     @Setter
     @NotNull
@@ -63,13 +61,12 @@ public class User {
     public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()
                 .email(userCreationDTO.getEmail())
-                .username(userCreationDTO.getUsername())
                 .password(userCreationDTO.getPassword())
                 .createdAt(LocalDateTime.now())
                 .name(userCreationDTO.getName())
                 .surname(userCreationDTO.getSurname())
                 .accepted(false)
-                .active(false)
+                .active(true)
                 .roles(new ArrayList<>())
                 .build();
     }

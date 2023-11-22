@@ -2,6 +2,7 @@ package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,6 +26,7 @@ public class Company {
     private UUID id;
     @Setter
     @NotNull
+    @NotEmpty
     private String name;
     @Setter
     @OneToOne(cascade = CascadeType.ALL)

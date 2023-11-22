@@ -2,10 +2,7 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
-import org.iaeste.szakal2.models.dto.user.UserDTO;
-import org.iaeste.szakal2.models.dto.user.UserPasswordChangingDTO;
-import org.iaeste.szakal2.models.dto.user.UserRoleModificationDTO;
+import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +49,16 @@ public class UsersController {
     @PutMapping("/{id}/accept")
     public UserDTO acceptUser(@PathVariable("id") UUID id) {
         return userService.acceptUser(id);
+    }
+
+    @PutMapping("/{id}/status")
+    public UserDTO updateUserStatus(@PathVariable("id") UUID id, @RequestBody UpdateUserStatusDTO updateUserStatusDTO) {
+        return userService.updateUserStatus(id, updateUserStatusDTO);
+    }
+
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable("id") UUID id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        return userService.updateUser(id, userUpdateDTO);
     }
 
     @PutMapping("/{id}/password")

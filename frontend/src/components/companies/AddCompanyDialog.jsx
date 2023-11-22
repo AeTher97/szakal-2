@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import {FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import CompanyCategories from "./CompanyCategories";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
 
@@ -11,11 +12,11 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
     const [street, setStreet] = useState("");
     const [city, setCity] = useState("");
     const [postalCode, setPostalCode] = useState("");
+    const [categories, setCategories] = useState([]);
 
     return (
         <Modal open={open}>
             <ModalDialog sx={{overflow: "auto"}}>
-                <DialogTitle>Dodaj firmę</DialogTitle>
                 <form
                     onSubmit={(event, value) => {
                         event.preventDefault();
@@ -23,6 +24,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                             phone,
                             email,
                             www,
+                            categories.map(category => category.id),
                             street,
                             city,
                             postalCode);
@@ -83,11 +85,14 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Kod pocztowy</FormLabel>
-                                    <Input autoFocus
+                                    <Input
                                            value={postalCode}
                                            onChange={(e) => {
                                                setPostalCode(e.target.value)
                                            }} placeholder={"Kod pocztowy"}/>
+                                </FormControl>
+                                <FormControl>
+                                    <CompanyCategories categoriesList={categories} setCategories={setCategories}/>
                                 </FormControl>
                             </Stack>
                         </div>

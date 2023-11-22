@@ -47,6 +47,7 @@ const JourneyDetails = () => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
+                    padding: 5,
                     paddingBottom: 10,
                     overflow: "hidden"
                 }}>
@@ -54,7 +55,7 @@ const JourneyDetails = () => {
                     <JourneyCompany company={journey.company}/>
                     <JourneyUser user={journey.user}/>
                 </div>
-                <div style={{display: "flex", width: 1000}}>
+                <div style={{display: "flex"}}>
                 </div>
                 <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                     <div style={{flex: 1}}>

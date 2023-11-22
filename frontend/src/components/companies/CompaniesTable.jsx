@@ -10,12 +10,13 @@ const CompaniesTable = ({companies}) => {
 
     return (
         <Sheet sx={{
-            width: '100%',
             borderRadius: 'sm',
             overflow: 'auto',
             display: "flex",
         }}>
+
             <Table
+                variant={"outlined"}
                 stickyHeader
                 hoverRow
                 sx={{
@@ -24,16 +25,20 @@ const CompaniesTable = ({companies}) => {
                     '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
                     '--TableCell-paddingY': '4px',
                     '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
                 }}>
                 <thead>
                 <tr>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Firma</Typography>
                     </th>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Obecna akcja</Typography>
                     </th>
-                    {!mobile && <th>
+                    <th style={{padding: "12px 6px"}}>
+                        <Typography>Kategorie</Typography>
+                    </th>
+                    {!mobile && <th style={{padding: "12px 6px"}}>
                         <Typography>Historia kontaktu</Typography>
                     </th>}
                 </tr>
@@ -54,7 +59,13 @@ const CompaniesTable = ({companies}) => {
                                 <Typography>{company.currentJourney.journeyStart}</Typography>
                             </div>
                             : <Typography>Wolna</Typography>}</td>
-                        {!mobile && <td>{company.contactJourneys.map(journey => <Typography key={journey.campaignName}>
+                        <td>
+                            {company.categories.map(category => {
+                                return <Typography key={category.id}>{category.name}</Typography>
+                            })}
+                        </td>
+                        {!mobile && company.contactJourneys &&
+                            <td>{company.contactJourneys.map(journey => <Typography key={journey.campaignName}>
                             {journey.campaignName} {journey.status}</Typography>)}</td>}
                     </tr>
                 )}

@@ -8,7 +8,7 @@ const CompanyJourneys = ({localCompany}) => {
     const mobile = useMobileSize();
 
     return (
-        <Card sx={{flex: mobile ? 1 : "", minWidth: 250}} variant={"soft"}>
+        <Card sx={{flex: 1, minWidth: 250}} variant={"soft"}>
             <CardOverflow>
                 <CardContent>
                     <Typography level={"title-md"}>Kontakty</Typography>
@@ -16,9 +16,10 @@ const CompanyJourneys = ({localCompany}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 <CardContent>
-                    {localCompany.contactJourneys.map((journey, i) => <div
+                    {localCompany.contactJourneys.map((journey, i) => <div key={journey.id}
                         style={{display: "flex", flexDirection: "column"}}>
-                        <LinkWithRouter>{journey.campaign.name} {journey.contactStatus}</LinkWithRouter>
+                        <LinkWithRouter
+                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {journey.contactStatus}</LinkWithRouter>
                         <Typography>{journey.user.name} {journey.user.surname}</Typography>
                         <Typography>Liczba praktykantów: 0</Typography>
                         {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}

@@ -35,23 +35,17 @@ const JourneysTable = ({journeys}) => {
                     <th>
                         <Typography>Status</Typography>
                     </th>
-                    <th>
-                        <Typography>Akcje</Typography>
-                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 {journeys && journeys.map(journey =>
                     <tr key={journey.id}>
                         <td>
-                            <LinkWithRouter to={`/secure/companies/${journey.company.id}`}>{journey.company.name}
+                            <LinkWithRouter to={journey.id}>{journey.company.name}
                             </LinkWithRouter>
                         </td>
                         <td>{journey.user.name} {journey.user.surname}</td>
                         <td>{journey.contactStatus}</td>
-                        <td>
-                            <LinkWithRouter to={journey.id}>Zobacz więcej</LinkWithRouter>
-                        </td>
                     </tr>
                 )}
                 </tbody>

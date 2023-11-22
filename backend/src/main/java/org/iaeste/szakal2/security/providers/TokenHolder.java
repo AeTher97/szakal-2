@@ -9,4 +9,5 @@ public class TokenHolder {
 
     private String authToken;
     private String refreshToken;
+    private boolean accepted;
 }

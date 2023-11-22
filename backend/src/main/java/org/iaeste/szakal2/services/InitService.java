@@ -74,7 +74,6 @@ public class InitService {
     private void createDefaultAdminUser(Role role) {
         log.info("Creating default admin user");
         usersRepository.save(User.builder()
-                .username("administrator")
                 .email("administrator@szakal.org")
                 .password(passwordEncoder.encode("administrator"))
                 .roles(List.of(role))
@@ -82,6 +81,7 @@ public class InitService {
                 .surname("Admin")
                 .createdAt(LocalDateTime.now())
                 .accepted(true)
+                .active(true)
                 .build());
     }
 }

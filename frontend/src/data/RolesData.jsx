@@ -5,7 +5,7 @@ export const useRolesList = () => {
     const [roles, setRoles] = useState([]);
     const {loading} = useData(`/roles?pageNumber=0`, (data) => setRoles(data.content));
 
-    const post = usePost(`/roles`, (data) => setRoles(current => {
+    const {post} = usePost(`/roles`, (data) => setRoles(current => {
         return [...current, data]
     }))
 
@@ -23,15 +23,15 @@ export const useRole = (id) => {
     const [role, setRole] = useState(null);
     const {loading} = useData(`/roles/${id}`, (data) => setRole(data));
 
-    const put = usePut(`/roles/${id}`, (data) => setRole(data));
+    const {put, loading: updateRoleLoading} = usePut(`/roles/${id}`, (data) => setRole(data));
 
     const updateRole = (name, description, accessRights) => {
-        put({
+        return put({
             name,
             description,
             accessRights: accessRights
         })
     }
 
-    return {role, loading, updateRole}
+    return {role, loading, updateRole, updateRoleLoading}
 }

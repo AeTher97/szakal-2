@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 const UserMenu = ({name, surname}) => {
 
+    const {userId} = useSelector(state => state.auth);
     const mobile = useMobileSize();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -24,12 +25,15 @@ const UserMenu = ({name, surname}) => {
                     <MenuItem onClick={() => {
                         dispatch(changeThemeAction());
                     }}>
-                        Dark Mode<Switch checked={theme === "dark"}/>
+                        Ciemny motyw<Switch checked={theme === "dark"}/>
                     </MenuItem>
+                    <MenuItem onClick={() => {
+                        navigate(`/secure/users/${userId}`);
+                    }}>Profil</MenuItem>
                     <MenuItem onClick={() => {
                         dispatch(logoutAction());
                         navigate("/login");
-                    }}>Logout</MenuItem>
+                    }}>Wyloguj się</MenuItem>
 
                 </Menu>
             </Dropdown>

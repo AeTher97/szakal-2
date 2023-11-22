@@ -42,6 +42,11 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
         }
         User user = userOptional.get();
 
+        if (!user.isActive()) {
+            throw new BadCredentialsException(STR."""
+                    Your account is no longer active""");
+        }
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
@@ -53,11 +58,10 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                                 TokenFactory.generateAuthToken(user.getId(),
                                         authorities.stream().map(GrantedAuthority::getAuthority).toList(),
                                         user.getEmail(),
-                                        user.getUsername(),
                                         user.getName(),
                                         user.getSurname(),
                                         jwtConfiguration),
-                                TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration)),
+                                TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration), user.isAccepted()),
                         authorities);
             } catch (IOException | NullPointerException e) {
                 throw new AuthenticationServiceException("Error occurred while trying to authenticate");
