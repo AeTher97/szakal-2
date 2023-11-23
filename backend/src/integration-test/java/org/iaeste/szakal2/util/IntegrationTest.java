@@ -18,7 +18,7 @@ public abstract class IntegrationTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("database.url", sharedPostgresContainer::getJdbcUrl);
+        registry.add("database.url", () -> sharedPostgresContainer.getJdbcUrl().replace("jdbc:postgresql://", ""));
         registry.add("database.username", sharedPostgresContainer::getUsername);
         registry.add("database.password", sharedPostgresContainer::getPassword);
         registry.add("jwt.secret", () -> "kfjhjdskl5409378ugofhu435jothy870pfyu9354uyihgert90jhg9uy9543543334");

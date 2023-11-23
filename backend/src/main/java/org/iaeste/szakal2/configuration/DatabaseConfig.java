@@ -2,6 +2,7 @@ package org.iaeste.szakal2.configuration;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,12 @@ import java.net.URISyntaxException;
 @Configuration
 @EnableConfigurationProperties(DatabaseProperties.class)
 public class DatabaseConfig {
+
+    private final ApplicationContext applicationContext;
+
+    public DatabaseConfig(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Bean
     public DataSource dataSource(DatabaseProperties databaseProperties) throws URISyntaxException {
