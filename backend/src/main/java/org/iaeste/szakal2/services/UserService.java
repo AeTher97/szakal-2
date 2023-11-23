@@ -89,6 +89,10 @@ public class UserService {
 
     public UserDTO updateUser(UUID userId, UserUpdateDTO userUpdateDTO) {
         User user = getUserById(userId);
+        Optional<User> existingUser = usersRepository.findUserByEmailIgnoreCase(userUpdateDTO.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().equals(user)) {
+            throw new UsernameTakenException("This email address is taken");
+        }
         BeanUtils.copyProperties(userUpdateDTO, user, Utils.getNullPropertyNames(userUpdateDTO));
         return UserDTO.fromUser(usersRepository.save(user));
     }

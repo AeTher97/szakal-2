@@ -15,6 +15,7 @@ const CategoriesTable = ({categories, modifyCategory}) => {
             display: "flex",
         }}>
             <Table
+                variant={"outlined"}
                 stickyHeader
                 hoverRow
                 sx={{
@@ -23,13 +24,15 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                     '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
                     '--TableCell-paddingY': '4px',
                     '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
+
                 }}>
                 <thead>
                 <tr>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Nazwa</Typography>
                     </th>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Akcje</Typography>
                     </th>
                 </tr>

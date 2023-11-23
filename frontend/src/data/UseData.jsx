@@ -21,8 +21,10 @@ export const useData = (url, updateFunction, triggers = [], locks = []) => {
                 updateFunction(res.data)
             }
         }).catch(e => {
-            console.log(e.response.data.error);
-            dispatch(showError(e.response.data.error))
+            console.log(e.response);
+            if (e.response.data && e.response.data.error) {
+                dispatch(showError(e.response.data.error))
+            }
         }).finally(() => {
             if (mounted) {
                 setLoading(false);

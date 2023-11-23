@@ -9,12 +9,12 @@ const JourneysTable = ({journeys}) => {
 
     return (
         <Sheet sx={{
-            width: '100%',
             borderRadius: 'sm',
             overflow: 'auto',
             display: "flex",
         }}>
             <Table
+                variant={"outlined"}
                 stickyHeader
                 hoverRow
                 sx={{
@@ -23,16 +23,17 @@ const JourneysTable = ({journeys}) => {
                     '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
                     '--TableCell-paddingY': '4px',
                     '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
                 }}>
                 <thead>
                 <tr>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Firma</Typography>
                     </th>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Użytkownik</Typography>
                     </th>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Status</Typography>
                     </th>
                 </tr>
