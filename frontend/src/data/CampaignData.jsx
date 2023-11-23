@@ -1,10 +1,15 @@
 import {useState} from "react";
 import {useData, usePost} from "./UseData";
 
-export const useCampaignsList = () => {
+export const useCampaignsList = (userId, currentPage = 0) => {
 
     const [campaigns, setCampaigns] = useState([])
-    const {loading} = useData(`/campaigns?pageNumber=0`, (data) => setCampaigns(data.content))
+    const [pageNumber, setPageNumber] = useState([])
+    const {loading} = useData(`/campaigns`, (data) => {
+            setCampaigns(data.content)
+            setPageNumber(data.totalPages)
+        },
+        [pageNumber], [{name: "pageNumber", value: currentPage}])
 
     const {loading: loadingPost, post} = usePost(`/campaigns`, (data) => setCampaigns(current => {
         return [...current, data]
@@ -16,5 +21,5 @@ export const useCampaignsList = () => {
         })
     }
 
-    return {campaigns, addLoading: loadingPost, addCampaign}
+    return {campaigns, addLoading: loadingPost, addCampaign, pageNumber}
 }

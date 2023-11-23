@@ -3,7 +3,7 @@ import {useData} from "./UseData";
 
 export const useAccessRightsList = () => {
     const [accessRights, setAccessRights] = useState([]);
-    const {loading} = useData(`/accessRights?pageNumber=0`, (data) => setAccessRights(data.content));
+    const {loading} = useData(`/accessRights`, (data) => setAccessRights(data));
 
     return {accessRights, loading}
 }

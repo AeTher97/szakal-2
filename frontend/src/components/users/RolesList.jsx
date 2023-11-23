@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, CardContent, CardOverflow, Chip, Divider, Typography} from "@mui/joy";
+import {Card, CardContent, CardOverflow, Chip, CircularProgress, Divider, Typography} from "@mui/joy";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useRolesList} from "../../data/RolesData";
@@ -27,6 +27,9 @@ const RolesList = () => {
                         </div>
                     </CardContent>
                     <CardContent>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            {loading && <CircularProgress/>}
+                        </div>
                         <Divider inset={"context"}/>
                         {roles.map((role, index) => {
                             return <div key={role.id}>
@@ -56,7 +59,8 @@ const RolesList = () => {
                                             flex: 5,
                                             display: "flex",
                                             justifyContent: "flex-end",
-                                            flexWrap: "wrap"
+                                            flexWrap: "wrap",
+                                            gap: 5
                                         }}>
                                             {role.accessRights.map(accessRight =>
                                                 <Chip key={accessRight.id}

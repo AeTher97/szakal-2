@@ -3,6 +3,7 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.journey.CommentCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
@@ -55,7 +56,11 @@ public class JourneyController {
     }
 
     @GetMapping
-    public Page<ContactJourney> getContactJourneys(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
-        return journeyService.getJourneys(Pageable.ofSize(pageSize).withPage(pageNumber));
+    public Page<ContactJourney> getContactJourneys(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber,
+                                                   @RequestParam(required = false) UUID userId, @RequestParam(required = false) UUID campaignId) {
+        if ((campaignId != null && userId == null) || (campaignId == null && userId != null)) {
+            throw new ResourceNotFoundException("You have to call with both user and campaign id at once");
+        }
+        return journeyService.getJourneys(userId, campaignId, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

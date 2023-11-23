@@ -84,6 +84,13 @@ public class JourneyService {
         return contactJourneyRepository.findAllByOrderByJourneyStart(pageable);
     }
 
+    public Page<ContactJourney> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
+        User user = userService.getUserById(userId);
+        Campaign campaign = campaignService.getCampaignById(campaignID);
+        return contactJourneyRepository.findAllByUserAndAndCampaignOrderByJourneyStart(user, campaign, pageable);
+    }
+
+
     public void truncate() {
         contactJourneyRepository.deleteAll();
     }

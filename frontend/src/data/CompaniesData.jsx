@@ -1,23 +1,21 @@
 import {useState} from "react";
 import {useData, usePost, usePut} from "./UseData";
 
-export const useCompanyListWithCampaign = (campaignId, currentPage, search, category) => {
-    const base = `/companies?pageNumber=${currentPage}&campaign=${campaignId}`;
-    const companyName = search ? `&name=${search}` : "";
-    const categoryQuery = category ? `&category=${category}` : "";
-
+export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, category) => {
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState([])
 
-    const {loading} = useData(base + companyName + categoryQuery,
+    const {loading} = useData("/companies",
         (data) => {
             setCompanies(data.content)
             setPageNumber(data.totalPages)
-        },
-        [campaignId, search, category],
-        [campaignId])
+        }, [campaignId, search, currentPage, category],
+        [{name: "campaign", value: campaignId},
+            {name: "pageNumber", value: currentPage},
+            {name: "name", value: search},
+            {name: "category", value: category}])
 
-    const post = usePost(`/companies`,
+    const {post} = usePost(`/companies`,
         (data) => setCompanies(current => {
             return [...current, data]
         }))
@@ -44,7 +42,7 @@ export const useCompany = (id) => {
 
     const [company, setCompany] = useState(null)
     const {loading} = useData(`/companies/${id}`, (data) => setCompany(data),
-        [id], [id]);
+        [id]);
 
     const {loading: updatingContactDetails, put} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))

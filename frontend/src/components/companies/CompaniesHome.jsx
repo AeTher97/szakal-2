@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
-import {FormControl, FormLabel, Input, LinearProgress, Select, Typography} from "@mui/joy";
-import CompaniesTable from "./CompaniesTable";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionGroup,
+    AccordionSummary,
+    FormControl,
+    FormLabel,
+    Input,
+    LinearProgress,
+    Select,
+    Typography
+} from "@mui/joy";
 import {Route, Routes} from "react-router-dom";
 import CompanyDetails from "./CompanyDetails";
 import NotFoundScreen from "../../screens/NotFoundScreen";
@@ -14,6 +24,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import {useMobileSize} from "../../utils/SizeQuery";
 import Option from "@mui/joy/Option";
 import {useCategories} from "../../data/CategoriesData";
+import Pagination from "../misc/Pagination";
+import CompaniesTable from "./CompaniesTable";
 
 
 const filters = (mobile, categories, categoryField, setCategoryField) => {
@@ -42,13 +54,13 @@ const CompaniesHome = () => {
     const [categoryField, setCategoryField] = useState("")
     const [nameSearchField, setNameSearchField] = useState("")
 
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const mobile = useMobileSize();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {categories} = useCategories();
     const {companies, loading, pageNumber, addCompany} = useCompanyListWithCampaign(
-        currentCampaign, currentPage,
+        currentCampaign, currentPage - 1,
         nameSearch === "" ? null : nameSearch,
         categorySearch === "" ? null : categorySearch);
 
@@ -59,10 +71,36 @@ const CompaniesHome = () => {
         setCategorySearch(categoryField)
     }
 
+    const renderFilters = () => {
+        return <form onSubmit={e => {
+            e.preventDefault();
+            updateFilters();
+        }} style={{
+            marginBottom: 10,
+            marginTop: 10,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 15,
+            alignItems: "flex-end"
+        }}>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>Szukaj firmy</FormLabel>
+                <Input value={nameSearchField}
+                       onChange={(e) => setNameSearchField(e.target.value)}
+                       size="sm" placeholder="Szukaj"
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            {filters(mobile, categories, categoryField, setCategoryField)}
+            <div>
+                <Button size={"sm"} type={"submit"}>Szukaj</Button>
+            </div>
+        </form>
+    }
+
     return (
         <Routes>
             <Route path={"/"} element={
-                <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 30}}>
+                <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 10}}>
                     <TabHeader>
                         <Typography level="h2">Firmy</Typography>
                         <div>
@@ -74,39 +112,33 @@ const CompaniesHome = () => {
 
                     {loading && <LinearProgress/>}
 
-                    <form onSubmit={e => {
-                        e.preventDefault();
-                        updateFilters();
-                    }} style={{
-                        marginBottom: 10,
-                        marginTop: 10,
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 15,
-                        alignItems: "flex-end"
+                    {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
+                        borderRadius: 'sm', marginBottom: 1
                     }}>
-                        <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                            <FormLabel>Szukaj firmy</FormLabel>
-                            <Input value={nameSearchField} onChange={(e) => setNameSearchField(e.target.value)}
-                                   size="sm" placeholder="Szukaj"
-                                   startDecorator={<SearchIcon/>}/>
-                        </FormControl>
-                        {filters(mobile, categories, categoryField, setCategoryField)}
-                        <div>
-                            <Button size={"sm"} type={"submit"}>Szukaj</Button>
-                        </div>
-                    </form>
+                        <Accordion>
+                            <AccordionSummary>Filtry</AccordionSummary>
+                            <AccordionDetails>
+                                {renderFilters()}
+                            </AccordionDetails>
+                        </Accordion>
+                    </AccordionGroup> : renderFilters()}
 
                     <CompaniesTable companies={companies}/>
+                    {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
+                                                   firstAndLast={!mobile} concise={mobile}
+                                                   setPage={pageNumber => setCurrentPage(pageNumber)}/>}
+
                     <AddCompanyDialog
                         open={addCompanyOpen}
                         close={() => setAddCompanyOpen(false)}
                         addCompany={addCompany}/>
-                </div>}/>
+                </div>
+            }/>
             <Route path={"/:id"} element={<CompanyDetails/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
-    );
+    )
+        ;
 };
 
 export default CompaniesHome;

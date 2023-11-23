@@ -2,9 +2,10 @@ import {useData, usePut} from "./UseData";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
-export const useUsersList = () => {
+export const useUsersList = (page = 0) => {
     const [users, setUsers] = useState();
-    const {loading} = useData(`/users?pageNumber=0`, (data) => setUsers(data.content))
+    const {loading} = useData(`/users`, (data) => setUsers(data.content),
+        [page], [{name: "pageNumber", value: page}])
 
     return {users, loading}
 }
@@ -13,8 +14,7 @@ export const useUserData = (id) => {
     const [user, setUser] = useState();
 
     const {loading} = useData(`/users/${id}`,
-        (data) => setUser(data),
-        id)
+        (data) => setUser(data), [id])
 
     const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`, (content) => setUser(content))
     const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`, (content) => setUser(content))

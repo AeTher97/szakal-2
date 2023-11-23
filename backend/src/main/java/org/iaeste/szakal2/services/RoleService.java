@@ -12,8 +12,6 @@ import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.repositories.RolesRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,8 +63,8 @@ public class RoleService {
         return roleOptional.get();
     }
 
-    public Page<Role> getRoles(Pageable pageable) {
-        return rolesRepository.findAll(pageable);
+    public List<Role> getRoles() {
+        return rolesRepository.findAll();
     }
 
     public void deleteRole(UUID id) {

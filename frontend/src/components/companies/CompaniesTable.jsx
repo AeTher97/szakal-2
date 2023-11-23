@@ -35,9 +35,9 @@ const CompaniesTable = ({companies}) => {
                     <th style={{padding: "12px 6px"}}>
                         <Typography>Obecna akcja</Typography>
                     </th>
-                    <th style={{padding: "12px 6px"}}>
+                    {!mobile && <th style={{padding: "12px 6px"}}>
                         <Typography>Kategorie</Typography>
-                    </th>
+                    </th>}
                     {!mobile && <th style={{padding: "12px 6px"}}>
                         <Typography>Historia kontaktu</Typography>
                     </th>}
@@ -59,11 +59,11 @@ const CompaniesTable = ({companies}) => {
                                 <Typography>{company.currentJourney.journeyStart}</Typography>
                             </div>
                             : <Typography>Wolna</Typography>}</td>
-                        <td>
+                        {!mobile && <td>
                             {company.categories.map(category => {
                                 return <Typography key={category.id}>{category.name}</Typography>
                             })}
-                        </td>
+                        </td>}
                         {!mobile && company.contactJourneys &&
                             <td>{company.contactJourneys.map(journey => <Typography key={journey.campaignName}>
                             {journey.campaignName} {journey.status}</Typography>)}</td>}

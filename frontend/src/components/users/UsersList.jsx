@@ -5,6 +5,7 @@ import {
     Card,
     CardContent,
     Chip,
+    CircularProgress,
     List,
     ListDivider,
     ListItem,
@@ -19,7 +20,7 @@ import {uuidToColor} from "../../utils/ColorForUUID";
 
 const UsersList = () => {
 
-    const {users} = useUsersList();
+    const {users, loading} = useUsersList();
 
     return (
         <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 200}}>
@@ -31,6 +32,9 @@ const UsersList = () => {
                         </ListItemContent>
                     </ListItem>
                     <ListDivider/>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        {loading && <CircularProgress/>}
+                    </div>
                     {users && users.map((user, index) => {
                         return <div key={user.id}>
                             <ListItem>

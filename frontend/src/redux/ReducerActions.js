@@ -23,12 +23,12 @@ const axiosInstance = axios.create(
 )
 
 const updateAccessRights = (user, authToken, dispatch) => {
-    return axiosInstance.get("/roles?pageNumber=0", {
+    return axiosInstance.get("/roles", {
         headers: {
             'Authorization': `Bearer ${authToken}`
         }
     }).then((res) => {
-        const userAccessRights = res.data.content
+        const userAccessRights = res.data
             .filter(role => user.roles.includes(role.name))
             .flatMap(role => {
                 return role.accessRights.map(accessRight => accessRight.code);

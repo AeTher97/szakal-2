@@ -13,6 +13,7 @@ const CampaignsTable = ({campaigns}) => {
             display: "flex",
         }}>
             <Table
+                variant={"outlined"}
                 stickyHeader
                 hoverRow
                 sx={{
@@ -21,13 +22,14 @@ const CampaignsTable = ({campaigns}) => {
                     '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
                     '--TableCell-paddingY': '4px',
                     '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
                 }}>
                 <thead>
                 <tr>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Nazwa</Typography>
                     </th>
-                    <th>
+                    <th style={{padding: "12px 6px"}}>
                         <Typography>Data rozpoczęcia</Typography>
                     </th>
                 </tr>

@@ -4,23 +4,23 @@ import TabHeader from "../main/TabHeader";
 import {LinearProgress, Typography} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import JourneysTable from "./JourneysTable";
-import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
+import {useUserJourneyList} from "../../data/JourneyData";
 import JourneyDetails from "./JourneyDetails";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const JourneysHome = () => {
+const UserJourneysHome = () => {
 
     const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
-    const {journeys, loading, pagesNumber} = useCurrentCampaignJourneyList(currentPage - 1);
+    const {journeys, loading, pagesNumber} = useUserJourneyList(currentPage - 1);
 
     return (
         <Routes>
             <Route path={"/"} element={
                 <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
                     <TabHeader>
-                        <Typography level="h2">Kontakty w obecnej akcji</Typography>
+                        <Typography level="h2">Twoje kontakty</Typography>
                     </TabHeader>
                     {loading && <LinearProgress/>}
 
@@ -35,4 +35,4 @@ const JourneysHome = () => {
     );
 };
 
-export default JourneysHome;
+export default UserJourneysHome;

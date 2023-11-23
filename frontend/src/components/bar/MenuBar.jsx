@@ -8,6 +8,7 @@ export const menuItems = [
     {path: "home", name: "Start"},
     {path: "companies", name: "Wszystkie Firmy"},
     {path: "journeys", name: "Kontakty w tej akcji"},
+    {path: "user-journeys", name: "Twoje Kontakty"},
     {path: "categories", name: "Branże"},
     {path: "campaigns", name: "Akcje"},
     {path: "users", name: "Użytkownicy", right: USER_VIEWING}

@@ -14,6 +14,18 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
     const [postalCode, setPostalCode] = useState("");
     const [categories, setCategories] = useState([]);
 
+    const onClose = () => {
+        setName("");
+        setPhone("");
+        setEmail("");
+        setWww("");
+        setStreet("");
+        setCity("");
+        setPostalCode("");
+        setCategories("");
+        close();
+    }
+
     return (
         <Modal open={open}>
             <ModalDialog sx={{overflow: "auto"}}>
@@ -53,6 +65,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                     <FormLabel>Email</FormLabel>
                                     <Input autoFocus required
                                            value={email}
+                                           type={"email"}
                                            onChange={(e) => {
                                                setEmail(e.target.value)
                                            }} placeholder={"Email"}/>
@@ -86,10 +99,10 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                 <FormControl>
                                     <FormLabel>Kod pocztowy</FormLabel>
                                     <Input
-                                           value={postalCode}
-                                           onChange={(e) => {
-                                               setPostalCode(e.target.value)
-                                           }} placeholder={"Kod pocztowy"}/>
+                                        value={postalCode}
+                                        onChange={(e) => {
+                                            setPostalCode(e.target.value)
+                                        }} placeholder={"Kod pocztowy"}/>
                                 </FormControl>
                                 <FormControl>
                                     <CompanyCategories categoriesList={categories} setCategories={setCategories}/>
@@ -98,7 +111,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                         </div>
                         <Stack spacing={2}>
                             <Button type="submit">Zapisz</Button>
-                            <Button color={"neutral"} onClick={close}>Anuluj</Button>
+                            <Button color={"neutral"} onClick={onClose}>Anuluj</Button>
                         </Stack>
                     </Stack>
                 </form>

@@ -1,10 +1,16 @@
 import {useState} from "react";
 import {useData, usePost, usePut} from "./UseData";
 
-export const useCategories = () => {
+export const useCategories = (currentPage = 0) => {
 
     const [categories, setCategories] = useState();
-    const {loading} = useData(`/categories?pageNumber=0`, (data) => setCategories(data.content))
+    const [pageNumber, setPageNumber] = useState();
+
+    const {loading} = useData(`/categories`, (data) => {
+            setCategories(data.content)
+            setPageNumber(data.totalPages)
+        },
+        [currentPage], [{name: "pageNumber", value: currentPage}])
 
     const {post} = usePost(`/categories`, (content) => setCategories(current => {
         return [...current, content]
@@ -28,7 +34,7 @@ export const useCategories = () => {
         }, `/categories/${id}`)
     }
 
-    return {categories, loading, addCategory, modifyCategory}
+    return {categories, loading, addCategory, modifyCategory, pageNumber}
 }
 
 

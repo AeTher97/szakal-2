@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Route, Routes} from "react-router-dom";
-import {Typography} from "@mui/joy";
+import {LinearProgress, Typography} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import CampaignsTable from "./CampaignsTable";
 import AddIcon from '@mui/icons-material/Add';
@@ -8,12 +8,15 @@ import Button from "@mui/joy/Button";
 import TabHeader from "../main/TabHeader";
 import AddCampaignDialog from "./AddCampaignDialog";
 import {useCampaignsList} from "../../data/CampaignData";
+import Pagination from "../misc/Pagination";
+import {useMobileSize} from "../../utils/SizeQuery";
 
 const CampaignsHome = () => {
 
+    const [currentPage, setCurrentPage] = useState(1);
     const [addCampaignOpen, setAddCampaignOpen] = useState(false);
-    const {campaigns, loading, addCampaign} = useCampaignsList();
-
+    const {campaigns, loading, addCampaign, pageNumber} = useCampaignsList(currentPage - 1);
+    const mobile = useMobileSize();
 
     return (
         <Routes>
@@ -25,12 +28,15 @@ const CampaignsHome = () => {
                             setAddCampaignOpen(true)
                         }}><AddIcon/>Dodaj akcję</Button>
                     </TabHeader>
+                    {loading && <LinearProgress/>}
+
                     <CampaignsTable campaigns={campaigns}/>
+                    {pageNumber > 1 && <Pagination firstAndLast={!mobile} concise={mobile} numberOfPages={pageNumber}
+                                                   currentPage={currentPage}
+                                                   setPage={(page) => setCurrentPage(page)}/>}
                     <AddCampaignDialog open={addCampaignOpen} addCampaign={addCampaign}
                                        close={() => setAddCampaignOpen(false)}/>
                 </div>}/>
-            {/*<Route path={"/:id"} element={<CompanyDetails/>}/>*/}
-            {/*<Route path={"/add"} element={<AddCompany/>}/>*/}
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     );

@@ -3,10 +3,19 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showError} from "../redux/AlertActions";
 
-export const useData = (url, updateFunction, triggers = [], locks = []) => {
+export const useData = (baseUrl, updateFunction, triggers = [], urlParams = [], locks = []) => {
 
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
+
+    let url = baseUrl;
+    let first = true;
+    for (let param of urlParams) {
+        if (param.value !== null) {
+            url += `${first ? "?" : "&"}${param.name}=${param.value}`;
+            first = false;
+        }
+    }
 
     useEffect(() => {
         for (let lock of locks) {
@@ -14,6 +23,7 @@ export const useData = (url, updateFunction, triggers = [], locks = []) => {
                 return;
             }
         }
+
         let mounted = true;
         setLoading(true)
         axios.get(url).then((res) => {
@@ -33,7 +43,7 @@ export const useData = (url, updateFunction, triggers = [], locks = []) => {
         return () => {
             mounted = false;
         }
-    }, [...triggers, url]);
+    }, [...triggers]);
 
 
     return {loading}

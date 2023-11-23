@@ -3,7 +3,7 @@ import {useData, usePost, usePut} from "./UseData";
 
 export const useRolesList = () => {
     const [roles, setRoles] = useState([]);
-    const {loading} = useData(`/roles?pageNumber=0`, (data) => setRoles(data.content));
+    const {loading} = useData(`/roles`, (data) => setRoles(data));
 
     const {post} = usePost(`/roles`, (data) => setRoles(current => {
         return [...current, data]
