@@ -18,9 +18,9 @@ public abstract class IntegrationTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", sharedPostgresContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", sharedPostgresContainer::getUsername);
-        registry.add("spring.datasource.password", sharedPostgresContainer::getPassword);
+        registry.add("database..url", sharedPostgresContainer::getJdbcUrl);
+        registry.add("database.username", sharedPostgresContainer::getUsername);
+        registry.add("database.password", sharedPostgresContainer::getPassword);
         registry.add("jwt.secret", () -> "kfjhjdskl5409378ugofhu435jothy870pfyu9354uyihgert90jhg9uy9543543334");
     }
 

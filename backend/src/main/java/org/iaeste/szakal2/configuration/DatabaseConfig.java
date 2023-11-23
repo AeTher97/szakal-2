@@ -35,7 +35,6 @@ public class DatabaseConfig {
         dataSourceBuilder.username(username);
         dataSourceBuilder.password(password);
         return dataSourceBuilder.build();
-
-
     }
+
 }
