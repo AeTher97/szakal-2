@@ -35,7 +35,8 @@ const CustomBreadcrumbs = () => {
             }
         }
         if (matched && !last) {
-            return <LinkWithRouter color={"neutral"} to={matched.pathOverride ? matched.pathOverride : path}>
+            return <LinkWithRouter color={"neutral"} to={matched.pathOverride ? matched.pathOverride : path}
+                                   sx={{display: "flex"}}>
                 {matched.component}
             </LinkWithRouter>;
         } else if (matched && last) {
