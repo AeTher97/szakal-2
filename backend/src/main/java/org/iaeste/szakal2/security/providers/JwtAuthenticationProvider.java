@@ -16,6 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Log4j2
 public class JwtAuthenticationProvider implements AuthenticationProvider {
@@ -49,10 +50,11 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
-            List<String> roles = (List<String>) claims.get("roles");
+            List<UUID> roles = ((List<String>) claims.get("roles"))
+                    .stream().map(string -> UUID.fromString(string)).toList();
             Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 
-            rolesRepository.findAllByNameIn(roles).forEach(role ->
+            rolesRepository.findAllByIdIn(roles).forEach(role ->
                     grantedAuthorities.addAll(role.getAccessRights().stream().map(accessRight
                             -> new SimpleGrantedAuthority(accessRight.getCode())).toList()));
 

@@ -61,7 +61,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-            user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+            user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getId().toString())));
 
             return new RefreshTokenAuthentication(claims.getSubject(),
                     TokenFactory.generateAuthToken(user.getId(),

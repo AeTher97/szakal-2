@@ -48,7 +48,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getId().toString())));
 
 
         if (passwordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {

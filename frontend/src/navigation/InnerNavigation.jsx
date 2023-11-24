@@ -9,6 +9,7 @@ import CampaignsHome from "../components/campaigns/CampaingsHome";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import JourneysHome from "../components/journeys/JourneysHome";
 import UserJourneysHome from "../components/journeys/UserJourneysHome";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const InnerNavigation = () => {
 
@@ -22,6 +23,7 @@ const InnerNavigation = () => {
             <Route path={"campaigns/*"} element={<CampaignsHome/>}/>
             <Route path={"user-journeys/*"} element={<UserJourneysHome/>}/>
             <Route path={"home"} element={<SummaryHome/>}/>
+            <Route path={"profile"} element={<ProfileScreen/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     </>);

@@ -28,7 +28,7 @@ const UserMenu = ({name, surname}) => {
                         Ciemny motyw<Switch checked={theme === "dark"}/>
                     </MenuItem>
                     <MenuItem onClick={() => {
-                        navigate(`/secure/users/${userId}`);
+                        navigate(`/secure/profile`);
                     }}>Profil</MenuItem>
                     <MenuItem onClick={() => {
                         dispatch(logoutAction());

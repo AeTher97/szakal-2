@@ -48,7 +48,8 @@ const RolesList = () => {
                                         alignItems: "center",
                                         paddingBottom: 10,
                                         paddingTop: 10,
-                                        gap: 10
+                                        gap: 10,
+                                        flexWrap: "wrap"
                                     }}>
                                         <div style={{
                                             display: "flex",

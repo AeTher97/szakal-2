@@ -3,11 +3,15 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 
 export const useUsersList = (page = 0) => {
+    const [pageNumber, setPageNumber] = useState();
     const [users, setUsers] = useState();
-    const {loading} = useData(`/users`, (data) => setUsers(data.content),
+    const {loading} = useData(`/users`, (data) => {
+            setUsers(data.content)
+            setPageNumber(data.totalPages)
+        },
         [page], [{name: "pageNumber", value: page}])
 
-    return {users, loading}
+    return {users, loading, pageNumber}
 }
 
 export const useUserData = (id) => {

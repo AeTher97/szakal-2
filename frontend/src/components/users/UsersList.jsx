@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useUsersList} from "../../data/UsersData";
 import {
     Avatar,
@@ -17,10 +17,14 @@ import {
 import Button from "@mui/joy/Button";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {uuidToColor} from "../../utils/ColorForUUID";
+import Pagination from "../misc/Pagination";
+import {useMobileSize} from "../../utils/SizeQuery";
 
 const UsersList = () => {
 
-    const {users, loading} = useUsersList();
+    const mobile = useMobileSize();
+    const [currentPage, setCurrentPage] = useState(1);
+    const {users, loading, pageNumber} = useUsersList(currentPage - 1);
 
     return (
         <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 200}}>
@@ -61,9 +65,13 @@ const UsersList = () => {
                                                 overlay
                                                 underline={"none"}/>
                             </ListItem>
-                            {index !== users.length - 1 && <ListDivider/>}
+                            {pageNumber > 1 || index !== users.length - 1 && <ListDivider/>}
+
                         </div>
                     })}
+                    {pageNumber > 1 && <Pagination currentPage={currentPage} concise={mobile} numberOfPages={pageNumber}
+                                                   setPage={(page) => setCurrentPage(page)}/>}
+
                 </List>
             </CardContent>
         </Card>

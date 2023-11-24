@@ -14,25 +14,28 @@ import PasswordChangeDialog from "./PasswordChangeDialog";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRights";
 
-const UserDetails = () => {
+const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
+const UserDetails = ({userId}) => {
 
     const location = useLocation();
     const dispatch = useDispatch();
     const {hasRight} = useAccessRightsHelper();
+    const idFromPath = location.pathname.split("/")[3];
+    const validIdFromPath = uuidCheck.test(idFromPath);
     const {
         user, loading, updateUserRoles, updateRolesLoading, acceptUser, acceptUserLoading,
         changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading
-    }
-        = useUserData(location.pathname.split("/")[3]);
+    } = useUserData(validIdFromPath ? idFromPath : userId);
     const isCurrentUser = useIsUser(user ? user.id : "")
     const [localUser, setLocalUser] = useState(null);
     const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
     useEffect(() => {
         if (user) {
-            dispatch(addKnownItem(location.pathname.split("/")[3], `${user.name} ${user.surname}`));
+            dispatch(addKnownItem(validIdFromPath ? idFromPath : userId, `${user.name} ${user.surname}`));
             return () => {
-                dispatch(removeKnownItem(location.pathname.split("/")[3]))
+                dispatch(removeKnownItem(validIdFromPath ? idFromPath : userId))
             }
         }
     }, [location, user]);
@@ -46,7 +49,7 @@ const UserDetails = () => {
             {user && localUser && <div>
                 <TabHeader>
                     <div>
-                        <Typography level={"h2"}>{user.name} {user.surname}</Typography>
+                        <Typography overflow={"hidden"} noWrap level={"h2"}>{user.name} {user.surname}</Typography>
                         <Typography level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
                     </div>
                     <div>
@@ -77,7 +80,7 @@ const UserDetails = () => {
                                                                                                  acceptUserLoading={acceptUserLoading}
                                                                                                  setLocalUser={setLocalUser}/>}
                     <PasswordChangeDialog open={changePasswordOpen} close={() => setChangePasswordOpen(false)}
-                                          userId={user}/>
+                                          userId={user.id}/>
                 </div>
             </div>}
         </div>

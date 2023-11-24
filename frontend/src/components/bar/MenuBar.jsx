@@ -11,7 +11,8 @@ export const menuItems = [
     {path: "user-journeys", name: "Twoje Kontakty", right: JOURNEY_CREATION},
     {path: "categories", name: "Branże"},
     {path: "campaigns", name: "Akcje"},
-    {path: "users", name: "Użytkownicy", right: USER_VIEWING}
+    {path: "users", name: "Użytkownicy", right: USER_VIEWING},
+    {path: "profile", name: "Profil", right: USER_VIEWING}
 ]
 
 const MenuBar = () => {

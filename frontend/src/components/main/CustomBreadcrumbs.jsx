@@ -22,6 +22,7 @@ const CustomBreadcrumbs = () => {
         {path: "journeys", component: "Kontakty w tej akcji"},
         {path: "users", component: "Użytkownicy"},
         {path: "campaigns", component: "Akcje"},
+        {path: "profile", component: "Profil"},
         {path: "roles", component: "Role", pathOverride: "/secure/users"},
     ]
 

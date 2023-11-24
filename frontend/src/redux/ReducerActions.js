@@ -29,7 +29,7 @@ const updateAccessRights = (user, authToken, dispatch) => {
         }
     }).then((res) => {
         const userAccessRights = res.data
-            .filter(role => user.roles.includes(role.name))
+            .filter(role => user.roles.includes(role.id))
             .flatMap(role => {
                 return role.accessRights.map(accessRight => accessRight.code);
             })
