@@ -42,11 +42,9 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
             <Divider/>
             <CardActions sx={{flexWrap: "wrap"}}>
                 <Autocomplete
+                    sx={{maxWidth: 220}}
                     disabled={!canModify}
                     inputValue={value}
-                    onInputChange={() => {
-                        console.log("input")
-                    }}
                     loading={loading}
                     disableClearable
                     isOptionEqualToValue={isOptionEqualToValue}

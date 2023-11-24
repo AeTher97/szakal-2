@@ -44,7 +44,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                     }}>
                     <Stack spacing={2}>
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                            <Stack spacing={2}>
+                            <Stack spacing={2} sx={{overflow: "auto"}}>
                                 <FormControl>
                                     <FormLabel>Nazwa</FormLabel>
                                     <Input autoFocus required
@@ -104,10 +104,8 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                             setPostalCode(e.target.value)
                                         }} placeholder={"Kod pocztowy"}/>
                                 </FormControl>
-                                <FormControl>
-                                    <CompanyCategories categoriesList={categories} setCategories={setCategories}/>
-                                </FormControl>
                             </Stack>
+                            <CompanyCategories categoriesList={categories} setCategories={setCategories}/>
                         </div>
                         <Stack spacing={2}>
                             <Button type="submit">Zapisz</Button>
