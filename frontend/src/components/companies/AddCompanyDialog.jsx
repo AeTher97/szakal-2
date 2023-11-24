@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import CompanyCategories from "./CompanyCategories";
 
@@ -42,6 +42,9 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                             postalCode);
                         close();
                     }}>
+                    <DialogTitle>
+                        Dodaj firmę
+                    </DialogTitle>
                     <Stack spacing={2}>
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                             <Stack spacing={2} sx={{overflow: "auto"}}>
