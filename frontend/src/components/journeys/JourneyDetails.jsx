@@ -66,7 +66,7 @@ const JourneyDetails = () => {
                             <Typography level={"h3"}>Wydarzenia kontaktowe</Typography>
                         </div>
                         <Timeline>
-                            {journey.contactEvents.map(event => {
+                            {journey.contactEvents.reverse().map(event => {
                                 return <TimelineItem key={event.id}>
                                     <div style={{
                                         display: "flex",

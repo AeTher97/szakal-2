@@ -37,7 +37,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user_viewing')")
+    @PreAuthorize("hasAuthority('user_viewing') or accessVerificationBean.isUser(#id.toString())")
     public UserDTO getUser(@PathVariable("id") UUID id) {
         return userService.getUserDTOById(id);
     }

@@ -9,7 +9,7 @@ export const decodeContactStatus = (status) => {
             return "Zadzwonić później"
         case "NOT_INTERESTED":
             return "Niezainteresowana"
-        case "DEAL":
+        case "INTERNSHIP":
             return "Praktyka"
         case "BARTER":
             return "Barter"
