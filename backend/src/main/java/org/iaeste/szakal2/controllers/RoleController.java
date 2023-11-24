@@ -6,6 +6,7 @@ import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.services.RoleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class RoleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('role_modification')")
     public Role createRole(@RequestBody @Valid RoleCreationDto roleCreationDto) {
         return roleService.createRole(roleCreationDto);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('role_modification')")
     public Role updateRole(@PathVariable("id") UUID id, @RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
         return roleService.updateRole(id, roleUpdateDTO);
     }
@@ -38,11 +41,13 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('role_viewing')")
     public Role getRole(@PathVariable("id") UUID id) {
         return roleService.getRoleById(id);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('role_modification')")
     public void deleteRole(@PathVariable("id") UUID id) {
         roleService.deleteRole(id);
     }

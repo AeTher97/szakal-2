@@ -6,11 +6,15 @@ import {useRolesList} from "../../data/RolesData";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AddRoleDialog from "./AddRoleDialog";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../utils/AccessRights";
 
 const RolesList = () => {
 
     const [addRoleOpen, setAddRoleOpen] = useState(false);
     const {roles, loading, addRole} = useRolesList();
+    const {hasRight} = useAccessRightsHelper();
+
 
     return (
         <Card variant={"outlined"} sx={{flex: 2, minWidth: 200}}>
@@ -22,9 +26,9 @@ const RolesList = () => {
                             <Typography level={"title-md"}>Dostępne role</Typography>
                             <Typography level={"body-sm"}>Role zdefiniowane w systemie dla użytkowników</Typography>
                         </div>
-                        <div>
+                        {hasRight(ROLE_MODIFICATION) && <div>
                             <Button onClick={() => setAddRoleOpen(true)}><AddIcon/>Dodaj</Button>
-                        </div>
+                        </div>}
                     </CardContent>
                     <CardContent>
                         <div style={{display: "flex", justifyContent: "center"}}>

@@ -2,6 +2,8 @@ import React from 'react';
 import {Card, CardActions, CardContent, Divider, Switch, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRights";
 
 const UserManagement = ({
                             user,
@@ -13,6 +15,7 @@ const UserManagement = ({
                             changeUserStatusLoading
                         }) => {
 
+    const {hasRight} = useAccessRightsHelper();
     const mobile = useMobileSize();
     return (
         <Card sx={{flexGrow: mobile ? 1 : 0, minWidth: 200}}>
@@ -21,7 +24,7 @@ const UserManagement = ({
                 <Typography level={"body-sm"}>Opcje administracyjne</Typography>
             </CardContent>
             <Divider inset={"context"}/>
-            <CardContent orientation={"horizontal"}>
+            {hasRight(USER_ACCEPTANCE) && <CardContent orientation={"horizontal"}>
                 <Typography>Użytkownik zaakceptowany</Typography>
                 <Switch checked={localUser.accepted}
                         disabled={user.accepted}
@@ -33,8 +36,8 @@ const UserManagement = ({
                                 }
                             })
                         }}/>
-            </CardContent>
-            <CardContent orientation={"horizontal"}>
+            </CardContent>}
+            {hasRight(USER_MANAGEMENT) && <CardContent orientation={"horizontal"}>
                 <Typography>Użytkownik aktywny</Typography>
                 <Switch checked={localUser.active}
                         onClick={() => {
@@ -45,7 +48,7 @@ const UserManagement = ({
                                 }
                             })
                         }}/>
-            </CardContent>
+            </CardContent>}
             <CardActions>
                 <Button onClick={() => {
                     if (localUser.accepted && !user.accepted) {

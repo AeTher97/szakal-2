@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {Link, Sheet, Table, Typography} from "@mui/joy";
 import CategoryDialog from "./CategoryDialog";
+import {CATEGORY_MODIFICATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const CategoriesTable = ({categories, modifyCategory}) => {
 
     const [modifyOpen, setModifyOpen] = useState(false);
     const [localCategory, setLocalCategory] = useState(null);
+    const {hasRight} = useAccessRightsHelper();
 
     return (
         <Sheet sx={{
@@ -41,13 +44,14 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                 {categories && categories.map(category =>
                     <tr key={category.id}>
                         <td>{category.name}</td>
-                        <td><Link variant={"soft"}
+                        <td>{hasRight(CATEGORY_MODIFICATION) &&
+                            <Link variant={"soft"}
                                   onClick={() => {
                                       setLocalCategory(category);
                                       setModifyOpen(true)
                                   }}>
                             Edytuj
-                        </Link>
+                            </Link>}
                         </td>
                     </tr>
                 )}

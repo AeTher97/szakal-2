@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.iaeste.szakal2.models.entities.ContactEventType;
+import org.iaeste.szakal2.models.entities.ContactStatus;
 
 import java.util.UUID;
 
@@ -25,5 +25,5 @@ public class ContactEventDTO {
     @NotNull
     private String description;
     @NotNull
-    private ContactEventType eventType;
+    private ContactStatus contactStatus;
 }

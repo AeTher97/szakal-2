@@ -2,6 +2,7 @@ import React from 'react';
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const JourneysTable = ({journeys}) => {
 
@@ -46,7 +47,7 @@ const JourneysTable = ({journeys}) => {
                             </LinkWithRouter>
                         </td>
                         <td>{journey.user.name} {journey.user.surname}</td>
-                        <td>{journey.contactStatus}</td>
+                        <td>{decodeContactStatus(journey.contactStatus)}</td>
                     </tr>
                 )}
                 </tbody>

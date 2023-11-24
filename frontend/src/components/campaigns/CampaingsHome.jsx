@@ -10,6 +10,8 @@ import AddCampaignDialog from "./AddCampaignDialog";
 import {useCampaignsList} from "../../data/CampaignData";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {CAMPAIGN_MODIFICATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const CampaignsHome = () => {
 
@@ -17,6 +19,8 @@ const CampaignsHome = () => {
     const [addCampaignOpen, setAddCampaignOpen] = useState(false);
     const {campaigns, loading, addCampaign, pageNumber} = useCampaignsList(currentPage - 1);
     const mobile = useMobileSize();
+    const {hasRight} = useAccessRightsHelper();
+
 
     return (
         <Routes>
@@ -24,9 +28,9 @@ const CampaignsHome = () => {
                 <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
                     <TabHeader>
                         <Typography level="h2">Akcje</Typography>
-                        <Button onClick={() => {
+                        {hasRight(CAMPAIGN_MODIFICATION) && <Button onClick={() => {
                             setAddCampaignOpen(true)
-                        }}><AddIcon/>Dodaj akcję</Button>
+                        }}><AddIcon/>Dodaj akcję</Button>}
                     </TabHeader>
                     {loading && <LinearProgress/>}
 

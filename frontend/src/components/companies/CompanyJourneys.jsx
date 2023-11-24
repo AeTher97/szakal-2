@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const CompanyJourneys = ({localCompany}) => {
 
@@ -19,7 +20,7 @@ const CompanyJourneys = ({localCompany}) => {
                     {localCompany.contactJourneys.map((journey, i) => <div key={journey.id}
                         style={{display: "flex", flexDirection: "column"}}>
                         <LinkWithRouter
-                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {journey.contactStatus}</LinkWithRouter>
+                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {decodeContactStatus(journey.contactStatus)}</LinkWithRouter>
                         <Typography>{journey.user.name} {journey.user.surname}</Typography>
                         <Typography>Liczba praktykantów: 0</Typography>
                         {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}

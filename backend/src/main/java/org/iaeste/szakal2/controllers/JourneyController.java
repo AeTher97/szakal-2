@@ -12,6 +12,7 @@ import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.services.JourneyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,17 +28,22 @@ public class JourneyController {
         this.journeyService = journeyService;
     }
 
+    // #TODO check user id
+
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('journey_creation', 'journey_creation_for_others')")
     public ContactJourney createContactJourney(@RequestBody @Valid ContactJourneyCreationDTO contactJourneyCreationDTO) {
         return journeyService.createJourney(contactJourneyCreationDTO);
     }
 
+    // #TODO check user id
     @PutMapping("/{id}/status")
     public ContactJourney updateContactJourneyStatus(@PathVariable("id") UUID id,
                                                      @RequestBody @Valid ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         return journeyService.updateJourneyStatus(id, contactJourneyStatusUpdatingDTO);
     }
 
+    // #TODO check user id
     @PostMapping("/{id}/events")
     public ContactJourney addContactEvent(@PathVariable("id") UUID id,
                                           @RequestBody @Valid ContactEventDTO contactEventDTO) {

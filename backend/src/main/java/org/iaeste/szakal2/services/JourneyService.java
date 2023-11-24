@@ -61,6 +61,7 @@ public class JourneyService {
     public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
+        contactJourney.setContactStatus(contactEventDTO.getContactStatus());
         return contactJourneyRepository.save(contactJourney);
     }
 
@@ -113,7 +114,7 @@ public class JourneyService {
                 .contactJourney(contactJourney)
                 .user(user)
                 .date(LocalDateTime.now())
-                .eventType(contactEventDTO.getEventType())
+                .eventType(contactEventDTO.getContactStatus())
                 .description(contactEventDTO.getDescription())
                 .subject(contactEventDTO.getSubject())
                 .build();

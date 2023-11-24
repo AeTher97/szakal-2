@@ -7,6 +7,7 @@ import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.services.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,17 +24,20 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('category_modification')")
     public CompanyCategory createCategory(@RequestBody @Valid CompanyCategoryCreationDTO companyCategoryCreationDTO) {
         return categoryService.createCategory(companyCategoryCreationDTO);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('category_modification')")
     public CompanyCategory modifyCategory(@PathVariable("id") UUID id,
                                           @RequestBody @Valid CompanyCategoryCreationDTO companyCategoryCreationDTO) {
         return categoryService.modifyCategory(id, companyCategoryCreationDTO);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('category_modification')")
     public void deleteCategory(@PathVariable("id") UUID categoryId) {
         categoryService.deleteCategory(categoryId);
     }

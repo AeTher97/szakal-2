@@ -16,6 +16,7 @@ const RoleDetails = () => {
     const [localRole, setLocalRole] = useState(null);
     const [udpateRoleDetailsLoading, setUpdateRoleDetailsLoading] = useState(false);
 
+
     useEffect(() => {
         if (role) {
             dispatch(addKnownItem(location.pathname.split("/")[4], `${role.name}`));

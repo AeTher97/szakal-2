@@ -13,6 +13,7 @@ import TimelineItem from "../timline/TimelineItem";
 import Button from "@mui/joy/Button";
 import Option from '@mui/joy/Option';
 import {formatLocalDateTime} from "../../utils/DateUtils";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const JourneyDetails = () => {
 
@@ -23,7 +24,6 @@ const JourneyDetails = () => {
 
     useEffect(() => {
         if (journey) {
-            console.log(journey)
             dispatch(addKnownItem(location.pathname.split("/")[3], `Kontakt z ${journey.company.name}`));
             return () => {
                 dispatch(removeKnownItem(location.pathname.split("/")[4]))
@@ -31,9 +31,12 @@ const JourneyDetails = () => {
         }
     }, [location, journey]);
 
-    const [eventType, setEventType] = useState("ASSIGNED");
+    const [contactStatus, setContactStatus] = useState("CHOOSE");
     const [eventTitle, setEventTitle] = useState("");
     const [eventDescription, setEventDescription] = useState("");
+
+
+    const isUser = journey && (userId === journey.user.id);
 
     return (
         <>
@@ -81,7 +84,7 @@ const JourneyDetails = () => {
                                                     level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
                                             </div>
                                         </div>
-                                        <div>{event.eventType}</div>
+                                        <div>{decodeContactStatus(event.eventType)}</div>
                                     </div>
                                     <Typography level={"title-md"}>{event.subject}</Typography>
                                     <Typography level={"body-md"}>{event.description}</Typography>
@@ -90,18 +93,29 @@ const JourneyDetails = () => {
                             {journey.contactEvents.length === 0 &&
                                 <Typography>Brak wydarzeń</Typography>}
                         </Timeline>
-                        <form onSubmit={(e) => {
+                        {isUser && <form onSubmit={(e) => {
                             e.preventDefault();
-                            addContactEvent(journey.id, userId, eventTitle, eventDescription, eventType)
+                            if (contactStatus === "CHOOSE") {
+                                return;
+                            }
+                            addContactEvent(journey.id, userId, eventTitle, eventDescription, contactStatus)
                         }}>
                             <div style={{display: "flex"}}>
                                 <Stack spacing={1} style={{flex: 1}}>
                                     <Typography level={"title-lg"}>Nowe wydarzenie</Typography>
                                     <FormControl>
-                                        <Select value={eventType} onChange={(e, newValue) => {
-                                            setEventType(newValue)
+                                        <Select value={contactStatus} onChange={(e, newValue) => {
+                                            setContactStatus(newValue)
                                         }}>
-                                            <Option value={"ASSIGNED"}>Przypisano</Option>
+                                            <Option value={"CHOOSE"} disabled>Wybierz</Option>
+                                            <Option value={"WAITING_FOR_RESPONSE"}>Oczekiwanie na odpowiedź</Option>
+                                            <Option value={"CALL_LATER"}>Zadzwonić później</Option>
+                                            <Option value={"NOT_INTERESTED"}>Niezainteresowana</Option>
+                                            <Option value={"BARTER"}>Barter</Option>
+                                            <Option value={"SPONSOR"}>Sponsor</Option>
+                                            <Option value={"TRAINING"}>Szkolenie</Option>
+                                            <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma współpracy</Option>
+                                            <Option value={"INTERNSHIP"}>Praktyka</Option>
                                         </Select>
                                     </FormControl>
                                     <FormControl>
@@ -117,7 +131,7 @@ const JourneyDetails = () => {
                                     <Button type={"submit"}>Dodaj</Button>
                                 </Stack>
                             </div>
-                        </form>
+                        </form>}
                     </div>
                     <div style={{flex: 1}}>
                         <Typography level={"h3"}>Komentarze</Typography>

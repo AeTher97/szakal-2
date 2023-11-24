@@ -13,6 +13,7 @@ import {
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {useSelector} from "react-redux";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading}) => {
 
@@ -21,6 +22,8 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
+    const {userId} = useSelector(state => state.auth);
+    const isUser = userId === user.id;
 
     useEffect(() => {
         if (localUser) {
@@ -56,12 +59,14 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                         <Stack spacing={1}>
                             <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                                 <FormControl>
-                                    <Input style={{width: 180}} placeholder={"Imię"} value={name} onChange={(e) => {
-                                        setName(e.target.value)
-                                    }}/>
+                                    <Input disabled={!isUser} style={{width: 180}} placeholder={"Imię"} value={name}
+                                           onChange={(e) => {
+                                               setName(e.target.value)
+                                           }}/>
                                 </FormControl>
                                 <FormControl>
-                                    <Input placeholder={"Nazwisko"} value={surname} onChange={(e) => {
+                                    <Input disabled={!isUser} placeholder={"Nazwisko"} value={surname}
+                                           onChange={(e) => {
                                         setSurname(e.target.value)
                                     }}/>
                                 </FormControl>
@@ -71,7 +76,7 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                             </FormLabel>
                             <FormControl>
                                 <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
-                                    <Input placeholder={"Email"} value={email} onChange={(e) => {
+                                    <Input disabled={!isUser} placeholder={"Email"} value={email} onChange={(e) => {
                                         setEmail(e.target.value)
                                     }}/>
                                 </div>

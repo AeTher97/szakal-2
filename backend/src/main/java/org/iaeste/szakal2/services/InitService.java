@@ -19,19 +19,19 @@ import java.util.List;
 public class InitService {
 
     private static final List<AccessRight> viewingRights = List.of(
-            AccessRight.builder().code("user_viewing").description("View users").build(),
-            AccessRight.builder().code("role_viewing").description("View roles").build(),
-            AccessRight.builder().code("company_viewing").description("View companies").build(),
-            AccessRight.builder().code("category_viewing").description("View categories").build(),
-            AccessRight.builder().code("campaign_viewing").description("View campaigns").build()
-    );
+            AccessRight.builder().code("user_viewing").description("Przeglądanie listy użytkowników").build(),
+            AccessRight.builder().code("role_viewing").description("Przeglądanie dostępnych ról").build());
     private static final List<AccessRight> modificationRights = List.of(
-            AccessRight.builder().code("campaign_modification").description("Modify campaigns").build(),
-            AccessRight.builder().code("role_modification").description("Modify roles").build(),
-            AccessRight.builder().code("company_modification").description("Modify companies").build(),
-            AccessRight.builder().code("category_modification").description("Modify categories").build(),
-            AccessRight.builder().code("user_acceptance").description("Accept users").build(),
-            AccessRight.builder().code("journey_modification").description("Modify journeys").build()
+            AccessRight.builder().code("campaign_modification").description("Dodawanie akcji").build(),
+            AccessRight.builder().code("role_modification").description("Modyfikacja definicji roli").build(),
+            AccessRight.builder().code("user_role_granting").description("Modyfikacja roli użytkownika").build(),
+            AccessRight.builder().code("company_modification").description("Modyfikacja firm").build(),
+            AccessRight.builder().code("category_modification").description("Modyfikacja kategorii").build(),
+            AccessRight.builder().code("user_acceptance").description("Akceptowanie użytkowników").build(),
+            AccessRight.builder().code("user_management").description("Dezaktywowanie użytkowników").build(),
+            AccessRight.builder().code("journey_creation").description("Przypisywanie firm do siebie").build(),
+            AccessRight.builder().code("journey_creation_for_others").description("Przypisywanie firm do innych").build(),
+            AccessRight.builder().code("journey_modification_for_others").description("Edycja kontaktów innych").build()
     );
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;

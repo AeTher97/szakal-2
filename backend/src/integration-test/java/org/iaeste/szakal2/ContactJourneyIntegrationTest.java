@@ -1,7 +1,10 @@
 package org.iaeste.szakal2;
 
 import io.restassured.http.ContentType;
-import org.iaeste.szakal2.models.entities.*;
+import org.iaeste.szakal2.models.entities.Campaign;
+import org.iaeste.szakal2.models.entities.Company;
+import org.iaeste.szakal2.models.entities.ContactJourney;
+import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.Test;
@@ -11,8 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.iaeste.szakal2.models.entities.ContactStatus.ASSIGNED;
-import static org.iaeste.szakal2.models.entities.ContactStatus.IN_PROGRESS;
+import static org.iaeste.szakal2.models.entities.ContactStatus.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
@@ -76,7 +78,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(STR."""
                         {
-                        "contactStatus" : "IN_PROGRESS"
+                        "contactStatus" : "CALL_LATER"
                         }
                         """)
                 .that()
@@ -87,7 +89,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
         assertEquals(user.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getUser().getId());
         assertEquals(campaign.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCampaign().getId());
         assertEquals(company.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCompany().getId());
-        assertEquals(IN_PROGRESS, integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
+        assertEquals(CALL_LATER, integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
     }
 
     @Test
@@ -146,7 +148,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                               "contactJourney" : "\{ contactJourney.getId() }",
                               "subject" : "Kicked off the contact",
                               "description" : "Tried calling",
-                              "eventType" : "START_CONTACT"
+                              "eventType" : "NOT_INTERESTED"
                         }
                         """ )
                 .when()
@@ -157,6 +159,6 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
         assertEquals(1, contactJourney1.getContactEvents().size());
         assertEquals("Kicked off the contact", contactJourney1.getContactEvents().get(0).getSubject());
         assertEquals("Tried calling", contactJourney1.getContactEvents().get(0).getDescription());
-        assertEquals(ContactEventType.START_CONTACT, contactJourney1.getContactEvents().get(0).getEventType());
+        assertEquals(NOT_INTERESTED, contactJourney1.getContactEvents().get(0).getEventType());
     }
 }

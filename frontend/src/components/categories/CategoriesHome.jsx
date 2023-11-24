@@ -10,6 +10,8 @@ import AddIcon from "@mui/icons-material/Add";
 import CategoryDialog from "./CategoryDialog";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {CATEGORY_MODIFICATION} from "../../utils/AccessRights";
 
 const CategoriesHome = () => {
 
@@ -17,6 +19,7 @@ const CategoriesHome = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const {categories, loading, addCategory, modifyCategory, pageNumber} = useCategories(currentPage - 1);
     const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+    const {hasRight} = useAccessRightsHelper();
 
     return (
         <Routes>
@@ -24,11 +27,11 @@ const CategoriesHome = () => {
                 <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
                     <TabHeader>
                         <Typography level="h2">Branże</Typography>
-                        <Button onClick={() => {
+                        {hasRight(CATEGORY_MODIFICATION) && <Button onClick={() => {
                             setAddCategoryOpen(true)
                         }}>
                             <AddIcon/>Dodaj branżę
-                        </Button>
+                        </Button>}
                     </TabHeader>
 
                     {loading && <LinearProgress/>}

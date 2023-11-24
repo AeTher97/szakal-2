@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../utils/AccessRights";
 
 const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) => {
 
     const mobile = useMobileSize();
 
+    const {hasRight} = useAccessRightsHelper();
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
 
@@ -39,7 +42,8 @@ const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) =>
                                 <Typography level={"title-sm"}>Nazwa</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Nazwa"} value={name} onChange={(e) => {
+                                <Input disabled={!hasRight(ROLE_MODIFICATION)} placeholder={"Nazwa"} value={name}
+                                       onChange={(e) => {
                                     setName(e.target.value)
                                 }}/>
                             </FormControl>
@@ -47,7 +51,8 @@ const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) =>
                                 <Typography level={"title-sm"}>Opis</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Opis"} value={description} onChange={(e) => {
+                                <Input disabled={!hasRight(ROLE_MODIFICATION)} placeholder={"Opis"} value={description}
+                                       onChange={(e) => {
                                     setDescription(e.target.value)
                                 }}/>
                             </FormControl>

@@ -11,11 +11,14 @@ import UserRoles from "./UserRoles";
 import UserManagement from "./UserManagement";
 import Button from "@mui/joy/Button";
 import PasswordChangeDialog from "./PasswordChangeDialog";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRights";
 
 const UserDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
+    const {hasRight} = useAccessRightsHelper();
     const {
         user, loading, updateUserRoles, updateRolesLoading, acceptUser, acceptUserLoading,
         changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading
@@ -37,7 +40,6 @@ const UserDetails = () => {
     useEffect(() => {
         setLocalUser(user)
     }, [user])
-
 
     return (
         <div style={{overflow: "auto"}}>
@@ -64,11 +66,16 @@ const UserDetails = () => {
                 }}>
                     <BasicUserInfo user={user} localUser={localUser} updateUserDetails={updateUserDetails}
                                    updateUserDetailsLoading={updateUserDetailsLoading}/>
-                    <UserRoles user={user} localUser={localUser} setLocalUser={setLocalUser}
-                               updateUserRoles={updateUserRoles} updateRolesLoading={updateRolesLoading}/>
-                    <UserManagement user={user} localUser={localUser} acceptUser={acceptUser}
-                                    changeUserState={changeUserStatus} changeUserStatusLoading={changeUserStatusLoading}
-                                    acceptUserLoading={acceptUserLoading} setLocalUser={setLocalUser}/>
+                    {hasRight(USER_ROLE_GRANTING) &&
+                        <UserRoles user={user} localUser={localUser} setLocalUser={setLocalUser}
+                                   updateUserRoles={updateUserRoles} updateRolesLoading={updateRolesLoading}/>}
+                    {(hasRight(USER_MANAGEMENT) || hasRight(USER_ACCEPTANCE)) && <UserManagement user={user}
+                                                                                                 localUser={localUser}
+                                                                                                 acceptUser={acceptUser}
+                                                                                                 changeUserState={changeUserStatus}
+                                                                                                 changeUserStatusLoading={changeUserStatusLoading}
+                                                                                                 acceptUserLoading={acceptUserLoading}
+                                                                                                 setLocalUser={setLocalUser}/>}
                     <PasswordChangeDialog open={changePasswordOpen} close={() => setChangePasswordOpen(false)}
                                           userId={user}/>
                 </div>

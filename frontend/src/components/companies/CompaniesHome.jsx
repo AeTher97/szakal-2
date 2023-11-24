@@ -26,6 +26,8 @@ import Option from "@mui/joy/Option";
 import {useCategories} from "../../data/CategoriesData";
 import Pagination from "../misc/Pagination";
 import CompaniesTable from "./CompaniesTable";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 
 
 const filters = (mobile, categories, categoryField, setCategoryField) => {
@@ -57,6 +59,7 @@ const CompaniesHome = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const mobile = useMobileSize();
+    const {hasRight} = useAccessRightsHelper();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {categories} = useCategories();
     const {companies, loading, pageNumber, addCompany} = useCompanyListWithCampaign(
@@ -104,9 +107,9 @@ const CompaniesHome = () => {
                     <TabHeader>
                         <Typography level="h2">Firmy</Typography>
                         <div>
-                            <Button onClick={() => {
+                            {hasRight(COMPANY_MODIFICATION) && <Button onClick={() => {
                                 setAddCompanyOpen(true)
-                            }}><AddIcon/>Dodaj</Button>
+                            }}><AddIcon/>Dodaj</Button>}
                         </div>
                     </TabHeader>
 

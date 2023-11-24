@@ -2,8 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 
 const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
+
+    const {hasRight} = useAccessRightsHelper();
+    const canModify = hasRight(COMPANY_MODIFICATION);
 
     const mobile = useMobileSize();
     const [name, setName] = useState("")
@@ -34,7 +39,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                                 <Typography level={"title-sm"}>Nazwa</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Nazwa"} value={name} onChange={(e) => {
+                                <Input disabled={!canModify} placeholder={"Nazwa"} value={name} onChange={(e) => {
                                     setName(e.target.value)
                                 }}/>
                             </FormControl>
@@ -42,7 +47,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                                 <Typography level={"title-sm"}>Email</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Email"} value={email} onChange={(e) => {
+                                <Input disabled={!canModify} placeholder={"Email"} value={email} onChange={(e) => {
                                     setEmail(e.target.value)
                                 }}/>
                             </FormControl>
@@ -50,7 +55,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                                 <Typography level={"title-sm"}>Telefon</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder={"Telefon"} value={phone} onChange={(e) => {
+                                <Input disabled={!canModify} placeholder={"Telefon"} value={phone} onChange={(e) => {
                                     setPhone(e.target.value)
                                 }}/>
                             </FormControl>
@@ -58,7 +63,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                                 <FormLabel>
                                     <Typography level={"title-sm"}>Strona</Typography>
                                 </FormLabel>
-                                <Input placeholder={"WWW"} value={www} onChange={(e) => {
+                                <Input disabled={!canModify} placeholder={"WWW"} value={www} onChange={(e) => {
                                     setWWW(e.target.value)
                                 }}/>
                             </FormControl>
@@ -66,9 +71,9 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
 
                 </CardContent>
                 <CardActions>
-                    <Button loading={updateContactDataLoading} onClick={() => {
+                    {canModify && <Button loading={updateContactDataLoading} onClick={() => {
                         updateContactData(name, email, phone, www)
-                    }}>Zapisz</Button>
+                    }}>Zapisz</Button>}
                 </CardActions>
             </form>
         </Card>

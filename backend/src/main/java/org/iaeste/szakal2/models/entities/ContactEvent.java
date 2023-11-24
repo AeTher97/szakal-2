@@ -28,7 +28,7 @@ public class ContactEvent {
     private UUID id;
     private LocalDateTime date;
     @ManyToOne
-    @JoinColumn(name = "contact_person_id", nullable = false)
+    @JoinColumn(name = "contact_person_id")
     @JsonIgnoreProperties(value = {"company"})
     private ContactPerson contactPerson;
     @ManyToOne
@@ -44,6 +44,6 @@ public class ContactEvent {
     @NotNull
     private String description;
     @Enumerated(EnumType.STRING)
-    private ContactEventType eventType;
+    private ContactStatus eventType;
 
 }

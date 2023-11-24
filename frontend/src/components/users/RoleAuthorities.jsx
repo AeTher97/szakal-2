@@ -4,10 +4,13 @@ import {uuidToColor} from "../../utils/ColorForUUID";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useAccessRightsList} from "../../data/UseAccessRightsList";
 import Button from "@mui/joy/Button";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../utils/AccessRights";
 
 const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleLoading}) => {
 
     const {accessRights, loading} = useAccessRightsList();
+    const {hasRight} = useAccessRightsHelper();
     const mobile = useMobileSize();
 
     return (
@@ -20,15 +23,16 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleL
             <CardContent orientation={"horizontal"} style={{flex: 0, display: "flex", flexWrap: "wrap"}}>
                 {localRole.accessRights.map(accessRight => <Chip key={accessRight.id}
                                                                  sx={{backgroundColor: uuidToColor(accessRight.id)}}
-                                                                 endDecorator={<ChipDelete onDelete={() => {
-                                                                     setLocalRole(old => {
-                                                                         return {
-                                                                             ...old,
-                                                                             accessRights: old.accessRights.filter(
-                                                                                 innerAccessRight => innerAccessRight.id !== accessRight.id)
-                                                                         }
-                                                                     })
-                                                                 }}/>}>
+                                                                 endDecorator={hasRight(ROLE_MODIFICATION) ?
+                                                                     <ChipDelete onDelete={() => {
+                                                                         setLocalRole(old => {
+                                                                             return {
+                                                                                 ...old,
+                                                                                 accessRights: old.accessRights.filter(
+                                                                                     innerAccessRight => innerAccessRight.id !== accessRight.id)
+                                                                             }
+                                                                         })
+                                                                     }}/> : <></>}>
                     {accessRight.description}
                 </Chip>)}
                 {localRole.accessRights.length === 0 && <Typography>Brak uprawnień</Typography>}
@@ -45,6 +49,9 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleL
                 }).map(accessRight => <Chip sx={{backgroundColor: uuidToColor(role.id)}}
                                             key={accessRight.id}
                                             onClick={() => {
+                                                if (!hasRight(ROLE_MODIFICATION)) {
+                                                    return;
+                                                }
                                                 setLocalRole(old => {
                                                     return {
                                                         ...old,
@@ -58,7 +65,7 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleL
             </CardContent>
             <CardActions>
                 <Button loading={updateRoleLoading}
-                    onClick={() => updateRole(localRole.accessRights.map(localAccessRight => localAccessRight.id))}>Zapisz
+                        onClick={() => updateRole(localRole.accessRights.map(localAccessRight => localAccessRight.id))}>Zapisz
                 </Button>
             </CardActions>
         </Card>

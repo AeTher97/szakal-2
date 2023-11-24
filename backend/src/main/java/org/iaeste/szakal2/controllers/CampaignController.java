@@ -8,6 +8,7 @@ import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.services.CampaignService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,11 +25,13 @@ public class CampaignController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('campaign_modification')")
     public Campaign createCampaign(@RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
         return campaignService.createCampaign(campaignCreationDTO);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('campaign_modification')")
     public Campaign modifyCampaign(@PathVariable("id") UUID id, @RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
         return campaignService.modifyCampaign(id, campaignCreationDTO);
     }

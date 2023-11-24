@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const JourneyInfo = ({journey}) => {
 
@@ -19,7 +20,7 @@ const JourneyInfo = ({journey}) => {
                     </div>
                     <div style={{display: "flex", gap: 10}}>
                         <Typography
-                            level={"title-md"}>Status</Typography><Typography>{journey.contactStatus}</Typography>
+                            level={"title-md"}>Status</Typography><Typography>{decodeContactStatus(journey.contactStatus)}</Typography>
                     </div>
                     <div style={{display: "flex", gap: 10}}>
                         <Typography

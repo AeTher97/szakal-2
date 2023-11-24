@@ -2,6 +2,7 @@ import React from 'react';
 import {Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const CompaniesTable = ({companies}) => {
 
@@ -54,7 +55,7 @@ const CompaniesTable = ({companies}) => {
                             </div>
                         </td>
                         <td>{company.currentJourney ? <div>
-                                <Typography>{company.currentJourney.contactStatus}</Typography>
+                                <Typography>{decodeContactStatus(company.currentJourney.contactStatus)}</Typography>
                                 <Typography>{company.currentJourney.user.name} {company.currentJourney.user.surname}</Typography>
                                 <Typography>{company.currentJourney.journeyStart}</Typography>
                             </div>
@@ -66,7 +67,7 @@ const CompaniesTable = ({companies}) => {
                         </td>}
                         {!mobile && company.contactJourneys &&
                             <td>{company.contactJourneys.map(journey => <Typography key={journey.campaignName}>
-                            {journey.campaignName} {journey.status}</Typography>)}</td>}
+                                {journey.campaignName} {decodeContactStatus(journey.status)}</Typography>)}</td>}
                     </tr>
                 )}
                 </tbody>

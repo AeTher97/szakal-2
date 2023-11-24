@@ -60,13 +60,13 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
-    const addContactEvent = (contactJourney, user, subject, description, eventType, contactPerson) => {
+    const addContactEvent = (contactJourney, user, subject, description, contactStatus, contactPerson) => {
         post({
             contactJourney,
             user,
             subject,
             description,
-            eventType,
+            contactStatus,
             contactPerson
         })
     }

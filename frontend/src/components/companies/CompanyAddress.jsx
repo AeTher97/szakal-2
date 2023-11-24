@@ -2,9 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 
 const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => {
     const mobile = useMobileSize();
+
+
+    const {hasRight} = useAccessRightsHelper();
+    const canModify = hasRight(COMPANY_MODIFICATION);
 
     const [city, setCity] = useState("");
     const [street, setStreet] = useState("");
@@ -35,7 +41,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Miasto</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input placeholder={"Miasto"} value={city} onChange={(e) => {
+                            <Input disabled={!canModify} placeholder={"Miasto"} value={city} onChange={(e) => {
                                 setCity(e.target.value)
                             }}/>
                         </FormControl>
@@ -43,7 +49,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Ulica</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input placeholder={"Ulica"} value={street} onChange={(e) => {
+                            <Input disabled={!canModify} placeholder={"Ulica"} value={street} onChange={(e) => {
                                 setStreet(e.target.value)
                             }}/>
                         </FormControl>
@@ -51,16 +57,17 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Kod pocztowy</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input placeholder={"Kod pocztowy"} value={postalCode} onChange={(e) => {
+                            <Input disabled={!canModify} placeholder={"Kod pocztowy"} value={postalCode}
+                                   onChange={(e) => {
                                 setPostalCode(e.target.value)
                             }}/>
                         </FormControl>
                     </Stack>
 
                 </CardContent>
-                <CardActions>
+                {canModify && <CardActions>
                     <Button loading={updateAddressLoading} type={"submit"}>Zapisz</Button>
-                </CardActions>
+                </CardActions>}
             </form>
         </Card>
     )

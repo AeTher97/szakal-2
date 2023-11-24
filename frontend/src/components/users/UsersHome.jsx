@@ -6,8 +6,13 @@ import RolesList from "./RolesList";
 import TabHeader from "../main/TabHeader";
 import UserDetails from "./UserDetails";
 import RoleDetails from "./RoleDetails";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {USER_VIEWING} from "../../utils/AccessRights";
 
 const UsersHome = () => {
+
+    const {hasRight} = useAccessRightsHelper();
+
     return (
         <Routes>
             <Route path={"/"} element={
@@ -16,7 +21,7 @@ const UsersHome = () => {
                         <Typography level="h2">Użytkownicy</Typography>
                     </TabHeader>
                     <div style={{display: "flex", flexWrap: "wrap", gap: 10}}>
-                        <UsersList/>
+                        {hasRight(USER_VIEWING) && <UsersList/>}
                         <RolesList/>
                     </div>
                 </div>}/>

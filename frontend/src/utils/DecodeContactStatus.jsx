@@ -1,0 +1,26 @@
+export const decodeContactStatus = (status) => {
+
+    switch (status) {
+        case "ASSIGNED":
+            return "Przypisana"
+        case "WAITING_FOR_RESPONSE":
+            return "Oczekiwanie na odpowiedź"
+        case "CALL_LATER":
+            return "Zadzwonić później"
+        case "NOT_INTERESTED":
+            return "Niezainteresowana"
+        case "DEAL":
+            return "Praktyka"
+        case "BARTER":
+            return "Barter"
+        case "SPONSOR":
+            return "Sponsor"
+        case "TRAINING":
+            return "Szkolenie"
+        case "DIFFERENT_FORM_PARTNERSHIP":
+            return "Inna forma współpracy"
+        default:
+            return "Nieznany status"
+    }
+
+}

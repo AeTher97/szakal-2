@@ -8,6 +8,7 @@ import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.iaeste.szakal2.services.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,21 +25,25 @@ public class CompanyController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('company_modification')")
     public Company createCompany(@RequestBody @Valid CompanyCreationDTO companyCreationDTO) {
         return companyService.createCompany(companyCreationDTO);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('company_modification')")
     public void deleteCompany(@PathVariable("id") UUID id) {
         companyService.deleteCompany(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('company_modification')")
     public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
         return companyService.updateCompany(id, companyModificationDTO);
     }
 
     @PutMapping("/{id}/contactPerson")
+    @PreAuthorize("hasAuthority('company_modification')")
     public Company addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
         return companyService.addContactPerson(id, contactPersonCreationDTO);
     }

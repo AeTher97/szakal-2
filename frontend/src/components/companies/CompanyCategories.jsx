@@ -3,8 +3,13 @@ import {Autocomplete, Card, CardActions, CardContent, Divider, IconButton, Typog
 import {useCategories} from "../../data/CategoriesData";
 import Button from "@mui/joy/Button";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const CompanyCategories = ({categoriesList, setCategories, updateCategories, updateCategoriesLoading}) => {
+
+    const {hasRight} = useAccessRightsHelper();
+    const canModify = hasRight(COMPANY_MODIFICATION);
 
     const {categories, loading} = useCategories();
     const [value, setValue] = useState("");
@@ -25,11 +30,11 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
                 {categoriesList.map(category =>
                     <div key={category.id} style={{display: "flex", justifyContent: "space-between"}}>
                         <Typography key={category.id}>• {category.name}</Typography>
-                        <IconButton onClick={() => {
+                        {canModify && <IconButton onClick={() => {
                             setCategories(old => {
                                 return old.filter(categoryLocal => categoryLocal.id !== category.id)
                             })
-                        }}><DeleteIcon/></IconButton>
+                        }}><DeleteIcon/></IconButton>}
                     </div>)}
                 {categoriesList.length === 0 &&
                     <Typography style={{alignSelf: "center"}}>Brak branż</Typography>}
@@ -37,6 +42,7 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
             <Divider/>
             <CardActions sx={{flexWrap: "wrap"}}>
                 <Autocomplete
+                    disabled={!canModify}
                     inputValue={value}
                     onInputChange={() => {
                         console.log("input")
@@ -64,7 +70,7 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
                         })
                     }}
                 />
-                {updateCategories &&
+                {updateCategories && canModify &&
                     <Button onClick={() => updateCategories(categoriesList)} loading={updateCategoriesLoading}>
                         Zapisz
                     </Button>}

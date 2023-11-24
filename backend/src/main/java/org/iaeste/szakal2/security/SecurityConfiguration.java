@@ -55,35 +55,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasAuthority("user_viewing")
-                        .requestMatchers(HttpMethod.GET, "/api/users/*").hasAuthority("user_viewing")
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/users/*/roles").hasAuthority("role_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/users/*/accept").hasAuthority("user_acceptance")
-                        .requestMatchers(HttpMethod.PUT, "/api/users/*/password").permitAll()
-
-                        .requestMatchers(HttpMethod.POST, "/api/roles").hasAuthority("role_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/roles/*").hasAuthority("role_modification")
-                        .requestMatchers(HttpMethod.DELETE, "/api/roles/*").hasAuthority("role_modification")
-
-                        .requestMatchers(HttpMethod.POST, "/api/companies").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.DELETE, "/api/companies/*").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/companies/*").hasAuthority("company_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/companies/*/contactPerson").hasAuthority("company_modification")
-
-                        .requestMatchers(HttpMethod.POST, "/api/campaigns").hasAuthority("campaign_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/campaigns/*").hasAuthority("campaign_modification")
-                        .requestMatchers(HttpMethod.GET, "/api/campaigns").hasAuthority("campaign_viewing")
-
-                        .requestMatchers(HttpMethod.POST, "/api/categories").hasAuthority("category_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/categories/*").hasAuthority("category_modification")
-                        .requestMatchers(HttpMethod.DELETE, "/api/categories/*").hasAuthority("category_modification")
-
-                        .requestMatchers(HttpMethod.POST, "/api/journeys").hasAuthority("journey_modification")
-                        .requestMatchers(HttpMethod.PUT, "/api/journeys/*/status").hasAuthority("journey_modification")
-                        .requestMatchers(HttpMethod.POST, "/api/journeys/*/events").hasAuthority("journey_modification")
-                        .requestMatchers(HttpMethod.POST, "/api/journeys/*/comments").hasAuthority("journey_modification")
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/**").permitAll()

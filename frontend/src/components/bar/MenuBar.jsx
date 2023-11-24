@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Tab, tabClasses, TabList, Tabs} from "@mui/joy";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {USER_VIEWING} from "../../utils/AccessRights";
+import {JOURNEY_CREATION, USER_VIEWING} from "../../utils/AccessRights";
 
 export const menuItems = [
     {path: "home", name: "Start"},
     {path: "companies", name: "Wszystkie Firmy"},
     {path: "journeys", name: "Kontakty w tej akcji"},
-    {path: "user-journeys", name: "Twoje Kontakty"},
+    {path: "user-journeys", name: "Twoje Kontakty", right: JOURNEY_CREATION},
     {path: "categories", name: "Branże"},
     {path: "campaigns", name: "Akcje"},
     {path: "users", name: "Użytkownicy", right: USER_VIEWING}

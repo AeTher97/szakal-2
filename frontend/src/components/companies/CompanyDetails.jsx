@@ -12,6 +12,9 @@ import CompanyCategories from "./CompanyCategories";
 import Button from "@mui/joy/Button";
 import {useAddContactJourney} from "../../data/JourneyData";
 import CompanyJourneys from "./CompanyJourneys";
+import {JOURNEY_CREATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 
 const CompanyDetails = () => {
 
@@ -20,6 +23,8 @@ const CompanyDetails = () => {
     const [localCompany, setLocalCompany] = useState();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {userId} = useSelector(state => state.auth);
+    const {hasRight} = useAccessRightsHelper();
+
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
         updatingAddress, updateCategories, updatingCategories
@@ -53,12 +58,12 @@ const CompanyDetails = () => {
                         <Typography level={"h2"}>{company.name}</Typography>
                         <Typography level={"title-sm"}>Dodana {formatLocalDateTime(company.insertDate)}</Typography>
                         <Typography level={"title-sm"}>Status w obecnej
-                            akcji: {thisCampaignJourney ? thisCampaignJourney.contactStatus + ` ${thisCampaignJourney.user.name}
+                            akcji: {thisCampaignJourney ? decodeContactStatus(thisCampaignJourney.contactStatus) + `, ${thisCampaignJourney.user.name}
                              ${thisCampaignJourney.user.surname}` : "Wolna"}
                         </Typography>
                     </div>
                     <div>
-                        {!thisCampaignJourney && <Button
+                        {!thisCampaignJourney && hasRight(JOURNEY_CREATION) && currentCampaign && <Button
                             onClick={() => {
                                 addJourney(currentCampaign, company.id, userId)
                                     .then((data) => {

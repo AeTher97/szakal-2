@@ -31,31 +31,38 @@ public class UsersController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('user_viewing')")
     public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('user_viewing')")
     public UserDTO getUser(@PathVariable("id") UUID id) {
         return userService.getUserDTOById(id);
     }
 
     @PutMapping("/{id}/roles")
+    @PreAuthorize("hasAuthority('user_role_granting')")
     public UserDTO updateUserRoles(@PathVariable("id") UUID id,
                                    @RequestBody UserRoleModificationDTO userRoleModificationDTO) {
         return userService.modifyUserRoles(id, userRoleModificationDTO);
     }
 
     @PutMapping("/{id}/accept")
+    @PreAuthorize("hasAuthority('user_acceptance')")
     public UserDTO acceptUser(@PathVariable("id") UUID id) {
         return userService.acceptUser(id);
     }
 
+
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('user_management')")
     public UserDTO updateUserStatus(@PathVariable("id") UUID id, @RequestBody UpdateUserStatusDTO updateUserStatusDTO) {
         return userService.updateUserStatus(id, updateUserStatusDTO);
     }
 
+    // # TODO check id
     @PutMapping("/{id}")
     public UserDTO updateUser(@PathVariable("id") UUID id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
         return userService.updateUser(id, userUpdateDTO);
