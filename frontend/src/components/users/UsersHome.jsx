@@ -7,7 +7,7 @@ import TabHeader from "../main/TabHeader";
 import UserDetails from "./UserDetails";
 import RoleDetails from "./RoleDetails";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {USER_VIEWING} from "../../utils/AccessRights";
+import {ROLE_VIEWING, USER_VIEWING} from "../../utils/AccessRights";
 
 const UsersHome = () => {
 
@@ -22,7 +22,7 @@ const UsersHome = () => {
                     </TabHeader>
                     <div style={{display: "flex", flexWrap: "wrap", gap: 10}}>
                         {hasRight(USER_VIEWING) && <UsersList/>}
-                        <RolesList/>
+                        {hasRight(ROLE_VIEWING) && <RolesList/>}
                     </div>
                 </div>}/>
             <Route path={"/:id"} element={<UserDetails/>}/>
