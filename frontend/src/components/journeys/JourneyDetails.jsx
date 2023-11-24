@@ -105,7 +105,9 @@ const JourneyDetails = () => {
                             </div>
                         </form>}
                         <Timeline>
-                            {journey.contactEvents.reverse().map(event => {
+                            {journey.contactEvents.sort((a, b) => {
+                                return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                            }).map(event => {
                                 return <TimelineItem key={event.id}>
                                     <div style={{
                                         display: "flex",
