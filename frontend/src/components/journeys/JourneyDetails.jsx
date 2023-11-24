@@ -65,34 +65,6 @@ const JourneyDetails = () => {
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Typography level={"h3"}>Wydarzenia kontaktowe</Typography>
                         </div>
-                        <Timeline>
-                            {journey.contactEvents.reverse().map(event => {
-                                return <TimelineItem key={event.id}>
-                                    <div style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between"
-                                    }}>
-                                        <div style={{display: "flex", gap: 5}}>
-                                            <Avatar size={"sm"}>
-                                                {event.user.name[0]}{event.user.surname[0]}
-                                            </Avatar>
-                                            <div>
-                                                <Typography
-                                                    level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
-                                                <Typography
-                                                    level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
-                                            </div>
-                                        </div>
-                                        <div>{decodeContactStatus(event.eventType)}</div>
-                                    </div>
-                                    <Typography level={"title-md"}>{event.subject}</Typography>
-                                    <Typography level={"body-md"}>{event.description}</Typography>
-                                </TimelineItem>
-                            })}
-                            {journey.contactEvents.length === 0 &&
-                                <Typography>Brak wydarzeń</Typography>}
-                        </Timeline>
                         {isUser && <form onSubmit={(e) => {
                             e.preventDefault();
                             if (contactStatus === "CHOOSE") {
@@ -132,6 +104,34 @@ const JourneyDetails = () => {
                                 </Stack>
                             </div>
                         </form>}
+                        <Timeline>
+                            {journey.contactEvents.reverse().map(event => {
+                                return <TimelineItem key={event.id}>
+                                    <div style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between"
+                                    }}>
+                                        <div style={{display: "flex", gap: 5}}>
+                                            <Avatar size={"sm"}>
+                                                {event.user.name[0]}{event.user.surname[0]}
+                                            </Avatar>
+                                            <div>
+                                                <Typography
+                                                    level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
+                                                <Typography
+                                                    level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
+                                            </div>
+                                        </div>
+                                        <div>{decodeContactStatus(event.eventType)}</div>
+                                    </div>
+                                    <Typography level={"title-md"}>{event.subject}</Typography>
+                                    <Typography level={"body-md"}>{event.description}</Typography>
+                                </TimelineItem>
+                            })}
+                            {journey.contactEvents.length === 0 &&
+                                <Typography>Brak wydarzeń</Typography>}
+                        </Timeline>
                     </div>
                     <div style={{flex: 1}}>
                         <Typography level={"h3"}>Komentarze</Typography>
