@@ -32,7 +32,7 @@ public class CompanyListingDTO {
     private List<CompanyCategory> categories;
     private List<ContactJourneyMinimalDTO> contactJourneys;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties(value = {"company", "campaign"})
+    @JsonIgnoreProperties(value = {"company", "campaign", "contactEvents"})
     private ContactJourney currentJourney;
 
     public static CompanyListingDTO fromCompany(Company company) {
@@ -51,6 +51,7 @@ public class CompanyListingDTO {
                 .categories(company.getCategories())
                 .contactJourneys(company.getContactJourneys().stream()
                         .map(contactJourney -> ContactJourneyMinimalDTO.builder()
+                                .id(contactJourney.getId())
                                 .campaignName(contactJourney.getCampaign().getName())
                                 .status(contactJourney.getContactStatus().name())
                                 .build()).toList())

@@ -3,6 +3,7 @@ import {Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
+import {formatLocalDateTime} from "../../utils/DateUtils";
 
 const CompaniesTable = ({companies}) => {
 
@@ -55,9 +56,13 @@ const CompaniesTable = ({companies}) => {
                             </div>
                         </td>
                         <td>{company.currentJourney ? <div>
-                                <Typography>{decodeContactStatus(company.currentJourney.contactStatus)}</Typography>
+                                <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
+                                    <Typography>
+                                        {decodeContactStatus(company.currentJourney.contactStatus)}
+                                    </Typography>
+                                </LinkWithRouter>
                                 <Typography>{company.currentJourney.user.name} {company.currentJourney.user.surname}</Typography>
-                                <Typography>{company.currentJourney.journeyStart}</Typography>
+                                <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
                             </div>
                             : <Typography>Wolna</Typography>}</td>
                         {!mobile && <td>
@@ -66,8 +71,20 @@ const CompaniesTable = ({companies}) => {
                             })}
                         </td>}
                         {!mobile && company.contactJourneys &&
-                            <td>{company.contactJourneys.map(journey => <Typography key={journey.campaignName}>
-                                {journey.campaignName} {decodeContactStatus(journey.status)}</Typography>)}</td>}
+                            <td>{company.contactJourneys.map(journey =>
+                                <>
+                                    <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
+                                        <Typography key={journey.campaignName}>
+                                            {journey.campaignName}
+                                        </Typography>
+                                    </LinkWithRouter>
+                                    <Typography>
+                                        {decodeContactStatus(journey.status)}
+                                    </Typography>
+                                </>)}
+                                {company.contactJourneys.length === 0 &&
+                                    <Typography>Nie kontaktowano się z firmą</Typography>}
+                            </td>}
                     </tr>
                 )}
                 </tbody>
