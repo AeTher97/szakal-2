@@ -29,7 +29,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 List.of("company_modification"));
         Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
 
-        UUID journeyId = UUID.fromString(withAccessRights("journey_modification")
+        UUID journeyId = UUID.fromString(withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
@@ -58,7 +58,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 List.of("company_modification"));
         Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
 
-        UUID journeyId = UUID.fromString(withAccessRights("journey_modification")
+        UUID journeyId = UUID.fromString(withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
@@ -96,7 +96,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     public void testCantAddTwoJourneysForTheSameCampaignAndCompany() {
         ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
 
-        withAccessRights("journey_modification")
+        withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
@@ -139,7 +139,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     public void testAddContactJourneyEvent() {
         ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
 
-        withAccessRights("journey_modification")
+        withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
@@ -148,7 +148,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                               "contactJourney" : "\{ contactJourney.getId() }",
                               "subject" : "Kicked off the contact",
                               "description" : "Tried calling",
-                              "eventType" : "NOT_INTERESTED"
+                              "contactStatus" : "NOT_INTERESTED"
                         }
                         """ )
                 .when()

@@ -69,7 +69,7 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
         assertThat(integrationTestDatabaseApi.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
                 .get().getRoles().size()).isEqualTo(1);
 
-        UserDTO userDTO = withAccessRights("role_modification")
+        UserDTO userDTO = withAccessRights("user_role_granting")
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
