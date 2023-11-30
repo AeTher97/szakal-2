@@ -5,7 +5,7 @@ import {useMobileSize} from "../../utils/SizeQuery";
 
 const Top10 = () => {
 
-    const {journeys, loading} = useCurrentCampaignJourneyList()
+    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1000)
     const mobile = useMobileSize();
 
     const top10 = new Map();
