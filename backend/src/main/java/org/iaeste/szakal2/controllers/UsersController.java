@@ -3,12 +3,14 @@ package org.iaeste.szakal2.controllers;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
+import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -91,7 +93,7 @@ public class UsersController {
     public ResponseEntity<Object> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO) {
         try {
             userService.resetPassword(passwordResetDTO);
-        } catch (ResetTokenExpiredException e) {
+        } catch (ResetTokenExpiredException | UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
             log.info("Password reset: " + e.getMessage());

@@ -91,6 +91,7 @@ export const usePost = (url, updateFunction = () => {
                     console.log(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
+                throw e;
             }).finally(() => {
                 setLoading(false);
             })
