@@ -62,7 +62,7 @@ export const usePut = (url, updateFunction = () => {
             return axios.put(overrideUrl ? overrideUrl : url, data).then(res => {
                 updateFunction(res.data)
             }).catch(e => {
-                if (response.data && response.data.error) {
+                if (e.response.data && e.response.data.error) {
                     console.log(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
@@ -87,7 +87,7 @@ export const usePost = (url, updateFunction = () => {
                 updateFunction(res.data)
                 return res.data;
             }).catch(e => {
-                if (response.data && response.data.error) {
+                if (e.response.data && e.response.data.error) {
                     console.log(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
