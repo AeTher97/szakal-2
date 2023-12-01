@@ -56,6 +56,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/reset-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/reset-password-set-new").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/**").permitAll()

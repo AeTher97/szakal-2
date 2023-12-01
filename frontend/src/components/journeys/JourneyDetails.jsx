@@ -32,7 +32,6 @@ const JourneyDetails = () => {
     }, [location, journey]);
 
     const [contactStatus, setContactStatus] = useState("CHOOSE");
-    const [eventTitle, setEventTitle] = useState("");
     const [eventDescription, setEventDescription] = useState("");
 
 
@@ -70,7 +69,9 @@ const JourneyDetails = () => {
                             if (contactStatus === "CHOOSE") {
                                 return;
                             }
-                            addContactEvent(journey.id, userId, eventTitle, eventDescription, contactStatus)
+                            addContactEvent(journey.id, userId, eventDescription, contactStatus)
+                            setEventDescription("")
+                            setContactStatus("CHOOSE")
                         }}>
                             <div style={{display: "flex"}}>
                                 <Stack spacing={1} style={{flex: 1}}>
@@ -89,11 +90,6 @@ const JourneyDetails = () => {
                                             <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma współpracy</Option>
                                             <Option value={"INTERNSHIP"}>Praktyka</Option>
                                         </Select>
-                                    </FormControl>
-                                    <FormControl>
-                                        <Input type={"text"} value={eventTitle} onChange={(e) => {
-                                            setEventTitle(e.target.value)
-                                        }} fullWidth placeholder={"Tytuł"} required/>
                                     </FormControl>
                                     <FormControl>
                                         <Textarea minRows={2} value={eventDescription} onChange={(e) => {
@@ -127,7 +123,6 @@ const JourneyDetails = () => {
                                         </div>
                                         <div>{decodeContactStatus(event.eventType)}</div>
                                     </div>
-                                    <Typography level={"title-md"}>{event.subject}</Typography>
                                     <Typography level={"body-md"}>{event.description}</Typography>
                                 </TimelineItem>
                             })}

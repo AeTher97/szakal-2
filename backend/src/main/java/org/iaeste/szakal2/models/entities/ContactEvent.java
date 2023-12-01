@@ -40,8 +40,6 @@ public class ContactEvent {
     @JsonIgnore
     private ContactJourney contactJourney;
     @NotNull
-    private String subject;
-    @NotNull
     private String description;
     @Enumerated(EnumType.STRING)
     private ContactStatus eventType;

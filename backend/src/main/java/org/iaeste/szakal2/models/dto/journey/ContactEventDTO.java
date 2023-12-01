@@ -21,8 +21,6 @@ public class ContactEventDTO {
     @NotNull
     private UUID contactJourney;
     @NotNull
-    private String subject;
-    @NotNull
     private String description;
     @NotNull
     private ContactStatus contactStatus;

@@ -1,14 +1,19 @@
 package org.iaeste.szakal2.services;
 
 
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
+import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.exceptions.UsernameTakenException;
 import org.iaeste.szakal2.models.dto.user.*;
+import org.iaeste.szakal2.models.entities.PasswordResetToken;
 import org.iaeste.szakal2.models.entities.User;
+import org.iaeste.szakal2.repositories.PasswordTokenRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
+import org.iaeste.szakal2.utils.EmailLoader;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -17,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,18 +30,22 @@ import java.util.UUID;
 @Log4j2
 public class UserService {
 
+    private final EmailService emailService;
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final UsernamePasswordProvider usernamePasswordProvider;
+    private final PasswordTokenRepository passwordTokenRepository;
 
-    public UserService(UsersRepository usersRepository,
+    public UserService(EmailService emailService, UsersRepository usersRepository,
                        PasswordEncoder passwordEncoder,
                        RoleService roleService,
-                       JwtConfiguration jwtConfiguration) {
+                       JwtConfiguration jwtConfiguration, PasswordTokenRepository passwordTokenRepository) {
+        this.emailService = emailService;
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
+        this.passwordTokenRepository = passwordTokenRepository;
         this.usernamePasswordProvider = new UsernamePasswordProvider(usersRepository, passwordEncoder, jwtConfiguration);
     }
 
@@ -114,12 +124,59 @@ public class UserService {
         return UserDTO.fromUser(usersRepository.save(user));
     }
 
+    @Transactional
+    public void sendResetCode(StartPasswordResetDTO startPasswordResetDTO) throws UserNotFoundException {
+        try {
+            User user = getUserByEmail(startPasswordResetDTO.getEmail());
+            String token = UUID.randomUUID().toString();
+            createPasswordResetToken(user, token);
+
+            try {
+                emailService.sendHtmlMessage(startPasswordResetDTO.getEmail(), "Resetowanie hasła Szakal",
+                        EmailLoader.loadResetPasswordEmail().replace("${userName}",
+                                        user.getName()).replace("${resetCode}", token)
+                                .replace("${domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME")));
+            } catch (Exception e) {
+                throw new RuntimeException("Incorrectly setup domain");
+            }
+        } catch (UserNotFoundException e) {
+            //Always accept the request to not hint at who is registered.
+        }
+    }
+
+    @Transactional
+    public void resetPassword(PasswordResetDTO passwordResetDTO) throws UserNotFoundException, ResetTokenExpiredException {
+        Optional<PasswordResetToken> passwordResetTokenOptional = passwordTokenRepository
+                .findPasswordResetTokenByToken(passwordResetDTO.getCode());
+        if (!passwordResetTokenOptional.isPresent()) {
+            throw new UserNotFoundException("Reset token invalid");
+        }
+        PasswordResetToken resetToken = passwordResetTokenOptional.get();
+        if (resetToken.isExpired()) {
+            throw new ResetTokenExpiredException("Reset token expired");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(passwordResetDTO.getPassword()));
+        passwordTokenRepository.delete(resetToken);
+        usersRepository.save(user);
+    }
+
+
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return usersRepository.findAll(pageable).map(UserDTO::fromUser);
     }
 
-    public void truncate() {
-        usersRepository.deleteAll();
+
+    private void createPasswordResetToken(User user, String token) {
+         int EXPIRATION = 24 * 60 * 60 * 1000;
+
+        PasswordResetToken passwordResetToken = PasswordResetToken.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(new Date(System.currentTimeMillis() + EXPIRATION))
+                .build();
+        passwordTokenRepository.save(passwordResetToken);
     }
 
 }

@@ -1,4 +1,4 @@
-import {useData, usePut} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
@@ -79,6 +79,28 @@ export const usePasswordChange = (id) => {
     }
 
     return {changePassword, changePasswordLoading}
+}
+
+export const usePasswordReset = () => {
+
+    const {post, loading: resetPasswordLoading} = usePost(`/users/reset-password`)
+    const {post: postNewPassword} = usePost(`/users/reset-password-set-new`)
+
+    const resetPassword = (email) => {
+        return post({
+            email
+        })
+    }
+
+    const updatePassword = (password,repeatPassword, code) => {
+        return postNewPassword({
+            password,
+            repeatPassword,
+            code
+        })
+    }
+
+    return {resetPassword, updatePassword, resetPasswordLoading}
 }
 
 export const useIsUser = (id) => {

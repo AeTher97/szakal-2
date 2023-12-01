@@ -146,7 +146,6 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                               "contactPerson" : "\{ contactJourney.getCompany().getContactPeople().get(0).getId() }",
                               "user" : "\{ contactJourney.getUser().getId() }",
                               "contactJourney" : "\{ contactJourney.getId() }",
-                              "subject" : "Kicked off the contact",
                               "description" : "Tried calling",
                               "contactStatus" : "NOT_INTERESTED"
                         }
@@ -157,7 +156,6 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
         ContactJourney contactJourney1 = integrationTestDatabaseApi.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getContactEvents().size());
-        assertEquals("Kicked off the contact", contactJourney1.getContactEvents().get(0).getSubject());
         assertEquals("Tried calling", contactJourney1.getContactEvents().get(0).getDescription());
         assertEquals(NOT_INTERESTED, contactJourney1.getContactEvents().get(0).getEventType());
     }

@@ -6,6 +6,8 @@ import AppContainer from "../screens/AppContainer";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import NotAcceptedScreen from "../screens/NotAcceptedScreen";
 import SecureRoute from "../utils/SecureRoute";
+import PasswordResetScreen from "../screens/PasswordResetScreen";
+import UpdatePasswordScreen from "../screens/UpdatePasswordScreen";
 
 
 export const RouterWrapper = () => {
@@ -16,6 +18,8 @@ export const RouterWrapper = () => {
             <Route path={"/"} element={<Navigate to={{pathname: "/secure/home"}}/>}/>
             <Route path={"/login"} element={<LoginScreen/>}/>
             <Route path={"/sign-up"} element={<SignUpScreen/>}/>
+            <Route path={"/reset-password"} element={<PasswordResetScreen/>}/>
+            <Route path={"/update-password"} element={<UpdatePasswordScreen/>}/>
             <Route path={"/secure/*"} element={<AppContainer/>}/>
             <Route path={"/not-accepted"} element={<SecureRoute>
                 <NotAcceptedScreen/>

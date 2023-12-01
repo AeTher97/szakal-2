@@ -36,9 +36,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Optional<User> userOptional = usersRepository.findUserByEmailIgnoreCase(authentication.getPrincipal().toString());
         if (userOptional.isEmpty()) {
-            throw new BadCredentialsException(STR. """
-                    User \{ authentication.getPrincipal().toString() } not found
-                    """ );
+            throw new BadCredentialsException("Invalid credentials");
         }
         User user = userOptional.get();
 
@@ -67,7 +65,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                 throw new AuthenticationServiceException("Error occurred while trying to authenticate");
             }
         } else {
-            throw new BadCredentialsException("Invalid password");
+            throw new BadCredentialsException("Invalid credentials");
         }
     }
 

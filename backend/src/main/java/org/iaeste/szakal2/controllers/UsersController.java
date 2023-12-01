@@ -75,4 +75,25 @@ public class UsersController {
         return userService.changePassword(id, userPasswordChangingDTO);
     }
 
+    @PostMapping("/reset-password")
+    public ResponseEntity<Object> sendResetCode(@Valid @RequestBody StartPasswordResetDTO startPasswordResetDTO) {
+        log.info("Initiating password reset for " + startPasswordResetDTO.getEmail());
+        try {
+            userService.sendResetCode(startPasswordResetDTO);
+        } catch (Exception e) {
+            log.info("Password reset " + e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password-set-new")
+    public ResponseEntity<Object> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO) {
+        try {
+            userService.resetPassword(passwordResetDTO);
+        } catch (Exception e) {
+            log.info("Password reset: " + e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
 }

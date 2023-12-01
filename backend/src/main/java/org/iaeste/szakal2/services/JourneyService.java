@@ -116,7 +116,6 @@ public class JourneyService {
                 .date(LocalDateTime.now())
                 .eventType(contactEventDTO.getContactStatus())
                 .description(contactEventDTO.getDescription())
-                .subject(contactEventDTO.getSubject())
                 .build();
     }
 

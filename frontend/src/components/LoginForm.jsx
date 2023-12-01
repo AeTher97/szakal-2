@@ -84,6 +84,13 @@ const LoginForm = ({redirectBack}) => {
                 >
                     Nie masz konta?
                 </Typography>
+                <Typography
+                    endDecorator={<LinkWithRouter to="/password-reset">Zresetuj je</LinkWithRouter>}
+                    fontSize="sm"
+                    sx={{alignSelf: "center"}}
+                >
+                    Zapomniałeś hasło?
+                </Typography>
                 <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
                     Made by GRAFIKA
                 </Typography>

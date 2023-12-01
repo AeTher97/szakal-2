@@ -31,16 +31,9 @@ const SignUpForm = () => {
         }}
               onSubmit={(e) => {
                   e.preventDefault();
-                  if (password.length < 8) {
-                      setPasswordTooShort(true);
-                      return;
+                  if (passwordTooShort || passwordsDontMatch) {
+                      return
                   }
-                  setPasswordTooShort(false)
-                  if (password !== repeatPassword) {
-                      setPasswordsDontMatch(true);
-                      return;
-                  }
-                  setPasswordsDontMatch(false)
 
 
                   registerUser({
@@ -124,7 +117,14 @@ const SignUpForm = () => {
                         type="password"
                         placeholder="haslo"
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={e => {
+                            setPassword(e.target.value)
+                            if (password.length < 8) {
+                                setPasswordTooShort(true);
+                                return;
+                            }
+                            setPasswordTooShort(false)
+                        }}
                     />
                     <LinearProgress
                         determinate
@@ -158,7 +158,14 @@ const SignUpForm = () => {
                         type="password"
                         placeholder="haslo"
                         value={repeatPassword}
-                        onChange={e => setRepeatPassword(e.target.value)}
+                        onChange={e => {
+                            setRepeatPassword(e.target.value)
+                            if (password !== repeatPassword) {
+                                setPasswordsDontMatch(true);
+                                return;
+                            }
+                            setPasswordsDontMatch(false)
+                        }}
                     />
                     {passwordsDontMatch && <FormHelperText>
                         Hasła nie zgadzają się
