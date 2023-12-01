@@ -22,7 +22,7 @@ const UpdatePasswordScreen = () => {
     return (
         <div style={{display: "flex", justifyContent: "center", padding: 20}}>
             <Card style={{flex: 1, maxWidth: 400}}>
-                    <Typography>Ustaw nowe hasło</Typography>
+                    <Typography>Utwórz nowe hasło</Typography>
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         if (passwordTooShort || passwordsDontMatch) {
@@ -38,7 +38,7 @@ const UpdatePasswordScreen = () => {
                             <Input type={"password"} placeholder={"Haslo"}
                                    onChange={(e) => {
                                        setPassword(e.target.value)
-                                       if (password.length < 8) {
+                                       if (e.target.value < 8) {
                                            setPasswordTooShort(true);
                                            return;
                                        }

@@ -2,6 +2,7 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.data.domain.Page;
@@ -90,6 +91,8 @@ public class UsersController {
     public ResponseEntity<Object> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO) {
         try {
             userService.resetPassword(passwordResetDTO);
+        } catch (ResetTokenExpiredException e) {
+            throw e;
         } catch (Exception e) {
             log.info("Password reset: " + e.getMessage());
         }

@@ -119,7 +119,7 @@ const SignUpForm = () => {
                         value={password}
                         onChange={e => {
                             setPassword(e.target.value)
-                            if (password.length < 8) {
+                            if (e.target.value < 8) {
                                 setPasswordTooShort(true);
                                 return;
                             }
@@ -160,7 +160,7 @@ const SignUpForm = () => {
                         value={repeatPassword}
                         onChange={e => {
                             setRepeatPassword(e.target.value)
-                            if (password !== repeatPassword) {
+                            if (password !== e.target.value) {
                                 setPasswordsDontMatch(true);
                                 return;
                             }

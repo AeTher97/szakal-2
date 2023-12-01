@@ -153,6 +153,7 @@ public class UserService {
         }
         PasswordResetToken resetToken = passwordResetTokenOptional.get();
         if (resetToken.isExpired()) {
+            passwordTokenRepository.delete(resetToken);
             throw new ResetTokenExpiredException("Reset token expired");
         }
 
@@ -169,7 +170,7 @@ public class UserService {
 
 
     private void createPasswordResetToken(User user, String token) {
-         int EXPIRATION = 24 * 60 * 60 * 1000;
+         int EXPIRATION = 60 * 60 * 1000; //An hour
 
         PasswordResetToken passwordResetToken = PasswordResetToken.builder()
                 .token(token)
