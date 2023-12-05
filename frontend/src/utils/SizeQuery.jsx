@@ -5,3 +5,8 @@ export const useMobileSize = () => {
 
     return useMediaQuery("@media (max-width:500px)")
 }
+
+export const useFullColumnSize = () => {
+
+    return useMediaQuery("@media (max-width:1200px)")
+}

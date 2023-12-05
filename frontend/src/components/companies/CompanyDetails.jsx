@@ -15,6 +15,7 @@ import CompanyJourneys from "./CompanyJourneys";
 import {JOURNEY_CREATION} from "../../utils/AccessRights";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
+import CompanyContactPeople from "./CompanyContactPeople";
 
 const CompanyDetails = () => {
 
@@ -27,8 +28,10 @@ const CompanyDetails = () => {
 
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
-        updatingAddress, updateCategories, updatingCategories
+        updatingAddress, updateCategories, updatingCategories,
+        addContactPerson, addingContactPerson
     } = useCompany(location.pathname.split("/")[3])
+
     const {addJourney} = useAddContactJourney();
     const navigate = useNavigate();
 
@@ -81,7 +84,7 @@ const CompanyDetails = () => {
                     alignItems: "stretch",
                     gap: 10,
                     padding: 5,
-                    paddingBottom: 100,
+                    paddingBottom: 50,
                     overflow: "hidden"
                 }}>
                     <CompanyContactData localCompany={localCompany}
@@ -104,6 +107,10 @@ const CompanyDetails = () => {
                                        updateCategories={updateCategories}
                                        updateCategoriesLoading={updatingCategories}
                     />
+                    <CompanyContactPeople addContactPerson={addContactPerson}
+                                          contactPeople={company.contactPeople || []}
+                                          addingContactPerson={addingContactPerson}/>
+
                 </div>
             </>}
             {loading &&

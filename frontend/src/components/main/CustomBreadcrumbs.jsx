@@ -19,7 +19,7 @@ const CustomBreadcrumbs = () => {
         {path: "companies", component: "Firmy"},
         {path: "categories", component: "Branże"},
         {path: "user-journeys", component: "Twoje kontakty"},
-        {path: "journeys", component: "Kontakty w tej akcji"},
+        {path: "journeys", component: "Kontakty"},
         {path: "users", component: "Użytkownicy"},
         {path: "campaigns", component: "Akcje"},
         {path: "profile", component: "Profil"},

@@ -123,7 +123,6 @@ public class CompanyService {
                 .position(contactPersonCreationDTO.getPosition())
                 .email(contactPersonCreationDTO.getEmail())
                 .phone(contactPersonCreationDTO.getPhone())
-                .phone2(contactPersonCreationDTO.getPhone2())
                 .comment(contactPersonCreationDTO.getComment())
                 .build();
     }

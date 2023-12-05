@@ -5,29 +5,34 @@ import Button from "@mui/joy/Button";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {useMobileSize} from "../../utils/SizeQuery";
+import CategoryDialog from "../categories/CategoryDialog";
 
-const CompanyCategories = ({categoriesList, setCategories, updateCategories, updateCategoriesLoading}) => {
+const CompanyCategories = ({
+                               categoriesList, setCategories, updateCategories, updateCategoriesLoading,
+                               allowAdding
+                           }) => {
 
     const {hasRight} = useAccessRightsHelper();
     const canModify = hasRight(COMPANY_MODIFICATION);
+    const [open, setOpen] = useState(false)
+    const mobile = useMobileSize();
+    const {addCategory, reloadData, categories, loading} = useCategories();
 
-    const {categories, loading} = useCategories();
-    const [value, setValue] = useState("");
     const ref = useRef();
 
     const isOptionEqualToValue = (option) => {
         return option.id === "choose";
     }
 
-
     return (
-        <Card>
+        <Card sx={{flex: 1}}>
             <CardContent sx={{flex: 0}}>
                 <Typography>Branże</Typography>
             </CardContent>
             <Divider/>
             <CardContent>
-                {categoriesList.map(category =>
+                {categoriesList && categoriesList.map(category =>
                     <div key={category.id} style={{display: "flex", justifyContent: "space-between"}}>
                         <Typography key={category.id}>• {category.name}</Typography>
                         {canModify && <IconButton onClick={() => {
@@ -36,28 +41,29 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
                             })
                         }}><DeleteIcon/></IconButton>}
                     </div>)}
-                {categoriesList.length === 0 &&
+                {categoriesList && categoriesList.length === 0 &&
                     <Typography style={{alignSelf: "center"}}>Brak branż</Typography>}
             </CardContent>
             <Divider/>
-            <CardActions sx={{flexWrap: "wrap"}}>
+            <CardActions sx={{flexWrap: "wrap"}} buttonFlex={"1"}>
                 <Autocomplete
-                    sx={{maxWidth: 220}}
                     disabled={!canModify}
-                    inputValue={value}
                     loading={loading}
                     disableClearable
+                    placeholder="Wybierz"
+                    getOptionDisabled={(option) => {
+                        return option.id === "choose"
+                    }}
                     isOptionEqualToValue={isOptionEqualToValue}
-                    options={categories ? categories
+                    options={categories && categoriesList ? categories
                         .filter(category => !categoriesList.map(localCategory => localCategory.id).includes(category.id))
                         .map(category => {
                             return {
                                 label: category.name,
                                 id: category.id
                             }
-                        }) : [{id: "choose", label: "Wybierz"}]}
+                        }) : []}
                     onChange={(e, inputValue) => {
-                        setValue("");
                         setCategories(old => {
                             return [
                                 ...old, {
@@ -72,9 +78,15 @@ const CompanyCategories = ({categoriesList, setCategories, updateCategories, upd
                     <Button onClick={() => updateCategories(categoriesList)} loading={updateCategoriesLoading}>
                         Zapisz
                     </Button>}
+                {allowAdding && <Button variant={"outlined"} color={"neutral"} onClick={() => setOpen(true)}>
+                    Dodaj
+                </Button>}
             </CardActions>
-
-
+            <CategoryDialog open={open} close={() => {
+                reloadData();
+                setOpen(false)
+            }}
+                            addCategory={addCategory}/>
         </Card>
     );
 };

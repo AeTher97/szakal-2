@@ -70,9 +70,9 @@ const CompaniesTable = ({companies}) => {
                                 return <Typography key={category.id}>{category.name}</Typography>
                             })}
                         </td>}
-                        {!mobile && company.contactJourneys &&
-                            <td>{company.contactJourneys.map(journey =>
-                                <>
+                        <td>
+                            {!mobile && company.contactJourneys && company.contactJourneys.map(journey => {
+                                return <div key={journey.id}>
                                     <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
                                         <Typography key={journey.campaignName}>
                                             {journey.campaignName}
@@ -81,10 +81,11 @@ const CompaniesTable = ({companies}) => {
                                     <Typography>
                                         {decodeContactStatus(journey.status)}
                                     </Typography>
-                                </>)}
-                                {company.contactJourneys.length === 0 &&
-                                    <Typography>Nie kontaktowano się z firmą</Typography>}
-                            </td>}
+                                </div>
+                            })}
+                            {(!company.contactJourneys || company.contactJourneys.length === 0) &&
+                                <Typography>Nie kontaktowano się z firmą</Typography>}
+                        </td>
                     </tr>
                 )}
                 </tbody>

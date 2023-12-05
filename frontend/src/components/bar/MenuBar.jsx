@@ -3,6 +3,7 @@ import {Tab, tabClasses, TabList, Tabs} from "@mui/joy";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {JOURNEY_CREATION, USER_VIEWING} from "../../utils/AccessRights";
+import {useFullColumnSize} from "../../utils/SizeQuery";
 
 export const menuItems = [
     {path: "home", name: "Start"},
@@ -21,6 +22,7 @@ const MenuBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const {hasRight} = useAccessRightsHelper();
+    const fullSize = useFullColumnSize();
 
 
     useEffect(() => {
@@ -39,6 +41,12 @@ const MenuBar = () => {
             }} value={path}>
                 <TabList
                     sx={{
+                        overflow: 'auto',
+                        scrollSnapType: 'x mandatory',
+                        '&::-webkit-scrollbar': {height: 5},
+                        '&::-webkit-scrollbar-track': {background: "#f1f1f1"},
+                        '&::-webkit-scrollbar-thumb': {background: " #888"},
+                        '&::-webkit-scrollbar-thumb:hover': {background: " #555"},
                         p: 0.5,
                         gap: 0.5,
                         [`& .${tabClasses.root}[aria-selected="true"]`]: {
@@ -55,7 +63,10 @@ const MenuBar = () => {
                         if (item.right && !hasRight(item.right)) {
                             return undefined;
                         } else {
-                            return <Tab key={item.name} value={item.path}>{item.name}</Tab>;
+                            return <Tab key={item.name} value={item.path} sx={{
+                                flex: 'none',
+                                scrollSnapAlign: 'start'
+                            }}>{item.name}</Tab>;
                         }
                     })}
                 </TabList>

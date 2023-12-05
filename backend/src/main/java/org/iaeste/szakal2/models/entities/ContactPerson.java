@@ -31,18 +31,12 @@ public class ContactPerson {
     @NotNull
     private String name;
     @Setter
-    @NotNull
     private String position;
     @Setter
-    @NotNull
     private String email;
     @Setter
-    @NotNull
     private String phone;
     @Setter
-    private String phone2;
-    @Setter
-    @NotNull
     private String comment;
 
     public UUID company() {

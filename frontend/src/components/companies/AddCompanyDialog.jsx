@@ -10,6 +10,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
     const [email, setEmail] = useState("");
     const [www, setWww] = useState("");
     const [street, setStreet] = useState("");
+    const [streetNumber, setStreetNumber] = useState("");
     const [city, setCity] = useState("");
     const [postalCode, setPostalCode] = useState("");
     const [categories, setCategories] = useState([]);
@@ -21,8 +22,9 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
         setWww("");
         setStreet("");
         setCity("");
+        setStreetNumber("");
         setPostalCode("");
-        setCategories("");
+        setCategories([]);
         close();
     }
 
@@ -38,6 +40,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                             www,
                             categories.map(category => category.id),
                             street,
+                            streetNumber,
                             city,
                             postalCode);
                         close();
@@ -58,7 +61,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Telefon</FormLabel>
-                                    <Input autoFocus required
+                                    <Input autoFocus
                                            value={phone}
                                            onChange={(e) => {
                                                setPhone(e.target.value)
@@ -66,7 +69,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Email</FormLabel>
-                                    <Input autoFocus required
+                                    <Input autoFocus
                                            value={email}
                                            type={"email"}
                                            onChange={(e) => {
@@ -100,6 +103,14 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                            }} placeholder={"Miasto"}/>
                                 </FormControl>
                                 <FormControl>
+                                    <FormLabel>Numer budynku</FormLabel>
+                                    <Input
+                                        value={streetNumber}
+                                        onChange={(e) => {
+                                            setStreetNumber(e.target.value)
+                                        }} placeholder={"Kod pocztowy"}/>
+                                </FormControl>
+                                <FormControl>
                                     <FormLabel>Kod pocztowy</FormLabel>
                                     <Input
                                         value={postalCode}
@@ -108,7 +119,8 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                         }} placeholder={"Kod pocztowy"}/>
                                 </FormControl>
                             </Stack>
-                            <CompanyCategories categoriesList={categories} setCategories={setCategories}/>
+                            <CompanyCategories categoriesList={categories} setCategories={setCategories}
+                                               allowAdding/>
                         </div>
                         <Stack spacing={2}>
                             <Button type="submit">Zapisz</Button>

@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
-import {Avatar, FormControl, Input, Select, Stack, Textarea, Typography} from "@mui/joy";
+import {Avatar, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
 import JourneyCompany from "./JourneyCompany";
 import JourneyInfo from "./JourneyInfo";
@@ -32,6 +32,7 @@ const JourneyDetails = () => {
     }, [location, journey]);
 
     const [contactStatus, setContactStatus] = useState("CHOOSE");
+    const [contactPerson, setContactPerson] = useState("CHOOSE");
     const [eventDescription, setEventDescription] = useState("");
 
 
@@ -69,7 +70,11 @@ const JourneyDetails = () => {
                             if (contactStatus === "CHOOSE") {
                                 return;
                             }
-                            addContactEvent(journey.id, userId, eventDescription, contactStatus)
+                            if (contactPerson !== "CHOOSE") {
+                                addContactEvent(journey.id, userId, eventDescription, contactStatus, contactPerson)
+                            } else {
+                                addContactEvent(journey.id, userId, eventDescription, contactStatus)
+                            }
                             setEventDescription("")
                             setContactStatus("CHOOSE")
                         }}>
@@ -80,7 +85,7 @@ const JourneyDetails = () => {
                                         <Select value={contactStatus} onChange={(e, newValue) => {
                                             setContactStatus(newValue)
                                         }}>
-                                            <Option value={"CHOOSE"} disabled>Wybierz</Option>
+                                            <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
                                             <Option value={"WAITING_FOR_RESPONSE"}>Oczekiwanie na odpowiedź</Option>
                                             <Option value={"CALL_LATER"}>Zadzwonić później</Option>
                                             <Option value={"NOT_INTERESTED"}>Niezainteresowana</Option>
@@ -89,6 +94,17 @@ const JourneyDetails = () => {
                                             <Option value={"TRAINING"}>Szkolenie</Option>
                                             <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma współpracy</Option>
                                             <Option value={"INTERNSHIP"}>Praktyka</Option>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl>
+                                        <Select value={contactPerson} onChange={(e, newValue) => {
+                                            setContactPerson(newValue)
+                                        }}>
+                                            <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
+                                            {journey.company.contactPeople.map(person => {
+                                                return <Option value={person.id}>{person.name}</Option>
+                                            })}
+
                                         </Select>
                                     </FormControl>
                                     <FormControl>
@@ -121,9 +137,18 @@ const JourneyDetails = () => {
                                                     level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
                                             </div>
                                         </div>
-                                        <div>{decodeContactStatus(event.eventType)}</div>
+                                        <div>
+                                            <Typography level={"body-sm"}>
+                                                {decodeContactStatus(event.eventType)}
+                                            </Typography>
+                                        </div>
                                     </div>
                                     <Typography level={"body-md"}>{event.description}</Typography>
+                                    {event.contactPerson &&
+                                        <div><Typography level={"body-sm"}>
+                                            Osoba
+                                            kontaktowa: {event.contactPerson.name}{event.contactPerson.phone && `, ${event.contactPerson.phone}`}</Typography>
+                                        </div>}
                                 </TimelineItem>
                             })}
                             {journey.contactEvents.length === 0 &&

@@ -15,12 +15,14 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
     const [city, setCity] = useState("");
     const [street, setStreet] = useState("");
     const [postalCode, setPostalCode] = useState("");
+    const [streetNumber, setStreetNumber] = useState("");
 
     useEffect(() => {
         if (localCompany) {
-            setCity(localCompany.address.city)
-            setStreet(localCompany.address.street)
-            setPostalCode(localCompany.address.postalCode)
+            setCity(localCompany.address.city || "")
+            setStreet(localCompany.address.street || "")
+            setPostalCode(localCompany.address.postalCode || "")
+            setStreetNumber(localCompany.address.streetNumber || "")
         }
     }, [localCompany])
 
@@ -33,7 +35,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
-                updateAddress(city, street, postalCode)
+                updateAddress(city, street, streetNumber, postalCode)
             }}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
                     <Stack spacing={1} sx={{flex: mobile ? 1 : 0}}>
@@ -54,13 +56,22 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             }}/>
                         </FormControl>
                         <FormLabel>
+                            <Typography level={"title-sm"}>Numer budynku</Typography>
+                        </FormLabel>
+                        <FormControl>
+                            <Input disabled={!canModify} placeholder={"Numer"} value={streetNumber}
+                                   onChange={(e) => {
+                                       setStreetNumber(e.target.value)
+                                   }}/>
+                        </FormControl>
+                        <FormLabel>
                             <Typography level={"title-sm"}>Kod pocztowy</Typography>
                         </FormLabel>
                         <FormControl>
                             <Input disabled={!canModify} placeholder={"Kod pocztowy"} value={postalCode}
                                    onChange={(e) => {
-                                setPostalCode(e.target.value)
-                            }}/>
+                                       setPostalCode(e.target.value)
+                                   }}/>
                         </FormControl>
                     </Stack>
 

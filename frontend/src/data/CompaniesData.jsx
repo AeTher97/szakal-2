@@ -20,7 +20,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
             return [...current, data]
         }))
 
-    const addCompany = (name, phone, email, www, categories, street, city, postalCode) => {
+    const addCompany = (name, phone, email, www, categories, street, streetNumber, city, postalCode) => {
         post({
             name,
             phone,
@@ -28,6 +28,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
             www,
             address: {
                 street,
+                streetNumber,
                 city,
                 postalCode
             },
@@ -47,32 +48,41 @@ export const useCompany = (id) => {
     const {loading: updatingContactDetails, put} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
+    const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`,
+        (data) => setCompany(data))
 
     const updateContactDetails = (name, email, phone, website) => {
-        put({
+        return put({
             name, email, phone, website
         })
     }
 
-    const updateAddress = (city, street, postalCode) => {
-        putAddress({
+    const updateAddress = (city, street, streetNumber, postalCode) => {
+        return putAddress({
             address: {
                 city,
                 street,
+                streetNumber,
                 postalCode
             }
         })
     }
 
     const updateCategories = (categories) => {
-        putCategories({
+        return putCategories({
             categories: categories.map(category => category.id)
+        })
+    }
+
+    const addContactPerson = (name, position, phone, email, comment) => {
+        return putContactPerson({
+            name, position, phone, email, comment
         })
     }
 
     return {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress, updatingAddress,
-        updateCategories, updatingCategories
+        updateCategories, updatingCategories, addContactPerson, addingContactPerson
     }
 
 }

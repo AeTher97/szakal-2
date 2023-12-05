@@ -32,14 +32,12 @@ public class Company {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     @Setter
-    @NotNull
     private String phone;
     @Setter
     private String fax;
     @Setter
     private String www;
     @Setter
-    @NotNull
     private String email;
     @Setter
     @NotNull

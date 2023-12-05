@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,12 +23,11 @@ public class Address {
             strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @Setter
-    @NotNull
     private String city;
     @Setter
-    @NotNull
     private String street;
     @Setter
-    @NotNull
     private String postalCode;
+    @Setter
+    private String streetNumber;
 }

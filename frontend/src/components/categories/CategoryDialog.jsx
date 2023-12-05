@@ -16,12 +16,6 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
         <Modal open={open}>
             <ModalDialog>
                 <DialogTitle>{localCategory ? "Edytuj branżę" : "Dodaj branżę"}</DialogTitle>
-                <form
-                    onSubmit={(event, value) => {
-                        event.preventDefault();
-                        addCategory(name);
-                        close();
-                    }}>
                     <Stack spacing={2}>
                         <FormControl>
                             <FormLabel>Nazwa</FormLabel>
@@ -31,10 +25,14 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
                                        setName(e.target.value)
                                    }} placeholder={"Nazwa branży"}/>
                         </FormControl>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" onClick={(event, value) => {
+                            event.preventDefault();
+                            addCategory(name).then((r) => {
+                                close();
+                            });
+                        }}>Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>
                     </Stack>
-                </form>
             </ModalDialog>
         </Modal>
     );
