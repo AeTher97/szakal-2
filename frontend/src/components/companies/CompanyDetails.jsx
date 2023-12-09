@@ -5,7 +5,7 @@ import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useCompany} from "../../data/CompaniesData";
 import TabHeader from "../main/TabHeader";
 import CompanyContactData from "./CompanyContactData";
-import {LinearProgress, Typography} from "@mui/joy";
+import {ButtonGroup, IconButton, LinearProgress, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import CompanyAddress from "./CompanyAddress";
 import CompanyCategories from "./CompanyCategories";
@@ -16,6 +16,8 @@ import {JOURNEY_CREATION} from "../../utils/AccessRights";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import CompanyContactPeople from "./CompanyContactPeople";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 
 const CompanyDetails = () => {
 
@@ -53,6 +55,38 @@ const CompanyDetails = () => {
     const thisCampaignJourney = company ?
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
 
+    const canModifyOthers = hasRight("journey_modification_for_others");
+
+    const renderAssignButton = () => {
+        if (!thisCampaignJourney && hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers) {
+            return <Button
+                onClick={() => {
+                    addJourney(currentCampaign, company.id, userId)
+                        .then((data) => {
+                            navigate(`/secure/journeys/${data.id}`)
+                        })
+                }}>
+                Przypisz
+            </Button>
+        } else {
+            return <ButtonGroup color={"primary"} variant={"solid"}>
+                <Button
+                    onClick={() => {
+                        addJourney(currentCampaign, company.id, userId)
+                            .then((data) => {
+                                navigate(`/secure/journeys/${data.id}`)
+                            })
+                    }}>
+                    Przypisz
+                </Button>
+                <IconButton
+                >
+                    <ArrowDropDownIcon/>
+                </IconButton>
+            </ButtonGroup>
+        }
+    }
+
     return (
         <div style={{overflow: "auto"}}>
             {company && localCompany && <>
@@ -66,15 +100,7 @@ const CompanyDetails = () => {
                         </Typography>
                     </div>
                     <div>
-                        {!thisCampaignJourney && hasRight(JOURNEY_CREATION) && currentCampaign && <Button
-                            onClick={() => {
-                                addJourney(currentCampaign, company.id, userId)
-                                    .then((data) => {
-                                        navigate(`/secure/journeys/${data.id}`)
-                                    })
-                            }}>
-                            Przypisz
-                        </Button>}
+                        {renderAssignButton(currentCampaign, company.id, userId, true)}
                     </div>
                 </TabHeader>
                 <div style={{

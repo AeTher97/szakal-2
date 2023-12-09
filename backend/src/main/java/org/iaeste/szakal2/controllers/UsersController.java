@@ -5,12 +5,13 @@ import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.dto.user.*;
+import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -65,10 +66,13 @@ public class UsersController {
         return userService.updateUserStatus(id, updateUserStatusDTO);
     }
 
-    // # TODO check id
     @PutMapping("/{id}")
     public UserDTO updateUser(@PathVariable("id") UUID id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
-        return userService.updateUser(id, userUpdateDTO);
+        if (AccessVerificationBean.isUser(id.toString())) {
+            return userService.updateUser(id, userUpdateDTO);
+        } else {
+            throw new BadCredentialsException("Cannot modify user different that yourself");
+        }
     }
 
     @PutMapping("/{id}/password")

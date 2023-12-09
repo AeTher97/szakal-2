@@ -1,6 +1,7 @@
 package org.iaeste.szakal2.security.utils;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,9 @@ public class AccessVerificationBean {
         }
     }
 
-    public boolean hasAccessToUser(String id) {
-        return SecurityUtils.getUserId().equals(UUID.fromString(id));
+    public static boolean hasRole(String role) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role));
     }
 
 }
