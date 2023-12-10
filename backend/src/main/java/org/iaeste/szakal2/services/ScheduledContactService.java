@@ -64,8 +64,7 @@ public class ScheduledContactService {
         return scheduledContactRepository.getScheduledContactByUser(user);
     }
 
-//    @Scheduled(cron = "0 0,30 * * * *")
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0,30 * * * *")
     public void sendNotificationAboutContact() {
         List<ScheduledContact> contactsToSchedule = scheduledContactRepository
                 .findScheduledContactsByReminderDateBetween(LocalDateTime.now().plusHours(24), LocalDateTime.now().plusHours(25));
