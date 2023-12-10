@@ -1,4 +1,4 @@
-package org.iaeste.szakal2.models;
+package org.iaeste.szakal2.models.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

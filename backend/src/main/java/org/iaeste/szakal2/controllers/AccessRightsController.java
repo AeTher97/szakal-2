@@ -1,7 +1,7 @@
 package org.iaeste.szakal2.controllers;
 
 import lombok.extern.log4j.Log4j2;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

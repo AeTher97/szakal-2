@@ -8,11 +8,13 @@ import java.nio.charset.StandardCharsets;
 
 public class EmailLoader {
 
-
     public static String loadResetPasswordEmail() {
         return loadFile("email/passwordReset.html");
     }
 
+    public static String loadContactNotificationEmail() {
+        return loadFile("email/contactNotification.html");
+    }
 
     private static String loadFile(String name) {
         StringBuilder email = new StringBuilder();

@@ -3,7 +3,7 @@ package org.iaeste.szakal2.services;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
 import org.iaeste.szakal2.models.entities.Role;

@@ -17,9 +17,12 @@ const AppWithoutCss = () => {
 
     useEffect(() => {
         setMode(theme)
+        document.getElementById("body")
+            .style.backgroundColor = theme === "light" ? "rgb(255,255,255)" : "rgb(11, 13, 14)";
     }, [theme]);
 
-    return <><AuthProvider/>
+    return <>
+        <AuthProvider/>
         <main style={{
             backgroundColor: theme === "light" ? "rgb(255,255,255)" : "rgb(11, 13, 14)",
             minHeight: "100vh",

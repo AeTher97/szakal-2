@@ -9,10 +9,12 @@ import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
 import org.iaeste.szakal2.models.entities.ContactJourney;
+import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.services.JourneyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,22 +30,24 @@ public class JourneyController {
         this.journeyService = journeyService;
     }
 
-    // #TODO check user id
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('journey_creation', 'journey_creation_for_others')")
     public ContactJourney createContactJourney(@RequestBody @Valid ContactJourneyCreationDTO contactJourneyCreationDTO) {
-        return journeyService.createJourney(contactJourneyCreationDTO);
+        if (AccessVerificationBean.isUser(contactJourneyCreationDTO.getUser().toString()) ||
+                AccessVerificationBean.hasRole("journey_creation_for_others")) {
+            return journeyService.createJourney(contactJourneyCreationDTO);
+        } else {
+            throw new BadCredentialsException("Permissions not sufficient to assign a journey to this user");
+        }
     }
 
-    // #TODO check user id
     @PutMapping("/{id}/status")
     public ContactJourney updateContactJourneyStatus(@PathVariable("id") UUID id,
                                                      @RequestBody @Valid ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         return journeyService.updateJourneyStatus(id, contactJourneyStatusUpdatingDTO);
     }
 
-    // #TODO check user id
     @PostMapping("/{id}/events")
     public ContactJourney addContactEvent(@PathVariable("id") UUID id,
                                           @RequestBody @Valid ContactEventDTO contactEventDTO) {

@@ -14,6 +14,7 @@ import Button from "@mui/joy/Button";
 import Option from '@mui/joy/Option';
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const JourneyDetails = () => {
 
@@ -21,6 +22,7 @@ const JourneyDetails = () => {
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
     const {journey, loading, addContactEvent} = useJourney(location.pathname.split("/")[3]);
+    const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {
         if (journey) {
@@ -65,7 +67,7 @@ const JourneyDetails = () => {
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Typography level={"h3"}>Wydarzenia kontaktowe</Typography>
                         </div>
-                        {isUser && <form onSubmit={(e) => {
+                        {(isUser || hasRight("journey_modification_for_others")) && <form onSubmit={(e) => {
                             e.preventDefault();
                             if (contactStatus === "CHOOSE") {
                                 return;

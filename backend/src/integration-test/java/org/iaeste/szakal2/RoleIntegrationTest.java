@@ -1,7 +1,7 @@
 package org.iaeste.szakal2;
 
 import io.restassured.http.ContentType;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.repositories.RolesRepository;

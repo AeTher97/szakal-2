@@ -7,6 +7,7 @@ import UserMenu from "./UserMenu";
 import {useCampaignsList} from "../../data/CampaignData";
 import {changeCampaignAction} from "../../redux/ReducerActions";
 import DrawerMenu from "./DrawerMenu";
+import NotificationComponent from "../notifications/NotificationComponent";
 
 const TopBar = () => {
 
@@ -58,6 +59,7 @@ const TopBar = () => {
                 <SzakalLogo/>
             </div>}
             {mobile && <DrawerMenu/>}
+            <NotificationComponent/>
             <Autocomplete loading={loading}
                           disableClearable
                           options={campaignsOptions}

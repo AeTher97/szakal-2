@@ -10,9 +10,11 @@ import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
+import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -53,16 +55,26 @@ public class JourneyService {
     @Transactional
     public ContactJourney updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
-        return contactJourneyRepository.save(contactJourney);
+        if (SecurityUtils.getUserId().equals(contactJourney.getUser().getId()) ||
+                AccessVerificationBean.hasRole("journey_modification_for_others")) {
+            contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
+            return contactJourneyRepository.save(contactJourney);
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
     }
 
     @Transactional
     public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
-        contactJourney.setContactStatus(contactEventDTO.getContactStatus());
-        return contactJourneyRepository.save(contactJourney);
+        if (AccessVerificationBean.isUser(contactEventDTO.getUser().toString()) ||
+                AccessVerificationBean.hasRole("journey_modification_for_others")) {
+            contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
+            contactJourney.setContactStatus(contactEventDTO.getContactStatus());
+            return contactJourneyRepository.save(contactJourney);
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
     }
 
     public ContactJourney addComment(UUID id, CommentCreationDTO commentCreationDTO) {
@@ -88,7 +100,7 @@ public class JourneyService {
     public Page<ContactJourney> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
         User user = userService.getUserById(userId);
         Campaign campaign = campaignService.getCampaignById(campaignID);
-        return contactJourneyRepository.findAllByUserAndAndCampaignOrderByJourneyStart(user, campaign, pageable);
+        return contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
     }
 
 

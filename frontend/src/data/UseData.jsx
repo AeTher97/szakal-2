@@ -11,7 +11,7 @@ export const useData = (baseUrl, updateFunction, triggers = [], urlParams = [], 
     let url = baseUrl;
     let first = true;
     for (let param of urlParams) {
-        if (param.value !== null) {
+        if (param.value !== null && param.value !== undefined) {
             url += `${first ? "?" : "&"}${param.name}=${param.value}`;
             first = false;
         }
@@ -84,6 +84,31 @@ export const usePost = (url, updateFunction = () => {
         loading, post: (data, overrideUrl) => {
             setLoading(true)
             return axios.post(overrideUrl ? overrideUrl : url, data).then(res => {
+                updateFunction(res.data)
+                return res.data;
+            }).catch(e => {
+                if (e.response.data && e.response.data.error) {
+                    console.log(e.response.data.error);
+                    dispatch(showError(e.response.data.error))
+                }
+                throw e;
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+    }
+}
+export const useDelete = (url, updateFunction = () => {
+}) => {
+
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch();
+
+
+    return {
+        loading, deleteReq: (data, overrideUrl) => {
+            setLoading(true)
+            return axios.delete(overrideUrl ? overrideUrl : url, data).then(res => {
                 updateFunction(res.data)
                 return res.data;
             }).catch(e => {

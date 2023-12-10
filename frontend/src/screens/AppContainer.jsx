@@ -12,7 +12,7 @@ const AppContainer = () => {
 
     return (
         <SecureRoute>
-            <div style={{maxHeight: "100vh", display: "flex", flexDirection: "column"}}>
+            <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
                 <TopBar/>
                 <ContentColumn>
                     {!mobileSize && <MenuBar/>}

@@ -3,7 +3,7 @@ package org.iaeste.szakal2;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.dto.user.UserDTO;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
