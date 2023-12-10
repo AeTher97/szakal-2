@@ -100,7 +100,7 @@ public class JourneyService {
     public Page<ContactJourney> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
         User user = userService.getUserById(userId);
         Campaign campaign = campaignService.getCampaignById(campaignID);
-        return contactJourneyRepository.findAllByUserAndAndCampaignOrderByJourneyStart(user, campaign, pageable);
+        return contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
     }
 
 

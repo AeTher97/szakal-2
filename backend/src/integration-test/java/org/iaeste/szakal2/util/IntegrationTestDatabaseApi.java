@@ -3,7 +3,7 @@ package org.iaeste.szakal2.util;
 import lombok.Getter;
 import org.hibernate.Hibernate;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;

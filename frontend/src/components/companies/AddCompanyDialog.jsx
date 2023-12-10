@@ -51,9 +51,9 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                     <Stack spacing={2}>
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                             <Stack spacing={2} sx={{overflow: "auto"}}>
-                                <FormControl>
+                                <FormControl required>
                                     <FormLabel>Nazwa</FormLabel>
-                                    <Input autoFocus required
+                                    <Input autoFocus
                                            value={name}
                                            onChange={(e) => {
                                                setName(e.target.value)

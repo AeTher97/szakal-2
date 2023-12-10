@@ -8,7 +8,6 @@ import {useNavigate} from "react-router-dom";
 
 const UserMenu = ({name, surname}) => {
 
-    const {userId} = useSelector(state => state.auth);
     const mobile = useMobileSize();
     const navigate = useNavigate();
     const dispatch = useDispatch();

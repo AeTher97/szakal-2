@@ -3,7 +3,6 @@ package org.iaeste.szakal2.models.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.iaeste.szakal2.models.AccessRight;
 
 import java.util.List;
 import java.util.UUID;

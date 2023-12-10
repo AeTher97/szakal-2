@@ -1,7 +1,7 @@
 package org.iaeste.szakal2.services;
 
 import lombok.extern.log4j.Log4j2;
-import org.iaeste.szakal2.models.AccessRight;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.AccessRightRepository;

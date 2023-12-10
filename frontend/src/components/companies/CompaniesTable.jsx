@@ -5,6 +5,7 @@ import {useMobileSize} from "../../utils/SizeQuery";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 
+
 const CompaniesTable = ({companies}) => {
 
     const mobile = useMobileSize();
@@ -70,8 +71,8 @@ const CompaniesTable = ({companies}) => {
                                 return <Typography key={category.id}>{category.name}</Typography>
                             })}
                         </td>}
-                        <td>
-                            {!mobile && company.contactJourneys && company.contactJourneys.map(journey => {
+                        {!mobile && <td>
+                            {company.contactJourneys && company.contactJourneys.map(journey => {
                                 return <div key={journey.id}>
                                     <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
                                         <Typography key={journey.campaignName}>
@@ -85,7 +86,7 @@ const CompaniesTable = ({companies}) => {
                             })}
                             {(!company.contactJourneys || company.contactJourneys.length === 0) &&
                                 <Typography>Nie kontaktowano się z firmą</Typography>}
-                        </td>
+                        </td>}
                     </tr>
                 )}
                 </tbody>
