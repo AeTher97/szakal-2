@@ -84,10 +84,10 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                                 level="body-xs"
                                 sx={{alignSelf: 'flex-end', color: 'hsl(var(--hue) 80% 30%)'}}
                             >
-                                {password.length < 3 && 'Very weak'}
-                                {password.length >= 3 && password.length < 6 && 'Weak'}
-                                {password.length >= 6 && password.length < 10 && 'Strong'}
-                                {password.length >= 10 && 'Very strong'}
+                                {password.length < 3 && 'Bardzo słabe'}
+                                {password.length >= 3 && password.length < 6 && 'Słabe'}
+                                {password.length >= 6 && password.length < 10 && 'Silne'}
+                                {password.length >= 10 && 'Bardzo silne'}
                             </Typography>
                             {passwordTooShort && <FormHelperText>
                                 Hasło musi mieć przynajmniej 8 znaków

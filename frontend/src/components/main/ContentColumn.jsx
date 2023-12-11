@@ -23,7 +23,8 @@ const ContentColumn = props => {
                 {props.children}
             </div>
             {!mediumSize ?
-                <div style={{marginRight: 10, marginBottom: 10, flex: 1, maxWidth: 300}}>
+                <div
+                    style={{marginRight: 10, marginBottom: 10, flex: 1, maxWidth: 300, marginTop: mediumSize ? 54 : 0}}>
                     <ScheduledContacts/>
                 </div> :
                 <>

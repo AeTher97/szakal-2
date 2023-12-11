@@ -71,7 +71,7 @@ const SignUpForm = () => {
                     </Typography>
                     <Typography level="body-sm">Zarejestruj się</Typography>
                 </div>
-                <FormControl>
+                <FormControl required>
                     <FormLabel>E-mail</FormLabel>
                     <Input
                         autoFocus
@@ -83,7 +83,7 @@ const SignUpForm = () => {
                         onChange={e => setEmail(e.target.value)}
                     />
                 </FormControl>
-                <FormControl>
+                <FormControl required>
                     <FormLabel>Imię</FormLabel>
                     <Input
                         required
@@ -94,7 +94,7 @@ const SignUpForm = () => {
                         onChange={e => setName(e.target.value)}
                     />
                 </FormControl>
-                <FormControl>
+                <FormControl required>
                     <FormLabel>Nazwisko</FormLabel>
                     <Input
                         required
@@ -107,7 +107,7 @@ const SignUpForm = () => {
                 </FormControl>
                 <FormControl error={passwordsDontMatch || passwordTooShort} sx={{
                     '--hue': Math.min(password.length * 10, 120),
-                }}>
+                }} required>
                     <FormLabel>Hasło</FormLabel>
                     <Input
                         startDecorator={<Key/>}
@@ -139,16 +139,16 @@ const SignUpForm = () => {
                         level="body-xs"
                         sx={{alignSelf: 'flex-end', color: 'hsl(var(--hue) 80% 30%)'}}
                     >
-                        {password.length < 3 && 'Very weak'}
-                        {password.length >= 3 && password.length < 6 && 'Weak'}
-                        {password.length >= 6 && password.length < 10 && 'Strong'}
-                        {password.length >= 10 && 'Very strong'}
+                        {password.length < 3 && 'Bardzo słabe'}
+                        {password.length >= 3 && password.length < 6 && 'Słabe'}
+                        {password.length >= 6 && password.length < 10 && 'Silne'}
+                        {password.length >= 10 && 'Bardzo silne'}
                     </Typography>
                     {passwordTooShort && <FormHelperText>
                         Hasło musi mieć przynajmniej 8 znaków
                     </FormHelperText>}
                 </FormControl>
-                <FormControl error={passwordsDontMatch}>
+                <FormControl error={passwordsDontMatch} required>
                     <FormLabel>Powtórz Hasło</FormLabel>
                     <Input
                         startDecorator={<Key/>}
