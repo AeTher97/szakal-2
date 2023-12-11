@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {useSelector} from "react-redux";
 
 const AddCompanyDialog = ({open, addCampaign, close}) => {
 
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
+    const {theme} = useSelector(state => state.theme);
+
 
     return (
         <Modal open={open}>
@@ -30,6 +33,7 @@ const AddCompanyDialog = ({open, addCampaign, close}) => {
                             <FormLabel>Data rozpoczęcia</FormLabel>
                             <Input required
                                    type={"date"}
+                                   style={{colorScheme: theme}}
                                    value={startDate}
                                    onChange={(e) => {
                                        setStartDate(e.target.value)
