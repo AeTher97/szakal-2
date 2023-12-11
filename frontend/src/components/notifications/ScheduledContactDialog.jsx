@@ -15,6 +15,8 @@ const ScheduledContactDialog = ({open, close}) => {
     const {companies, loading : companiesLoading}
         = useCompanyListWithCampaign(currentCampaign, 0, companySearch)
     const {userId} = useSelector(state => state.auth);
+    const {theme} = useSelector(state => state.theme);
+
 
     const [company, setCompany] = useState("");
     const [date, setDate] = useState("");
@@ -55,6 +57,7 @@ const ScheduledContactDialog = ({open, close}) => {
                         <FormControl required>
                             <FormLabel>Data i godzina</FormLabel>
                             <Input type={"datetime-local"}
+                                   style={{colorScheme: theme}}
                                    value={date} onChange={(e) => {
                                 setDate(e.target.value)
                             }}/>
