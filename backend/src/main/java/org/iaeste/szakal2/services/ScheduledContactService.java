@@ -70,7 +70,7 @@ public class ScheduledContactService {
     public void sendNotificationAboutContact() {
         log.info("Sending scheduled contact notifications at " + LocalDateTime.now());
         List<ScheduledContact> contactsToSchedule = scheduledContactRepository
-                .findScheduledContactsByReminderDateBetween(LocalDateTime.now().plusHours(24), LocalDateTime.now().plusHours(25));
+                .findScheduledContactsByReminderDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(24));
         contactsToSchedule.forEach(scheduledContact -> {
             String info =  STR."""
                         O godzinie \{scheduledContact.getReminderDate().getHour()}:\{scheduledContact.getReminderDate().getMinute()}
