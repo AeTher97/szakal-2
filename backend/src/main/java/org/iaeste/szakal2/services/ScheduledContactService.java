@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import lombok.extern.java.Log;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.scheduled.contact.ScheduledContactDTO;
 import org.iaeste.szakal2.models.entities.Company;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Log
 public class ScheduledContactService {
 
     private final ScheduledContactRepository scheduledContactRepository;
@@ -66,6 +68,7 @@ public class ScheduledContactService {
 
     @Scheduled(cron = "0 0,30 * * * *")
     public void sendNotificationAboutContact() {
+        log.info("Sending scheduled contact notifications at " + LocalDateTime.now());
         List<ScheduledContact> contactsToSchedule = scheduledContactRepository
                 .findScheduledContactsByReminderDateBetween(LocalDateTime.now().plusHours(24), LocalDateTime.now().plusHours(25));
         contactsToSchedule.forEach(scheduledContact -> {
