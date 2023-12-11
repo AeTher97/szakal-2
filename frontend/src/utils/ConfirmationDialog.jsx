@@ -13,7 +13,10 @@ const ConfirmationDialog = ({open, close, text, onConfirm, onReject}) => {
                         onReject();
                         close()
                     }} variant={"outlined"} color={"neutral"}>Nie</Button>
-                    <Button onClick={onConfirm}>Tak</Button>
+                    <Button onClick={() => {
+                        onConfirm();
+                        close();
+                    }}>Tak</Button>
                 </DialogActions>
             </ModalDialog>
         </Modal>
