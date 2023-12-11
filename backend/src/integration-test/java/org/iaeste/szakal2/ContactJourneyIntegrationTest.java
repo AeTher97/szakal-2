@@ -25,7 +25,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     @Test
     public void testCreatingContactJourney() {
         Company company = integrationTestDatabaseApi.createCompany("IAESTE");
-        User user = integrationTestDatabaseApi.createUser("company-creator@gmail.com", "company-creator", "password",
+        User user = integrationTestDatabaseApi.createUser("test_user@szakal.org", "company-creator", "password",
                 List.of("company_modification"));
         Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
 
@@ -54,7 +54,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     @Test
     public void testUpdatingJourneyStatus() {
         Company company = integrationTestDatabaseApi.createCompany("IAESTE");
-        User user = integrationTestDatabaseApi.createUser("company-creator@gmail.com", "company-creator", "password",
+        User user = integrationTestDatabaseApi.createUser("test_user@szakal.org", "company-creator", "password",
                 List.of("company_modification"));
         Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
 
@@ -115,12 +115,12 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
     public void testAddContactJourneyComment() {
         ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
 
-
         withAccessRights("journey_modification")
                 .contentType(ContentType.JSON)
                 .body(STR."""
                         {
-                              "comment" : "Nie idzie za dobrze"
+                              "comment" : "Nie idzie za dobrze",
+                              "user" : "\{ contactJourney.getUser().getId().toString() }"
                         }
                         """)
                 .when()

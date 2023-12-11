@@ -3,7 +3,6 @@ package org.iaeste.szakal2.util;
 import lombok.Getter;
 import org.hibernate.Hibernate;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,10 @@ public class IntegrationTestDatabaseApi {
                 createAccessRight(accessRightString).getId()).toList();
 
         if (usersRepository.findUserByEmailIgnoreCase(email).isPresent()) {
-            return usersRepository.findUserByEmailIgnoreCase(email).get();
+            User user = usersRepository.findUserByEmailIgnoreCase(email).get();
+            user.getRoles().get(0).getAccessRights().addAll(accessRightList.stream().map(accessRight ->
+                    accessRightRepository.findAccessRightById(accessRight).get()).toList());
+            return usersRepository.save(user);
         }
 
 
@@ -164,7 +166,7 @@ public class IntegrationTestDatabaseApi {
 
     @Transactional
     public ContactJourney createContactJourney() {
-        User user = createUser("company-creator@gmail.com", "company-creator", "password",
+        User user = createUser("test_user@szakal.org", "company-creator", "password",
                 List.of("company_modification"));
         Campaign campaign = createCampaign("PPP2023", LocalDate.now());
         Company company = createCompany("IAESTE");
