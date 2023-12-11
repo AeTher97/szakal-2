@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +16,6 @@ public class CommentCreationDTO {
 
     @NotNull
     private String comment;
+    @NotNull
+    private UUID user;
 }

@@ -47,7 +47,7 @@ public class JourneyService {
         Company company = companyService.getCompanyById(contactJourneyCreationDTO.getCompany());
         Campaign campaign = campaignService.getCampaignById(contactJourneyCreationDTO.getCampaign());
         if (contactJourneyRepository.findContactJourneyByCampaignAndUserAndCompany(campaign, user, company).isPresent()) {
-            throw new ResourceExistsException("Contact journey for that company already happended in this campaign");
+            throw new ResourceExistsException("Contact journey for that company already happened in this campaign");
         }
         return contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
     }
@@ -67,7 +67,7 @@ public class JourneyService {
     @Transactional
     public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.isUser(contactEventDTO.getUser().toString()) ||
+        if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
                 AccessVerificationBean.hasRole("journey_modification_for_others")) {
             contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
             contactJourney.setContactStatus(contactEventDTO.getContactStatus());
@@ -77,6 +77,7 @@ public class JourneyService {
         }
     }
 
+    @Transactional
     public ContactJourney addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));

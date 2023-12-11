@@ -49,10 +49,10 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     protected io.restassured.specification.RequestSpecification withAccessRights(String... accessRights) {
         integrationTestDatabaseApi.createUser("test_user@szakal.org",
                 "test_user",
-                "test_user",
+                "password",
                 Arrays.stream(accessRights).toList());
 
-        String authToken = getToken("test_user@szakal.org", "test_user");
+        String authToken = getToken("test_user@szakal.org", "password");
         return RestAssured.given()
                 .header(new Header("Authorization", "Bearer " + authToken));
     }
