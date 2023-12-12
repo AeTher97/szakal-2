@@ -29,7 +29,7 @@ const ContentColumn = props => {
                         marginBottom: 10,
                         flex: 1,
                         maxWidth: 300,
-                        paddingTop: mediumSize ? 54 : 0
+                        paddingTop: 54
                     }}>
                     <ScheduledContacts/>
                 </div> :
