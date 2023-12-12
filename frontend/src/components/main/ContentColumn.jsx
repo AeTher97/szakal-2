@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useFullColumnSize} from "../../utils/SizeQuery";
+import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
 import ScheduledContacts from "../notifications/ScheduledContacts";
 import {IconButton, Modal, ModalDialog} from "@mui/joy";
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -9,6 +9,7 @@ const ContentColumn = props => {
 
     const [notificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
     const mediumSize = useFullColumnSize();
+    const small = useMobileSize();
 
     return (
         <div style={{
@@ -18,7 +19,7 @@ const ContentColumn = props => {
         }}>
             <div style={{
                 maxWidth: 1200, flex: 1, overflow: "auto", display: "flex", flexDirection: "column",
-                padding: 10, paddingBottom: 0, marginLeft: 10
+                padding: 10, paddingBottom: 0, marginLeft: small ? 0 : 10
             }}>
                 {props.children}
             </div>
