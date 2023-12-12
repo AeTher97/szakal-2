@@ -6,7 +6,7 @@ import {formatLocalDateTime} from "../../utils/DateUtils";
 import ScheduledContactDialog from "./ScheduledContactDialog";
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import {render, useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 
 const ScheduledContaxt = () => {
@@ -30,7 +30,9 @@ const ScheduledContaxt = () => {
                     <div style={{paddingBottom: 10, paddingTop: i === 0 ? 0 : 10}}>
                         <Typography level={"title-md"}>{contact.company.name}</Typography>
                         <Typography level={"body"}>{contact.note}</Typography>
-                        <Typography level={"body-sm"}>{formatLocalDateTime(contact.reminderDate)}</Typography>
+                        <Typography level={"body-sm"}>kontakt: {formatLocalDateTime(contact.contactDate)}</Typography>
+                        <Typography
+                            level={"body-sm"}>przypomnienie: {formatLocalDateTime(contact.reminderDate)}</Typography>
                     </div>
                     <IconButton onClick={() =>{
                         openDialog(() => {

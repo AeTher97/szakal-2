@@ -30,10 +30,11 @@ export const useAddScheduledContact = () => {
 
     const {loading, post} = usePost("/scheduled-contact");
 
-    const addScheduledContact = (company, user, reminderDate, note) => {
+    const addScheduledContact = (company, user, contactDate, reminderDate, note) => {
         return post({
             company,
             user,
+            contactDate,
             reminderDate,
             note
         })
@@ -73,13 +74,19 @@ export const useNotificationList = () => {
 
 
     const markNotificationAsSeen = (ids) => {
-        if(ids.length === 0){
+        if (ids.length === 0) {
             return;
         }
         return put({
             notifications: ids
-        }).then(() =>{
+        }).then(() => {
             setNewNotifications(false);
+            setNotifications(old => {
+                return [...old].map(notification => {
+                    notification.seen = true;
+                    return notification;
+                })
+            })
         })
     }
 

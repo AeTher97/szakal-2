@@ -44,6 +44,7 @@ public class ScheduledContactService {
                 .user(user)
                 .company(company)
                 .reminderDate(scheduledContactDTO.getReminderDate())
+                .contactDate(scheduledContactDTO.getContactDate())
                 .note(scheduledContactDTO.getNote())
                 .build());
     }
@@ -66,19 +67,20 @@ public class ScheduledContactService {
         return scheduledContactRepository.getScheduledContactByUser(user);
     }
 
-    @Scheduled(cron = "0 0,30 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void sendNotificationAboutContact() {
         log.info("Sending scheduled contact notifications at " + LocalDateTime.now());
         List<ScheduledContact> contactsToSchedule = scheduledContactRepository
-                .findScheduledContactsByReminderDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(24));
+                .findScheduledContactsByReminderDateBetween(LocalDateTime.now().minusHours(12), LocalDateTime.now());
         contactsToSchedule.forEach(scheduledContact -> {
-            String info =  STR."""
-                        O godzinie \{scheduledContact.getReminderDate().getHour()}:\{scheduledContact.getReminderDate().getMinute()}
-                         jutro masz zaplanowany kontakt z firmą:
-                        \{scheduledContact.getCompany().getName()}, notatka: \{scheduledContact.getNote()}
-                                """;
+            String info = STR. """
+                        Dnia \{ scheduledContact.getContactDate().getDayOfMonth() }.\{ scheduledContact.getContactDate().getMonth().getValue() }
+                        o godzinie: \{ scheduledContact.getContactDate().getHour() }:\{ scheduledContact.getReminderDate().getMinute() } masz
+                        zaplanowany kontakt z firmą:
+                        \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote() != null ? "notatka: " + scheduledContact.getNote() : "" }
+                                """ ;
             try {
-                notificationService.notify(userService.getUserById(scheduledContact.getUser().getId()),info);
+                notificationService.notify(userService.getUserById(scheduledContact.getUser().getId()), info);
                 emailService.sendHtmlMessage(
                         scheduledContact.getUser().getEmail(),
                         "Przypomnienie o kontakcie z " + scheduledContact.getCompany().getName(),
@@ -87,12 +89,13 @@ public class ScheduledContactService {
                                 .replace("${domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME")));
                 scheduledContactRepository.delete(scheduledContact);
             } catch (Exception e) {
+                log.info(e.getMessage());
                 //Swallow this to allow the rest to progress
             }
         });
         List<ScheduledContact> contactsToDelete = scheduledContactRepository
                 .findScheduledContactsByReminderDateBetween(
-                        LocalDateTime.ofEpochSecond(0,0, ZoneOffset.MIN), LocalDateTime.now());
+                        LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.MIN), LocalDateTime.now().minusHours(12));
         scheduledContactRepository.deleteAll(contactsToDelete);
 
     }

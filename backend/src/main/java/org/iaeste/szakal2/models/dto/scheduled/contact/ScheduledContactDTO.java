@@ -1,10 +1,10 @@
 package org.iaeste.szakal2.models.dto.scheduled.contact;
 
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.iaeste.szakal2.models.entities.Company;
-import org.iaeste.szakal2.models.entities.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,6 +23,8 @@ public class ScheduledContactDTO {
 
     @NotNull
     private LocalDateTime reminderDate;
+    @NotNull
+    private LocalDateTime contactDate;
 
     private String note;
 }

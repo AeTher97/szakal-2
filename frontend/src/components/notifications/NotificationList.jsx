@@ -12,8 +12,8 @@ const NotificationList = ({notifications}) => {
                 <MenuItem key={notification.id}>
                     <div style={{display: 'flex', flexDirection: 'column', flex: 1, width: '100%'}}>
                         <div >
-                            <Typography color={"primary"} style={{flex: 1}}
-                                        level={"body-lg"}>{notification.text}</Typography>
+                            <Typography color={!notification.seen ? "primary" : "neutral"} style={{flex: 1}}
+                                        level={!notification.seen ? "title-lg" : "title-md"}>{notification.text}</Typography>
                             <Typography
                                 level={"body-sm"}>{formatLocalDateTime(notification.date)}</Typography>
                         </div>
@@ -22,7 +22,7 @@ const NotificationList = ({notifications}) => {
         })
     } else {
         return <MenuItem>
-            <Typography level={"body-lg"}>Brak powiadomien</Typography>
+            <Typography level={"body-lg"}>Brak powiadomień</Typography>
         </MenuItem>
     }
 

@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,6 +28,7 @@ public class Notification {
 
     @ManyToOne
     @Setter
+    @JsonIgnore
     private User user;
 
     @Setter

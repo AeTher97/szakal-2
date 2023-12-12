@@ -34,6 +34,8 @@ public class ScheduledContact {
 
     @Setter
     private LocalDateTime reminderDate;
+    @Setter
+    private LocalDateTime contactDate;
 
     @Setter
     private String note;

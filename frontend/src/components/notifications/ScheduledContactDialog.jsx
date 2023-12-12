@@ -1,25 +1,44 @@
 import React, {useState} from 'react';
-import {Autocomplete, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import {Autocomplete, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Select, Stack} from "@mui/joy";
 import {useAddScheduledContact} from "../../data/NotificationData";
 import Button from "@mui/joy/Button";
 import {useSelector} from "react-redux";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
+import Option from "@mui/joy/Option";
+
+const contactReminderOptions = [
+    {label: "2 dni przed", value: 48},
+    {label: "1 dzień przed", value: 24},
+    {label: "12 godzin przed", value: 12},
+    {label: "6 godzin przed", value: 6},
+    {label: "3 godziny przed", value: 3},
+    {label: "Własne", value: 0}
+]
+
+const hour = 60 * 60 * 1000;
+
+const dateToLocalISO = (date) => {
+    const off = date.getTimezoneOffset()
+    const absoff = Math.abs(off)
+    return (new Date(date.getTime() - off * 60 * 1000).toISOString().substr(0, 23))
+}
 
 const ScheduledContactDialog = ({open, close}) => {
 
-    const {loading, addScheduledContact} = useAddScheduledContact();
+    const {addScheduledContact} = useAddScheduledContact();
     const {currentCampaign} = useSelector(state => state.campaigns);
 
     const [companySearch, setCompanySearch] = useState("");
 
-    const {companies, loading : companiesLoading}
+    const {companies, loading: companiesLoading}
         = useCompanyListWithCampaign(currentCampaign, 0, companySearch)
     const {userId} = useSelector(state => state.auth);
     const {theme} = useSelector(state => state.theme);
 
-
+    const [beforeSelect, setBeforeSelect] = useState(24);
     const [company, setCompany] = useState("");
-    const [date, setDate] = useState("");
+    const [contactDate, setContactDate] = useState("");
+    const [reminderDate, setReminderDate] = useState("");
     const [note, setNote] = useState("");
 
     return (
@@ -28,9 +47,18 @@ const ScheduledContactDialog = ({open, close}) => {
                 <DialogTitle>Zaplanuj kontakt</DialogTitle>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    addScheduledContact(company.id, userId, date, note).then(() => {
-                        close();
-                    });
+                    if (beforeSelect !== 0) {
+                        const tempDate = new Date()
+                        console.log(new Date(contactDate), beforeSelect)
+                        tempDate.setTime(new Date(contactDate).getTime() - hour * beforeSelect);
+                        addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note).then(() => {
+                            close();
+                        });
+                    } else {
+                        addScheduledContact(company.id, userId, contactDate, reminderDate, note).then(() => {
+                            close();
+                        });
+                    }
                 }}>
                     <Stack spacing={2}>
                         <FormControl required autoFocus>
@@ -40,7 +68,8 @@ const ScheduledContactDialog = ({open, close}) => {
                                 loadingText={"Wczytywanie..."}
                                 noOptionsText={"Brak wyników"}
                                 placeholder={"ACME z.o.o"}
-                                onInputChange={(e,value) => {
+                                isOptionEqualToValue={(option, value) => option.id === value.id}
+                                onInputChange={(e, value) => {
                                     setCompanySearch(value);
                                 }}
                                 onChange={(e, value) => {
@@ -48,20 +77,37 @@ const ScheduledContactDialog = ({open, close}) => {
                                 }}
                                 inputValue={companySearch}
                                 options={companies.map(company => {
-                                return {
-                                    label: company.name,
-                                    id: company.id
-                                }
-                            })}/>
+                                    return {
+                                        label: company.name,
+                                        id: company.id
+                                    }
+                                })}/>
                         </FormControl>
                         <FormControl required>
                             <FormLabel>Data i godzina</FormLabel>
                             <Input type={"datetime-local"}
                                    style={{colorScheme: theme}}
-                                   value={date} onChange={(e) => {
-                                setDate(e.target.value)
+                                   value={contactDate} onChange={(e) => {
+                                setContactDate(e.target.value)
                             }}/>
                         </FormControl>
+                        <FormControl required>
+                            <FormLabel>Przypomnij</FormLabel>
+                            <Select value={beforeSelect} onChange={(e, value) => {
+                                setBeforeSelect(value)
+                            }}>
+                                {contactReminderOptions.map((option =>
+                                    <Option key={option.value} value={option.value}>{option.label}</Option>))}
+                            </Select>
+                        </FormControl>
+                        {beforeSelect === 0 && <FormControl required={beforeSelect === 0}>
+                            <FormLabel>Data i godzina przypomnienia</FormLabel>
+                            <Input type={"datetime-local"}
+                                   style={{colorScheme: theme}}
+                                   value={reminderDate} onChange={(e) => {
+                                setReminderDate(e.target.value)
+                            }}/>
+                        </FormControl>}
                         <FormControl>
                             <FormLabel>Notatka</FormLabel>
                             <Input placeholder={"Notatka"}
