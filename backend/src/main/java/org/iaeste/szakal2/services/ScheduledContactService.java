@@ -77,7 +77,7 @@ public class ScheduledContactService {
                         Dnia \{ scheduledContact.getContactDate().getDayOfMonth() }.\{ scheduledContact.getContactDate().getMonth().getValue() }
                         o godzinie: \{ scheduledContact.getContactDate().getHour() }:\{ scheduledContact.getReminderDate().getMinute() } masz
                         zaplanowany kontakt z firmą:
-                        \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote() != null ? "notatka: " + scheduledContact.getNote() : "" }
+                        \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote().isEmpty() ? "notatka: " + scheduledContact.getNote() : "" }
                                 """ ;
             try {
                 notificationService.notify(userService.getUserById(scheduledContact.getUser().getId()), info);
