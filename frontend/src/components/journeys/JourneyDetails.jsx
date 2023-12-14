@@ -21,7 +21,7 @@ const JourneyDetails = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
-    const {journey, loading, addContactEvent} = useJourney(location.pathname.split("/")[3]);
+    const {journey, loading, addContactEvent, addComment} = useJourney(location.pathname.split("/")[3]);
     const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {
@@ -36,6 +36,7 @@ const JourneyDetails = () => {
     const [contactStatus, setContactStatus] = useState("CHOOSE");
     const [contactPerson, setContactPerson] = useState("CHOOSE");
     const [eventDescription, setEventDescription] = useState("");
+    const [comment, setComment] = useState("");
 
 
     const isUser = journey && (userId === journey.user.id);
@@ -159,6 +160,42 @@ const JourneyDetails = () => {
                     </div>
                     <div style={{flex: 1}}>
                         <Typography level={"h3"}>Komentarze</Typography>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            if(comment !== "") {
+                                addComment(userId, comment);
+                            }
+                            setEventDescription("")
+                            setContactStatus("CHOOSE")
+                        }}>
+                            <div style={{display: "flex"}}>
+                                <Stack spacing={1} style={{flex: 1}}>
+                                    <Typography level={"title-lg"}>Dodaj komentarz</Typography>
+                                    <FormControl>
+                                        <Textarea minRows={2} value={comment} onChange={(e) => {
+                                            setComment(e.target.value)
+                                        }} placeholder={"Komentarz"} required/>
+                                    </FormControl>
+                                    <Button type={"submit"}>Dodaj</Button>
+                                </Stack>
+                            </div>
+                        </form>
+                        {journey.comments.sort((a, b) => {
+                            return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                        }).map(comment => {
+                            return <div key={comment.id} tyle={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between"
+                            }}>
+                                {comment.comment}
+
+                            </div>
+                        })}
+                        {journey.comments.length === 0 &&
+                            <div style={{padding: 10, display: "flex", justifyContent: "center"}}>
+                            <Typography>Brak komentarzy</Typography>
+                            </div>}
                     </div>
                 </div>
             </div>}

@@ -9,8 +9,10 @@ import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.ScheduledContactRepository;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.EmailLoader;
+import org.iaeste.szakal2.utils.IcsUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,6 +31,13 @@ public class ScheduledContactService {
     private final NotificationService notificationService;
     private final EmailService emailService;
 
+    int desiredLength = 5;
+
+    private static String padHour(int hour) {
+        String stringHour = String.valueOf(hour);
+        return String.format("%0" + 2 + "d", Integer.parseInt(stringHour));
+    }
+
     public ScheduledContactService(ScheduledContactRepository scheduledContactRepository, UserService userService, CompanyService companyService, NotificationService notificationService, EmailService emailService) {
         this.scheduledContactRepository = scheduledContactRepository;
         this.userService = userService;
@@ -40,13 +49,22 @@ public class ScheduledContactService {
     public ScheduledContact schedule(ScheduledContactDTO scheduledContactDTO) {
         User user = userService.getUserById(scheduledContactDTO.getUser());
         Company company = companyService.getCompanyById(scheduledContactDTO.getCompany());
-        return scheduledContactRepository.save(ScheduledContact.builder()
+        ScheduledContact scheduledContact = scheduledContactRepository.save(ScheduledContact.builder()
                 .user(user)
                 .company(company)
                 .reminderDate(scheduledContactDTO.getReminderDate())
                 .contactDate(scheduledContactDTO.getContactDate())
                 .note(scheduledContactDTO.getNote())
                 .build());
+        emailService.sendHtmlMessage(user.getEmail(), "Zaplanowano kontakt z firmą",
+                EmailLoader.loadContactPlannedEmail()
+                        .replace("${userName}", user.getName())
+                        .replace("${company}", company.getName())
+                        .replace("${contactDate}", scheduledContactDTO.getContactDate().getDayOfMonth() + "." + scheduledContactDTO.getContactDate().getMonth().getValue())
+                        .replace("${contactTime}", scheduledContactDTO.getContactDate().getHour() + ":" + padHour(scheduledContactDTO.getReminderDate().getMinute()))
+                , new EmailService.Attachment("zaproszenie.ics",
+                        new InMemoryResource(IcsUtils.generateInvite(company.getName(), scheduledContact.getContactDate()))));
+        return scheduledContact;
     }
 
     public void deleteScheduledContact(UUID scheduledContactId) {
@@ -75,7 +93,7 @@ public class ScheduledContactService {
         contactsToSchedule.forEach(scheduledContact -> {
             String info = STR. """
                         Dnia \{ scheduledContact.getContactDate().getDayOfMonth() }.\{ scheduledContact.getContactDate().getMonth().getValue() }
-                        o godzinie: \{ scheduledContact.getContactDate().getHour() }:\{ scheduledContact.getReminderDate().getMinute() } masz
+                        o godzinie: \{ scheduledContact.getContactDate().getHour() }:\{ padHour(scheduledContact.getReminderDate().getMinute()) } masz
                         zaplanowany kontakt z firmą:
                         \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote().isEmpty() ? "notatka: " + scheduledContact.getNote() : "" }
                                 """ ;

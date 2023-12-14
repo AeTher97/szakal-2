@@ -16,6 +16,10 @@ public class EmailLoader {
         return loadFile("email/contactNotification.html");
     }
 
+    public static String loadContactPlannedEmail() {
+        return loadFile("email/contactPlanned.html");
+    }
+
     private static String loadFile(String name) {
         StringBuilder email = new StringBuilder();
         InputStream inputStream = EmailLoader.class.getClassLoader().getResourceAsStream(name);

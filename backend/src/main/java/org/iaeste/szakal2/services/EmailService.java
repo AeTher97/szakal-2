@@ -3,16 +3,19 @@ package org.iaeste.szakal2.services;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.entities.FailedEmail;
 import org.iaeste.szakal2.repositories.FailedEmailRepository;
-import org.springframework.context.annotation.Bean;
+import org.iaeste.szakal2.utils.IcsUtils;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -33,11 +36,14 @@ public class EmailService {
         log.info("Using email account " + System.getenv("EMAIL_USERNAME") + " to send notifications");
     }
 
-
     public void sendHtmlMessage(String to, String subject, String content) {
+        sendHtmlMessage(to, subject, content, null);
+    }
+
+    public void sendHtmlMessage(String to, String subject, String content, Attachment attachment) {
         log.info("Sending html email to " + to);
         try {
-            executorService.submit(new SendMessageTask(javaMailSender, to, subject, content, this));
+            executorService.submit(new SendMessageTask(javaMailSender, to, subject, content, attachment, this));
         } catch (Exception e) {
             //don't propagate this exception to callers to avoid weird errors, save email for later and handle it here
             log.error("Failed to send email " + e.getMessage());
@@ -66,7 +72,6 @@ public class EmailService {
     }
 
 
-
     @AllArgsConstructor
     private static class SendMessageTask implements Runnable {
 
@@ -74,6 +79,7 @@ public class EmailService {
         private final String to;
         private final String subject;
         private final String content;
+        private final Attachment attachment;
         private final EmailService emailService;
 
         @Override
@@ -87,22 +93,35 @@ public class EmailService {
                 Session session = Session.getDefaultInstance(props);
 
                 MimeMessage mimeMessage = new MimeMessage(session);
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
                 helper.setText(content, true);
                 helper.setTo(to);
                 helper.setSubject(subject);
                 helper.setFrom("globalcapsleague@gmail.com");
+                if (attachment != null) {
+                    helper.addAttachment(attachment.filename, attachment.inputStreamSource);
+                }
 
                 javaMailSender.send(mimeMessage);
             } catch (Exception e) {
                 log.error("Failed sending email " + e.getMessage());
-                emailService.saveFailedEmail(FailedEmail.builder()
-                        .recipient(to)
-                        .subject(subject)
-                        .content(content)
-                        .build());
+                if (attachment == null) {
+                    // dont save attachment emails
+                    emailService.saveFailedEmail(FailedEmail.builder()
+                            .recipient(to)
+                            .subject(subject)
+                            .content(content)
+                            .build());
+                }
             }
         }
+    }
+
+    @Data
+    public static final class Attachment {
+
+        private final String filename;
+        private final InputStreamSource inputStreamSource;
     }
 
 }

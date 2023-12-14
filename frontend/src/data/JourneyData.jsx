@@ -60,6 +60,10 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const {post: commentPost} = usePost(`/journeys/${id}/comments`, (data) => {
+        setJourney(data);
+    })
+
     const addContactEvent = (contactJourney, user, description, contactStatus, contactPerson) => {
         post({
             contactJourney,
@@ -70,5 +74,12 @@ export const useJourney = (id) => {
         })
     }
 
-    return {journey, loading, addContactEvent}
+    const addComment = (user, comment) => {
+        commentPost({
+            user,
+            comment
+        })
+    }
+
+    return {journey, loading, addContactEvent, addComment}
 }
