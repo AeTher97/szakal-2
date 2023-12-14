@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
-import {Avatar, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
+import {Avatar, Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
 import JourneyCompany from "./JourneyCompany";
 import JourneyInfo from "./JourneyInfo";
@@ -165,8 +165,7 @@ const JourneyDetails = () => {
                             if(comment !== "") {
                                 addComment(userId, comment);
                             }
-                            setEventDescription("")
-                            setContactStatus("CHOOSE")
+                            setComment("")
                         }}>
                             <div style={{display: "flex"}}>
                                 <Stack spacing={1} style={{flex: 1}}>
@@ -183,12 +182,27 @@ const JourneyDetails = () => {
                         {journey.comments.sort((a, b) => {
                             return new Date(a.date) > new Date(b.date) ? -1 : 1;
                         }).map(comment => {
-                            return <div key={comment.id} tyle={{
+                            return <div key={comment.id} style={{
                                 display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between"
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                margin: 5
                             }}>
-                                {comment.comment}
+                                <div style={{display: "flex", gap: 5, alignItems: "center"}}>
+                                    <Avatar size={"sm"}>
+                                        {comment.user.name[0]}{comment.user.surname[0]}
+                                    </Avatar>
+                                    <div>
+                                        <Typography
+                                            level={"title-sm"}>{comment.user.name} {comment.user.surname}</Typography>
+
+                                    </div>
+                                </div>
+                                <Typography level={"body-md"}>{comment.comment}</Typography>
+                                <Typography
+                                    level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
+                                <Divider/>
 
                             </div>
                         })}
