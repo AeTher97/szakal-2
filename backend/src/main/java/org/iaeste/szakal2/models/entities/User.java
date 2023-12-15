@@ -71,5 +71,9 @@ public class User {
                 .build();
     }
 
+    public String getFullName() {
+        return name + " " + surname;
+    }
+
 
 }

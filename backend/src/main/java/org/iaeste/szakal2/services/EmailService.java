@@ -7,15 +7,12 @@ import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.entities.FailedEmail;
 import org.iaeste.szakal2.repositories.FailedEmailRepository;
-import org.iaeste.szakal2.utils.IcsUtils;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -97,9 +94,10 @@ public class EmailService {
                 helper.setText(content, true);
                 helper.setTo(to);
                 helper.setSubject(subject);
-                helper.setFrom("globalcapsleague@gmail.com");
+                helper.setFrom(System.getenv("EMAIL_USERNAME"));
                 if (attachment != null) {
-                    helper.addAttachment(attachment.filename, attachment.inputStreamSource);
+                    helper.addAttachment(attachment.filename, attachment.inputStreamSource,
+                            "text/calendar; charset=utf-8; method=REQUEST; name=zaproszenie.ics");
                 }
 
                 javaMailSender.send(mimeMessage);

@@ -62,9 +62,12 @@ public class ScheduledContactService {
                         .replace("${userName}", user.getName())
                         .replace("${company}", company.getName())
                         .replace("${contactDate}", scheduledContactDTO.getContactDate().getDayOfMonth() + "." + scheduledContactDTO.getContactDate().getMonth().getValue())
-                        .replace("${contactTime}", scheduledContactDTO.getContactDate().getHour() + ":" + padHour(scheduledContactDTO.getReminderDate().getMinute()))
-                , new EmailService.Attachment("zaproszenie.ics",
-                        new InMemoryResource(IcsUtils.generateInvite(company.getName(), scheduledContact.getContactDate()))));
+                        .replace("${contactTime}", scheduledContactDTO.getContactDate().getHour() + ":" + padHour(scheduledContactDTO.getReminderDate().getMinute())),
+                new EmailService.Attachment("zaproszenie.ics",
+                        new InMemoryResource(IcsUtils.generateInvite(user,
+                                company.getName(),
+                                scheduledContact.getNote(),
+                                scheduledContact.getContactDate()))));
         return scheduledContact;
     }
 
