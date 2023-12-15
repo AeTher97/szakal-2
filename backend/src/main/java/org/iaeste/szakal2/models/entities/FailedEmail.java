@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.iaeste.szakal2.services.EmailService;
+import org.iaeste.szakal2.utils.IcsUtils;
 
 import java.util.Date;
 import java.util.UUID;

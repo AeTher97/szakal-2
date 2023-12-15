@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
-import {Avatar, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
+import {Avatar, Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
 import JourneyCompany from "./JourneyCompany";
 import JourneyInfo from "./JourneyInfo";
@@ -21,7 +21,7 @@ const JourneyDetails = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
-    const {journey, loading, addContactEvent} = useJourney(location.pathname.split("/")[3]);
+    const {journey, loading, addContactEvent, addComment} = useJourney(location.pathname.split("/")[3]);
     const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {
@@ -36,6 +36,7 @@ const JourneyDetails = () => {
     const [contactStatus, setContactStatus] = useState("CHOOSE");
     const [contactPerson, setContactPerson] = useState("CHOOSE");
     const [eventDescription, setEventDescription] = useState("");
+    const [comment, setComment] = useState("");
 
 
     const isUser = journey && (userId === journey.user.id);
@@ -159,6 +160,56 @@ const JourneyDetails = () => {
                     </div>
                     <div style={{flex: 1}}>
                         <Typography level={"h3"}>Komentarze</Typography>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            if(comment !== "") {
+                                addComment(userId, comment);
+                            }
+                            setComment("")
+                        }}>
+                            <div style={{display: "flex"}}>
+                                <Stack spacing={1} style={{flex: 1}}>
+                                    <Typography level={"title-lg"}>Dodaj komentarz</Typography>
+                                    <FormControl>
+                                        <Textarea minRows={2} value={comment} onChange={(e) => {
+                                            setComment(e.target.value)
+                                        }} placeholder={"Komentarz"} required/>
+                                    </FormControl>
+                                    <Button type={"submit"}>Dodaj</Button>
+                                </Stack>
+                            </div>
+                        </form>
+                        {journey.comments.sort((a, b) => {
+                            return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                        }).map(comment => {
+                            return <div key={comment.id} style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                margin: 5
+                            }}>
+                                <div style={{display: "flex", gap: 5, alignItems: "center"}}>
+                                    <Avatar size={"sm"}>
+                                        {comment.user.name[0]}{comment.user.surname[0]}
+                                    </Avatar>
+                                    <div>
+                                        <Typography
+                                            level={"title-sm"}>{comment.user.name} {comment.user.surname}</Typography>
+
+                                    </div>
+                                </div>
+                                <Typography level={"body-md"}>{comment.comment}</Typography>
+                                <Typography
+                                    level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
+                                <Divider/>
+
+                            </div>
+                        })}
+                        {journey.comments.length === 0 &&
+                            <div style={{padding: 10, display: "flex", justifyContent: "center"}}>
+                            <Typography>Brak komentarzy</Typography>
+                            </div>}
                     </div>
                 </div>
             </div>}
