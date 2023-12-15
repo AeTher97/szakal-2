@@ -58,6 +58,7 @@ public class ScheduledContactService {
                 .build());
         emailService.sendHtmlMessage(user.getEmail(), "Zaplanowano kontakt z firmą",
                 EmailLoader.loadContactPlannedEmail()
+                        .replace("${domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME"))
                         .replace("${userName}", user.getName())
                         .replace("${company}", company.getName())
                         .replace("${contactDate}", scheduledContactDTO.getContactDate().getDayOfMonth() + "." + scheduledContactDTO.getContactDate().getMonth().getValue())
