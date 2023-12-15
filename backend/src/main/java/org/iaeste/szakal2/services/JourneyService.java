@@ -85,6 +85,18 @@ public class JourneyService {
     }
 
     @Transactional
+    public ContactJourney finishJourney(UUID id) {
+        ContactJourney contactJourney = getJourneyById(id);
+        if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
+                AccessVerificationBean.hasRole("journey_modification_for_others")) {
+            contactJourney.setFinished(true);
+            return contactJourneyRepository.save(contactJourney);
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
+    }
+
+    @Transactional
     public ContactJourney getJourneyById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
         if (journeyOptional.isEmpty()) {

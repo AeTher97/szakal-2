@@ -20,7 +20,8 @@ const JourneyInfo = ({journey}) => {
                     </div>
                     <div style={{display: "flex", gap: 10}}>
                         <Typography
-                            level={"title-md"}>Status</Typography><Typography>{decodeContactStatus(journey.contactStatus)}</Typography>
+                            level={"title-md"}>Status</Typography><Typography>{decodeContactStatus(journey.contactStatus)}
+                        {journey.finished ? ", (Zakończony)" : ""}</Typography>
                     </div>
                     <div style={{display: "flex", gap: 10}}>
                         <Typography

@@ -62,6 +62,11 @@ public class JourneyController {
         return journeyService.addComment(id, commentCreationDTO);
     }
 
+    @PutMapping("/{id}/finish")
+    public ContactJourney addComment(@PathVariable("id") UUID id) {
+        return journeyService.finishJourney(id);
+    }
+
     @GetMapping("/{id}")
     public ContactJourney getContactJourney(@PathVariable("id") UUID id) {
         return journeyService.getJourneyById(id);

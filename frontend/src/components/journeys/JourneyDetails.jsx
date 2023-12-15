@@ -15,13 +15,14 @@ import Option from '@mui/joy/Option';
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 const JourneyDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
-    const {journey, loading, addContactEvent, addComment} = useJourney(location.pathname.split("/")[3]);
+    const {journey, loading, addContactEvent, addComment, closeJourney} = useJourney(location.pathname.split("/")[3]);
     const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {
@@ -37,6 +38,7 @@ const JourneyDetails = () => {
     const [contactPerson, setContactPerson] = useState("CHOOSE");
     const [eventDescription, setEventDescription] = useState("");
     const [comment, setComment] = useState("");
+    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
 
 
     const isUser = journey && (userId === journey.user.id);
@@ -45,7 +47,13 @@ const JourneyDetails = () => {
         <>
             {journey && <div style={{overflow: "auto", paddingBottom: 100}}>
                 <TabHeader>
-                    <Typography level={"h2"}>Kontakt z {journey.company.name}</Typography>
+                    <Typography level={"h2"}>
+                        Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
+                    </Typography>
+                    {(hasRight("journey_modification_for_others") || isUser) && !journey.finished &&
+                        <Button onClick={() => {
+                            openDialog(() => closeJourney())
+                        }}>Zakończ</Button>}
                 </TabHeader>
                 <div style={{
                     display: "flex",
@@ -68,7 +76,8 @@ const JourneyDetails = () => {
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Typography level={"h3"}>Wydarzenia kontaktowe</Typography>
                         </div>
-                        {(isUser || hasRight("journey_modification_for_others")) && <form onSubmit={(e) => {
+                        {!journey.finished && (isUser || hasRight("journey_modification_for_others")) &&
+                            <form onSubmit={(e) => {
                             e.preventDefault();
                             if (contactStatus === "CHOOSE") {
                                 return;
@@ -96,6 +105,7 @@ const JourneyDetails = () => {
                                             <Option value={"SPONSOR"}>Sponsor</Option>
                                             <Option value={"TRAINING"}>Szkolenie</Option>
                                             <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma współpracy</Option>
+                                            <Option value={"CALL_NEXT_YEAR"}>Zadzwonić w przyszłym roku</Option>
                                             <Option value={"INTERNSHIP"}>Praktyka</Option>
                                         </Select>
                                     </FormControl>
@@ -105,7 +115,7 @@ const JourneyDetails = () => {
                                         }}>
                                             <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
                                             {journey.company.contactPeople.map(person => {
-                                                return <Option value={person.id}>{person.name}</Option>
+                                                return <Option value={person.id} key={person.id}>{person.name}</Option>
                                             })}
 
                                         </Select>
@@ -212,6 +222,7 @@ const JourneyDetails = () => {
                             </div>}
                     </div>
                 </div>
+                {render()}
             </div>}
         </>
     );

@@ -11,17 +11,49 @@ const JourneyCompany = ({company}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 <CardContent>
-                    <Typography>Nazwa: <LinkWithRouter to={`/secure/companies/${company.id}`}>{company.name}
+                    <div style={{gap: 10, display: "flex"}}>
+                        <Typography level={"title-md"}>Nazwa</Typography><LinkWithRouter
+                        to={`/secure/companies/${company.id}`}>{company.name}
                     </LinkWithRouter>
-                    </Typography>
-                    <Typography>Email: {company.email}</Typography>
-                    <Typography>Adres: {company.address.city} {company.address.street} {company.address.postalCode}</Typography>
-                    <Typography>Strona: {company.www}</Typography>
-                    <Typography>Telefon: {company.phone}</Typography>
-                    <Typography>Branże: {company.categories.map(category => <Typography key={category.id}>
-                        {category.name}
-                    </Typography>)}
-                    </Typography>
+                    </div>
+                    <div style={{gap: 10, display: "flex"}}>
+                        <Typography level={"title-md"}>
+                            Email
+                        </Typography>
+                        <Typography>
+                            {company.email}
+                        </Typography>
+                    </div>
+                    <div style={{gap: 10, display: "flex"}}>
+                        <Typography
+                            level={"title-md"}>Adres
+                        </Typography>
+                        <Typography>
+                            {company.address.city} {company.address.street} {company.address.postalCode}
+                        </Typography>
+                    </div>
+                    <div style={{gap: 10, display: "flex"}}>
+
+                        <Typography level={"title-md"}>
+                            Strona
+                        </Typography>
+                        <Typography>{company.www}
+                        </Typography>
+                    </div>
+                    <div style={{gap: 10, display: "flex"}}>
+                        <Typography level={"title-md"}>
+                            Telefon
+                        </Typography>
+                        <Typography> {company.phone}
+                        </Typography>
+                    </div>
+                    <div style={{gap: 10, display: "flex"}}>
+                        <Typography level={"title-md"}>Branże</Typography>
+                        <Typography>{company.categories.map(category => <Typography key={category.id}>
+                            {category.name}
+                        </Typography>)}
+                        </Typography>
+                    </div>
                 </CardContent>
             </CardOverflow>
         </Card>

@@ -1,4 +1,4 @@
-import {useData, usePost} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 import {useSelector} from "react-redux";
 import {useState} from "react";
 
@@ -64,6 +64,10 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const {put} = usePut(`/journeys/${id}/finish`, (data) => {
+        setJourney(data);
+    })
+
     const addContactEvent = (contactJourney, user, description, contactStatus, contactPerson) => {
         post({
             contactJourney,
@@ -81,5 +85,9 @@ export const useJourney = (id) => {
         })
     }
 
-    return {journey, loading, addContactEvent, addComment}
+    const closeJourney = () => {
+        put();
+    }
+
+    return {journey, loading, closeJourney, addContactEvent, addComment}
 }

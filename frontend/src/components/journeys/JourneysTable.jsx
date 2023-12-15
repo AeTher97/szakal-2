@@ -43,11 +43,24 @@ const JourneysTable = ({journeys}) => {
                 {journeys && journeys.map(journey =>
                     <tr key={journey.id}>
                         <td>
-                            <LinkWithRouter to={journey.id}>{journey.company.name}
+                            <LinkWithRouter to={journey.id}
+                                            sx={theme => ({
+                                                color: `${!journey.finished ? theme.vars.palette.primary
+                                                    : theme.vars.palette.primary["600"]}`
+                                            })}
+                            >{journey.company.name}
                             </LinkWithRouter>
                         </td>
-                        <td>{journey.user.name} {journey.user.surname}</td>
-                        <td>{decodeContactStatus(journey.contactStatus)}</td>
+                        <td>
+                            <Typography sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{journey.user.name} {journey.user.surname}</Typography>
+                        </td>
+                        <td><Typography sx={theme => ({
+                            color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                        })}>{decodeContactStatus(journey.contactStatus)} {journey.finished ? "(Zakończony)" : ""}
+                        </Typography><
+                        /td>
                     </tr>
                 )}
                 </tbody>

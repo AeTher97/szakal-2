@@ -49,4 +49,7 @@ public class ContactJourney {
     @Setter
     @NotNull
     private LocalDateTime journeyStart;
+    @Setter
+    @NotNull
+    private boolean finished;
 }

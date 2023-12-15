@@ -19,6 +19,8 @@ export const decodeContactStatus = (status) => {
             return "Szkolenie"
         case "DIFFERENT_FORM_PARTNERSHIP":
             return "Inna forma współpracy"
+        case "CALL_NEXT_YEAR":
+            return "Zadzwonić w przyszłym roku"
         default:
             return "Nieznany status"
     }
