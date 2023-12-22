@@ -36,7 +36,7 @@ const AddContactPersonDialog = ({open, close, addContactPerson, addingContactPer
                     })
                 }}>
                     <Stack spacing={2}>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Imię i Nazwisko</FormLabel>
                             <Input autoFocus required
                                    value={name}

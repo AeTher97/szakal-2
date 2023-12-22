@@ -26,10 +26,10 @@ const CompanyContactPeople = ({
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
             }}>
-                <List>
+                <List sx={{paddingTop: 0}}>
                     {contactPeople && contactPeople.map((person, i) => {
                         return <>
-                            <ListItem>
+                            <ListItem sx={{paddingBottom: 1}}>
                                 <div style={{display: "flex", justifyContent: "space-between", flex: 1}}>
                                     <div>
                                         <Typography>{person.name}</Typography>
@@ -46,7 +46,7 @@ const CompanyContactPeople = ({
                     })}
                 </List>
                 {(!contactPeople || contactPeople.length === 0) &&
-                    <div style={{display: "flex", justifyContent: "center", flex: 1}}>
+                    <div style={{display: "flex", justifyContent: "center", flex: 1, paddingBottom: 20}}>
                         <Typography>
                             Brak osób kontaktowych
                         </Typography>

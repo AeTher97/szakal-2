@@ -18,7 +18,7 @@ const AddRoleDialog = ({open, addRole, close}) => {
                         close();
                     }}>
                     <Stack spacing={2}>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
                             <Input autoFocus required
                                    value={name}
@@ -26,7 +26,7 @@ const AddRoleDialog = ({open, addRole, close}) => {
                                        setName(e.target.value)
                                    }} placeholder={"Nazwa roli"}/>
                         </FormControl>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Opis</FormLabel>
                             <Input required
                                    value={description}

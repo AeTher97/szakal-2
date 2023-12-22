@@ -52,7 +52,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                 <DialogTitle>Zmień hasło</DialogTitle>
                 <form onSubmit={changePasswordInner}>
                     <Stack spacing={2}>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Obecne hasło</FormLabel>
                             <Input autoFocus
                                    value={oldPassword}
@@ -63,7 +63,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                         </FormControl>
                         <FormControl error={passwordsDontMatch || passwordTooShort} sx={{
                             '--hue': Math.min(password.length * 10, 120),
-                        }}>
+                        }} required>
                             <FormLabel>Nowe hasło</FormLabel>
                             <Input autoFocus
                                    value={password}
@@ -94,7 +94,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                             </FormHelperText>}
                         </FormControl>
 
-                        <FormControl error={passwordsDontMatch}>
+                        <FormControl error={passwordsDontMatch} required>
                             <FormLabel>Powtórz nowe hasło</FormLabel>
                             <Input
                                 type={"password"}

@@ -39,7 +39,7 @@ const CompaniesTable = ({companies}) => {
                         <Typography>Obecna akcja</Typography>
                     </th>
                     {!mobile && <th style={{padding: "12px 6px"}}>
-                        <Typography>Kategorie</Typography>
+                        <Typography>Branże</Typography>
                     </th>}
                     {!mobile && <th style={{padding: "12px 6px"}}>
                         <Typography>Historia kontaktu</Typography>

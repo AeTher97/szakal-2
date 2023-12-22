@@ -17,7 +17,7 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
             <ModalDialog>
                 <DialogTitle>{localCategory ? "Edytuj branżę" : "Dodaj branżę"}</DialogTitle>
                     <Stack spacing={2}>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
                             <Input autoFocus required
                                    value={name}

@@ -35,6 +35,7 @@ const Top10 = () => {
                 <Divider inset={"context"}/>
                 {journeys.length > 0 && <CardContent>
                     {Array.from(top10, ([name, value]) => ({...value, id: name}))
+                        .sort((a, b) => a.count > b.count ? -1 : 1)
                         .map((user, i) => {
                             return <Typography
                                 key={user.id}>{i + 1}. {user.name} {user.surname} - {user.count}</Typography>

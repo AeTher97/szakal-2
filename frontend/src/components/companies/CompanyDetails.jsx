@@ -58,7 +58,10 @@ const CompanyDetails = () => {
     const canModifyOthers = hasRight("journey_modification_for_others");
 
     const renderAssignButton = () => {
-        if (!thisCampaignJourney && hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers) {
+        if (thisCampaignJourney) {
+            return;
+        }
+        if (hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers) {
             return <Button
                 onClick={() => {
                     addJourney(currentCampaign, company.id, userId)

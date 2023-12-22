@@ -21,7 +21,7 @@ const AddCompanyDialog = ({open, addCampaign, close}) => {
                         close();
                     }}>
                     <Stack spacing={2}>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
                             <Input autoFocus required
                                    value={name}
@@ -29,7 +29,7 @@ const AddCompanyDialog = ({open, addCampaign, close}) => {
                                        setName(e.target.value)
                                    }} placeholder={"Nazwa akcji"}/>
                         </FormControl>
-                        <FormControl>
+                        <FormControl required>
                             <FormLabel>Data rozpoczęcia</FormLabel>
                             <Input required
                                    type={"date"}
