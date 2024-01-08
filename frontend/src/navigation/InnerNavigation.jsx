@@ -10,6 +10,7 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import JourneysHome from "../components/journeys/JourneysHome";
 import UserJourneysHome from "../components/journeys/UserJourneysHome";
 import ProfileScreen from "../screens/ProfileScreen";
+import AppSettingsHome from "../components/settings/AppSettingsHome";
 
 const InnerNavigation = () => {
 
@@ -24,6 +25,7 @@ const InnerNavigation = () => {
             <Route path={"user-journeys/*"} element={<UserJourneysHome/>}/>
             <Route path={"home"} element={<SummaryHome/>}/>
             <Route path={"profile"} element={<ProfileScreen/>}/>
+            <Route path={"app-settings"} element={<AppSettingsHome/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     </>);

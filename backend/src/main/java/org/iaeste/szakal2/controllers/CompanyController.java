@@ -59,12 +59,15 @@ public class CompanyController {
                                                 @RequestParam(required = false) UUID campaign,
                                                 @RequestParam(required = false) String name,
                                                 @RequestParam(required = false) ContactStatus contactStatus,
-                                                @RequestParam(required = false) String category
+                                                @RequestParam(required = false) String category,
+                                                @RequestParam(required = false) String status,
+                                                @RequestParam(required = false) UUID campaignForStatus
     ) {
         return companyService.getCompanies(CompanySearch.builder()
                                 .category(category)
                                 .contactStatus(contactStatus)
                                 .campaign(campaign)
+                                .status(status)
                                 .name(name).build(),
                         Pageable.ofSize(pageSize).withPage(pageNumber))
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));

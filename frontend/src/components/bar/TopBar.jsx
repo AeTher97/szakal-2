@@ -2,25 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import SzakalLogo from "./SzakalLogo";
 import {Autocomplete} from "@mui/joy";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
 import UserMenu from "./UserMenu";
 import {useCampaignsList} from "../../data/CampaignData";
 import {changeCampaignAction} from "../../redux/ReducerActions";
 import DrawerMenu from "./DrawerMenu";
 import NotificationComponent from "../notifications/NotificationComponent";
+import {useApplicationSettings} from "../../data/ApplicationSettingsData";
 
 const TopBar = () => {
 
     const {name, surname} = useSelector(state => state.auth);
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {campaigns, loading} = useCampaignsList();
-    const [campaignValue, setCampaignValue] = useState({label: "Wybierz akcje", id: "choose"});
+    const {getSetting} = useApplicationSettings();
+    const [campaignValue, setCampaignValue]
+        = useState({label: "Wybierz akcje", id: "choose"});
     const dispatch = useDispatch();
+    const mediumSize = useFullColumnSize();
     const mobile = useMobileSize();
 
     useEffect(() => {
-        if (campaigns && campaigns.length > 0) {
-            dispatch(changeCampaignAction(campaigns[0].id))
+        if (campaigns && campaigns.length > 0 && getSetting("default_campaign")) {
+            const campaign = campaigns.find(campaign => campaign.id === getSetting("default_campaign"));
+            if(!campaign){
+                return;
+            }
+            dispatch(changeCampaignAction(campaign.id));
         }
     }, [campaigns]);
 
@@ -55,10 +63,10 @@ const TopBar = () => {
             justifyContent: "space-between",
             flex: 1
         }}>
+            {mediumSize && <DrawerMenu/>}
             {!mobile && <div style={{flex: 1}}>
                 <SzakalLogo/>
             </div>}
-            {mobile && <DrawerMenu/>}
             <NotificationComponent/>
             <Autocomplete loading={loading}
                           disableClearable
@@ -66,7 +74,7 @@ const TopBar = () => {
                           value={campaignValue}
                           getOptionDisabled={getOptionDisabled}
                           isOptionEqualToValue={isOptionEqualToValue}
-                          style={{width: mobile ? 1000 : 200, margin: mobile ? 10 : 20}}
+                          style={{width: mediumSize ? 1000 : 200, margin: mediumSize ? 10 : 20}}
                           onChange={(e, inputValue) => {
                               dispatch(changeCampaignAction(inputValue.id))
                           }}

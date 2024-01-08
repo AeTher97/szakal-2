@@ -16,6 +16,7 @@ import {formatLocalDateTime} from "../../utils/DateUtils";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {JOURNEY_MODIFICATION_FOR_OTHERS} from "../../utils/AccessRights";
 
 const JourneyDetails = () => {
 
@@ -50,7 +51,7 @@ const JourneyDetails = () => {
                     <Typography level={"h2"}>
                         Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
                     </Typography>
-                    {(hasRight("journey_modification_for_others") || isUser) && !journey.finished &&
+                    {(hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
                         <Button onClick={() => {
                             openDialog(() => closeJourney())
                         }}>Zakończ</Button>}
@@ -76,7 +77,7 @@ const JourneyDetails = () => {
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Typography level={"h3"}>Wydarzenia kontaktowe</Typography>
                         </div>
-                        {!journey.finished && (isUser || hasRight("journey_modification_for_others")) &&
+                        {!journey.finished && (isUser || hasRight(JOURNEY_MODIFICATION_FOR_OTHERS)) &&
                             <form onSubmit={(e) => {
                             e.preventDefault();
                             if (contactStatus === "CHOOSE") {
@@ -160,7 +161,8 @@ const JourneyDetails = () => {
                                     {event.contactPerson &&
                                         <div><Typography level={"body-sm"}>
                                             Osoba
-                                            kontaktowa: {event.contactPerson.name}{event.contactPerson.phone && `, ${event.contactPerson.phone}`}</Typography>
+                                            kontaktowa: {event.contactPerson.name}{event.contactPerson.phone
+                                            && `, ${event.contactPerson.phone}`}</Typography>
                                         </div>}
                                 </TimelineItem>
                             })}

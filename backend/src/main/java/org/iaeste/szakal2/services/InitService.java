@@ -31,7 +31,8 @@ public class InitService {
             AccessRight.builder().code("user_management").description("Dezaktywowanie użytkowników").build(),
             AccessRight.builder().code("journey_creation").description("Przypisywanie firm do siebie").build(),
             AccessRight.builder().code("journey_creation_for_others").description("Przypisywanie firm do innych").build(),
-            AccessRight.builder().code("journey_modification_for_others").description("Edycja kontaktów innych").build()
+            AccessRight.builder().code("journey_modification_for_others").description("Edycja kontaktów innych").build(),
+            AccessRight.builder().code("app_settings").description("Ustawienia aplikacji").build()
     );
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;

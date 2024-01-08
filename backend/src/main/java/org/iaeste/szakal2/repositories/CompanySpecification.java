@@ -5,9 +5,11 @@ import jakarta.persistence.criteria.*;
 import org.iaeste.szakal2.models.dto.company.CompanySearch;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
+import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class CompanySpecification implements Specification<Company> {
@@ -46,6 +48,16 @@ public class CompanySpecification implements Specification<Company> {
             predicateList.add(criteriaBuilder.isMember(companyCategory, root.get("categories")));
         }
 
+        if(criteria.getStatus() != null){
+            if(criteria.getStatus().equals("free")) {
+                Join<Company, ContactJourney> join = root.join("contactJourneys", JoinType.LEFT);
+                join.on(criteriaBuilder.equal(join.get("campaign").get("id"), criteria.getCampaign()));
+                predicateList.add(criteriaBuilder.isNull(join.get("id")));
+            } else if(criteria.getStatus().equals("taken")){
+                predicateList.add(criteriaBuilder.equal(root.join("contactJourneys").get("campaign").get("id"),
+                        criteria.getCampaign()));
+            }
+        }
 
         return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
     }

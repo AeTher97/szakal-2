@@ -10,6 +10,7 @@ export const USER_MANAGEMENT = "user_management"
 export const JOURNEY_CREATION = "journey_creation"
 export const JOURNEY_CREATION_FOR_OTHERS = "journey_creation_for_others"
 export const JOURNEY_MODIFICATION_FOR_OTHERS = "journey_modification_for_others"
+export const APP_SETTINGS = "app_settings"
 
 
 

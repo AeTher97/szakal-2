@@ -4,18 +4,18 @@ import MenuBar from "../components/bar/MenuBar";
 import ContentColumn from "../components/main/ContentColumn";
 import InnerNavigation from "../navigation/InnerNavigation";
 import SecureRoute from "../utils/SecureRoute";
-import {useMobileSize} from "../utils/SizeQuery";
+import {useFullColumnSize, useMobileSize} from "../utils/SizeQuery";
 
 const AppContainer = () => {
 
-    const mobileSize = useMobileSize();
+    const mediumSize = useFullColumnSize();
 
     return (
         <SecureRoute>
             <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
                 <TopBar/>
                 <ContentColumn>
-                    {!mobileSize && <MenuBar/>}
+                    {!mediumSize && <MenuBar/>}
                     <InnerNavigation/>
                 </ContentColumn>
             </div>

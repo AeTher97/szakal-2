@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -11,7 +11,7 @@ import {
     Select,
     Typography
 } from "@mui/joy";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useSearchParams} from "react-router-dom";
 import CompanyDetails from "./CompanyDetails";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import TabHeader from "../main/TabHeader";
@@ -28,19 +28,42 @@ import Pagination from "../misc/Pagination";
 import CompaniesTable from "./CompaniesTable";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
+import {removeNullFields} from "../../utils/ObjectUtils";
 
 
-const filters = (mobile, categories, categoryField, setCategoryField) => {
+const filters = (mobile, categories, search, setSearch) => {
     if (categories) {
         return <>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
                 <FormLabel>
                     Kategoria
                 </FormLabel>
-                <Select value={categoryField} style={{minWidth: 120}} onChange={(e, value) => setCategoryField(value)}>
+                <Select value={search.category || ""} style={{minWidth: 120}}
+                        onChange={(e, value) => {
+                            setSearch({
+                                ...search,
+                                category: value
+                            })
+                        }}>
                     {categories.map(category => {
                         return <Option value={category.name} key={category.id}>{category.name}</Option>
                     })}
+                    <Option value={""}>Wszystkie</Option>
+                </Select>
+            </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Status
+                </FormLabel>
+                <Select value={search.status || ""} style={{minWidth: 120}}
+                        onChange={(e, value) => {
+                            setSearch({
+                                ...search,
+                                status: value
+                            })
+                        }}>
+                    <Option value={"free"}>Wolna</Option>
+                    <Option value={"taken"}>Zajęta</Option>
                     <Option value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
@@ -48,36 +71,49 @@ const filters = (mobile, categories, categoryField, setCategoryField) => {
     }
 }
 
+
 const CompaniesHome = () => {
 
-    const [nameSearch, setNameSearch] = useState("")
-    const [categorySearch, setCategorySearch] = useState("")
-
-    const [categoryField, setCategoryField] = useState("")
-    const [nameSearchField, setNameSearchField] = useState("")
-
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [tempSearch, setTempSearch] = useState({
+        name: null,
+        category: null,
+        status: null
+    });
+    const [search, setSearch] = useState({
+        name: null,
+        category: null,
+        status: null
+    });
 
     const mobile = useMobileSize();
     const {hasRight} = useAccessRightsHelper();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {categories} = useCategories();
-    const {companies, loading, pageNumber, addCompany} = useCompanyListWithCampaign(
+    const {companies, loading, pageNumber, addCompany}
+        = useCompanyListWithCampaign(
         currentCampaign, currentPage - 1,
-        nameSearch === "" ? null : nameSearch,
-        categorySearch === "" ? null : categorySearch);
+        search
+    );
 
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
 
-    const updateFilters = () => {
-        setNameSearch(nameSearchField);
-        setCategorySearch(categoryField)
-    }
+
+    useEffect(() => {
+        const currentValue = {
+            name: searchParams.get("name"),
+            category: searchParams.get("category"),
+            status: searchParams.get("status")
+        }
+        setTempSearch(currentValue)
+        setSearch(currentValue);
+    }, [searchParams]);
 
     const renderFilters = () => {
         return <form onSubmit={e => {
             e.preventDefault();
-            updateFilters();
+            setSearchParams(removeNullFields(tempSearch));
         }} style={{
             marginBottom: 10,
             marginTop: 10,
@@ -88,12 +124,15 @@ const CompaniesHome = () => {
         }}>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>Szukaj firmy</FormLabel>
-                <Input value={nameSearchField}
-                       onChange={(e) => setNameSearchField(e.target.value)}
+                <Input value={tempSearch.name || ""}
+                       onChange={(e) => setTempSearch({
+                           ...tempSearch,
+                           name: e.target.value
+                       })}
                        size="sm" placeholder="Szukaj"
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
-            {filters(mobile, categories, categoryField, setCategoryField)}
+            {filters(mobile, categories, tempSearch, setTempSearch)}
             <div>
                 <Button size={"sm"} type={"submit"}>Szukaj</Button>
             </div>

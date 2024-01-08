@@ -17,4 +17,5 @@ public class CompanySearch {
     private UUID campaign;
     private ContactStatus contactStatus;
     private String category;
+    private String status;
 }

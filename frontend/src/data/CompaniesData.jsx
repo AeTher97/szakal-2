@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useData, usePost, usePut} from "./UseData";
 
-export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, category) => {
+export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) => {
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState([])
 
@@ -9,11 +9,12 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
         (data) => {
             setCompanies(data.content)
             setPageNumber(data.totalPages)
-        }, [campaignId, search, currentPage, category],
+        }, [campaignId, search, currentPage],
         [{name: "campaign", value: campaignId},
             {name: "pageNumber", value: currentPage},
-            {name: "name", value: search},
-            {name: "category", value: category}])
+            {name: "name", value: search.name},
+            {name: "category", value: search.category},
+            {name: "status", value: search.status}])
 
     const {post} = usePost(`/companies`,
         (data) => setCompanies(current => {
