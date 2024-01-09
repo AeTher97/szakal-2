@@ -34,7 +34,7 @@ public class CompanySpecification implements Specification<Company> {
         final List<Predicate> predicateList = new ArrayList<>();
 
         if (criteria.getName() != null) {
-            predicateList.add(criteriaBuilder.like(name, wrapWithPercent(criteria.getName())));
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(name), wrapWithPercent(criteria.getName().toLowerCase())));
         }
 
         if (criteria.getCategory() != null) {
