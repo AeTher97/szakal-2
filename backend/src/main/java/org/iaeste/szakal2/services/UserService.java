@@ -22,9 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -166,6 +164,21 @@ public class UserService {
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return usersRepository.findAll(pageable).map(UserDTO::fromUser);
+    }
+
+    public List<UserDTO> searchUsers(String phrase) {
+        String [] parts = phrase.split(" ");
+        if(parts.length == 1) {
+            return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
+                    parts[0], parts[0], parts[0])
+                    .stream().map(UserDTO::fromUser).toList();
+        } else if(parts.length > 1){
+            return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
+                    parts[0], parts[0], parts[1])
+                    .stream().map(UserDTO::fromUser).toList();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 

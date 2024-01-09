@@ -2,7 +2,7 @@ import {useData, usePost, usePut} from "./UseData";
 import {useSelector} from "react-redux";
 import {useState} from "react";
 
-export const useCurrentCampaignJourneyList = (page = 0, pageSize = 10) => {
+export const useCurrentCampaignJourneyList = (page = 0, search) => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
@@ -12,9 +12,12 @@ export const useCurrentCampaignJourneyList = (page = 0, pageSize = 10) => {
         (data) => {
             setJourneys(data.content)
             setPagesNumber(data.totalPages)
-        }, [currentCampaign, page, pageSize], [{
-            name: "pageNumber", value: page
-        }, {name: "pageSize", value: pageSize}], [currentCampaign])
+        }, [currentCampaign, page, search],
+        [{name: "pageNumber", value: page},
+            {name: "pageSize", value: 10},
+            {name: "companyName", value: search.companyName},
+            {name: "status", value: search.status},
+            {name: "user", value: search.user}], [currentCampaign])
 
     return {journeys, loading, pagesNumber}
 }

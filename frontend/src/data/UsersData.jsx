@@ -14,6 +14,17 @@ export const useUsersList = (page = 0) => {
     return {users, loading, pageNumber}
 }
 
+export const useUsersSearch = (phrase) => {
+    const [users, setUsers] = useState([]);
+    const {loading} = useData(`/users/search`, (data) => {
+            setUsers(data)
+        },
+        [phrase], [{name: "phrase", value: phrase}])
+
+    return {users, loading}
+
+}
+
 export const useUserData = (id) => {
     const [user, setUser] = useState();
 

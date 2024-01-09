@@ -1,15 +1,21 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
+import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
+import org.iaeste.szakal2.models.dto.company.CompanySearch;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.repositories.CampaignRepository;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
+import org.iaeste.szakal2.repositories.JourneySpecification;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +24,8 @@ import java.util.UUID;
 @Service
 public class CampaignService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     private final CampaignRepository campaignRepository;
     private final ContactJourneyRepository contactJourneyRepository;
 
@@ -49,17 +57,17 @@ public class CampaignService {
         return campaignRepository.findAllByOrderByNameDesc(pageable);
     }
 
-    public Page<ContactJourney> getJourneysForCampaign(UUID id, Pageable pageable) {
+    public Page<ContactJourney> getJourneysForCampaign(UUID id, Pageable pageable, ContactJourneySearch contactJourneySearch) {
         Campaign campaign = getCampaignById(id);
-        return getJourneysByCampaign(campaign, pageable);
+        return getJourneysByCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
     }
 
     public void truncate() {
         campaignRepository.deleteAll();
     }
 
-    private Page<ContactJourney> getJourneysByCampaign(Campaign campaign, Pageable pageable) {
-        return contactJourneyRepository.findAllByCampaign(campaign, pageable);
+    private Page<ContactJourney> getJourneysByCampaign(Pageable pageable, Specification<ContactJourney> specification) {
+        return contactJourneyRepository.findAll(specification, pageable);
     }
 
     private Campaign campaignFromCreationDTO(CampaignCreationDTO campaignCreationDTO) {

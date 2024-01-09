@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +39,12 @@ public class UsersController {
     @PreAuthorize("hasAuthority('user_viewing')")
     public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAuthority('journey_creation_for_others')")
+    public List<UserDTO> getUsers(@RequestParam String phrase) {
+        return userService.searchUsers(phrase);
     }
 
     @GetMapping("/{id}")

@@ -5,7 +5,7 @@ import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useCompany} from "../../data/CompaniesData";
 import TabHeader from "../main/TabHeader";
 import CompanyContactData from "./CompanyContactData";
-import {ButtonGroup, IconButton, LinearProgress, Typography} from "@mui/joy";
+import {ButtonGroup, IconButton, LinearProgress, Menu, MenuItem, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import CompanyAddress from "./CompanyAddress";
 import CompanyCategories from "./CompanyCategories";
@@ -17,6 +17,9 @@ import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import CompanyContactPeople from "./CompanyContactPeople";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import AssignToSomeoneElseDialog from "./AssignToSomeoneElseDialog";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 
 const CompanyDetails = () => {
@@ -26,7 +29,11 @@ const CompanyDetails = () => {
     const [localCompany, setLocalCompany] = useState();
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {userId} = useSelector(state => state.auth);
+    const [open, setOpen] = React.useState(false);
+    const [assignToSomeoneOpen, setAssignToSomeoneOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
     const {hasRight} = useAccessRightsHelper();
+    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz przypisać firmę do siebie?")
 
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
@@ -63,30 +70,37 @@ const CompanyDetails = () => {
         }
         if (hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers) {
             return <Button
-                onClick={() => {
+                onClick={() => openDialog(() => {
                     addJourney(currentCampaign, company.id, userId)
                         .then((data) => {
                             navigate(`/secure/journeys/${data.id}`)
                         })
-                }}>
+                })}>
                 Przypisz
             </Button>
         } else {
-            return <ButtonGroup color={"primary"} variant={"solid"}>
-                <Button
-                    onClick={() => {
-                        addJourney(currentCampaign, company.id, userId)
-                            .then((data) => {
-                                navigate(`/secure/journeys/${data.id}`)
-                            })
-                    }}>
-                    Przypisz
-                </Button>
-                <IconButton
-                >
-                    <ArrowDropDownIcon/>
-                </IconButton>
-            </ButtonGroup>
+            return <>
+                <ButtonGroup color={"primary"} variant={"solid"} ref={anchorRef}>
+                    <Button
+                        onClick={() => openDialog(() => {
+                            addJourney(currentCampaign, company.id, userId)
+                                .then((data) => {
+                                    navigate(`/secure/journeys/${data.id}`)
+                                })
+                        })}>
+                        Przypisz
+                    </Button>
+                    <IconButton onMouseDown={() => setOpen(!open)}>
+                        {open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                    </IconButton>
+                </ButtonGroup>
+                <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
+                    <MenuItem
+                        onClick={(event) => setAssignToSomeoneOpen(true)}>
+                        Przypisz do kogoś innego
+                    </MenuItem>
+                </Menu>
+            </>
         }
     }
 
@@ -141,11 +155,16 @@ const CompanyDetails = () => {
                                           addingContactPerson={addingContactPerson}/>
 
                 </div>
+                <AssignToSomeoneElseDialog open={assignToSomeoneOpen} close={() => setAssignToSomeoneOpen(false)}
+                                           addJourney={addJourney} currentCampaign={currentCampaign} companyId={company.id}
+                                           navigate={navigate}/>
+                {render()}
             </>}
             {loading &&
                 <div style={{display: "flex", justifyContent: "center"}}>
                     <LinearProgress/>
                 </div>}
+
         </div>
     );
 };

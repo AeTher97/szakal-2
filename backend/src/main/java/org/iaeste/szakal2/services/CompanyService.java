@@ -31,15 +31,13 @@ import java.util.UUID;
 @Service
 public class CompanyService {
 
-    private final Validator validator;
     @PersistenceContext
     private EntityManager entityManager;
     private final UserService userService;
     private final CompanyRepository companyRepository;
     private final CategoryRepository categoryRepository;
 
-    public CompanyService(Validator validator, UserService userService, CompanyRepository companyRepository, CategoryRepository categoryRepository) {
-        this.validator = validator;
+    public CompanyService(UserService userService, CompanyRepository companyRepository, CategoryRepository categoryRepository) {
         this.userService = userService;
         this.companyRepository = companyRepository;
         this.categoryRepository = categoryRepository;

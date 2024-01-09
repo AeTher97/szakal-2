@@ -3,6 +3,7 @@ package org.iaeste.szakal2.controllers;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
+import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.services.CampaignService;
@@ -49,8 +50,17 @@ public class CampaignController {
     @GetMapping("/{id}/journeys")
     public Page<ContactJourney> getCampaignContactJourneys(@PathVariable("id") UUID id,
                                                            @RequestParam(defaultValue = "10") int pageSize,
+                                                           @RequestParam(required = false) String companyName,
+                                                           @RequestParam(required = false) String status,
+                                                           @RequestParam(required = false) String user,
                                                            @RequestParam int pageNumber) {
-        return campaignService.getJourneysForCampaign(id, Pageable.ofSize(pageSize).withPage(pageNumber));
+        return campaignService.getJourneysForCampaign(id, Pageable.ofSize(pageSize).withPage(pageNumber),
+                ContactJourneySearch.builder()
+                        .companyName(companyName)
+                        .campaignId(id)
+                        .status(status)
+                        .user(user)
+                        .build());
     }
 
 }
