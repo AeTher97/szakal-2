@@ -1,6 +1,5 @@
 # Szakal-2
 ![logo](/frontend/public/szakal_logo.svg)
-## Background
 Project for managing IAESTE AGH committee company contacts
 during various campaigns. The software is written in Java and React  and supports:
 * Adding companies and their contact details
@@ -20,7 +19,7 @@ To compile and run the application following software has to be installed on the
 2. Go into backend directory
 3. Make sure postgres is running on your machine with created database and you know: **port, username and password**
 4. Make sure JAVA_HOME is set correctly, you can run `java -version` to make sure, java 21 or higher is required
-5. Run backend using this command `./mvnw spring-boot:run -Dspring-boot.run.jvmArguments=-DDATABASE_URL={url=host:port/database_name} -DDATABASE_USERNAME={postgres_username} -DDATABASE_PASSWORD={postgres_password} -DJWT_SECRET={jwt_secret}`
+5. Run backend using this command `./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="--enable-preview -DDATABASE_URL={url=host:port/database_name} -DDATABASE_USERNAME={postgres_username} -DDATABASE_PASSWORD={postgres_password} -DJWT_SECRET={jwt_secret}"`
 , where arguments are following:
    * **DATABASE_URL** - url to the database, has to contain host, port and database name without protocol 
    * **DATABASE_USERNAME** - username of the database user
@@ -35,4 +34,4 @@ To compile and run the application following software has to be installed on the
 9. Run `npm install`
 10. Run npm start
 11. Go to `localhost:3000`
-12. Use the app9
+12. Use the app
