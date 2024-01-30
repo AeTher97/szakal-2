@@ -1,5 +1,8 @@
+<p align="center">
 <img src="/frontend/public/szakal_logo.svg" width="300">
-# Szakal-2
+</p>
+
+# Szakal 2
 Project for managing IAESTE AGH committee company contacts
 during various campaigns. The software is written in Java and React  and supports:
 * Adding companies and their contact details
