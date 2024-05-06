@@ -78,7 +78,7 @@ tasks.register('integrationTest', Test) {
 }
 
 tasks.register("stage") {
-
+    dependsOn("build")
 }
 
 bootRun {
