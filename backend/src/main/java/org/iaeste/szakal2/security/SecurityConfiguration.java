@@ -78,6 +78,7 @@ public class SecurityConfiguration {
     @Profile("!development")
     public SecurityFilterChain prodFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .csrf().disable()
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
