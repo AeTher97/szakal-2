@@ -77,6 +77,10 @@ tasks.register('integrationTest', Test) {
     useJUnitPlatform()
 }
 
+tasks.register("stage") {
+
+}
+
 bootRun {
     if (project.hasProperty('databaseUrl')) {
         systemProperty 'DATABASE_URL', databaseUrl
