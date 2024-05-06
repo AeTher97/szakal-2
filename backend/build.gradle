@@ -1,0 +1,115 @@
+plugins {
+    id 'java'
+    alias(libs.plugins.freefair.lombok)
+    alias(libs.plugins.springframework.boot)
+    alias(libs.plugins.dependency.management)
+}
+
+group = 'org.iaeste'
+version = '1.0.0'
+description = 'backend'
+java.sourceCompatibility = JavaVersion.VERSION_21
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file("src/integration-test/java")
+        resources.srcDir file("src/integration-test/resources")
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+dependencies {
+    implementation libs.org.springframework.boot.spring.boot.starter.data.jpa
+    implementation libs.org.springframework.boot.spring.boot.starter.jdbc
+    implementation libs.org.springframework.boot.spring.boot.starter.security
+    implementation libs.org.springframework.boot.spring.boot.starter.web
+    implementation libs.org.springframework.boot.spring.boot.starter.mail
+    implementation libs.org.springframework.boot.spring.boot.configuration.processor
+    implementation libs.org.projectlombok.lombok
+    implementation libs.io.jsonwebtoken.jjwt.api
+    implementation libs.org.springframework.boot.spring.boot.starter.validation
+    implementation libs.org.springframework.boot.spring.boot.starter.actuator
+
+    testRuntimeOnly libs.org.springframework.boot.spring.boot.devtools
+    integrationTestRuntimeOnly libs.org.springframework.boot.spring.boot.devtools
+    runtimeOnly libs.io.jsonwebtoken.jjwt.impl
+    runtimeOnly libs.io.jsonwebtoken.jjwt.jackson
+    runtimeOnly libs.org.postgresql.postgresql
+
+    testImplementation libs.org.springframework.boot.spring.boot.starter.test
+    testImplementation libs.org.springframework.security.spring.security.test
+    testImplementation libs.org.testcontainers.junit.jupiter
+    testImplementation libs.org.testcontainers.postgresql
+    testImplementation libs.io.rest.assured.rest.assured
+
+    integrationTestImplementation libs.org.springframework.boot.spring.boot.starter.test
+    integrationTestImplementation libs.org.springframework.boot.spring.boot.testcontainers
+    integrationTestImplementation libs.org.springframework.security.spring.security.test
+    integrationTestImplementation libs.org.testcontainers.junit.jupiter
+    integrationTestImplementation libs.org.testcontainers.testcontainers
+    integrationTestImplementation libs.org.testcontainers.postgresql
+    integrationTestImplementation libs.io.rest.assured.rest.assured
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('integrationTest', Test) {
+    systemProperty 'spring.profiles.active', 'development'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
+bootRun {
+    if (project.hasProperty('databaseUrl')) {
+        systemProperty 'DATABASE_URL', databaseUrl
+    }
+    if (project.hasProperty('databaseUsername')) {
+        systemProperty 'DATABASE_USERNAME', databaseUsername
+    }
+    if (project.hasProperty('databasePassword')) {
+        systemProperty 'DATABASE_PASSWORD', databasePassword
+    }
+    if (project.hasProperty('jwtSecret')) {
+        systemProperty 'JWT_SECRET', jwtSecret
+    }
+    if (project.hasProperty('emailUsername')) {
+        systemProperty 'EMAIL_USERNAME', emailUsername
+    }
+    if (project.hasProperty('emailPassword')) {
+        systemProperty 'EMAIL_PASSWORD', emailPassword
+    }
+    if (project.hasProperty('herokuAppDefaultDomainName')) {
+        systemProperty 'HEROKU_APP_DEFAULT_DOMAIN_NAME', herokuAppDefaultDomainName
+    }
+}
+
+//Enable preview for java 21 features like STR to avoid compilation errors
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += "--enable-preview"
+}
+
+tasks.withType(Test).configureEach {
+    jvmArgs += "--enable-preview"
+}
+
+tasks.withType(JavaExec).configureEach {
+    jvmArgs += "--enable-preview"
+}

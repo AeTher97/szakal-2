@@ -12,6 +12,7 @@ import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -48,10 +49,35 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    @Profile("development")
+    public SecurityFilterChain devFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
                 .csrf().disable()
+                .authorizeHttpRequests(authorizer -> authorizer
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/refresh").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/reset-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/reset-password-set-new").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/app-settings").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .authenticationManager(authenticationManagerBean())
+                .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(), "/api/login"))
+                .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(), "/api/refresh"))
+                .addFilterBefore(new JwtAuthorizationFilter(authenticationManagerBean()), SecurityContextHolderAwareRequestFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
+
+    @Bean
+    @Profile("!development")
+    public SecurityFilterChain prodFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()

@@ -36,7 +36,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run integration test
         working-directory: ./backend
-        run: mvn integration-test
+        run: ./gradlew integrationTest
       - name: Heroku upload
         run: |  
           export JAVA_HOME=JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.1-12/x64
