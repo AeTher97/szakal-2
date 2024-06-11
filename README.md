@@ -4,6 +4,7 @@
 </p>
 Project for managing IAESTE AGH committee company contacts
 during various campaigns. The software is written in Java and React  and supports:
+
 * Adding companies and their contact details
 * Tracking contact journeys in respective campaigns
 * Managing users and their access to data
