@@ -12,7 +12,7 @@ during various campaigns. The software is written in Java and React  and support
 ### Prerequisites 
 To compile and run the application following software has to be installed on the machine:
 * Git client
-* Java 21 or higher JDK (Java and maven can be handled from Intellij, easier in my opinion)
+* Java 21 or higher JDK (Java and gradle can be handled from Intellij, easier in my opinion)
 * Gradle
 * Node.js
 * Postgres database (directly on metal or in docker)
