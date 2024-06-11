@@ -33,7 +33,7 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
     return (
         <Modal open={open}>
             <ModalDialog>
-                <DialogTitle>Dodaj osobę kontaktową</DialogTitle>
+                <DialogTitle>Przypisz firmę do osoby</DialogTitle>
                 <form onSubmit={(event, value) => {
                     event.preventDefault();
                     if (!user) {
@@ -66,7 +66,7 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                                     .filter(user=> user.id !== userId)
                                     .map(user => {
                                     return {
-                                        label: `${user.name} ${user.surname}`,
+                                        label: `${user.name} ${user.surname} ${user.email}`,
                                         id: user.id,
                                         email: user.email
                                     }

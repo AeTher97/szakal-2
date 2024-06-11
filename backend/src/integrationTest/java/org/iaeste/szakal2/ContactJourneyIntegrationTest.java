@@ -24,10 +24,10 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testCreatingContactJourney() {
-        Company company = integrationTestDatabaseApi.createCompany("IAESTE");
-        User user = integrationTestDatabaseApi.createUser("test_user@szakal.org", "company-creator", "password",
+        Company company = integrationTestDatabase.createCompany("IAESTE");
+        User user = integrationTestDatabase.createUser("test_user@szakal.org", "company-creator", "password",
                 List.of("company_modification"));
-        Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
+        Campaign campaign = integrationTestDatabase.createCampaign("PPP2023", LocalDate.now());
 
         UUID journeyId = UUID.fromString(withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
@@ -45,18 +45,18 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .extract()
                 .path("id"));
 
-        assertEquals(user.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getUser().getId());
-        assertEquals(campaign.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCampaign().getId());
-        assertEquals(company.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCompany().getId());
-        assertEquals(ASSIGNED, integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
+        assertEquals(user.getId(), integrationTestDatabase.getContactJourney(journeyId).getUser().getId());
+        assertEquals(campaign.getId(), integrationTestDatabase.getContactJourney(journeyId).getCampaign().getId());
+        assertEquals(company.getId(), integrationTestDatabase.getContactJourney(journeyId).getCompany().getId());
+        assertEquals(ASSIGNED, integrationTestDatabase.getContactJourney(journeyId).getContactStatus());
     }
 
     @Test
     public void testUpdatingJourneyStatus() {
-        Company company = integrationTestDatabaseApi.createCompany("IAESTE");
-        User user = integrationTestDatabaseApi.createUser("test_user@szakal.org", "company-creator", "password",
+        Company company = integrationTestDatabase.createCompany("IAESTE");
+        User user = integrationTestDatabase.createUser("test_user@szakal.org", "company-creator", "password",
                 List.of("company_modification"));
-        Campaign campaign = integrationTestDatabaseApi.createCampaign("PPP2023", LocalDate.now());
+        Campaign campaign = integrationTestDatabase.createCampaign("PPP2023", LocalDate.now());
 
         UUID journeyId = UUID.fromString(withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
@@ -86,15 +86,15 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .then()
                 .statusCode(200);
 
-        assertEquals(user.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getUser().getId());
-        assertEquals(campaign.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCampaign().getId());
-        assertEquals(company.getId(), integrationTestDatabaseApi.getContactJourney(journeyId).getCompany().getId());
-        assertEquals(CALL_LATER, integrationTestDatabaseApi.getContactJourney(journeyId).getContactStatus());
+        assertEquals(user.getId(), integrationTestDatabase.getContactJourney(journeyId).getUser().getId());
+        assertEquals(campaign.getId(), integrationTestDatabase.getContactJourney(journeyId).getCampaign().getId());
+        assertEquals(company.getId(), integrationTestDatabase.getContactJourney(journeyId).getCompany().getId());
+        assertEquals(CALL_LATER, integrationTestDatabase.getContactJourney(journeyId).getContactStatus());
     }
 
     @Test
     public void testCantAddTwoJourneysForTheSameCampaignAndCompany() {
-        ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
+        ContactJourney contactJourney = integrationTestDatabase.createContactJourney();
 
         withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
@@ -113,7 +113,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddContactJourneyComment() {
-        ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
+        ContactJourney contactJourney = integrationTestDatabase.createContactJourney();
 
         withAccessRights("journey_modification")
                 .contentType(ContentType.JSON)
@@ -127,7 +127,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .post("/api/journeys/" + contactJourney.getId() + "/comments")
                 .then().statusCode(200);
 
-        ContactJourney contactJourney1 = integrationTestDatabaseApi.getContactJourney(contactJourney.getId());
+        ContactJourney contactJourney1 = integrationTestDatabase.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getComments().size());
         assertEquals("Nie idzie za dobrze", contactJourney1.getComments().get(0).getComment());
         contactJourneyRepository.deleteById(contactJourney1.getId());
@@ -137,7 +137,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddContactJourneyEvent() {
-        ContactJourney contactJourney = integrationTestDatabaseApi.createContactJourney();
+        ContactJourney contactJourney = integrationTestDatabase.createContactJourney();
 
         withAccessRights("journey_creation")
                 .contentType(ContentType.JSON)
@@ -154,7 +154,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .post("/api/journeys/" + contactJourney.getId() + "/events")
                 .then().statusCode(200);
 
-        ContactJourney contactJourney1 = integrationTestDatabaseApi.getContactJourney(contactJourney.getId());
+        ContactJourney contactJourney1 = integrationTestDatabase.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getContactEvents().size());
         assertEquals("Tried calling", contactJourney1.getContactEvents().get(0).getDescription());
         assertEquals(NOT_INTERESTED, contactJourney1.getContactEvents().get(0).getEventType());

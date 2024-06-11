@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class IntegrationTestWithTools extends IntegrationTest {
 
     @Autowired
-    protected IntegrationTestDatabaseApi integrationTestDatabaseApi;
+    protected IntegrationTestDatabase integrationTestDatabase;
 
     @BeforeEach
     public void cleanUpBefore() {
@@ -26,18 +26,18 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     }
 
     protected void cleanUp() {
-        integrationTestDatabaseApi.getCommentRepository().truncate();
-        integrationTestDatabaseApi.getJourneyRepository().deleteAll();
-        integrationTestDatabaseApi.getCompanyRepository().deleteAll();
-        integrationTestDatabaseApi.getUsersRepository().deleteAll();
-        integrationTestDatabaseApi.getCampaignRepository().deleteAll();
-        integrationTestDatabaseApi.getRolesRepository().deleteAll();
-        integrationTestDatabaseApi.getAccessRightRepository().deleteAll();
-        integrationTestDatabaseApi.getCategoryRepository().deleteAll();
+        integrationTestDatabase.getCommentRepository().truncate();
+        integrationTestDatabase.getJourneyRepository().deleteAll();
+        integrationTestDatabase.getCompanyRepository().deleteAll();
+        integrationTestDatabase.getUsersRepository().deleteAll();
+        integrationTestDatabase.getCampaignRepository().deleteAll();
+        integrationTestDatabase.getRolesRepository().deleteAll();
+        integrationTestDatabase.getAccessRightRepository().deleteAll();
+        integrationTestDatabase.getCategoryRepository().deleteAll();
     }
 
     protected io.restassured.specification.RequestSpecification withAdminAuth() {
-        integrationTestDatabaseApi.createUser("administrator@szakal.org",
+        integrationTestDatabase.createUser("administrator@szakal.org",
                 "administrator",
                 "administrator",
                 List.of("role_modification"));
@@ -47,7 +47,7 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     }
 
     protected io.restassured.specification.RequestSpecification withAccessRights(String... accessRights) {
-        integrationTestDatabaseApi.createUser("test_user@szakal.org",
+        integrationTestDatabase.createUser("test_user@szakal.org",
                 "test_user",
                 "password",
                 Arrays.stream(accessRights).toList());

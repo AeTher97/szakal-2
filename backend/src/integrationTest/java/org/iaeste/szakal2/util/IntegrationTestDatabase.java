@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Component
 @Getter
-public class IntegrationTestDatabaseApi {
+public class IntegrationTestDatabase {
 
     @Autowired
     protected AccessRightRepository accessRightRepository;

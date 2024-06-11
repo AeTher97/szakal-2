@@ -48,6 +48,12 @@ public class CompanyController {
         return companyService.addContactPerson(id, contactPersonCreationDTO);
     }
 
+    @PutMapping("/{companyId}/contactPerson/{contactPersonId}")
+    @PreAuthorize("hasAuthority('company_modification')")
+    public Company modifyContactPerson(@PathVariable("companyId") UUID companyId, @PathVariable("contactPersonId") UUID contactPersonId, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
+        return companyService.modifyContactPerson(companyId, contactPersonId, contactPersonCreationDTO);
+    }
+
     @GetMapping("/{id}")
     public Company getCompany(@PathVariable("id") UUID id) {
         return companyService.getCompanyById(id);

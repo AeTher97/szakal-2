@@ -57,6 +57,23 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
+    @Transactional
+    public Company modifyContactPerson(UUID id, UUID contactPersonId, ContactPersonCreationDTO contactPersonCreationDTO) {
+        Company company = getCompanyById(id);
+        Optional<ContactPerson> contactPersonOptional = company.getContactPeople().stream()
+                .filter(contactPerson -> contactPerson.getId().equals(contactPersonId)).findAny();
+
+        if(contactPersonOptional.isEmpty()){
+            throw new ResourceNotFoundException("Contact person not found");
+        }
+
+        ContactPerson contactPerson = contactPersonOptional.get();
+        BeanUtils.copyProperties(contactPersonCreationDTO, contactPerson,
+                Utils.getNullPropertyNames(contactPersonCreationDTO));
+
+        return companyRepository.save(company);
+    }
+
     public Company updateCompany(UUID id, CompanyModificationDTO companyModificationDTO) {
         Company company = getCompanyById(id);
         if (companyModificationDTO.getCategories() != null) {

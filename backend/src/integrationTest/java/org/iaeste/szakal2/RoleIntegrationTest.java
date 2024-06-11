@@ -25,7 +25,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddRole() {
-        AccessRight accessRight = integrationTestDatabaseApi.createAccessRight("access_to_everything");
+        AccessRight accessRight = integrationTestDatabase.createAccessRight("access_to_everything");
 
         UUID roleId = UUID.fromString(withAccessRights("role_modification")
                 .contentType(ContentType.JSON)
@@ -53,7 +53,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddRoleWithTheSameNameShouldAddJustOne() {
-        AccessRight accessRight = integrationTestDatabaseApi.createAccessRight("access_to_everything");
+        AccessRight accessRight = integrationTestDatabase.createAccessRight("access_to_everything");
 
         withAccessRights("role_modification")
                 .contentType(ContentType.JSON)
@@ -90,7 +90,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testModifyRole() {
-        AccessRight accessRight = integrationTestDatabaseApi.createAccessRight("role_modification");
+        AccessRight accessRight = integrationTestDatabase.createAccessRight("role_modification");
 
         rolesRepository.save(Role.builder()
                 .name("ADMIN")
@@ -127,7 +127,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testModifyRoleWithNonExistentAccessRight() {
-        AccessRight accessRight = integrationTestDatabaseApi.createAccessRight("role_modifictaion");
+        AccessRight accessRight = integrationTestDatabase.createAccessRight("role_modifictaion");
 
         rolesRepository.save(Role.builder()
                 .name("ADMIN")
@@ -171,7 +171,7 @@ public class RoleIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testDeleteRole() {
-        AccessRight accessRight = integrationTestDatabaseApi.createAccessRight("should_not_delete");
+        AccessRight accessRight = integrationTestDatabase.createAccessRight("should_not_delete");
 
         Role role = Role.builder()
                 .name("DELETED")

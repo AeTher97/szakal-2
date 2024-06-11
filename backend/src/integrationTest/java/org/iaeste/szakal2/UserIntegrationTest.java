@@ -28,7 +28,7 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testGetUsers() {
-        integrationTestDatabaseApi.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
+        integrationTestDatabase.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
         List<HashMap<String, String>> content = withAccessRights("user_viewing")
                 .when()
                 .get("/api/users?pageNumber=0")
@@ -41,7 +41,7 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testGetUser() {
-        integrationTestDatabaseApi.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
+        integrationTestDatabase.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
         UUID userId = userService.getUserByEmail("administrator@szakal.org").getId();
         UserDTO userDTO = withAccessRights("user_viewing")
                 .when()
@@ -58,15 +58,15 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddRoleToUser() {
-        integrationTestDatabaseApi.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
+        integrationTestDatabase.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
         UUID userId = userService.getUserByEmail("administrator@szakal.org").getId();
-        Role role = integrationTestDatabaseApi.createRole(List.of(accessRightRepository.save(
+        Role role = integrationTestDatabase.createRole(List.of(accessRightRepository.save(
                 AccessRight.builder()
                         .code("user_viewing")
                         .build()
         ).getId()), "VIEWING", "Viewing things");
 
-        assertThat(integrationTestDatabaseApi.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
+        assertThat(integrationTestDatabase.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
                 .get().getRoles().size()).isEqualTo(1);
 
         UserDTO userDTO = withAccessRights("user_role_granting")
@@ -87,16 +87,16 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
 
         assertThat(userDTO.getEmail()).isEqualTo("administrator@szakal.org");
         assertThat(userDTO.getId()).isEqualTo(userId);
-        assertThat(integrationTestDatabaseApi.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
+        assertThat(integrationTestDatabase.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
                 .get().getRoles().size()).isEqualTo(1);
-        assertThat(integrationTestDatabaseApi.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
+        assertThat(integrationTestDatabase.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
                 .get().getRoles().get(0).getName()).isEqualTo("VIEWING");
 
     }
 
     @Test
     public void testPasswordChange() {
-        integrationTestDatabaseApi.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
+        integrationTestDatabase.createUser("administrator@szakal.org", "administrator", "administrator", List.of());
         UUID userId = userService.getUserByEmail("administrator@szakal.org").getId();
 
         withAdminAuth()

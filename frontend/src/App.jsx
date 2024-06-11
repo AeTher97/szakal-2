@@ -2,7 +2,6 @@ import './App.css';
 import '@fontsource/inter';
 import * as React from 'react';
 import {useEffect} from 'react';
-import Button from '@mui/joy/Button';
 import {CssVarsProvider, Snackbar, useColorScheme} from "@mui/joy";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {stores} from "./redux/Stores";
@@ -59,8 +58,5 @@ function App() {
     );
 }
 
-function ButtonUsage() {
-    return <Button variant="solid">Hello world</Button>;
-}
 
 export default App;

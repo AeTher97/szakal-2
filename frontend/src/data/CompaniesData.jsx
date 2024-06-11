@@ -14,7 +14,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) 
             {name: "pageNumber", value: currentPage},
             {name: "name", value: search.name},
             {name: "category", value: search.category},
-            {name: "status", value: search.status}], [campaignId])
+            {name: "status", value: search.status}])
 
     const {post} = usePost(`/companies`,
         (data) => setCompanies(current => {

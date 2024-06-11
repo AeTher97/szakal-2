@@ -85,9 +85,9 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                     </div>
 
                 </CardContent>
-                <CardActions>
+                {isUser && <CardActions>
                     <Button type={"submit"} loading={updateUserDetailsLoading}>Zapisz</Button>
-                </CardActions>
+                </CardActions>}
             </form>
         </Card>
     )

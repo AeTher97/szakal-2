@@ -2,7 +2,6 @@ package org.iaeste.szakal2;
 
 import io.restassured.http.ContentType;
 import org.iaeste.szakal2.models.entities.Company;
-import org.iaeste.szakal2.repositories.CategoryRepository;
 import org.iaeste.szakal2.repositories.CompanyRepository;
 import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.Test;
@@ -17,12 +16,10 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Autowired
     private CompanyRepository companyRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Test
     public void testCreateCompany() {
-        UUID categoryId = integrationTestDatabaseApi.createCategory("Gardening").getId();
+        UUID categoryId = integrationTestDatabase.createCategory("Gardening").getId();
 
         String companyId = withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -63,7 +60,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testUpdateCompany() {
-        UUID categoryId = integrationTestDatabaseApi.createCategory("Gardening").getId();
+        UUID categoryId = integrationTestDatabase.createCategory("Gardening").getId();
 
         String companyId = withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -90,7 +87,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
                 .path("id");
 
         UUID companyUUID = UUID.fromString(companyId);
-        UUID categoryId2 = integrationTestDatabaseApi.createCategory("Gardening2").getId();
+        UUID categoryId2 = integrationTestDatabase.createCategory("Gardening2").getId();
 
 
         withAccessRights("company_modification")
@@ -130,7 +127,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void testAddContactPerson() {
-        Company company = integrationTestDatabaseApi.createCompany("IAESTE", false);
+        Company company = integrationTestDatabase.createCompany("IAESTE", false);
 
         withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -164,8 +161,57 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
                 .then()
                 .statusCode(200);
 
-        Company company2 = integrationTestDatabaseApi.getCompany(company.getId());
+        Company company2 = integrationTestDatabase.getCompany(company.getId());
 
         assertEquals(2, company2.getContactPeople().size());
+    }
+
+    @Test
+    public void testModifyContactPerson() {
+        Company company = integrationTestDatabase.createCompany("IAESTE", false);
+
+        withAccessRights("company_modification")
+                .contentType(ContentType.JSON)
+                .body(STR."""
+                        {
+                            "name" : "Asia Kowalska",
+                            "position" : "HR admin",
+                            "phone" : "+481239321",
+                            "comment" : "HRy...",
+                            "email": "asia@firma.com"
+                        }
+                        """)
+                .when()
+                .put("/api/companies/" + company.getId() + "/contactPerson")
+                .then()
+                .statusCode(200);
+
+
+        Company company2 = integrationTestDatabase.getCompany(company.getId());
+
+        assertEquals(1, company2.getContactPeople().size());
+        assertEquals(company2.getContactPeople().get(0).getName(), "Asia Kowalska");
+
+        withAccessRights("company_modification")
+                .contentType(ContentType.JSON)
+                .body(STR."""
+                        {
+                            "name" : "Patrycja Mazur",
+                            "position" : "HR admin",
+                            "phone" : "+481239321",
+                            "comment" : "HRy...",
+                            "email": "asia@firma.com"
+                        }
+                        """)
+                .when()
+                .put(STR
+                        ."/api/companies/\{company.getId()}/contactPerson/\{company2.getContactPeople().get(0).getId()}")
+                .then()
+                .statusCode(200);
+
+        Company company3 = integrationTestDatabase.getCompany(company.getId());
+
+        assertEquals(company3.getContactPeople().get(0).getName(), "Patrycja Mazur");
+
     }
 }
