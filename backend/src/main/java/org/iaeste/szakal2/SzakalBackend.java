@@ -3,6 +3,7 @@ package org.iaeste.szakal2;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.services.InitService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

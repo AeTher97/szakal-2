@@ -38,7 +38,7 @@ const CompanyDetails = () => {
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
         updatingAddress, updateCategories, updatingCategories,
-        addContactPerson, addingContactPerson
+        addContactPerson, addingContactPerson, modifyContactPerson
     } = useCompany(location.pathname.split("/")[3])
 
     const {addJourney} = useAddContactJourney();
@@ -151,6 +151,7 @@ const CompanyDetails = () => {
                                        updateCategoriesLoading={updatingCategories}
                     />
                     <CompanyContactPeople addContactPerson={addContactPerson}
+                                          modifyContactPerson={modifyContactPerson}
                                           contactPeople={company.contactPeople || []}
                                           addingContactPerson={addingContactPerson}/>
 

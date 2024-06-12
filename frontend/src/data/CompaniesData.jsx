@@ -49,8 +49,7 @@ export const useCompany = (id) => {
     const {loading: updatingContactDetails, put} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
-    const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`,
-        (data) => setCompany(data))
+    const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`, (data) => setCompany(data));
 
     const updateContactDetails = (name, email, phone, website) => {
         return put({
@@ -81,9 +80,15 @@ export const useCompany = (id) => {
         })
     }
 
+    const modifyContactPerson = (contactPersonId, name, position, phone, email, comment) => {
+        return putContactPerson({
+            name, position, phone, email, comment
+        }, `/companies/${id}/contactPerson/${contactPersonId}`)
+    }
+
     return {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress, updatingAddress,
-        updateCategories, updatingCategories, addContactPerson, addingContactPerson
+        updateCategories, updatingCategories, addContactPerson, addingContactPerson, modifyContactPerson
     }
 
 }
