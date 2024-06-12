@@ -1,14 +1,27 @@
-import React, {useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import React, {useEffect, useState} from 'react';
+import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import {TextareaAutosize} from "@mui/material";
 
-const AddContactPersonDialog = ({open, close, addContactPerson, addingContactPerson}) => {
+const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson,
+                                    contactPerson
+                                }) => {
 
     const [name, setName] = useState("");
     const [position, setPosition] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [comment, setComment] = useState("");
+
+    useEffect(() => {
+        if (contactPerson) {
+            setName(contactPerson.name);
+            setPosition(contactPerson.position);
+            setPhone(contactPerson.phone);
+            setEmail(contactPerson.email);
+            setComment(contactPerson.comment);
+        }
+    }, [contactPerson]);
 
     const clear = () => {
         setName("")
@@ -22,18 +35,31 @@ const AddContactPersonDialog = ({open, close, addContactPerson, addingContactPer
     return (
         <Modal open={open}>
             <ModalDialog>
-                <DialogTitle>Dodaj osobę kontaktową</DialogTitle>
+                <DialogTitle>{contactPerson ? "Edytuj osobę kontaktową" : "Dodaj osobę kontaktową"}</DialogTitle>
                 <form onSubmit={(event, value) => {
                     event.preventDefault();
-                    addContactPerson(name,
-                        position,
-                        phone,
-                        email,
-                        comment
-                    ).then(() => {
-                        close();
-                        clear();
-                    })
+                    if (contactPerson) {
+                        modifyContactPerson(contactPerson.id,
+                            name,
+                            position,
+                            phone,
+                            email,
+                            comment)
+                            .then(() => {
+                                close();
+                                clear();
+                            })
+                    } else {
+                        addContactPerson(name,
+                            position,
+                            phone,
+                            email,
+                            comment
+                        ).then(() => {
+                            close();
+                            clear();
+                        })
+                    }
                 }}>
                     <Stack spacing={2}>
                         <FormControl required>
@@ -71,14 +97,17 @@ const AddContactPersonDialog = ({open, close, addContactPerson, addingContactPer
                         </FormControl>
                         <FormControl>
                             <FormLabel>Komentarz</FormLabel>
-                            <Input
+                            <Textarea
                                 value={comment}
                                 onChange={(e) => {
                                     setComment(e.target.value)
                                 }} placeholder={"Człowiek z HRów"}/>
                         </FormControl>
                         <Button type="submit">Zapisz</Button>
-                        <Button color={"neutral"} onClick={close}>Anuluj</Button>
+                        <Button color={"neutral"} onClick={() => {
+                            clear();
+                            close();
+                        }}>Anuluj</Button>
                     </Stack>
                 </form>
             </ModalDialog>
@@ -87,4 +116,4 @@ const AddContactPersonDialog = ({open, close, addContactPerson, addingContactPer
         ;
 };
 
-export default AddContactPersonDialog;
+export default ContactPersonDialog;

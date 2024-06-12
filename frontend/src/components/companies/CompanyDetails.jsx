@@ -38,7 +38,7 @@ const CompanyDetails = () => {
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
         updatingAddress, updateCategories, updatingCategories,
-        addContactPerson, addingContactPerson
+        addContactPerson, addingContactPerson, modifyContactPerson
     } = useCompany(location.pathname.split("/")[3])
 
     const {addJourney} = useAddContactJourney();
@@ -94,9 +94,12 @@ const CompanyDetails = () => {
                         {open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
                     </IconButton>
                 </ButtonGroup>
-                <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
+                <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current} >
                     <MenuItem
-                        onClick={(event) => setAssignToSomeoneOpen(true)}>
+                        onClick={(event) => {
+                            setOpen(false)
+                            setAssignToSomeoneOpen(true)
+                        }}>
                         Przypisz do kogoś innego
                     </MenuItem>
                 </Menu>
@@ -151,6 +154,7 @@ const CompanyDetails = () => {
                                        updateCategoriesLoading={updatingCategories}
                     />
                     <CompanyContactPeople addContactPerson={addContactPerson}
+                                          modifyContactPerson={modifyContactPerson}
                                           contactPeople={company.contactPeople || []}
                                           addingContactPerson={addingContactPerson}/>
 

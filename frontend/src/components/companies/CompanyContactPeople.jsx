@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import {Card, CardActions, CardContent, Divider, List, ListItem, Typography} from "@mui/joy";
+import {Card, CardActions, CardContent, Divider, Link, List, ListItem, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 import {useMobileSize} from "../../utils/SizeQuery";
-import AddContactPersonDialog from "./AddContactPersonDialog";
+import ContactPersonDialog from "./ContactPersonDialog";
 
 const CompanyContactPeople = ({
-                                  contactPeople, setContactPeople, updateContactPeople,
-                                  updatePeopleLoading, addContactPerson, addingContactPerson
+                                  contactPeople, addContactPerson, addingContactPerson,
+                                  modifyContactPerson
                               }) => {
 
     const [addContactPersonOpen, setAddContactPersonOpen] = useState(false);
+    const [editedPerson, setEditedPerson] = useState(null);
     const {hasRight} = useAccessRightsHelper();
     const canModify = hasRight(COMPANY_MODIFICATION);
     const mobile = useMobileSize();
@@ -28,21 +29,31 @@ const CompanyContactPeople = ({
             }}>
                 <List sx={{paddingTop: 0}}>
                     {contactPeople && contactPeople.map((person, i) => {
-                        return <>
+                        return <div key={person.id}>
                             <ListItem sx={{paddingBottom: 1}}>
-                                <div style={{display: "flex", justifyContent: "space-between", flex: 1}}>
-                                    <div>
+                                <div style={{
+                                    display: "flex", flexDirection: mobile ? "column" : "row",
+                                    justifyContent: "space-between", flex: 1
+                                }}>
+                                    <div style={{flex: 0.6}}>
                                         <Typography>{person.name}</Typography>
                                         <Typography level={"body-sm"}>{person.position}</Typography>
                                     </div>
-                                    <div>
+                                    <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                                         <Typography>{person.phone}</Typography>
                                         <Typography>{person.email}</Typography>
+                                        <Typography bre>{person.comment}</Typography>
+                                    </div>
+                                    <div>
+                                        <Link onClick={() => {
+                                            setEditedPerson(person)
+                                            setAddContactPersonOpen(true)
+                                        }}>Edytuj</Link>
                                     </div>
                                 </div>
                             </ListItem>
                             {i !== contactPeople.length - 1 && <Divider inset={"context"}/>}
-                        </>
+                        </div>
                     })}
                 </List>
                 {(!contactPeople || contactPeople.length === 0) &&
@@ -58,11 +69,14 @@ const CompanyContactPeople = ({
                         setAddContactPersonOpen(true);
                     }}>Dodaj</Button>
                 </CardActions>}
-                <AddContactPersonDialog open={addContactPersonOpen} close={() => {
+                <ContactPersonDialog open={addContactPersonOpen} close={() => {
+                    setEditedPerson(null)
                     setAddContactPersonOpen(false)
                 }}
-                                        addContactPerson={addContactPerson}
-                                        addingContactPerson={addingContactPerson}/>
+                                     contactPerson={editedPerson}
+                                     addContactPerson={addContactPerson}
+                                     addingContactPerson={addingContactPerson}
+                                     modifyContactPerson={modifyContactPerson}/>
             </form>
         </Card>)
 };

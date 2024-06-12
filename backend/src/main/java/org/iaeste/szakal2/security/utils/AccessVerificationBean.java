@@ -13,7 +13,6 @@ public class AccessVerificationBean {
 
 
     public AccessVerificationBean() {
-
     }
 
     public static boolean isUser(String id) {
