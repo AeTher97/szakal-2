@@ -94,9 +94,12 @@ const CompanyDetails = () => {
                         {open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
                     </IconButton>
                 </ButtonGroup>
-                <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
+                <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current} >
                     <MenuItem
-                        onClick={(event) => setAssignToSomeoneOpen(true)}>
+                        onClick={(event) => {
+                            setOpen(false)
+                            setAssignToSomeoneOpen(true)
+                        }}>
                         Przypisz do kogoś innego
                     </MenuItem>
                 </Menu>
