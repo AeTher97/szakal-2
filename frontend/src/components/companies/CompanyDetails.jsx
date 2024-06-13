@@ -159,9 +159,10 @@ const CompanyDetails = () => {
                                           addingContactPerson={addingContactPerson}/>
 
                 </div>
-                <AssignToSomeoneElseDialog open={assignToSomeoneOpen} close={() => setAssignToSomeoneOpen(false)}
-                                           addJourney={addJourney} currentCampaign={currentCampaign} companyId={company.id}
-                                           navigate={navigate}/>
+                {assignToSomeoneOpen && <AssignToSomeoneElseDialog open={assignToSomeoneOpen} close={() => setAssignToSomeoneOpen(false)}
+                                            addJourney={addJourney} currentCampaign={currentCampaign}
+                                            companyId={company.id}
+                                            navigate={navigate}/>}
                 {render()}
             </>}
             {loading &&

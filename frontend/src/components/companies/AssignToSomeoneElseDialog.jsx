@@ -42,6 +42,7 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                     }
                     addJourney(currentCampaign, companyId, user.id)
                         .then((data) => {
+                            clear()
                             navigate(`/secure/journeys/${data.id}`)
                         })
                 }}>
@@ -91,7 +92,10 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                             />
                         </FormControl>
                         <Button type="submit">Zapisz</Button>
-                        <Button color={"neutral"} onClick={close}>Anuluj</Button>
+                        <Button color={"neutral"} onClick={() => {
+                            clear()
+                            close()
+                        }}>Anuluj</Button>
                     </Stack>
                 </form>
             </ModalDialog>
