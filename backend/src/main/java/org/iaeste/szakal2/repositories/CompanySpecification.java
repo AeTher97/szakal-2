@@ -24,7 +24,7 @@ public class CompanySpecification implements Specification<Company> {
     }
 
     private static String wrapWithPercent(String value) {
-        return "%" + value + "%";
+        return STR."%\{value}%";
     }
 
     @Override

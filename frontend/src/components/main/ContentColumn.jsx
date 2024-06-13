@@ -35,8 +35,8 @@ const ContentColumn = props => {
                     <ScheduledContacts/>
                 </div> :
                 <>
-                    <IconButton style={{position: "absolute", bottom: 50, right: 50, padding: 10,
-                    boxShadow: "2px 2px 3px 1px black", zIndex: 1299}}
+                    <IconButton style={{position: "fixed", bottom: 40, right: 40, padding: 10,
+                    boxShadow: "2px 2px 3px 1px rgba(0,0,0,0.7)", zIndex: 1299}}
                                 variant={"solid"} color={"primary"} size={"lg"} onClick={ () => {
                                     setNotificationDrawerOpen(true)
                     }}>
