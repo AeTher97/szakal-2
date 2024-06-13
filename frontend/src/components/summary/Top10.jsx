@@ -28,9 +28,7 @@ const Top10 = () => {
 
     return (
         <Card invertedColors color={"primary"} variant={"solid"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>
-            <CardContent>
                 <Typography level={"title-lg"}>Top 10</Typography>
-            </CardContent>
             {!loading && <>
                 <Divider inset={"context"}/>
                 {journeys.length > 0 && <CardContent>

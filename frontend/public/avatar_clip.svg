@@ -1,0 +1,14 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+    <title>Artboard 1</title>
+
+    <style>
+        .cls-1{fill:rgba(0,0,0,0.5);stroke:rgba(0,0,0,0.3);stroke-width:1}
+    </style>
+    <path class="cls-1" d="M0 150 C 0 67.14 82.84 0 150 0 L 0 0"/>
+    <path class="cls-1" d="M150 0 C 232.84 0 300 67.15 300 150 L 300 0"/>
+    <path class="cls-1" d="M300 150 C 300 232.84 232.84 300 150 300 L 300 300"/>
+    <path class="cls-1" d="M150 300 C 67.15 300 0 232.84 0 150 L 0 300"/>
+
+
+
+</svg>

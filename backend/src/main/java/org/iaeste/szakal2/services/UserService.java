@@ -22,11 +22,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
 @Log4j2
 public class UserService {
+
+    private static final int EXPIRATION = 60 * 60 * 1000; //An hour
 
     private final EmailService emailService;
     private final UsersRepository usersRepository;
@@ -59,7 +62,7 @@ public class UserService {
         Optional<User> userOptional = usersRepository.findUserById(id);
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException(STR. """
-                    User with id \{ id } not found""" );
+                    User with id:\{ id } not found""" );
         }
         return userOptional.get();
     }
@@ -146,7 +149,7 @@ public class UserService {
     public void resetPassword(PasswordResetDTO passwordResetDTO) throws UserNotFoundException, ResetTokenExpiredException {
         Optional<PasswordResetToken> passwordResetTokenOptional = passwordTokenRepository
                 .findPasswordResetTokenByToken(passwordResetDTO.getCode());
-        if (!passwordResetTokenOptional.isPresent()) {
+        if (passwordResetTokenOptional.isEmpty()) {
             throw new UserNotFoundException("Reset token invalid");
         }
         PasswordResetToken resetToken = passwordResetTokenOptional.get();
@@ -183,8 +186,6 @@ public class UserService {
 
 
     private void createPasswordResetToken(User user, String token) {
-         int EXPIRATION = 60 * 60 * 1000; //An hour
-
         PasswordResetToken passwordResetToken = PasswordResetToken.builder()
                 .token(token)
                 .user(user)
@@ -193,4 +194,9 @@ public class UserService {
         passwordTokenRepository.save(passwordResetToken);
     }
 
+    public UserDTO updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
+        User user = getUserById(pictureUploadDTO.getId());
+        user.setProfilePicture(pictureUploadDTO.getFile().getBytes());
+        return UserDTO.fromUser(usersRepository.save(user));
+    }
 }

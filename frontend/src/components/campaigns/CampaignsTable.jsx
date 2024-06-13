@@ -1,8 +1,8 @@
 import React from 'react';
-import {Sheet, Table, Typography} from "@mui/joy";
+import {Link, Sheet, Table, Typography} from "@mui/joy";
 import {formatLocalDate} from "../../utils/DateUtils";
 
-const CampaignsTable = ({campaigns}) => {
+const CampaignsTable = ({campaigns, editCampaign}) => {
 
 
     return (
@@ -32,13 +32,17 @@ const CampaignsTable = ({campaigns}) => {
                     <th style={{padding: "12px 6px"}}>
                         <Typography>Data rozpoczęcia</Typography>
                     </th>
+                    <th style={{padding: "12px 6px"}}>
+                        <Typography>Akcje</Typography>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
-                {campaigns && campaigns.map(category =>
-                    <tr key={category.id}>
-                        <td>{category.name}</td>
-                        <td>{formatLocalDate(category.startDate)}</td>
+                {campaigns && campaigns.map(campaign =>
+                    <tr key={campaign.id}>
+                        <td>{campaign.name}</td>
+                        <td>{formatLocalDate(campaign.startDate)}</td>
+                        <td><Link onClick={() => editCampaign(campaign)}>Edytuj</Link></td>
                     </tr>
                 )}
                 </tbody>

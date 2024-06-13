@@ -74,6 +74,7 @@ public class CampaignService {
         return Campaign.builder()
                 .name(campaignCreationDTO.getName())
                 .startDate(campaignCreationDTO.getStartDate())
+                .description(campaignCreationDTO.getDescription())
                 .build();
     }
 }

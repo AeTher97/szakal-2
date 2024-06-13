@@ -45,7 +45,7 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                     <tr key={category.id}>
                         <td>{category.name}</td>
                         <td>{hasRight(CATEGORY_MODIFICATION) &&
-                            <Link variant={"soft"}
+                            <Link
                                   onClick={() => {
                                       setLocalCategory(category);
                                       setModifyOpen(true)

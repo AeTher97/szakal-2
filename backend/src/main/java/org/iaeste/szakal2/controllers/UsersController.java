@@ -13,9 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping("/api/users")
@@ -59,6 +63,13 @@ public class UsersController {
                                    @RequestBody UserRoleModificationDTO userRoleModificationDTO) {
         return userService.modifyUserRoles(id, userRoleModificationDTO);
     }
+
+    @PutMapping(value = "/{id}/picture")
+    @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
+    public UserDTO updateUserProfilePicture(@PathVariable("id") UUID id, @ModelAttribute PictureUploadDTO pictureUploadDTO) throws IOException {
+        return userService.updatePicture(pictureUploadDTO);
+    }
+
 
     @PutMapping("/{id}/accept")
     @PreAuthorize("hasAuthority('user_acceptance')")

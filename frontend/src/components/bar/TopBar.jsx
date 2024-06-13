@@ -9,13 +9,15 @@ import {changeCampaignAction} from "../../redux/ReducerActions";
 import DrawerMenu from "./DrawerMenu";
 import NotificationComponent from "../notifications/NotificationComponent";
 import {useApplicationSettings} from "../../data/ApplicationSettingsData";
+import {useUserData} from "../../data/UsersData";
 
 const TopBar = () => {
 
-    const {name, surname} = useSelector(state => state.auth);
+    const {name, surname, userId} = useSelector(state => state.auth);
     const {currentCampaign} = useSelector(state => state.campaigns);
     const {campaigns, loading} = useCampaignsList();
     const {getSetting} = useApplicationSettings();
+    const {user} = useUserData(userId)
     const [campaignValue, setCampaignValue]
         = useState({label: "Wybierz akcje", id: "choose"});
     const dispatch = useDispatch();
@@ -80,7 +82,7 @@ const TopBar = () => {
                           }}
             />
 
-            <UserMenu name={name} surname={surname}/>
+            {user && <UserMenu name={name} surname={surname} image={`data:image;base64,${user.profilePicture}`}/>}
         </div>
     );
 };

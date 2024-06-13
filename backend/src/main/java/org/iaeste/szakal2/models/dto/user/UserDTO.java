@@ -21,6 +21,7 @@ public class UserDTO {
     private String surname;
     private LocalDateTime createdAt;
     private List<Role> roles;
+    private byte[] profilePicture;
 
     public static UserDTO fromUser(User user) {
         return UserDTO.builder()
@@ -32,6 +33,7 @@ public class UserDTO {
                 .surname(user.getSurname())
                 .createdAt(user.getCreatedAt())
                 .roles(user.getRoles())
+                .profilePicture(user.getProfilePicture())
                 .build();
     }
 

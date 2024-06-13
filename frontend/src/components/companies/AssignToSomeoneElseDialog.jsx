@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
 import {
-    Autocomplete,
+    Autocomplete, AutocompleteOption,
     createFilterOptions,
     DialogTitle,
     FormControl,
-    FormLabel,
+    FormLabel, ListItemContent, ListItemDecorator,
     Modal,
     ModalDialog,
-    Stack
+    Stack, Typography
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useUsersSearch} from "../../data/UsersData";
 import {useSelector} from "react-redux";
+import UserAvatar from "../UserAvatar";
 
 const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, companyId, navigate}) => {
 
@@ -66,11 +67,27 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                                     .filter(user=> user.id !== userId)
                                     .map(user => {
                                     return {
-                                        label: `${user.name} ${user.surname} ${user.email}`,
+                                        label: `${user.name} ${user.surname}`,
+                                        name: user.name,
+                                        surname: user.surname,
                                         id: user.id,
-                                        email: user.email
+                                        email: user.email,
+                                        image: `data:image;base64,${user.profilePicture}`
                                     }
                                 })}
+                                renderOption={(props, option) => (
+                                    <AutocompleteOption {...props}>
+                                        <ListItemDecorator style={{marginInlineEnd: 5}}>
+                                            <UserAvatar name={option.name} surname={option.surname} image={option.image} text={false}/>
+                                        </ListItemDecorator>
+                                        <ListItemContent sx={{ fontSize: 'sm' }}>
+                                            {option.label}
+                                            <Typography level="body-xs">
+                                                {option. email}
+                                            </Typography>
+                                        </ListItemContent>
+                                    </AutocompleteOption>
+                                )}
                             />
                         </FormControl>
                         <Button type="submit">Zapisz</Button>

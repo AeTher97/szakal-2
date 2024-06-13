@@ -2,6 +2,7 @@ import React from 'react';
 import Top10 from "./Top10";
 import TabHeader from "../main/TabHeader";
 import {Typography} from "@mui/joy";
+import CurrentCampaign from "./CurrentCampaign";
 
 const SummaryHome = () => {
     return (
@@ -18,6 +19,7 @@ const SummaryHome = () => {
                 paddingBottom: 100,
                 overflow: "hidden"
             }}>
+                <CurrentCampaign/>
                 <Top10/>
             </div>
         </div>

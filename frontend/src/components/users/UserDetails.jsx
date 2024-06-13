@@ -25,7 +25,8 @@ const UserDetails = ({userId}) => {
     const validIdFromPath = uuidCheck.test(idFromPath);
     const {
         user, loading, updateUserRoles, updateRolesLoading, acceptUser, acceptUserLoading,
-        changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading
+        changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading,
+        updateProfilePicture
     } = useUserData(validIdFromPath ? idFromPath : userId);
     const isCurrentUser = useIsUser(user ? user.id : "")
     const [localUser, setLocalUser] = useState(null);
@@ -68,7 +69,8 @@ const UserDetails = ({userId}) => {
                     overflow: "hidden"
                 }}>
                     <BasicUserInfo user={user} localUser={localUser} updateUserDetails={updateUserDetails}
-                                   updateUserDetailsLoading={updateUserDetailsLoading}/>
+                                   updateUserDetailsLoading={updateUserDetailsLoading}
+                                   updateProfilePicture={updateProfilePicture}/>
                     {hasRight(USER_ROLE_GRANTING) &&
                         <UserRoles user={user} localUser={localUser} setLocalUser={setLocalUser}
                                    updateUserRoles={updateUserRoles} updateRolesLoading={updateRolesLoading}/>}

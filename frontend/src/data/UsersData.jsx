@@ -33,6 +33,7 @@ export const useUserData = (id) => {
 
     const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`, (content) => setUser(content))
     const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`, (content) => setUser(content))
+    const {put: putPicture, loading: updatePictureLoading} = usePut(`/users/${id}/picture`, (content) => setUser(content))
     const {
         put: putUserStatus,
         loading: changeUserStatusLoading
@@ -45,6 +46,15 @@ export const useUserData = (id) => {
         putRoles({
             roles: ids
         })
+    }
+
+    const updateProfilePicture = (picture) => {
+        const formData = new FormData();
+
+        formData.append("id", id);
+        formData.append("file", picture);
+
+        putPicture(formData)
     }
 
     const acceptUser = () => {
@@ -73,7 +83,8 @@ export const useUserData = (id) => {
         changeUserStatus,
         changeUserStatusLoading,
         updateUserDetails,
-        updateUserDetailsLoading
+        updateUserDetailsLoading,
+        updateProfilePicture
     }
 }
 

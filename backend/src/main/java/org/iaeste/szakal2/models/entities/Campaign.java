@@ -29,6 +29,8 @@ public class Campaign {
     @Setter
     @NotNull
     private LocalDate startDate;
+    @Setter
+    private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campaign")
     @JsonIgnore
     private List<ContactJourney> contactJourneys;

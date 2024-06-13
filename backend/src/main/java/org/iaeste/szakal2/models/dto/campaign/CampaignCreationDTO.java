@@ -18,4 +18,5 @@ public class CampaignCreationDTO {
     private String name;
     @NotNull
     private LocalDate startDate;
+    private String description;
 }

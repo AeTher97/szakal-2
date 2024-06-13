@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useData, usePost} from "./UseData";
+import {useData, usePost, usePut} from "./UseData";
 
 export const useCampaignsList = (userId, currentPage = 0) => {
 
@@ -14,12 +14,38 @@ export const useCampaignsList = (userId, currentPage = 0) => {
     const {loading: loadingPost, post} = usePost(`/campaigns`, (data) => setCampaigns(current => {
         return [...current, data]
     }))
-    const addCampaign = (name, startDate) => {
+
+    const {loading: loadingPut, put} = usePut(`/campaigns`, (data) =>
+        setCampaigns(current => {
+        return [...current.filter(campaign => campaign.id !== data.id), data]
+    }))
+
+    const addCampaign = (name, startDate, description) => {
+        console.log(description)
         post({
             name,
-            startDate
+            startDate,
+            description
         })
     }
 
-    return {campaigns, addLoading: loadingPost, addCampaign, pageNumber}
+    const modifyCampaign = (id, name, startDate, description) => {
+        put({
+            name,
+            startDate,
+            description
+        }, `/campaigns/${id}`)
+    }
+
+    return {campaigns, addLoading: loadingPost, addCampaign, modifyCampaign, pageNumber}
+}
+
+export const useCampaign = (id) => {
+    const [campaign, setCampaign] = useState([])
+    const {loading} = useData(`/campaigns/${id}`, (data) => {
+            setCampaign(data)
+        },
+        [id],[],[id])
+
+    return {campaign, loading}
 }

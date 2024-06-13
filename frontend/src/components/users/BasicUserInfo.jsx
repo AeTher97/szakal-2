@@ -14,14 +14,16 @@ import {
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
+import ProfilePictureDialog from "./ProfilePictureDialog";
 
-const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading}) => {
+const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
 
     const mobile = useMobileSize();
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
+    const [profilePictureDialogOpen, setProfilePictureDialogOpen] = useState(false);
     const {userId} = useSelector(state => state.auth);
     const isUser = userId === user.id;
 
@@ -47,10 +49,14 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                 e.preventDefault()
                 updateUserDetails(name, surname, email)
             }}>
-                <CardContent orientation={"horizontal"} style={{flex: 1, flexWrap: "wrap"}}>
-                    <Avatar size={"lg"} sx={{width: 80, height: 80}}>
-                        {user.name[0]} {user.surname[0]}
-                    </Avatar>
+                <CardContent orientation={"horizontal"} style={{flex: 1, flexWrap: "wrap", justifyContent: mobile ?  "center" : "flex-start"}}>
+                    <div style={{display: "flex", flexDirection:"column", alignItems: "center", gap: 5}}>
+                        <Avatar size={"lg"} sx={{width: mobile ? 250 : 80, height: mobile? 250 : 80}}
+                                src={user.profilePicture ? `data:image;base64,${user.profilePicture}` : ""}>
+                            {user.name[0]} {user.surname[0]}
+                        </Avatar>
+                        <Button size={"sm"} onClick={() => setProfilePictureDialogOpen(true)}>Zmień</Button>
+                    </div>
 
                     <div>
                         <FormLabel>
@@ -67,8 +73,8 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                                 <FormControl>
                                     <Input disabled={!isUser} placeholder={"Nazwisko"} value={surname}
                                            onChange={(e) => {
-                                        setSurname(e.target.value)
-                                    }}/>
+                                               setSurname(e.target.value)
+                                           }}/>
                                 </FormControl>
                             </div>
                             <FormLabel>
@@ -88,6 +94,11 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                 {isUser && <CardActions>
                     <Button type={"submit"} loading={updateUserDetailsLoading}>Zapisz</Button>
                 </CardActions>}
+                <ProfilePictureDialog
+                    open={profilePictureDialogOpen}
+                    close={() => setProfilePictureDialogOpen(false)}
+                    updateProfilePicture={updateProfilePicture}
+                />
             </form>
         </Card>
     )

@@ -57,6 +57,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Comment> comments;
+    @Setter
+    private byte[] profilePicture;
 
     public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()

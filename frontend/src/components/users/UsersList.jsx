@@ -44,7 +44,7 @@ const UsersList = () => {
                             <ListItem>
                                 <ListItemButton>
                                     <ListItemDecorator>
-                                        <Avatar variant={"soft"} sx={{marginRight: 1}}>
+                                        <Avatar variant={"soft"} sx={{marginRight: 1}} src={`data:image;base64,${user.profilePicture}`}>
                                             {user.name[0]}
                                             {user.surname[0]}
                                         </Avatar>

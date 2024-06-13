@@ -1,5 +1,6 @@
 import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
+import UserAvatar from "../UserAvatar";
 
 const JourneyUser = ({user}) => {
     return (
@@ -11,7 +12,7 @@ const JourneyUser = ({user}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 <CardContent>
-                    <Typography>{user.name} {user.surname}</Typography>
+                    <UserAvatar name={user.name} surname={user.surname} image={`data:image;base64,${user.profilePicture}`}/>
                     <Typography>{user.email}</Typography>
                 </CardContent>
             </CardOverflow>
