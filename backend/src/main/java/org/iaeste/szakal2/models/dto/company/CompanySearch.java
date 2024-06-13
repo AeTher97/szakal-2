@@ -18,4 +18,7 @@ public class CompanySearch {
     private ContactStatus contactStatus;
     private String category;
     private String status;
+    private boolean hasAlumni;
+    private String alumniDescription;
+    private String campaignName;
 }

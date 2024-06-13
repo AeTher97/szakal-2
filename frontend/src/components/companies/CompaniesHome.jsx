@@ -67,6 +67,47 @@ const filters = (mobile, categories, search, setSearch) => {
                     <Option value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Posiada alumna
+                </FormLabel>
+                <Select value={search.hasAlumni === undefined ? "" : search.hasAlumni} style={{minWidth: 120}}
+                        onChange={(e, value) => {
+                            setSearch({
+                                ...search,
+                                hasAlumni: value
+                            })
+                        }}>
+                    <Option value={""}>Tak/Nie</Option>
+                    <Option value={true}>Tak</Option>
+                </Select>
+            </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Opis alumna
+                </FormLabel>
+                <Input value={search.alumniDescription} style={{minWidth: 80, maxWidth:105}}
+                        onChange={(e) => {
+                            setSearch({
+                                ...search,
+                                alumniDescription: e.target.value.replace(/[^a-z0-9\s]/gi, '')
+                            })
+                        }} placeholder={"Szukaj"}
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Akcja
+                </FormLabel>
+                <Input value={search.campaignName} style={{minWidth: 80, maxWidth: 105}}
+                       onChange={(e) => {
+                           setSearch({
+                               ...search,
+                               campaignName: e.target.value.replace(/[^a-z0-9\s]/gi, '')
+                           })
+                       }} placeholder={"Akcja"}
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
         </>
     }
 }
@@ -79,12 +120,18 @@ const CompaniesHome = () => {
     const [tempSearch, setTempSearch] = useState({
         name: null,
         category: null,
-        status: null
+        status: null,
+        hasAlumni: null,
+        alumniDescription: null,
+        campaignName: null
     });
     const [search, setSearch] = useState({
         name: null,
         category: null,
-        status: null
+        status: null,
+        hasAlumni: null,
+        alumniDescription: null,
+        campaignName: null,
     });
 
     const mobile = useMobileSize();
@@ -102,12 +149,15 @@ const CompaniesHome = () => {
 
     useEffect(() => {
         const currentValue = {
-            name: searchParams.get("name"),
+            name: searchParams.get("name") && searchParams.get("name").replace(/[^a-z0-9\s]/gi, ''),
             category: searchParams.get("category"),
-            status: searchParams.get("status")
+            status: searchParams.get("status"),
+            hasAlumni: searchParams.get("hasAlumni") ? searchParams.get("hasAlumni") === "true" : "",
+            alumniDescription: searchParams.get("alumniDescription") && searchParams.get("alumniDescription").replace(/[^a-z0-9\s]/gi, ''),
+            campaignName: searchParams.get("campaignName") && searchParams.get("campaignName").replace(/[^a-z0-9\s]/gi, '')
         }
-        setTempSearch(currentValue)
-        setSearch(currentValue);
+        setTempSearch(removeNullFields(currentValue))
+        setSearch(removeNullFields(currentValue));
     }, [searchParams]);
 
     const renderFilters = () => {
@@ -127,7 +177,7 @@ const CompaniesHome = () => {
                 <Input value={tempSearch.name || ""}
                        onChange={(e) => setTempSearch({
                            ...tempSearch,
-                           name: e.target.value
+                           name: e.target.value.replace(/[^a-z0-9\s]/gi, '')
                        })}
                        size="sm" placeholder="Szukaj"
                        startDecorator={<SearchIcon/>}/>

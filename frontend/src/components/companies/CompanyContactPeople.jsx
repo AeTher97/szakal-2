@@ -38,11 +38,12 @@ const CompanyContactPeople = ({
                                     <div style={{flex: 0.6}}>
                                         <Typography>{person.name}</Typography>
                                         <Typography level={"body-sm"}>{person.position}</Typography>
+                                        <Typography level={"body-sm"}>Alumn: {person.alumni ? "Tak" : "Nie"}</Typography>
                                     </div>
                                     <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                                         <Typography>{person.phone}</Typography>
                                         <Typography>{person.email}</Typography>
-                                        <Typography bre>{person.comment}</Typography>
+                                        <Typography>{person.comment}</Typography>
                                     </div>
                                     <div>
                                         <Link onClick={() => {

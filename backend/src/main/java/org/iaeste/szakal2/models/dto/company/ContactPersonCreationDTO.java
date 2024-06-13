@@ -23,4 +23,5 @@ public class ContactPersonCreationDTO {
     private String phone2;
     @NotNull
     private String comment;
+    private boolean isAlumni;
 }

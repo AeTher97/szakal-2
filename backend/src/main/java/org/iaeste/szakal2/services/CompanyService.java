@@ -139,6 +139,7 @@ public class CompanyService {
                 .email(contactPersonCreationDTO.getEmail())
                 .phone(contactPersonCreationDTO.getPhone())
                 .comment(contactPersonCreationDTO.getComment())
+                .isAlumni(contactPersonCreationDTO.isAlumni())
                 .build();
     }
 

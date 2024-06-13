@@ -14,7 +14,10 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) 
             {name: "pageNumber", value: currentPage},
             {name: "name", value: search.name},
             {name: "category", value: search.category},
-            {name: "status", value: search.status}])
+            {name: "status", value: search.status},
+            {name: "hasAlumni", value: search.hasAlumni},
+            {name: "alumniDescription", value: search.alumniDescription},
+            {name: "campaignName", value: search.campaignName}])
 
     const {post} = usePost(`/companies`,
         (data) => setCompanies(current => {
@@ -74,15 +77,15 @@ export const useCompany = (id) => {
         })
     }
 
-    const addContactPerson = (name, position, phone, email, comment) => {
+    const addContactPerson = (name, position, alumni, phone, email, comment) => {
         return putContactPerson({
-            name, position, phone, email, comment
+            name, position, alumni, phone, email, comment
         })
     }
 
-    const modifyContactPerson = (contactPersonId, name, position, phone, email, comment) => {
+    const modifyContactPerson = (contactPersonId, name, position, alumni, phone, email, comment) => {
         return putContactPerson({
-            name, position, phone, email, comment
+            name, position, alumni, phone, email, comment
         }, `/companies/${id}/contactPerson/${contactPersonId}`)
     }
 

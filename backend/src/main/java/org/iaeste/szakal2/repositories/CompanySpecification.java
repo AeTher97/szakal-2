@@ -6,6 +6,7 @@ import org.iaeste.szakal2.models.dto.company.CompanySearch;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.models.entities.ContactJourney;
+import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -57,6 +58,29 @@ public class CompanySpecification implements Specification<Company> {
                 predicateList.add(criteriaBuilder.equal(root.join("contactJourneys").get("campaign").get("id"),
                         criteria.getCampaign()));
             }
+        }
+
+        if(criteria.isHasAlumni()){
+            Join<Company, ContactPerson> join = root.join("contactPeople", JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
+            predicateList.add(criteriaBuilder.isTrue(join.get("isAlumni")));
+        }
+
+        if(criteria.getAlumniDescription() != null){
+            ListJoin<Company, ContactPerson> join = root.joinList("contactPeople", JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
+            predicateList.add(criteriaBuilder.and(criteriaBuilder.like(criteriaBuilder.lower(join.get("comment")),
+                    wrapWithPercent(criteria.getAlumniDescription().toLowerCase())),
+                    criteriaBuilder.isTrue(join.get("isAlumni"))
+            ));
+        }
+
+        if(criteria.getCampaignName() != null){
+            ListJoin<Company, ContactJourney> join = root.joinList("contactJourneys", JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(join.get("campaign").get("name")),
+                            wrapWithPercent(criteria.getCampaignName().toLowerCase()))
+            );
         }
 
         return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));

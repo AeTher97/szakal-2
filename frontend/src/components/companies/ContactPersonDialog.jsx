@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
+import {Checkbox, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {TextareaAutosize} from "@mui/material";
 
@@ -12,6 +12,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [comment, setComment] = useState("");
+    const [isAlumni, setIsAlumni] = useState(false);
 
     useEffect(() => {
         if (contactPerson) {
@@ -20,6 +21,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
             setPhone(contactPerson.phone);
             setEmail(contactPerson.email);
             setComment(contactPerson.comment);
+            setIsAlumni(contactPerson.alumni)
         }
     }, [contactPerson]);
 
@@ -29,6 +31,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
         setPhone("")
         setEmail("")
         setComment("")
+        setIsAlumni(false)
     }
 
 
@@ -42,6 +45,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                         modifyContactPerson(contactPerson.id,
                             name,
                             position,
+                            isAlumni,
                             phone,
                             email,
                             comment)
@@ -52,6 +56,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                     } else {
                         addContactPerson(name,
                             position,
+                            isAlumni,
                             phone,
                             email,
                             comment
@@ -77,6 +82,14 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                                 onChange={(e) => {
                                     setPosition(e.target.value)
                                 }} placeholder={"CEO"}/>
+                        </FormControl>
+                        <FormControl style={{display: "flex", flexDirection: "row", gap: 10}}>
+                            <FormLabel>Alumn:</FormLabel>
+                            <Checkbox
+                                checked={isAlumni}
+                                onChange={(e) => {
+                                    setIsAlumni(e.target.checked)
+                                }} />
                         </FormControl>
                         <FormControl>
                             <FormLabel>Telefon</FormLabel>

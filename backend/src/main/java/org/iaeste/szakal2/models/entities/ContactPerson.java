@@ -38,6 +38,8 @@ public class ContactPerson {
     private String phone;
     @Setter
     private String comment;
+    @Setter
+    private boolean isAlumni;
 
     public UUID company() {
         return company.getId();

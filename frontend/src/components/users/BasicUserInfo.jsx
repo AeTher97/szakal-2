@@ -15,6 +15,7 @@ import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
 
@@ -25,6 +26,7 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
     const [email, setEmail] = useState("");
     const [profilePictureDialogOpen, setProfilePictureDialogOpen] = useState(false);
     const {userId} = useSelector(state => state.auth);
+
     const isUser = userId === user.id;
 
     useEffect(() => {
@@ -55,7 +57,7 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                                 src={user.profilePicture ? `data:image;base64,${user.profilePicture}` : ""}>
                             {user.name[0]} {user.surname[0]}
                         </Avatar>
-                        <Button size={"sm"} onClick={() => setProfilePictureDialogOpen(true)}>Zmień</Button>
+                        {isUser && <Button size={"sm"} onClick={() => setProfilePictureDialogOpen(true)}>Zmień</Button>}
                     </div>
 
                     <div>
