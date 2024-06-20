@@ -9,7 +9,7 @@ a good idea to include Hibernate in the Google searches.
 
 ## Table structure
 Table structure employed in the application can be reviewed on the following diagram:
-![database structure](/images/database-structure.png)
+![database structure](/backend/docs/images/database-structure.png)
 
 All the properties and relations here are modelled using **Hibernate** ORM and defined in **models.entities** package.
 Hibernate allows to model fields and relations using Java annotations making it easy to define the structure and having 
