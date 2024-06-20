@@ -21,7 +21,7 @@ public class IcsUtils {
                 METHOD:REQUEST
                 BEGIN:VEVENT
                 UID:\{ UUID.randomUUID().toString().toUpperCase() }
-                DTSTAMP:20151219T021727Z
+                DTSTAMP:\{ formatDate(LocalDateTime.now()) }
                 DTSTART;TZID=Europe/Warsaw:\{ formatDate(contactDate) }
                 DTEND;TZID=Europe/Warsaw:\{ formatDate(contactDate.plusMinutes(15)) }
                 SEQUENCE:0
