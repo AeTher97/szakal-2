@@ -69,6 +69,7 @@ public class CompanyController {
                                                 @RequestParam(required = false) String status,
                                                 @RequestParam(required = false) boolean hasAlumni,
                                                 @RequestParam(required = false) String alumniDescription,
+                                                @RequestParam(required = false) String committee,
                                                 @RequestParam(required = false) String campaignName,
                                                 @RequestParam(required = false) UUID campaignForStatus
     ) {
@@ -80,6 +81,7 @@ public class CompanyController {
                                 .hasAlumni(hasAlumni)
                                 .alumniDescription(alumniDescription)
                                 .campaignName(campaignName)
+                                .committee(committee)
                                 .name(name).build(),
                         Pageable.ofSize(pageSize).withPage(pageNumber))
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));

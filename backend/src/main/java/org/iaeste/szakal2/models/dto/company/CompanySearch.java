@@ -21,4 +21,5 @@ public class CompanySearch {
     private boolean hasAlumni;
     private String alumniDescription;
     private String campaignName;
+    private String committee;
 }

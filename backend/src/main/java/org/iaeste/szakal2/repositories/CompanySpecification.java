@@ -76,6 +76,15 @@ public class CompanySpecification implements Specification<Company> {
             ));
         }
 
+        if(criteria.getCommittee() != null){
+            ListJoin<Company, ContactPerson> join = root.joinList("contactPeople", JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
+            predicateList.add(criteriaBuilder.and(criteriaBuilder.like(criteriaBuilder.lower(join.get("committee")),
+                            wrapWithPercent(criteria.getCommittee().toLowerCase())),
+                    criteriaBuilder.isTrue(join.get("isAlumni"))
+            ));
+        }
+
         if(criteria.getCampaignName() != null){
             ListJoin<Company, ContactJourney> join = root.joinList("contactJourneys", JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));

@@ -17,6 +17,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) 
             {name: "status", value: search.status},
             {name: "hasAlumni", value: search.hasAlumni},
             {name: "alumniDescription", value: search.alumniDescription},
+            {name: "committee", value: search.committee},
             {name: "campaignName", value: search.campaignName}])
 
     const {post} = usePost(`/companies`,

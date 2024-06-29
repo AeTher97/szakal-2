@@ -108,6 +108,19 @@ const filters = (mobile, categories, search, setSearch) => {
                        }} placeholder={"Akcja"}
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Komitet
+                </FormLabel>
+                <Input value={search.committee} style={{minWidth: 80, maxWidth: 105}}
+                       onChange={(e) => {
+                           setSearch({
+                               ...search,
+                               committee: e.target.value.replace(/[^a-z0-9\s]/gi, '')
+                           })
+                       }} placeholder={"Komitet"}
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
         </>
     }
 }
@@ -123,6 +136,7 @@ const CompaniesHome = () => {
         status: null,
         hasAlumni: null,
         alumniDescription: null,
+        committee: null,
         campaignName: null
     });
     const [search, setSearch] = useState({
@@ -131,6 +145,7 @@ const CompaniesHome = () => {
         status: null,
         hasAlumni: null,
         alumniDescription: null,
+        committee: null,
         campaignName: null,
     });
 
@@ -160,6 +175,7 @@ const CompaniesHome = () => {
             status: searchParams.get("status"),
             hasAlumni: searchParams.get("hasAlumni") ? searchParams.get("hasAlumni") === "true" : "",
             alumniDescription: searchParams.get("alumniDescription") && searchParams.get("alumniDescription").replace(/[^a-z0-9\s]/gi, ''),
+            committee: searchParams.get("committee") && searchParams.get("committee").replace(/[^a-z0-9\s]/gi, ''),
             campaignName: searchParams.get("campaignName") && searchParams.get("campaignName").replace(/[^a-z0-9\s]/gi, '')
         }
         setTempSearch(removeNullFields(currentValue))
