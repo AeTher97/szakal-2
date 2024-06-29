@@ -4,6 +4,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import {Typography} from "@mui/joy";
 
 const Pagination = ({
                         currentPage = 0, numberOfPages = 0, setPage = () => {
@@ -38,7 +39,7 @@ const Pagination = ({
                         color={"neutral"}><KeyboardArrowLeft/>{concise ? "" : "Poprzednia"}</Button>
             </div>
             <div style={{display: "flex", gap: 5}}>
-                {low > 1 && <div>...</div>}
+                {low > 1 && <Typography>...</Typography>}
                 {pages.map(page => {
                     return <Button size={"sm"} variant={page === currentPage ? "soft" : "outlined"}
                                    onClick={() => {
@@ -46,7 +47,7 @@ const Pagination = ({
                                    }}
                                    key={page}>{page}</Button>
                 })}
-                {high < numberOfPages && <div>...</div>}
+                {high < numberOfPages && <Typography>...</Typography>}
             </div>
             <div style={{display: "flex", gap: 5}}>
                 <Button style={{visibility: currentPage === numberOfPages ? "hidden" : "visible"}} size={"sm"}
