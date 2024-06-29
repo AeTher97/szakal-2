@@ -31,6 +31,7 @@ public class CompanySpecification implements Specification<Company> {
     public Predicate toPredicate(Root<Company> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
         Path<String> name = root.get("name");
+        query.distinct(true);
 
         final List<Predicate> predicateList = new ArrayList<>();
 

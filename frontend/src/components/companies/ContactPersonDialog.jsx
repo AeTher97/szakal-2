@@ -13,6 +13,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
     const [email, setEmail] = useState("");
     const [comment, setComment] = useState("");
     const [isAlumni, setIsAlumni] = useState(false);
+    const [committee, setCommittee] = useState("");
 
     useEffect(() => {
         if (contactPerson) {
@@ -22,6 +23,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
             setEmail(contactPerson.email);
             setComment(contactPerson.comment);
             setIsAlumni(contactPerson.alumni)
+            setCommittee(contactPerson.committee)
         }
     }, [contactPerson]);
 
@@ -32,6 +34,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
         setEmail("")
         setComment("")
         setIsAlumni(false)
+        setCommittee("")
     }
 
 
@@ -48,7 +51,8 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                             isAlumni,
                             phone,
                             email,
-                            comment)
+                            comment,
+                            committee)
                             .then(() => {
                                 close();
                                 clear();
@@ -59,7 +63,8 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                             isAlumni,
                             phone,
                             email,
-                            comment
+                            comment,
+                            committee
                         ).then(() => {
                             close();
                             clear();
@@ -115,6 +120,14 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                                 onChange={(e) => {
                                     setComment(e.target.value)
                                 }} placeholder={"Człowiek z HRów"}/>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Komitet</FormLabel>
+                            <Textarea
+                                value={committee}
+                                onChange={(e) => {
+                                    setCommittee(e.target.value)
+                                }} placeholder={"AGH"}/>
                         </FormControl>
                         <Button type="submit">Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {

@@ -39,6 +39,7 @@ const CompanyContactPeople = ({
                                         <Typography>{person.name}</Typography>
                                         <Typography level={"body-sm"}>{person.position}</Typography>
                                         <Typography level={"body-sm"}>Alumn: {person.alumni ? "Tak" : "Nie"}</Typography>
+                                        {person.committee && <Typography level={"body-sm"}>Komitet: {person.committee}</Typography>}
                                     </div>
                                     <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                                         <Typography>{person.phone}</Typography>

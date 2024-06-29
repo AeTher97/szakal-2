@@ -3,7 +3,7 @@ import {useData, usePost, usePut} from "./UseData";
 
 export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) => {
     const [companies, setCompanies] = useState([])
-    const [pageNumber, setPageNumber] = useState([])
+    const [pageNumber, setPageNumber] = useState(0)
 
     const {loading} = useData("/companies",
         (data) => {
@@ -77,15 +77,15 @@ export const useCompany = (id) => {
         })
     }
 
-    const addContactPerson = (name, position, alumni, phone, email, comment) => {
+    const addContactPerson = (name, position, alumni, phone, email, comment, committee) => {
         return putContactPerson({
-            name, position, alumni, phone, email, comment
+            name, position, alumni, phone, email, comment, committee
         })
     }
 
-    const modifyContactPerson = (contactPersonId, name, position, alumni, phone, email, comment) => {
+    const modifyContactPerson = (contactPersonId, name, position, alumni, phone, email, comment, committee) => {
         return putContactPerson({
-            name, position, alumni, phone, email, comment
+            name, position, alumni, phone, email, comment, committee
         }, `/companies/${id}/contactPerson/${contactPersonId}`)
     }
 

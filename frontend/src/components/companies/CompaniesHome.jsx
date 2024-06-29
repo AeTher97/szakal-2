@@ -86,13 +86,13 @@ const filters = (mobile, categories, search, setSearch) => {
                 <FormLabel>
                     Opis alumna
                 </FormLabel>
-                <Input value={search.alumniDescription} style={{minWidth: 80, maxWidth:105}}
-                        onChange={(e) => {
-                            setSearch({
-                                ...search,
-                                alumniDescription: e.target.value.replace(/[^a-z0-9\s]/gi, '')
-                            })
-                        }} placeholder={"Szukaj"}
+                <Input value={search.alumniDescription} style={{minWidth: 80, maxWidth: 105}}
+                       onChange={(e) => {
+                           setSearch({
+                               ...search,
+                               alumniDescription: e.target.value.replace(/[^a-z0-9\s]/gi, '')
+                           })
+                       }} placeholder={"Szukaj"}
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
@@ -145,6 +145,12 @@ const CompaniesHome = () => {
     );
 
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
+
+    useEffect(() => {
+        if (pageNumber < currentPage && pageNumber !== 0) {
+            setCurrentPage(pageNumber);
+        }
+    }, [pageNumber]);
 
 
     useEffect(() => {

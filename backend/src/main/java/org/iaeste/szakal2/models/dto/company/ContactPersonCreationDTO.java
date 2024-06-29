@@ -24,4 +24,5 @@ public class ContactPersonCreationDTO {
     @NotNull
     private String comment;
     private boolean isAlumni;
+    private String committee;
 }

@@ -140,6 +140,7 @@ public class CompanyService {
                 .phone(contactPersonCreationDTO.getPhone())
                 .comment(contactPersonCreationDTO.getComment())
                 .isAlumni(contactPersonCreationDTO.isAlumni())
+                .committee(contactPersonCreationDTO.getCommittee())
                 .build();
     }
 

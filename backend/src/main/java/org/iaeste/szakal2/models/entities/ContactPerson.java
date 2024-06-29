@@ -40,9 +40,7 @@ public class ContactPerson {
     private String comment;
     @Setter
     private boolean isAlumni;
-
-    public UUID company() {
-        return company.getId();
-    }
+    @Setter
+    private String committee;
 
 }
