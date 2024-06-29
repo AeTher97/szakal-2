@@ -97,6 +97,19 @@ const filters = (mobile, categories, search, setSearch) => {
             </FormControl>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
                 <FormLabel>
+                    Komitet alumna
+                </FormLabel>
+                <Input value={search.committee} style={{minWidth: 80, maxWidth: 105}}
+                       onChange={(e) => {
+                           setSearch({
+                               ...search,
+                               committee: e.target.value.replace(/[^a-z0-9\s]/gi, '')
+                           })
+                       }} placeholder={"Komitet"}
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
                     Akcja
                 </FormLabel>
                 <Input value={search.campaignName} style={{minWidth: 80, maxWidth: 105}}
@@ -106,19 +119,6 @@ const filters = (mobile, categories, search, setSearch) => {
                                campaignName: e.target.value.replace(/[^a-z0-9\s]/gi, '')
                            })
                        }} placeholder={"Akcja"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Komitet
-                </FormLabel>
-                <Input value={search.committee} style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           setSearch({
-                               ...search,
-                               committee: e.target.value.replace(/[^a-z0-9\s]/gi, '')
-                           })
-                       }} placeholder={"Komitet"}
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
         </>
