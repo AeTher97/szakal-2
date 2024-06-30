@@ -240,7 +240,6 @@ const CompaniesHome = () => {
                         </div>
                     </TabHeader>
 
-                    {loading && <LinearProgress/>}
 
                     {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
                         borderRadius: 'sm', marginBottom: 1
@@ -252,6 +251,8 @@ const CompaniesHome = () => {
                             </AccordionDetails>
                         </Accordion>
                     </AccordionGroup> : renderFilters()}
+
+                    {loading && <LinearProgress/>}
 
                     <CompaniesTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}

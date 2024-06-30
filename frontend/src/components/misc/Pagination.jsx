@@ -12,7 +12,6 @@ const Pagination = ({
                         concise = false, margin= "10"
                     }) => {
 
-    console.log(margin)
     if (concise) {
         showPages *= 0.6;
     }

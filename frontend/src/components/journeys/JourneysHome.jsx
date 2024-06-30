@@ -117,7 +117,6 @@ const JourneysHome = () => {
                     <TabHeader>
                         <Typography level="h2">Kontakty w obecnej akcji</Typography>
                     </TabHeader>
-                    {loading && <LinearProgress/>}
 
                     {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
                         borderRadius: 'sm', marginBottom: 1
@@ -129,6 +128,8 @@ const JourneysHome = () => {
                             </AccordionDetails>
                         </Accordion>
                     </AccordionGroup> : renderFilters()}
+
+                    {loading && <LinearProgress/>}
 
 
                     <JourneysTable journeys={journeys}/>
