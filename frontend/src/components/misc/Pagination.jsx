@@ -7,12 +7,12 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {Typography} from "@mui/joy";
 
 const Pagination = ({
-                        currentPage = 0, numberOfPages = 0, setPage = () => {
-    },
+                        currentPage = 0, numberOfPages = 0, setPage = () => {},
                         firstAndLast = false, showPages = 5,
-                        concise = false
+                        concise = false, margin= "10"
                     }) => {
 
+    console.log(margin)
     if (concise) {
         showPages *= 0.6;
     }
@@ -33,7 +33,7 @@ const Pagination = ({
 
 
     return (
-        <div style={{display: "flex", justifyContent: "space-between", marginTop: 10, flexWrap: "wrap"}}>
+        <div style={{display: "flex", justifyContent: "space-between", margin, flexWrap: "wrap"}}>
             <div style={{display: "flex", gap: 5}}>
                 {firstAndLast && currentPage !== 1 && <Button
                     size={"sm"} variant={"outlined"} onClick={() => setPage(1)}

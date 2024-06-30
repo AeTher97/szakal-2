@@ -42,6 +42,7 @@ const CampaignsHome = () => {
                     <CampaignsTable campaigns={campaigns} editCampaign={editCampaign}/>
                     {pageNumber > 1 && <Pagination firstAndLast={!mobile} concise={mobile} numberOfPages={pageNumber}
                                                    currentPage={currentPage}
+                                                   margin={"10px 0 10px 0"}
                                                    setPage={(page) => setCurrentPage(page)}/>}
                     <AddCampaignDialog open={campaignDialogOpen} addCampaign={addCampaign} modifyCampaign={modifyCampaign}
                                        editedCampaign={editedCampaign}

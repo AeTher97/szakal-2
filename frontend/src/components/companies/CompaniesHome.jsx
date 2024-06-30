@@ -256,6 +256,7 @@ const CompaniesHome = () => {
                     <CompaniesTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
                                                    firstAndLast={!mobile} concise={mobile}
+                                                   margin={"10px 0 10px 0"}
                                                    setPage={pageNumber => setCurrentPage(pageNumber)}/>}
 
                     <AddCompanyDialog

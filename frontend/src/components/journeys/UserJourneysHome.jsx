@@ -27,7 +27,9 @@ const UserJourneysHome = () => {
                     <JourneysTable journeys={journeys}/>
                     {pagesNumber > 1 &&
                         <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
-                                    concise={mobile} setPage={(page) => setCurrentPage(page)}/>}
+                                    concise={mobile} setPage={(page) => setCurrentPage(page)}
+                                    margin={"10px 0 10px 0"}
+                        />}
                 </div>}/>
             <Route path={"/:id"} element={<JourneyDetails/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>

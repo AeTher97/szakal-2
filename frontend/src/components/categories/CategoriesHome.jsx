@@ -41,6 +41,7 @@ const CategoriesHome = () => {
                                     close={() => setAddCategoryOpen(false)}/>
                     {pageNumber > 1 && <Pagination firstAndLast={!mobile} concise={mobile} numberOfPages={pageNumber}
                                                    currentPage={currentPage}
+                                                   margin={"10px 0 10px 0"}
                                                    setPage={(page) => setCurrentPage(page)}/>}
                 </div>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
