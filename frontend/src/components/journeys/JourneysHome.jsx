@@ -61,7 +61,7 @@ const JourneysHome = () => {
             e.preventDefault();
             setSearchParams(removeNullFields(tempSearch));
         }} style={{
-            marginBottom: 10,
+            marginBottom: 5,
             marginTop: 10,
             display: "flex",
             flexWrap: "wrap",
@@ -129,7 +129,7 @@ const JourneysHome = () => {
                         </Accordion>
                     </AccordionGroup> : renderFilters()}
 
-                    {loading && <LinearProgress/>}
+                    <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
 
                     <JourneysTable journeys={journeys}/>

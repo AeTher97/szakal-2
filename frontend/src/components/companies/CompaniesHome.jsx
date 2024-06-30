@@ -203,7 +203,7 @@ const CompaniesHome = () => {
             e.preventDefault();
             setSearchParams(removeNullFields(tempSearch));
         }} style={{
-            marginBottom: 10,
+            marginBottom: 5,
             marginTop: 10,
             display: "flex",
             flexWrap: "wrap",
@@ -252,7 +252,7 @@ const CompaniesHome = () => {
                         </Accordion>
                     </AccordionGroup> : renderFilters()}
 
-                    {loading && <LinearProgress/>}
+                    <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
                     <CompaniesTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
