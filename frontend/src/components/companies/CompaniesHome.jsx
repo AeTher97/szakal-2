@@ -137,7 +137,8 @@ const CompaniesHome = () => {
         hasAlumni: null,
         alumniDescription: null,
         committee: null,
-        campaignName: null
+        campaignName: null,
+        sort: null
     });
     const [search, setSearch] = useState({
         name: null,
@@ -147,6 +148,7 @@ const CompaniesHome = () => {
         alumniDescription: null,
         committee: null,
         campaignName: null,
+        sort: null
     });
 
     const mobile = useMobileSize();
@@ -158,7 +160,6 @@ const CompaniesHome = () => {
         currentCampaign, currentPage - 1,
         search
     );
-
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
 
     useEffect(() => {
@@ -176,11 +177,26 @@ const CompaniesHome = () => {
             hasAlumni: searchParams.get("hasAlumni") ? searchParams.get("hasAlumni") === "true" : "",
             alumniDescription: searchParams.get("alumniDescription") && searchParams.get("alumniDescription").replace(/[^a-z0-9\s]/gi, ''),
             committee: searchParams.get("committee") && searchParams.get("committee").replace(/[^a-z0-9\s]/gi, ''),
-            campaignName: searchParams.get("campaignName") && searchParams.get("campaignName").replace(/[^a-z0-9\s]/gi, '')
+            campaignName: searchParams.get("campaignName") && searchParams.get("campaignName").replace(/[^a-z0-9\s]/gi, ''),
+            sort: searchParams.get("sort") && searchParams.get("sort").replace(/[^a-z0-9,\s]/gi, '')
         }
         setTempSearch(removeNullFields(currentValue))
         setSearch(removeNullFields(currentValue));
     }, [searchParams]);
+
+    const setSort = (colum, direction) => {
+        setSearchParams({
+            ...tempSearch,
+            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
+        })
+    }
+
+    const clearSort = () => {
+        setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: null
+        }))
+    }
 
     const renderFilters = () => {
         return <form onSubmit={e => {
@@ -237,7 +253,7 @@ const CompaniesHome = () => {
                         </Accordion>
                     </AccordionGroup> : renderFilters()}
 
-                    <CompaniesTable companies={companies}/>
+                    <CompaniesTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
                                                    firstAndLast={!mobile} concise={mobile}
                                                    setPage={pageNumber => setCurrentPage(pageNumber)}/>}

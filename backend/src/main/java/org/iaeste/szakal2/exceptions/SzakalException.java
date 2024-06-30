@@ -2,9 +2,9 @@ package org.iaeste.szakal2.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public abstract class SzakalException extends RuntimeException {
+public class SzakalException extends RuntimeException {
 
-    SzakalException(String message) {
+    public SzakalException(String message) {
         super(message);
     }
 
@@ -12,5 +12,7 @@ public abstract class SzakalException extends RuntimeException {
         super(message, t);
     }
 
-    public abstract HttpStatus getStatusCode();
+    public HttpStatus getStatusCode() {
+        return HttpStatus.BAD_REQUEST;
+    }
 }

@@ -2,12 +2,15 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.models.dto.SzakalSort;
 import org.iaeste.szakal2.models.dto.company.*;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.iaeste.szakal2.services.CompanyService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,8 +74,19 @@ public class CompanyController {
                                                 @RequestParam(required = false) String alumniDescription,
                                                 @RequestParam(required = false) String committee,
                                                 @RequestParam(required = false) String campaignName,
-                                                @RequestParam(required = false) UUID campaignForStatus
-    ) {
+                                                @RequestParam(required = false) String sort) {
+        Pageable pageable;
+        if(sort == null) {
+            pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
+        } else {
+            SzakalSort szakalSort = SzakalSort.fromString(sort);
+            Sort springSort = Sort.by(szakalSort.getColumnName());
+            if(szakalSort.getSortDirection().equals(SzakalSort.SortDirection.ASC)){
+                pageable = PageRequest.of(pageNumber, pageSize,springSort.ascending());
+            } else {
+                pageable = PageRequest.of(pageNumber, pageSize,springSort.descending());
+            }
+        }
         return companyService.getCompanies(CompanySearch.builder()
                                 .category(category)
                                 .contactStatus(contactStatus)
@@ -82,8 +96,8 @@ public class CompanyController {
                                 .alumniDescription(alumniDescription)
                                 .campaignName(campaignName)
                                 .committee(committee)
-                                .name(name).build(),
-                        Pageable.ofSize(pageSize).withPage(pageNumber))
+                                .name(name).build(), pageable)
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));
     }
+
 }

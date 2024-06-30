@@ -1,14 +1,22 @@
 import React from 'react';
-import {Sheet, Table, Typography} from "@mui/joy";
+import {IconButton, Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {formatLocalDateTime} from "../../utils/DateUtils";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import ClearIcon from '@mui/icons-material/Clear';
+
+import Button from "@mui/joy/Button";
 
 
-const CompaniesTable = ({companies}) => {
+const CompaniesTable = ({companies, search, setSort, clearSort}) => {
 
     const mobile = useMobileSize();
+
+    const sorted = search && search.sort;
+    const directionAscending = sorted && search.sort.includes("ASC");
 
 
     return (
@@ -32,8 +40,13 @@ const CompaniesTable = ({companies}) => {
                 }}>
                 <thead>
                 <tr>
-                    <th style={{padding: "12px 6px"}}>
-                        <Typography>Firma</Typography>
+                    <th style={{padding: "8px 6px"}}>
+                        <div style={{display: "flex"}}>
+                        <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}} onClick={() => setSort("name", directionAscending ? "DESC" : "ASC")}>
+                            Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
+                            {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sorted && <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
                     </th>
                     <th style={{padding: "12px 6px"}}>
                         <Typography>Obecna akcja</Typography>
