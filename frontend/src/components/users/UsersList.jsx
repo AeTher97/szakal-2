@@ -70,6 +70,7 @@ const UsersList = () => {
                         </div>
                     })}
                     {pageNumber > 1 && <Pagination currentPage={currentPage} concise={mobile} numberOfPages={pageNumber}
+                                                   margin={"10px"}
                                                    setPage={(page) => setCurrentPage(page)} />}
 
                 </List>
