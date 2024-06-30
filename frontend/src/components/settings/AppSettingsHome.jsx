@@ -38,7 +38,7 @@ const AppSettingsHome = () => {
                     label: campaign.name
                 });
         }
-    }, [settings])
+    }, [settings, campaigns])
 
     const getOptionDisabled = (option) => {
         return option.disabled
@@ -47,8 +47,6 @@ const AppSettingsHome = () => {
     const isOptionEqualToValue = (option) => {
         return campaignValue.id === option.id
     }
-
-    const {hasRight} = useAccessRightsHelper()
 
     return (
         <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 30}}>

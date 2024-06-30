@@ -40,7 +40,7 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
 
     return (
         <Modal open={open}>
-            <ModalDialog>
+            <ModalDialog sx={{overflow: 'auto'}}>
                 <DialogTitle>{contactPerson ? "Edytuj osobę kontaktową" : "Dodaj osobę kontaktową"}</DialogTitle>
                 <form onSubmit={(event, value) => {
                     event.preventDefault();

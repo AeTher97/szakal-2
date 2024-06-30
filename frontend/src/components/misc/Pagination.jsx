@@ -13,6 +13,10 @@ const Pagination = ({
                         concise = false
                     }) => {
 
+    if (concise) {
+        showPages *= 0.6;
+    }
+
     let low = currentPage - Math.floor(showPages / 2);
     if (low < 1) {
         low = 1;
@@ -29,12 +33,12 @@ const Pagination = ({
 
 
     return (
-        <div style={{display: "flex", justifyContent: "space-between", margin: 10, flexWrap: "wrap"}}>
+        <div style={{display: "flex", justifyContent: "space-between", marginTop: 10, flexWrap: "wrap"}}>
             <div style={{display: "flex", gap: 5}}>
-                <Button style={{visibility: firstAndLast && currentPage !== 1 ? "visible" : "hidden"}}
-                        size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
-                        color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>
-                <Button size={"sm"} variant={"outlined"} onClick={() => setPage(numberOfPages - 1)}
+                {firstAndLast && currentPage !== 1 && <Button
+                    size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
+                    color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>}
+                <Button size={"sm"} variant={"outlined"} onClick={() => setPage(currentPage - 1)}
                         style={{visibility: currentPage !== 1 ? "visible" : "hidden"}}
                         color={"neutral"}><KeyboardArrowLeft/>{concise ? "" : "Poprzednia"}</Button>
             </div>
@@ -50,21 +54,23 @@ const Pagination = ({
                 {high < numberOfPages && <Typography>...</Typography>}
             </div>
             <div style={{display: "flex", gap: 5}}>
-                <Button style={{visibility: currentPage === numberOfPages ? "hidden" : "visible"}} size={"sm"}
-                        variant={"outlined"} onClick={() => {
+                <Button
+                    style={{visibility: currentPage === numberOfPages ? "hidden" : "visible"}} size={"sm"}
+                    variant={"outlined"} onClick={() => {
                     setPage(currentPage + 1)
                 }}
-                        color={"neutral"}><KeyboardArrowRight/>{concise ? "" : "Następna"}</Button>
-                <Button
-                    style={{visibility: !firstAndLast || currentPage === numberOfPages ? "hidden" : "visible"}}
+                    color={"neutral"}><KeyboardArrowRight/>{concise ? "" : "Następna"}</Button>
+                {firstAndLast && currentPage !== numberOfPages && <Button
                     size={"sm"} variant={"outlined"} onClick={() => {
                     setPage(numberOfPages)
                 }}
                     color={"neutral"}>{concise ? "" : "Ostatnia"}<LastPageIcon/>
                 </Button>
+                }
             </div>
         </div>
-    );
+    )
+        ;
 };
 
 export default Pagination;

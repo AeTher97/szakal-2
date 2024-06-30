@@ -13,6 +13,7 @@ import Button from "@mui/joy/Button";
 import PasswordChangeDialog from "./PasswordChangeDialog";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRights";
+import {useMobileSize} from "../../utils/SizeQuery";
 
 const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -20,6 +21,7 @@ const UserDetails = ({userId}) => {
 
     const location = useLocation();
     const dispatch = useDispatch();
+    const mobile = useMobileSize();
     const {hasRight} = useAccessRightsHelper();
     const idFromPath = location.pathname.split("/")[3];
     const validIdFromPath = uuidCheck.test(idFromPath);
@@ -54,7 +56,7 @@ const UserDetails = ({userId}) => {
                         <Typography level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
                     </div>
                     <div>
-                        {isCurrentUser && <Button onClick={() => {
+                        {isCurrentUser && <Button size={mobile ? "sm" : "md"} onClick={() => {
                             setChangePasswordOpen(true)
                         }}>Zmień hasło</Button>}
                     </div>
