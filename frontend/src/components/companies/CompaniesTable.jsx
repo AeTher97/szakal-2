@@ -18,7 +18,6 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
 
     const sorted = search && search.sort;
     const directionAscending = sorted && search.sort.includes("ASC");
-    const urlParams = window.location.search;
 
     return (
         <Sheet sx={{
@@ -65,7 +64,7 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
                     <tr key={company.id}>
                         <td>
                             <div style={{display: "flex", flexDirection: "column"}}>
-                                <LinkWithRouter to={`${company.id}/${window.location.search}`}>{company.name}</LinkWithRouter>
+                                <LinkWithRouter to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
                                 <Typography>{company.www}</Typography>
                                 <Typography>{company.email}</Typography>
                             </div>
