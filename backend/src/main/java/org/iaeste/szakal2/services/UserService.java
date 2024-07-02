@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
+import org.iaeste.szakal2.exceptions.SzakalException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.exceptions.UsernameTakenException;
 import org.iaeste.szakal2.models.dto.user.*;
@@ -198,5 +199,14 @@ public class UserService {
         User user = getUserById(pictureUploadDTO.getId());
         user.setProfilePicture(pictureUploadDTO.getFile().getBytes());
         return UserDTO.fromUser(usersRepository.save(user));
+    }
+
+    public void deleteUserIfNotAccepted(UUID id) {
+        User user = getUserById(id);
+        if(user.isAccepted()){
+            throw new SzakalException("Cannot delete already accepted user");
+        } else {
+            usersRepository.delete(user);
+        }
     }
 }

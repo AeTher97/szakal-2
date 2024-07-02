@@ -1,4 +1,4 @@
-import {useData, usePost, usePut} from "./UseData";
+import {useData, useDelete, usePost, usePut} from "./UseData";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
@@ -42,6 +42,8 @@ export const useUserData = (id) => {
         put: putUserDetails,
         loading: updateUserDetailsLoading
     } = usePut(`/users/${id}`, (content) => setUser(content))
+    const {deleteReq} = useDelete(`/users/${id}`, () => setUser(null))
+
     const updateUserRoles = (ids) => {
         putRoles({
             roles: ids
@@ -59,6 +61,10 @@ export const useUserData = (id) => {
 
     const acceptUser = () => {
         return putAccepted();
+    }
+
+    const deleteNotAcceptedUser = () => {
+        return deleteReq();
     }
 
     const changeUserStatus = (status) => {
@@ -84,7 +90,8 @@ export const useUserData = (id) => {
         changeUserStatusLoading,
         updateUserDetails,
         updateUserDetailsLoading,
-        updateProfilePicture
+        updateProfilePicture,
+        deleteNotAcceptedUser
     }
 }
 

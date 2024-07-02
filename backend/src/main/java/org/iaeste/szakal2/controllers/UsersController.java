@@ -13,13 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping("/api/users")
@@ -122,5 +119,14 @@ public class UsersController {
         }
         return ResponseEntity.ok().build();
     }
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user_acceptance')")
+    public ResponseEntity<Object> deleteUserIfNotAccepted(@PathVariable("id") UUID id) {
+        userService.deleteUserIfNotAccepted(id);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

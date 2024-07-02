@@ -25,11 +25,13 @@ const UserDetails = ({userId}) => {
     const {hasRight} = useAccessRightsHelper();
     const idFromPath = location.pathname.split("/")[3];
     const validIdFromPath = uuidCheck.test(idFromPath);
+
     const {
         user, loading, updateUserRoles, updateRolesLoading, acceptUser, acceptUserLoading,
         changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading,
-        updateProfilePicture
+        updateProfilePicture, deleteNotAcceptedUser
     } = useUserData(validIdFromPath ? idFromPath : userId);
+
     const isCurrentUser = useIsUser(user ? user.id : "")
     const [localUser, setLocalUser] = useState(null);
     const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -82,7 +84,8 @@ const UserDetails = ({userId}) => {
                                                                                                  changeUserState={changeUserStatus}
                                                                                                  changeUserStatusLoading={changeUserStatusLoading}
                                                                                                  acceptUserLoading={acceptUserLoading}
-                                                                                                 setLocalUser={setLocalUser}/>}
+                                                                                                 setLocalUser={setLocalUser}
+                                                                                                 deleteNotAcceptedUser={deleteNotAcceptedUser}/>}
                     <PasswordChangeDialog open={changePasswordOpen} close={() => setChangePasswordOpen(false)}
                                           userId={user.id}/>
                 </div>

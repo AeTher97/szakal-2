@@ -4,12 +4,15 @@ import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRights";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {useNavigate} from "react-router-dom";
 
 const UserManagement = ({
                             user,
                             localUser,
                             setLocalUser,
                             acceptUser,
+                            deleteNotAcceptedUser,
                             changeUserState,
                             acceptUserLoading,
                             changeUserStatusLoading
@@ -17,6 +20,10 @@ const UserManagement = ({
 
     const {hasRight} = useAccessRightsHelper();
     const mobile = useMobileSize();
+    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz usunąć tego użytkownika?")
+    const navigate = useNavigate();
+
+
     return (
         <Card sx={{flexGrow: mobile ? 1 : 0, minWidth: 200}}>
             <CardContent>
@@ -36,6 +43,15 @@ const UserManagement = ({
                                 }
                             })
                         }}/>
+            </CardContent>}
+            {hasRight(USER_ACCEPTANCE) && !user.accepted && <CardContent orientation={"horizontal"}>
+                <Button color={"neutral"} onClick={() => {
+                    openDialog(() => {
+                        deleteNotAcceptedUser().then(() =>{
+                            navigate("/secure/users");
+                        })
+                    })
+                }}>Usuń niezaakceptowanego użytkownika</Button>
             </CardContent>}
             {hasRight(USER_MANAGEMENT) && <CardContent orientation={"horizontal"}>
                 <Typography>Użytkownik aktywny</Typography>
@@ -64,6 +80,7 @@ const UserManagement = ({
                     }
                 }} loading={acceptUserLoading || changeUserStatusLoading}>Zapisz</Button>
             </CardActions>
+            {render()}
         </Card>
     );
 };
