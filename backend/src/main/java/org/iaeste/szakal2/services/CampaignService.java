@@ -57,8 +57,7 @@ public class CampaignService {
         return campaignRepository.findAllByOrderByNameDesc(pageable);
     }
 
-    public Page<ContactJourney> getJourneysForCampaign(UUID id, Pageable pageable, ContactJourneySearch contactJourneySearch) {
-        Campaign campaign = getCampaignById(id);
+    public Page<ContactJourney> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
         return getJourneysByCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
     }
 

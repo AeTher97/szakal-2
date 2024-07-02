@@ -33,8 +33,10 @@ public class ContactJourney {
     @JsonIgnoreProperties(value = {"updatedBy", "contactJourneys"})
     @Setter
     private Company company;
+    @Column(name = "campaign_id", nullable = false, insertable = false, updatable = false)
+    private UUID campaignId;
     @ManyToOne
-    @JoinColumn(name = "campaign_id", nullable = false)
+    @JoinColumn(name = "campaign_id")
     private Campaign campaign;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactJourney", orphanRemoval = true)

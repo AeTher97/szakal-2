@@ -54,7 +54,7 @@ public class CampaignController {
                                                            @RequestParam(required = false) String status,
                                                            @RequestParam(required = false) String user,
                                                            @RequestParam int pageNumber) {
-        return campaignService.getJourneysForCampaign(id, Pageable.ofSize(pageSize).withPage(pageNumber),
+        return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
                 ContactJourneySearch.builder()
                         .companyName(companyName)
                         .campaignId(id)

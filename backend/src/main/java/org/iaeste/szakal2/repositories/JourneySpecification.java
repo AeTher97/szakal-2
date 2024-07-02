@@ -34,7 +34,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
         final List<Predicate> predicateList = new ArrayList<>();
 
         if (criteria.getCampaignId() != null) {
-            predicateList.add(criteriaBuilder.equal(root.get("campaign").get("id"),
+            predicateList.add(criteriaBuilder.equal(root.get("campaignId"),
                     criteria.getCampaignId()));
         }
 
