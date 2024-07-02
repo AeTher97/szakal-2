@@ -9,6 +9,7 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ClearIcon from '@mui/icons-material/Clear';
 
 import Button from "@mui/joy/Button";
+import {useSearchParams} from "react-router-dom";
 
 
 const CompaniesTable = ({companies, search, setSort, clearSort}) => {
@@ -17,7 +18,7 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
 
     const sorted = search && search.sort;
     const directionAscending = sorted && search.sort.includes("ASC");
-
+    const urlParams = window.location.search;
 
     return (
         <Sheet sx={{
@@ -64,7 +65,7 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
                     <tr key={company.id}>
                         <td>
                             <div style={{display: "flex", flexDirection: "column"}}>
-                                <LinkWithRouter to={company.id}>{company.name}</LinkWithRouter>
+                                <LinkWithRouter to={`${company.id}/${window.location.search}`}>{company.name}</LinkWithRouter>
                                 <Typography>{company.www}</Typography>
                                 <Typography>{company.email}</Typography>
                             </div>
