@@ -5,9 +5,11 @@ export const useCampaignsList = (userId, currentPage = 0) => {
 
     const [campaigns, setCampaigns] = useState([])
     const [pageNumber, setPageNumber] = useState(null)
+    const [loaded, setLoaded] = useState(false);
     const {loading} = useData(`/campaigns`, (data) => {
             setCampaigns(data.content)
             setPageNumber(data.totalPages)
+            setLoaded(true);
         },
         [pageNumber], [{name: "pageNumber", value: currentPage}])
 
@@ -17,11 +19,10 @@ export const useCampaignsList = (userId, currentPage = 0) => {
 
     const {loading: loadingPut, put} = usePut(`/campaigns`, (data) =>
         setCampaigns(current => {
-        return [...current.filter(campaign => campaign.id !== data.id), data]
-    }))
+            return [...current.filter(campaign => campaign.id !== data.id), data]
+        }))
 
     const addCampaign = (name, startDate, description) => {
-        console.log(description)
         post({
             name,
             startDate,
@@ -37,7 +38,7 @@ export const useCampaignsList = (userId, currentPage = 0) => {
         }, `/campaigns/${id}`)
     }
 
-    return {campaigns, addLoading: loadingPost, addCampaign, modifyCampaign, pageNumber}
+    return {campaigns, addLoading: loadingPost, addCampaign, modifyCampaign, pageNumber, loading, loaded}
 }
 
 export const useCampaign = (id) => {
@@ -45,7 +46,7 @@ export const useCampaign = (id) => {
     const {loading} = useData(`/campaigns/${id}`, (data) => {
             setCampaign(data)
         },
-        [id],[],[id])
+        [id], [], [id])
 
     return {campaign, loading}
 }

@@ -4,9 +4,11 @@ import {useState} from "react";
 export const useApplicationSettings = () =>{
 
     const [settings, setSettings] = useState([])
+    const [loaded, setLoaded] = useState(false)
 
     const {loading} = useData(`/app-settings`, (data) => {
             setSettings(data)
+            setLoaded(true)
         },
         [])
 
@@ -25,5 +27,5 @@ export const useApplicationSettings = () =>{
         }, `/app-settings/${name}`)
     }
 
-    return {settings, getSetting, setSetting, saveLoading}
+    return {settings, getSetting, setSetting, saveLoading, loading, loaded}
 }

@@ -15,8 +15,8 @@ const TopBar = () => {
 
     const {name, surname, userId} = useSelector(state => state.auth);
     const {currentCampaign} = useSelector(state => state.campaigns);
-    const {campaigns, loading} = useCampaignsList();
-    const {getSetting} = useApplicationSettings();
+    const {campaigns, loading, loaded} = useCampaignsList();
+    const {getSetting, loaded: loadedSettings} = useApplicationSettings();
     const {user} = useUserData(userId)
     const [campaignValue, setCampaignValue]
         = useState({label: "Wybierz akcje", id: "choose"});
@@ -25,6 +25,9 @@ const TopBar = () => {
     const mobile = useMobileSize();
 
     useEffect(() => {
+        if(!loaded || !loadedSettings){
+            return;
+        }
         if (campaigns && campaigns.length > 0 && getSetting("default_campaign")) {
             const campaign = campaigns.find(campaign => campaign.id === getSetting("default_campaign"));
             if(!campaign){
@@ -34,7 +37,7 @@ const TopBar = () => {
         } else if(!getSetting("default_campaign")){
             dispatch(changeCampaignAction("none"))
         }
-    }, [campaigns]);
+    }, [campaigns, loaded, loadedSettings]);
 
     const campaignsOptions = campaigns.map((campaign) => {
         return {
