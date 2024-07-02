@@ -31,6 +31,8 @@ const TopBar = () => {
                 return;
             }
             dispatch(changeCampaignAction(campaign.id));
+        } else if(!getSetting("default_campaign")){
+            dispatch(changeCampaignAction("none"))
         }
     }, [campaigns]);
 
@@ -44,6 +46,9 @@ const TopBar = () => {
 
 
     useEffect(() => {
+        if(currentCampaign === "none"){
+            return;
+        }
         if (campaigns && campaigns.length > 0 && currentCampaign && campaignsOptions.length > 0) {
             setCampaignValue(campaignsOptions.find(campaign => campaign.id === currentCampaign));
         }

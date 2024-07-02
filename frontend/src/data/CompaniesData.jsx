@@ -1,9 +1,13 @@
 import {useState} from "react";
 import {useData, usePost, usePut} from "./UseData";
 
-export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) => {
+export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, locks) => {
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
+
+    if(campaignId === "none"){
+        campaignId = null;
+    }
 
     const {loading} = useData("/companies",
         (data) => {
@@ -19,7 +23,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search) 
             {name: "alumniDescription", value: search.alumniDescription},
             {name: "committee", value: search.committee},
             {name: "campaignName", value: search.campaignName},
-            {name: "sort", value: search.sort}])
+            {name: "sort", value: search.sort}], locks)
 
     const {post} = usePost(`/companies`,
         (data) => setCompanies(current => {

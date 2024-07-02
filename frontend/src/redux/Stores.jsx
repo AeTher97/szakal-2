@@ -150,7 +150,7 @@ function themeReducer(state = themeInitialState, action) {
     }
 }
 
-function campaignReducer(state = {currentCampaign: null}, action) {
+function campaignReducer(state = {currentCampaign: ""}, action) {
     switch (action.type) {
         case SWITCH_CAMPAIGN:
             return {

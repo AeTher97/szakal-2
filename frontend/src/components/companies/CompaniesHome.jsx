@@ -128,6 +128,7 @@ const filters = (mobile, categories, search, setSearch) => {
 
 const CompaniesHome = () => {
 
+    const [searchLoaded, setSearchLoaded] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchParams, setSearchParams] = useSearchParams();
     const [tempSearch, setTempSearch] = useState({
@@ -158,7 +159,8 @@ const CompaniesHome = () => {
     const {companies, loading, pageNumber, addCompany}
         = useCompanyListWithCampaign(
         currentCampaign, currentPage - 1,
-        search
+        search,
+        [searchLoaded, (currentCampaign !== '') ? true : null]
     );
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
 
@@ -182,6 +184,7 @@ const CompaniesHome = () => {
         }
         setTempSearch(removeNullFields(currentValue))
         setSearch(removeNullFields(currentValue));
+        setSearchLoaded(true);
     }, [searchParams]);
 
     const setSort = (colum, direction) => {
@@ -269,8 +272,7 @@ const CompaniesHome = () => {
             <Route path={"/:id"} element={<CompanyDetails/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
-    )
-        ;
+    );
 };
 
 export default CompaniesHome;
