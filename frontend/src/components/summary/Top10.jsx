@@ -2,11 +2,18 @@ import React from 'react';
 import {Card, CardContent, CircularProgress, Divider, Typography} from "@mui/joy";
 import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {useSelector} from "react-redux";
 
 const Top10 = () => {
 
     const {journeys, loading} = useCurrentCampaignJourneyList(0, 1000)
     const mobile = useMobileSize();
+    const {currentCampaign} = useSelector(state => state.campaigns);
+
+    if(currentCampaign === "none"){
+        return <></>
+    }
+
 
     const top10 = new Map();
     journeys.forEach(journey => {

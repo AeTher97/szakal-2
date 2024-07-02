@@ -11,6 +11,10 @@ const CurrentCampaign = () => {
     const {campaign, loading} = useCampaign(currentCampaign);
     const mobile = useMobileSize();
 
+    if(currentCampaign === "none"){
+        return <></>
+    }
+
     return (
         <Card invertedColors color={"primary"} variant={"outlined"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>
             <CardContent>

@@ -31,7 +31,6 @@ export const useData = (baseUrl, updateFunction, triggers = [], urlParams = [], 
                 updateFunction(res.data)
             }
         }).catch(e => {
-            console.log(e.response);
             if (e.response.data && e.response.data.error) {
                 dispatch(showError(e.response.data.error))
             }

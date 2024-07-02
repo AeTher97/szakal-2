@@ -46,7 +46,7 @@ export const useCampaign = (id) => {
     const {loading} = useData(`/campaigns/${id}`, (data) => {
             setCampaign(data)
         },
-        [id], [], [id])
+        [id], [], [id, id === "none" ? null : true])
 
     return {campaign, loading}
 }

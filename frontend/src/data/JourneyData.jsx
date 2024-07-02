@@ -17,7 +17,7 @@ export const useCurrentCampaignJourneyList = (page = 0, search) => {
             {name: "pageSize", value: 10},
             {name: "companyName", value: search.companyName},
             {name: "status", value: search.status},
-            {name: "user", value: search.user}], [currentCampaign])
+            {name: "user", value: search.user}], [currentCampaign, currentCampaign === "none" ? null : true])
 
     return {journeys, loading, pagesNumber}
 }
