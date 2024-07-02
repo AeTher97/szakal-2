@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {Route, Routes} from "react-router-dom";
 import {LinearProgress, Typography} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
@@ -13,7 +13,7 @@ import {useMobileSize} from "../../utils/SizeQuery";
 import {CAMPAIGN_MODIFICATION} from "../../utils/AccessRights";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
-const CampaignsHome = () => {
+const CampaignsHome = memo(() => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [campaignDialogOpen, setCampaignDialogOpen] = useState(false);
@@ -54,6 +54,6 @@ const CampaignsHome = () => {
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
     );
-};
+});
 
 export default CampaignsHome;
