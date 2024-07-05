@@ -16,11 +16,11 @@ const ContentColumn = props => {
         <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
             <div style={{
 
-                display: "flex", justifyContent: "center", alignItems: "stretch", overflow: "auto",
+                display: "flex", justifyContent: "center", alignItems: "stretch",
                 gap: 10
             }}>
                 <div style={{
-                    maxWidth: 1200, flex: 1, overflow: "auto", display: "flex", flexDirection: "column",
+                    maxWidth: 1200, flex: 1, display: "flex", flexDirection: "column",
                     padding: 10, paddingBottom: 0, marginLeft: small ? 0 : 10
                 }}>
                     {props.children}

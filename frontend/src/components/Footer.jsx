@@ -10,6 +10,7 @@ const Footer = () => {
     return (
         <div style={{display:"flex",
             justifyContent:"center",
+            alignItems: "center",
             flexDirection: mobile ? "column" : "row", gap: 5,
         justifySelf: "flex-end"}}>
             <Typography level={"body-xs"}>
