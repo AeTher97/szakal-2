@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Autocomplete, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Select, Stack} from "@mui/joy";
 import {useAddScheduledContact} from "../../data/NotificationData";
 import Button from "@mui/joy/Button";
@@ -29,9 +29,10 @@ const ScheduledContactDialog = ({open, close}) => {
     const {currentCampaign} = useSelector(state => state.campaigns);
 
     const [companySearch, setCompanySearch] = useState("");
+    const [searchObject, setSearchObject] = useState({});
 
     const {companies, loading: companiesLoading}
-        = useCompanyListWithCampaign(currentCampaign, 0, companySearch)
+        = useCompanyListWithCampaign(currentCampaign, 0, searchObject)
     const {userId} = useSelector(state => state.auth);
     const {theme} = useSelector(state => state.theme);
 
@@ -40,6 +41,14 @@ const ScheduledContactDialog = ({open, close}) => {
     const [contactDate, setContactDate] = useState("");
     const [reminderDate, setReminderDate] = useState("");
     const [note, setNote] = useState("");
+
+    useEffect(() => {
+        if(companySearch !== ""){
+            setSearchObject({name: companySearch})
+        } else {
+            setSearchObject({})
+        }
+    }, [companySearch]);
 
     return (
         <Modal open={open}>
@@ -51,7 +60,8 @@ const ScheduledContactDialog = ({open, close}) => {
                         const tempDate = new Date()
                         console.log(new Date(contactDate), beforeSelect)
                         tempDate.setTime(new Date(contactDate).getTime() - hour * beforeSelect);
-                        addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note).then(() => {
+                        addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note)
+                            .then(() => {
                             close();
                         });
                     } else {
