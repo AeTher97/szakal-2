@@ -92,7 +92,7 @@ const LoginForm = ({redirectBack}) => {
                     Nie pamiętasz hasła?
                 </Typography>
                 <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
-                    Made by GRAFIKA
+                    Made by GRAFIKA AGH
                 </Typography>
             </Sheet>
 
