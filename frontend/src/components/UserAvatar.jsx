@@ -2,16 +2,16 @@ import React from 'react';
 import {Avatar, Typography} from "@mui/joy";
 import {useMobileSize} from "../utils/SizeQuery";
 
-const UserAvatar = ({name, surname, image, text = true}) => {
+const UserAvatar = ({name, surname, image, text = true, size, overrideMobile= false}) => {
 
     const mobile = useMobileSize();
 
     return (
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10}}>
-            <Avatar variant={"soft"} src={image}>
+            <Avatar variant={"soft"} src={image} size={size}>
                 {name[0]}{surname[0]}
             </Avatar>
-            {!mobile && text && <Typography level={"title-lg"}>{name} {surname}</Typography>}
+            {(!mobile || overrideMobile) && text && <Typography level={"title-lg"}>{name} {surname}</Typography>}
         </div>
     );
 };

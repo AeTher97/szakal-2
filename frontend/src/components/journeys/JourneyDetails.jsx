@@ -17,6 +17,7 @@ import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 import {JOURNEY_MODIFICATION_FOR_OTHERS} from "../../utils/AccessRights";
+import UserAvatar from "../UserAvatar";
 
 const JourneyDetails = () => {
 
@@ -79,57 +80,59 @@ const JourneyDetails = () => {
                         </div>
                         {!journey.finished && (isUser || hasRight(JOURNEY_MODIFICATION_FOR_OTHERS)) &&
                             <form onSubmit={(e) => {
-                            e.preventDefault();
-                            if (contactStatus === "CHOOSE") {
-                                return;
-                            }
-                            if (contactPerson !== "CHOOSE") {
-                                addContactEvent(journey.id, userId, eventDescription, contactStatus, contactPerson)
-                            } else {
-                                addContactEvent(journey.id, userId, eventDescription, contactStatus)
-                            }
-                            setEventDescription("")
-                            setContactStatus("CHOOSE")
-                        }}>
-                            <div style={{display: "flex"}}>
-                                <Stack spacing={1} style={{flex: 1}}>
-                                    <Typography level={"title-lg"}>Nowe wydarzenie</Typography>
-                                    <FormControl>
-                                        <Select value={contactStatus} onChange={(e, newValue) => {
-                                            setContactStatus(newValue)
-                                        }}>
-                                            <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
-                                            <Option value={"WAITING_FOR_RESPONSE"}>Oczekiwanie na odpowiedź</Option>
-                                            <Option value={"CALL_LATER"}>Zadzwonić później</Option>
-                                            <Option value={"NOT_INTERESTED"}>Niezainteresowana</Option>
-                                            <Option value={"BARTER"}>Barter</Option>
-                                            <Option value={"SPONSOR"}>Sponsor</Option>
-                                            <Option value={"TRAINING"}>Szkolenie</Option>
-                                            <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma współpracy</Option>
-                                            <Option value={"CALL_NEXT_YEAR"}>Zadzwonić w przyszłym roku</Option>
-                                            <Option value={"INTERNSHIP"}>Praktyka</Option>
-                                        </Select>
-                                    </FormControl>
-                                    <FormControl>
-                                        <Select value={contactPerson} onChange={(e, newValue) => {
-                                            setContactPerson(newValue)
-                                        }}>
-                                            <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
-                                            {journey.company.contactPeople.map(person => {
-                                                return <Option value={person.id} key={person.id}>{person.name}</Option>
-                                            })}
+                                e.preventDefault();
+                                if (contactStatus === "CHOOSE") {
+                                    return;
+                                }
+                                if (contactPerson !== "CHOOSE") {
+                                    addContactEvent(journey.id, userId, eventDescription, contactStatus, contactPerson)
+                                } else {
+                                    addContactEvent(journey.id, userId, eventDescription, contactStatus)
+                                }
+                                setEventDescription("")
+                                setContactStatus("CHOOSE")
+                            }}>
+                                <div style={{display: "flex"}}>
+                                    <Stack spacing={1} style={{flex: 1}}>
+                                        <Typography level={"title-lg"}>Nowe wydarzenie</Typography>
+                                        <FormControl>
+                                            <Select value={contactStatus} onChange={(e, newValue) => {
+                                                setContactStatus(newValue)
+                                            }}>
+                                                <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
+                                                <Option value={"WAITING_FOR_RESPONSE"}>Oczekiwanie na odpowiedź</Option>
+                                                <Option value={"CALL_LATER"}>Zadzwonić później</Option>
+                                                <Option value={"NOT_INTERESTED"}>Niezainteresowana</Option>
+                                                <Option value={"BARTER"}>Barter</Option>
+                                                <Option value={"SPONSOR"}>Sponsor</Option>
+                                                <Option value={"TRAINING"}>Szkolenie</Option>
+                                                <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma
+                                                    współpracy</Option>
+                                                <Option value={"CALL_NEXT_YEAR"}>Zadzwonić w przyszłym roku</Option>
+                                                <Option value={"INTERNSHIP"}>Praktyka</Option>
+                                            </Select>
+                                        </FormControl>
+                                        <FormControl>
+                                            <Select value={contactPerson} onChange={(e, newValue) => {
+                                                setContactPerson(newValue)
+                                            }}>
+                                                <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
+                                                {journey.company.contactPeople.map(person => {
+                                                    return <Option value={person.id}
+                                                                   key={person.id}>{person.name}</Option>
+                                                })}
 
-                                        </Select>
-                                    </FormControl>
-                                    <FormControl>
-                                        <Textarea minRows={2} value={eventDescription} onChange={(e) => {
-                                            setEventDescription(e.target.value)
-                                        }} placeholder={"Opis"} required/>
-                                    </FormControl>
-                                    <Button type={"submit"}>Dodaj</Button>
-                                </Stack>
-                            </div>
-                        </form>}
+                                            </Select>
+                                        </FormControl>
+                                        <FormControl>
+                                            <Textarea minRows={2} value={eventDescription} onChange={(e) => {
+                                                setEventDescription(e.target.value)
+                                            }} placeholder={"Opis"} required/>
+                                        </FormControl>
+                                        <Button type={"submit"}>Dodaj</Button>
+                                    </Stack>
+                                </div>
+                            </form>}
                         <Timeline>
                             {journey.contactEvents.sort((a, b) => {
                                 return new Date(a.date) > new Date(b.date) ? -1 : 1;
@@ -141,9 +144,11 @@ const JourneyDetails = () => {
                                         justifyContent: "space-between"
                                     }}>
                                         <div style={{display: "flex", gap: 5}}>
-                                            <Avatar size={"sm"}>
-                                                {event.user.name[0]}{event.user.surname[0]}
-                                            </Avatar>
+                                            <UserAvatar name={event.user.name}
+                                                        surname={event.user.surname}
+                                                        image={`data:image;base64,${event.user.profilePicture}`}
+                                                        text={false}
+                                                        size={"sm"}/>
                                             <div>
                                                 <Typography
                                                     level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
@@ -174,7 +179,7 @@ const JourneyDetails = () => {
                         <Typography level={"h3"}>Komentarze</Typography>
                         <form onSubmit={(e) => {
                             e.preventDefault();
-                            if(comment !== "") {
+                            if (comment !== "") {
                                 addComment(userId, comment);
                             }
                             setComment("")
@@ -202,14 +207,12 @@ const JourneyDetails = () => {
                                 margin: 5
                             }}>
                                 <div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                                    <Avatar size={"sm"}>
-                                        {comment.user.name[0]}{comment.user.surname[0]}
-                                    </Avatar>
-                                    <div>
-                                        <Typography
-                                            level={"title-sm"}>{comment.user.name} {comment.user.surname}</Typography>
+                                    <UserAvatar name={comment.user.name}
+                                                surname={comment.user.surname}
+                                                image={`data:image;base64,${comment.user.profilePicture}`}
+                                                overrideMobile={true}
+                                                size={"sm"}/>
 
-                                    </div>
                                 </div>
                                 <Typography level={"body-md"}>{comment.comment}</Typography>
                                 <Typography
@@ -220,7 +223,7 @@ const JourneyDetails = () => {
                         })}
                         {journey.comments.length === 0 &&
                             <div style={{padding: 10, display: "flex", justifyContent: "center"}}>
-                            <Typography>Brak komentarzy</Typography>
+                                <Typography>Brak komentarzy</Typography>
                             </div>}
                     </div>
                 </div>
