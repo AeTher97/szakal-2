@@ -12,7 +12,7 @@ import Button from "@mui/joy/Button";
 import {useSearchParams} from "react-router-dom";
 
 
-const CompaniesTable = ({companies, search, setSort, clearSort}) => {
+const CompanyTable = ({companies, search, setSort, clearSort}) => {
 
     const mobile = useMobileSize();
 
@@ -42,10 +42,12 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
                 <tr>
                     <th style={{padding: "8px 6px"}}>
                         <div style={{display: "flex"}}>
-                        <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}} onClick={() => setSort("name", directionAscending ? "DESC" : "ASC")}>
-                            Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
-                            {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
-                            {sorted && <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                            <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}}
+                                    onClick={() => setSort("name", directionAscending ? "DESC" : "ASC")}>
+                                Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
+                                {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sorted &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
                         </div>
                     </th>
                     <th style={{padding: "12px 6px"}}>
@@ -64,7 +66,8 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
                     <tr key={company.id}>
                         <td>
                             <div style={{display: "flex", flexDirection: "column"}}>
-                                <LinkWithRouter to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
+                                <LinkWithRouter
+                                    to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
                                 <Typography>{company.www}</Typography>
                                 <Typography>{company.email}</Typography>
                             </div>
@@ -75,7 +78,8 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
                                         {decodeContactStatus(company.currentJourney.contactStatus)}
                                     </Typography>
                                 </LinkWithRouter>
-                                <Typography>{company.currentJourney.user.name} {company.currentJourney.user.surname}</Typography>
+                                <Typography>{company.currentJourney.user ? company.currentJourney.user.name : "Brak przypisanego użytkownika"}
+                                    {company.currentJourney.user ? company.currentJourney.user.surname : ""}</Typography>
                                 <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
                             </div>
                             : <Typography>Wolna</Typography>}</td>
@@ -108,4 +112,4 @@ const CompaniesTable = ({companies, search, setSort, clearSort}) => {
     );
 };
 
-export default CompaniesTable;
+export default CompanyTable;

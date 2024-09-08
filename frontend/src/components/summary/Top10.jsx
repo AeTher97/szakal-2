@@ -17,6 +17,9 @@ const Top10 = () => {
 
     const top10 = new Map();
     journeys.forEach(journey => {
+        if(!journey.user){
+            return;
+        }
         const currentStatForUser = top10.get(journey.user.id);
         if (currentStatForUser) {
             top10.set(journey.user.id, {

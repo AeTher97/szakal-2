@@ -25,7 +25,7 @@ import {useMobileSize} from "../../utils/SizeQuery";
 import Option from "@mui/joy/Option";
 import {useCategories} from "../../data/CategoriesData";
 import Pagination from "../misc/Pagination";
-import CompaniesTable from "./CompaniesTable";
+import CompanyTable from "./CompanyTable";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 import {removeNullFields} from "../../utils/ObjectUtils";
@@ -257,7 +257,7 @@ const CompaniesHome = () => {
 
                     <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
-                    <CompaniesTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
+                    <CompanyTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
                                                    firstAndLast={!mobile} concise={mobile}
                                                    margin={"10px 0 10px 0"}

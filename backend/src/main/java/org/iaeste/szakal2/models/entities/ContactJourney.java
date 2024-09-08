@@ -25,7 +25,7 @@ public class ContactJourney {
     private UUID id;
     @Setter
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     @JsonIgnoreProperties(value = {"roles", "active", "accepted"})
     private User user;
     @ManyToOne

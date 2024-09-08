@@ -11,10 +11,15 @@ const JourneyUser = ({user}) => {
                     <Typography level={"body-sm"}>Osoba rozpoczynająca kontakt z firmą</Typography>
                 </CardContent>
                 <Divider inset={"context"}/>
-                <CardContent>
-                    <UserAvatar name={user.name} surname={user.surname} image={`data:image;base64,${user.profilePicture}`}/>
+                {user && <CardContent>
+                    <UserAvatar name={user.name} surname={user.surname}
+                                image={`data:image;base64,${user.profilePicture}`}/>
                     <Typography>{user.email}</Typography>
-                </CardContent>
+                </CardContent>}
+                {!user &&
+                    <CardContent>
+                        <Typography>Brak przypisanego użytkownika</Typography>
+                    </CardContent>}
             </CardOverflow>
         </Card>
     );

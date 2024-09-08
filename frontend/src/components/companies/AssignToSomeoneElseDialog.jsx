@@ -14,7 +14,7 @@ import {useUsersSearch} from "../../data/UsersData";
 import {useSelector} from "react-redux";
 import UserAvatar from "../UserAvatar";
 
-const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, companyId, navigate}) => {
+const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, companyId, navigate, fromJourneyPage}) => {
 
     const [userSearch, setUserSearch] = useState("");
     const [user, setUser] = useState(null);
@@ -43,7 +43,11 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                     addJourney(currentCampaign, companyId, user.id)
                         .then((data) => {
                             clear()
-                            navigate(`/secure/journeys/${data.id}`)
+                            if (!fromJourneyPage) {
+                                navigate(`/secure/journeys/${data.id}`)
+                            } else {
+                                navigate(0);
+                            }
                         })
                 }}>
                     <Stack spacing={2}>
@@ -65,26 +69,27 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                                     setUser(value);
                                 }}
                                 options={users
-                                    .filter(user=> user.id !== userId)
+                                    .filter(user => user.id !== userId)
                                     .map(user => {
-                                    return {
-                                        label: `${user.name} ${user.surname}`,
-                                        name: user.name,
-                                        surname: user.surname,
-                                        id: user.id,
-                                        email: user.email,
-                                        image: `data:image;base64,${user.profilePicture}`
-                                    }
-                                })}
+                                        return {
+                                            label: `${user.name} ${user.surname}`,
+                                            name: user.name,
+                                            surname: user.surname,
+                                            id: user.id,
+                                            email: user.email,
+                                            image: `data:image;base64,${user.profilePicture}`
+                                        }
+                                    })}
                                 renderOption={(props, option) => (
                                     <AutocompleteOption {...props}>
                                         <ListItemDecorator style={{marginInlineEnd: 5}}>
-                                            <UserAvatar name={option.name} surname={option.surname} image={option.image} text={false}/>
+                                            <UserAvatar name={option.name} surname={option.surname} image={option.image}
+                                                        text={false}/>
                                         </ListItemDecorator>
-                                        <ListItemContent sx={{ fontSize: 'sm' }}>
+                                        <ListItemContent sx={{fontSize: 'sm'}}>
                                             {option.label}
                                             <Typography level="body-xs">
-                                                {option. email}
+                                                {option.email}
                                             </Typography>
                                         </ListItemContent>
                                     </AutocompleteOption>

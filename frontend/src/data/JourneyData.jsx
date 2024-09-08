@@ -71,6 +71,11 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const {put: putRemoveUser} = usePut(`/journeys/${id}/removeUser`, (data) => {
+        setJourney(data);
+    })
+
+
     const addContactEvent = (contactJourney, user, description, contactStatus, contactPerson) => {
         post({
             contactJourney,
@@ -92,5 +97,9 @@ export const useJourney = (id) => {
         put();
     }
 
-    return {journey, loading, closeJourney, addContactEvent, addComment}
+    const removeUser = () => {
+        putRemoveUser();
+    }
+
+    return {journey, loading, closeJourney, addContactEvent, addComment, removeUser}
 }

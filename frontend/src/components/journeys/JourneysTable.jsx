@@ -54,7 +54,7 @@ const JourneysTable = ({journeys}) => {
                         <td>
                             <Typography sx={theme => ({
                                 color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
-                            })}>{journey.user.name} {journey.user.surname}</Typography>
+                            })}>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
                         </td>
                         <td><Typography sx={theme => ({
                             color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`

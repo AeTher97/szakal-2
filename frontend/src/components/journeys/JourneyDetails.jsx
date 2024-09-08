@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useJourney} from "../../data/JourneyData";
+import {useAddContactJourney, useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
 import {Avatar, Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
@@ -18,13 +18,17 @@ import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 import {JOURNEY_MODIFICATION_FOR_OTHERS} from "../../utils/AccessRights";
 import UserAvatar from "../UserAvatar";
+import currentCampaign from "../summary/CurrentCampaign";
+import AssignCompanyButton from "../companies/AssignCompanyButton";
 
 const JourneyDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
-    const {journey, loading, addContactEvent, addComment, closeJourney} = useJourney(location.pathname.split("/")[3]);
+    const {journey, loading, addContactEvent, addComment, closeJourney, removeUser}
+        = useJourney(location.pathname.split("/")[3]);
+    const {addJourney} = useAddContactJourney();
     const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {
@@ -41,9 +45,11 @@ const JourneyDetails = () => {
     const [eventDescription, setEventDescription] = useState("");
     const [comment, setComment] = useState("");
     const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
+    const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
+        = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
 
 
-    const isUser = journey && (userId === journey.user.id);
+    const isUser = journey && journey.user && (userId === journey.user.id);
 
     return (
         <>
@@ -52,10 +58,18 @@ const JourneyDetails = () => {
                     <Typography level={"h2"}>
                         Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
                     </Typography>
-                    {(hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
-                        <Button onClick={() => {
-                            openDialog(() => closeJourney())
-                        }}>Zakończ</Button>}
+                    <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
+                        {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                            <Button onClick={() => {
+                                openDialog(() => closeJourney())
+                            }}>Zakończ</Button>}
+                        {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                            <Button variant={"outlined"} onClick={() => {
+                                openRemoveUserFromJourneyDialog(() => removeUser())
+                            }}>Odepnij osobę z IAESTE</Button>}
+                        {!journey.user && !journey.finished &&
+                            <AssignCompanyButton company={journey.company} fromJourneyPage={true}/>}
+                    </div>
                 </TabHeader>
                 <div style={{
                     display: "flex",
@@ -228,6 +242,7 @@ const JourneyDetails = () => {
                     </div>
                 </div>
                 {render()}
+                {renderRemoveUserFromJourneyDialog()}
             </div>}
         </>
     );

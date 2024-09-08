@@ -63,8 +63,13 @@ public class JourneyController {
     }
 
     @PutMapping("/{id}/finish")
-    public ContactJourney addComment(@PathVariable("id") UUID id) {
+    public ContactJourney finishJourney(@PathVariable("id") UUID id) {
         return journeyService.finishJourney(id);
+    }
+
+    @PutMapping("/{id}/removeUser")
+    public ContactJourney removeUserFromJourney(@PathVariable("id") UUID id) {
+        return journeyService.removeUserFromJourney(id);
     }
 
     @GetMapping("/{id}")

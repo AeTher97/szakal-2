@@ -21,6 +21,7 @@ public interface ContactJourneyRepository extends JpaRepository<ContactJourney, 
 
     Optional<ContactJourney> findContactJourneyById(UUID id);
     Optional<ContactJourney> findContactJourneyByCampaignAndUserAndCompany(Campaign campaign, User user, Company company);
+    Optional<ContactJourney> findContactJourneyByCampaignAndCompany(Campaign campaign, Company company);
     Page<ContactJourney> findAllByOrderByJourneyStart(Pageable pageable);
     Page<ContactJourney> findAllByUserAndCampaignOrderByJourneyStart(User user, Campaign campaign, Pageable pageable);
 }
