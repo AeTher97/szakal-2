@@ -8,20 +8,9 @@ import NotAcceptedScreen from "../screens/NotAcceptedScreen";
 import SecureRoute from "../utils/SecureRoute";
 import PasswordResetScreen from "../screens/PasswordResetScreen";
 import UpdatePasswordScreen from "../screens/UpdatePasswordScreen";
-
-import ReactGA from 'react-ga';
-import {useEffect} from "react";
-
-const TRACKING_ID = "G-L08E85T9VG";
-
-ReactGA.initialize(TRACKING_ID);
+import GTracker from "./GTracker";
 
 export const RouterWrapper = () => {
-
-
-    useEffect(() => {
-        ReactGA.pageview(window.location.pathname);
-    }, []);
 
     return <BrowserRouter>
         <Routes>
@@ -36,6 +25,7 @@ export const RouterWrapper = () => {
             </SecureRoute>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
+        <GTracker/>
     </BrowserRouter>
 
 }
