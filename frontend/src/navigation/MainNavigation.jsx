@@ -9,9 +9,19 @@ import SecureRoute from "../utils/SecureRoute";
 import PasswordResetScreen from "../screens/PasswordResetScreen";
 import UpdatePasswordScreen from "../screens/UpdatePasswordScreen";
 
+import ReactGA from 'react-ga';
+import {useEffect} from "react";
+
+const TRACKING_ID = "G-L08E85T9VG";
+
+ReactGA.initialize(TRACKING_ID);
 
 export const RouterWrapper = () => {
 
+
+    useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+    }, []);
 
     return <BrowserRouter>
         <Routes>
