@@ -25,7 +25,7 @@ Don't use this method for running in production, put properties in actual enviro
 3. Make sure postgres is running on your machine with created database and you know: **port, username and password**
 4. Make sure JAVA_HOME is set correctly, you can run `java -version` to make sure, java 21 or higher is required
 5. Run backend using this command in the backend directory: `./gradlew bootRun --args='--spring.profiles.active=development' -PdatabaseUrl={url=host:port/database_name} -PdatabaseUsername={postgres_username} -PdatabasePassword={postgres_password} -PjwtSecret={jwt_secret}"`
-, alternatively arguments can be set in `gradle.properties` file, more info [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties) or set in the system environmental variables, where arguments are following (gradle name, ENV name):
+, alternatively arguments can be set in `gradle.properties` file (more info [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties)), or set in the system environmental variables, where arguments are following (gradle name, ENV variable name):
    * **databaseUrl, DATABASE_URL** - url to the database, has to contain host, port and database name without protocol 
    * **databaseUsername, DATABASE_USERNAME** - username of the database user
    * **databasePassword, DATABASE_PASSWORD** - password of the database user
