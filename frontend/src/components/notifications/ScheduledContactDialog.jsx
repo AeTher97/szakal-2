@@ -58,7 +58,6 @@ const ScheduledContactDialog = ({open, close}) => {
                     e.preventDefault();
                     if (beforeSelect !== 0) {
                         const tempDate = new Date()
-                        console.log(new Date(contactDate), beforeSelect)
                         tempDate.setTime(new Date(contactDate).getTime() - hour * beforeSelect);
                         addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note)
                             .then(() => {

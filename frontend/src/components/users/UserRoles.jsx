@@ -21,7 +21,6 @@ const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesL
                 {localUser.roles.map(role => <Chip key={role.id}
                                                    sx={{backgroundColor: uuidToColor(role.id)}}
                                                    endDecorator={<ChipDelete onDelete={() => {
-                                                       console.log("delete")
                                                        setLocalUser(old => {
                                                            return {
                                                                ...old,
