@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 
 const Top10 = () => {
 
-    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1000)
+    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1,1000)
     const mobile = useMobileSize();
     const {currentCampaign} = useSelector(state => state.campaigns);
 
