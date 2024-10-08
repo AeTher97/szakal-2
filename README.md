@@ -1,6 +1,7 @@
 <p align="center">
 <img src="/frontend/public/szakal_logo.svg" width="300">
 </p>
+
 # Szakal 2
 
 Project for managing IAESTE AGH committee company contacts
