@@ -7,9 +7,10 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {Typography} from "@mui/joy";
 
 const Pagination = ({
-                        currentPage = 0, numberOfPages = 0, setPage = () => {},
+                        currentPage = 0, numberOfPages = 0, setPage = () => {
+    },
                         firstAndLast = false, showPages = 5,
-                        concise = false, margin= "10"
+                        concise = false, margin = "10"
                     }) => {
 
     if (concise) {
@@ -30,13 +31,23 @@ const Pagination = ({
         pages.push(i);
     }
 
+    const firstPage = currentPage !== 1;
+    const notFirstPage = !firstPage;
+    const showFirstPageButton = (firstAndLast && firstPage) || !concise;
+    const firstPageButtonVisible = !concise && notFirstPage
+
+    const lastPage = currentPage === numberOfPages;
+    const notLastPage = !lastPage;
+    const showLastPageButton = (firstAndLast && notLastPage) || !concise;
+    const lastPageButtonVisible = !concise && notLastPage;
 
     return (
         <div style={{display: "flex", justifyContent: "space-between", margin, flexWrap: "wrap"}}>
             <div style={{display: "flex", gap: 5}}>
-                {firstAndLast && currentPage !== 1 && <Button
-                    size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
-                    color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>}
+                {showFirstPageButton &&
+                    <Button style={{visibility: firstPageButtonVisible ? "hidden" : "visible"}}
+                            size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
+                            color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>}
                 <Button size={"sm"} variant={"outlined"} onClick={() => setPage(currentPage - 1)}
                         style={{visibility: currentPage !== 1 ? "visible" : "hidden"}}
                         color={"neutral"}><KeyboardArrowLeft/>{concise ? "" : "Poprzednia"}</Button>
@@ -54,15 +65,14 @@ const Pagination = ({
             </div>
             <div style={{display: "flex", gap: 5}}>
                 <Button
-                    style={{visibility: currentPage === numberOfPages ? "hidden" : "visible"}} size={"sm"}
+                    style={{visibility: notLastPage ? "visible" : "hidden"}} size={"sm"}
                     variant={"outlined"} onClick={() => {
                     setPage(currentPage + 1)
                 }}
                     color={"neutral"}><KeyboardArrowRight/>{concise ? "" : "Następna"}</Button>
-                {firstAndLast && currentPage !== numberOfPages && <Button
+                {showLastPageButton && <Button style={{visibility: lastPageButtonVisible ? "visible" : "hidden"}}
                     size={"sm"} variant={"outlined"} onClick={() => {
-                    setPage(numberOfPages)
-                }}
+                    setPage(numberOfPages)}}
                     color={"neutral"}>{concise ? "" : "Ostatnia"}<LastPageIcon/>
                 </Button>
                 }
