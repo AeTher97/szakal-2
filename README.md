@@ -1,4 +1,4 @@
-# Szakal-2
+# Szakal 2
 <p align="center">
 <img src="/frontend/public/szakal_logo.svg" width="300">
 </p>
