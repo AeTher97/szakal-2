@@ -17,4 +17,5 @@ public class ContactJourneySearch {
     private String companyName;
     private String status;
     private String user;
+    private String detailedStatus;
 }

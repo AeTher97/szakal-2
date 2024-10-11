@@ -135,7 +135,6 @@ public class JourneyService {
         return contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
     }
 
-
     public void truncate() {
         contactJourneyRepository.deleteAll();
     }

@@ -69,7 +69,7 @@ const CompanyDetails = () => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
-                    padding: 5,
+                    padding: "5px 0 5px 0",
                     paddingBottom: 50,
                     overflow: "hidden"
                 }}>

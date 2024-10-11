@@ -2,19 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {Route, Routes, useSearchParams} from "react-router-dom";
 import TabHeader from "../main/TabHeader";
 import {
-    Accordion, AccordionDetails,
+    Accordion,
+    AccordionDetails,
     AccordionGroup,
     AccordionSummary,
     FormControl,
     FormLabel,
     Input,
-    LinearProgress, Select,
+    LinearProgress,
+    Select,
     Typography
 } from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import JourneysTable from "./JourneysTable";
 import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
-import JourneyDetails from "./JourneyDetails";
+import JourneyDetails, {contactStatusOptions} from "./JourneyDetails";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {removeNullFields} from "../../utils/ObjectUtils";
@@ -33,12 +35,14 @@ const JourneysHome = () => {
     const [tempSearch, setTempSearch] = useState({
         companyName: null,
         status: null,
+        detailedStatus: null,
         user: null
     });
 
     const [search, setSearch] = useState({
         companyName: null,
         status: null,
+        detailedStatus: null,
         user: null
     });
 
@@ -49,6 +53,7 @@ const JourneysHome = () => {
         const currentValue = {
             companyName: searchParams.get("companyName"),
             status: searchParams.get("status"),
+            detailedStatus: searchParams.get("detailedStatus"),
             user: searchParams.get("user"),
         }
         setTempSearch(currentValue)
@@ -91,6 +96,23 @@ const JourneysHome = () => {
                         }}>
                     <Option value={"in-progress"}>W trakcie</Option>
                     <Option value={"finished"}>Zakończone</Option>
+                    <Option value={""}>Wszystkie</Option>
+                </Select>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>
+                    Dokładny status
+                </FormLabel>
+                <Select value={tempSearch.detailedStatus || ""}
+                        onChange={(e, value) => {
+                            setTempSearch({
+                                ...search,
+                                detailedStatus: value
+                            })
+                        }}>
+                    {contactStatusOptions.map(option => {
+                        return <Option key={option.name} value={option.name}>{option.text}</Option>
+                    })}
                     <Option value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>

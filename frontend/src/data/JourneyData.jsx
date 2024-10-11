@@ -4,7 +4,6 @@ import {useState} from "react";
 
 export const useCurrentCampaignJourneyList = (page = 0, search, pageSize = 10) => {
 
-    console.log({}.companyName)
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
     const [pagesNumber, setPagesNumber] = useState([]);
@@ -18,6 +17,7 @@ export const useCurrentCampaignJourneyList = (page = 0, search, pageSize = 10) =
             {name: "pageSize", value: pageSize},
             {name: "companyName", value: search.companyName},
             {name: "status", value: search.status},
+            {name: "detailedStatus", value: search.detailedStatus},
             {name: "user", value: search.user}], [currentCampaign, currentCampaign === "none" ? null : true])
 
     return {journeys, loading, pagesNumber}

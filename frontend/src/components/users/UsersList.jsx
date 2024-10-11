@@ -39,7 +39,7 @@ const UsersList = () => {
                     <div style={{display: "flex", justifyContent: "center"}}>
                         {loading && <CircularProgress/>}
                     </div>
-                    {users && users.map((user, index) => {
+                    {!loading && users && users.map((user, index) => {
                         return <div key={user.id}>
                             <ListItem>
                                 <ListItemButton>

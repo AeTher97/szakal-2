@@ -52,6 +52,7 @@ public class CampaignController {
                                                            @RequestParam(defaultValue = "10") int pageSize,
                                                            @RequestParam(required = false) String companyName,
                                                            @RequestParam(required = false) String status,
+                                                           @RequestParam(required = false) String detailedStatus,
                                                            @RequestParam(required = false) String user,
                                                            @RequestParam int pageNumber) {
         return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
@@ -59,6 +60,7 @@ public class CampaignController {
                         .companyName(companyName)
                         .campaignId(id)
                         .status(status)
+                        .detailedStatus(detailedStatus)
                         .user(user)
                         .build());
     }

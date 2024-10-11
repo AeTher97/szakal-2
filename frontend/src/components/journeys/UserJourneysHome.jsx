@@ -22,7 +22,7 @@ const UserJourneysHome = () => {
                     <TabHeader>
                         <Typography level="h2">Twoje kontakty</Typography>
                     </TabHeader>
-                    {loading && <LinearProgress/>}
+                    <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
 
                     <JourneysTable journeys={journeys}/>
                     {pagesNumber > 1 &&

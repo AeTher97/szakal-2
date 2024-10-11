@@ -34,7 +34,7 @@ const CategoriesHome = () => {
                         </Button>}
                     </TabHeader>
 
-                    {loading && <LinearProgress/>}
+                    <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
 
                     <CategoriesTable categories={categories} modifyCategory={modifyCategory}/>
                     <CategoryDialog open={addCategoryOpen} addCategory={addCategory}

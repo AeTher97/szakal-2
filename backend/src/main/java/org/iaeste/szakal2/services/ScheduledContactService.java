@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,13 +31,9 @@ public class ScheduledContactService {
     private final CompanyService companyService;
     private final NotificationService notificationService;
     private final EmailService emailService;
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    int desiredLength = 5;
-
-    private static String padHour(int hour) {
-        String stringHour = String.valueOf(hour);
-        return String.format("%0" + 2 + "d", Integer.parseInt(stringHour));
-    }
 
     public ScheduledContactService(ScheduledContactRepository scheduledContactRepository, UserService userService, CompanyService companyService, NotificationService notificationService, EmailService emailService) {
         this.scheduledContactRepository = scheduledContactRepository;
@@ -61,8 +58,9 @@ public class ScheduledContactService {
                         .replace("${domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME"))
                         .replace("${userName}", user.getName())
                         .replace("${company}", company.getName())
-                        .replace("${contactDate}", scheduledContactDTO.getContactDate().getDayOfMonth() + "." + scheduledContactDTO.getContactDate().getMonth().getValue())
-                        .replace("${contactTime}", scheduledContactDTO.getContactDate().getHour() + ":" + padHour(scheduledContactDTO.getReminderDate().getMinute())),
+                        .replace("${contactDate}",
+                                scheduledContactDTO.getContactDate().format(dateFormatter))
+                        .replace("${contactTime}", scheduledContactDTO.getContactDate().format(timeFormatter)),
                 new EmailService.Attachment("zaproszenie.ics",
                         new InMemoryResource(IcsUtils.generateInvite(user,
                                 company.getName(),
@@ -96,11 +94,11 @@ public class ScheduledContactService {
                 .findScheduledContactsByReminderDateBetween(LocalDateTime.now().minusHours(12), LocalDateTime.now());
         contactsToSchedule.forEach(scheduledContact -> {
             String info = STR. """
-                        Dnia \{ scheduledContact.getContactDate().getDayOfMonth() }.\{ scheduledContact.getContactDate().getMonth().getValue() }
-                        o godzinie: \{ scheduledContact.getContactDate().getHour() }:\{ padHour(scheduledContact.getReminderDate().getMinute()) } masz
+                        Dnia \{ scheduledContact.getContactDate().format(dateFormatter) }
+                        o godzinie: \{ scheduledContact.getContactDate().format(timeFormatter) } masz
                         zaplanowany kontakt z firmą:
                         \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote().isEmpty() ? "notatka: " + scheduledContact.getNote() : "" }
-                                """ ;
+                        """ ;
             try {
                 notificationService.notify(userService.getUserById(scheduledContact.getUser().getId()), info);
                 emailService.sendHtmlMessage(

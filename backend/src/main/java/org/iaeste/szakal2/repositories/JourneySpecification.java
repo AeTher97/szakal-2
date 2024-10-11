@@ -6,7 +6,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
-import org.iaeste.szakal2.models.dto.user.UserDTO;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,11 +15,9 @@ import java.util.List;
 public class JourneySpecification implements Specification<ContactJourney> {
 
     private final ContactJourneySearch criteria;
-    private final EntityManager entityManager;
 
     public JourneySpecification(ContactJourneySearch criteria, EntityManager entityManager) {
         this.criteria = criteria;
-        this.entityManager = entityManager;
     }
 
     private static String wrapWithPercent(String value) {
@@ -49,6 +46,10 @@ public class JourneySpecification implements Specification<ContactJourney> {
             } else if(criteria.getStatus().equals("finished")){
                 predicateList.add(criteriaBuilder.isTrue(root.get("finished")));
             }
+        }
+
+        if (criteria.getDetailedStatus() != null) {
+            predicateList.add(criteriaBuilder.equal(root.get("contactStatus"), criteria.getDetailedStatus()));
         }
 
         if (criteria.getUser() != null) {

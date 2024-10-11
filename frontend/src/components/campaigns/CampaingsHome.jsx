@@ -37,7 +37,7 @@ const CampaignsHome = memo(() => {
                             setCampaignDialogOpen(true)
                         }}><AddIcon/>Dodaj akcję</Button>}
                     </TabHeader>
-                    {loading && <LinearProgress/>}
+                    <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
 
                     <CampaignsTable campaigns={campaigns} editCampaign={editCampaign}/>
                     {pageNumber > 1 && <Pagination firstAndLast={!mobile} concise={mobile} numberOfPages={pageNumber}

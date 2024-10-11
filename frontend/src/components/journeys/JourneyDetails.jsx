@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useAddContactJourney, useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
-import {Avatar, Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
+import {Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
 import JourneyCompany from "./JourneyCompany";
 import JourneyInfo from "./JourneyInfo";
@@ -18,8 +18,18 @@ import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 import {JOURNEY_MODIFICATION_FOR_OTHERS} from "../../utils/AccessRights";
 import UserAvatar from "../UserAvatar";
-import currentCampaign from "../summary/CurrentCampaign";
 import AssignCompanyButton from "../companies/AssignCompanyButton";
+
+export const contactStatusOptions
+    = [{name: "WAITING_FOR_RESPONSE", text: "Oczekiwanie na odpowiedź"},
+    {name: "CALL_LATER", text: "Zadzwonić później"},
+    {name: "NOT_INTERESTED", text: "Niezainteresowana"},
+    {name: "BARTER", text: "Barter"},
+    {name: "SPONSOR", text: "Sponsor"},
+    {name: "TRAINING", text: "Szkolenie"},
+    {name: "DIFFERENT_FORM_PARTNERSHIP", text: "Inna forma współpracy"},
+    {name: "CALL_NEXT_YEAR", text: "Zadzwonić w przyszłym roku"},
+    {name: "INTERNSHIP", text: "Praktyka"}]
 
 const JourneyDetails = () => {
 
@@ -77,7 +87,7 @@ const JourneyDetails = () => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
-                    padding: 5,
+                    padding: "5px 0 5px 0",
                     paddingBottom: 10,
                     overflow: "hidden"
                 }}>
@@ -114,16 +124,10 @@ const JourneyDetails = () => {
                                                 setContactStatus(newValue)
                                             }}>
                                                 <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
-                                                <Option value={"WAITING_FOR_RESPONSE"}>Oczekiwanie na odpowiedź</Option>
-                                                <Option value={"CALL_LATER"}>Zadzwonić później</Option>
-                                                <Option value={"NOT_INTERESTED"}>Niezainteresowana</Option>
-                                                <Option value={"BARTER"}>Barter</Option>
-                                                <Option value={"SPONSOR"}>Sponsor</Option>
-                                                <Option value={"TRAINING"}>Szkolenie</Option>
-                                                <Option value={"DIFFERENT_FORM_PARTNERSHIP"}>Inna forma
-                                                    współpracy</Option>
-                                                <Option value={"CALL_NEXT_YEAR"}>Zadzwonić w przyszłym roku</Option>
-                                                <Option value={"INTERNSHIP"}>Praktyka</Option>
+                                                {contactStatusOptions.map(option => {
+                                                    return <Option key={option.name}
+                                                                   value={option.name}>{option.text}</Option>
+                                                })}
                                             </Select>
                                         </FormControl>
                                         <FormControl>
