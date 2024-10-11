@@ -28,10 +28,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -205,6 +207,7 @@ public class UserService {
     public UserDTO updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
         User user = getUserById(pictureUploadDTO.getId());
         BufferedImage inputImage = ImageIO.read(pictureUploadDTO.getFile().getInputStream());
+        inputImage = removeAlphaChannel(inputImage);
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -229,5 +232,23 @@ public class UserService {
         } else {
             usersRepository.delete(user);
         }
+    }
+
+    private static BufferedImage removeAlphaChannel(BufferedImage img) {
+        if (!img.getColorModel().hasAlpha()) {
+            return img;
+        }
+
+        BufferedImage target = createImage(img.getWidth(), img.getHeight(), false);
+        Graphics2D g = target.createGraphics();
+        // g.setColor(new Color(color, false));
+        g.fillRect(0, 0, img.getWidth(), img.getHeight());
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+
+        return target;
+    }
+    private static BufferedImage createImage(int width, int height, boolean hasAlpha) {
+        return new BufferedImage(width, height, hasAlpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
     }
 }
