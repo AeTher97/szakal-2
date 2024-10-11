@@ -69,7 +69,7 @@ const UsersList = () => {
 
                         </div>
                     })}
-                    {pageNumber > 1 && <Pagination currentPage={currentPage} concise={mobile} numberOfPages={pageNumber}
+                    {pageNumber > 1 && <Pagination currentPage={currentPage} concise={true} numberOfPages={pageNumber}
                                                    margin={"10px"}
                                                    setPage={(page) => setCurrentPage(page)} />}
 
