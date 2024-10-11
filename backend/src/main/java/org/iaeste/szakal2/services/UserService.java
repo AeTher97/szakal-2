@@ -23,6 +23,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -197,7 +204,21 @@ public class UserService {
 
     public UserDTO updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
         User user = getUserById(pictureUploadDTO.getId());
-        user.setProfilePicture(pictureUploadDTO.getFile().getBytes());
+        BufferedImage inputImage = ImageIO.read(pictureUploadDTO.getFile().getInputStream());
+        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageOutputStream outputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
+
+        writer.setOutput(outputStream);
+
+        ImageWriteParam imageWriteParam = writer.getDefaultWriteParam();
+        imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        imageWriteParam.setCompressionQuality(0.2f);
+
+        writer.write(null, new IIOImage(inputImage,null, null), imageWriteParam);
+
+        user.setProfilePicture(byteArrayOutputStream.toByteArray());
         return UserDTO.fromUser(usersRepository.save(user));
     }
 

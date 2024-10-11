@@ -34,9 +34,9 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
                     }}>
                         {imageString && <img style={{position: "absolute"}} src={"/avatar_clip.svg"}/>}
                         {!imageString && <input ref={ref} type="file" id="myFile" onChange={(e) => {
-                            if(e.target.files[0].size > 524288) {
+                            if(e.target.files[0].size > 5242880) {
                                 ref.current.value = ""
-                                dispatch(showError("Maksymalny rozmiar zdjęcia profilowego to 0.5MB"))
+                                dispatch(showError("Maksymalny rozmiar zdjęcia profilowego to 5MB"))
                                 return;
                             }
                             setFile(e.target.files[0])
