@@ -53,7 +53,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain devFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
-                .csrf().disable()
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
@@ -78,7 +78,7 @@ public class SecurityConfiguration {
     @Profile("!development")
     public SecurityFilterChain prodFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf().disable()
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()

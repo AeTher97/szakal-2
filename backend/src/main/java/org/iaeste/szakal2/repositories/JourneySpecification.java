@@ -57,15 +57,21 @@ public class JourneySpecification implements Specification<ContactJourney> {
             if(parts.length == 1) {
                 predicateList.add(
                         criteriaBuilder.or(
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")), wrapWithPercent(parts[0])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")), wrapWithPercent(parts[0])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email")), wrapWithPercent(parts[0]))));
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")),
+                                        wrapWithPercent(parts[0])),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")),
+                                        wrapWithPercent(parts[0])),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email"))
+                                        , wrapWithPercent(parts[0]))));
             } else if(parts.length > 1){
                 predicateList.add(
                         criteriaBuilder.or(
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")), wrapWithPercent(parts[0])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")), wrapWithPercent(parts[1])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email")), wrapWithPercent(parts[0]))));
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")),
+                                        wrapWithPercent(parts[0])),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")),
+                                        wrapWithPercent(parts[1])),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email")),
+                                        wrapWithPercent(parts[0]))));
             }
 
         }
