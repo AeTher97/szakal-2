@@ -11,7 +11,7 @@ public enum Authority {
     ROLE_MODIFICATION("role_modification", "Modyfikacja definicji roli"),
     USER_ROLE_GRANTING("user_role_granting", "Modyfikacja roli użytkownika"),
     COMPANY_MODIFICATION("company_modification", "Modyfikacja firm"),
-    CATEGORY_MODIFICATION("category_modification", "Modyfikacja kategorii"),
+    CATEGORY_MODIFICATION("category_modification", "Modyfikacja branż"),
     USER_ACCEPTANCE("user_acceptance", "Akceptowanie użytkowników"),
     USER_MANAGEMENT("user_management", "Deaktywowanie użytkowników"),
     JOURNEY_CREATION("journey_creation", "Przypisywanie firm do siebie"),
