@@ -76,7 +76,8 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                     </Stack>
 
                 </CardContent>
-                {canModify && <CardActions>
+                {canModify &&
+                    <CardActions>
                     <Button loading={updateAddressLoading} type={"submit"}>Zapisz</Button>
                 </CardActions>}
             </form>

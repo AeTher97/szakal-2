@@ -174,9 +174,16 @@ public class UserService {
         usersRepository.save(user);
     }
 
-
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return usersRepository.findAllByOrderBySurnameAsc(pageable).map(UserDTO::fromUser);
+    }
+
+    public List<User> getUsers(List<UUID> userList) {
+        return usersRepository.findAllById(userList);
+    }
+
+    public List<User> saveUserList(List<User> users){
+        return usersRepository.saveAll(users);
     }
 
     public List<UserDTO> searchUsers(String phrase) {
@@ -251,4 +258,5 @@ public class UserService {
     private static BufferedImage createImage(int width, int height, boolean hasAlpha) {
         return new BufferedImage(width, height, hasAlpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
     }
+
 }

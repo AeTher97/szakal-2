@@ -8,9 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -57,6 +55,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Comment> comments;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<UserGroup> userGroups;
     @Setter
     private byte[] profilePicture;
 
@@ -70,12 +71,21 @@ public class User {
                 .accepted(false)
                 .active(true)
                 .roles(new ArrayList<>())
+                .userGroups(new ArrayList<>())
                 .build();
     }
 
     public String getFullName() {
-        return name + " " + surname;
+        return STR."\{name}  \{surname}";
     }
 
-
+    public Map<UUID, String> availableCampaigns() {
+        Map<UUID, String> availableCampaigns = new HashMap<>();
+        getUserGroups().forEach(userGroup -> {
+            userGroup.getCampaignList().forEach(campaign -> {
+                availableCampaigns.put(campaign.getId(), campaign.getName());
+            });
+        });
+        return availableCampaigns;
+    }
 }

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {useRole} from "../../data/RolesData";
+import {useRole} from "../../../data/RolesData";
 import {useLocation} from "react-router-dom";
-import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
+import {addKnownItem, removeKnownItem} from "../../../redux/ReducerActions";
 import {useDispatch} from "react-redux";
 import RoleAuthorities from "./RoleAuthorities";
-import TabHeader from "../main/TabHeader";
+import TabHeader from "../../main/TabHeader";
 import {Typography} from "@mui/joy";
 import RoleBasicInfo from "./RoleBasicInfo";
 
@@ -35,7 +35,6 @@ const RoleDetails = () => {
             {role && <TabHeader>
                 <div>
                     <Typography level={"h2"}>{role.name}</Typography>
-                    {/*<Typography>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>*/}
                 </div>
             </TabHeader>}
             {role && localRole && <div style={{

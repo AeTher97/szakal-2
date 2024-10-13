@@ -7,6 +7,7 @@ import org.iaeste.szakal2.models.entities.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -22,6 +23,7 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private List<Role> roles;
     private byte[] profilePicture;
+    private Map<UUID, String> campaigns;
 
     public static UserDTO fromUser(User user) {
         return UserDTO.builder()
@@ -34,6 +36,7 @@ public class UserDTO {
                 .createdAt(user.getCreatedAt())
                 .roles(user.getRoles())
                 .profilePicture(user.getProfilePicture())
+                .campaigns(user.availableCampaigns())
                 .build();
     }
 
