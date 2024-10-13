@@ -32,8 +32,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -176,7 +176,7 @@ public class UserService {
 
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
-        return usersRepository.findAll(pageable).map(UserDTO::fromUser);
+        return usersRepository.findAllByOrderBySurnameAsc(pageable).map(UserDTO::fromUser);
     }
 
     public List<UserDTO> searchUsers(String phrase) {
