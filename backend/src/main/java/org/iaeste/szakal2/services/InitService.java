@@ -7,6 +7,7 @@ import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.repositories.RolesRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
+import org.iaeste.szakal2.security.Authority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,20 +20,34 @@ import java.util.List;
 public class InitService {
 
     private static final List<AccessRight> viewingRights = List.of(
-            AccessRight.builder().code("user_viewing").description("Przeglądanie listy użytkowników").build(),
-            AccessRight.builder().code("role_viewing").description("Przeglądanie dostępnych ról").build());
+            AccessRight.builder().code(Authority.USER_VIEWING.getValue())
+                    .description(Authority.USER_VIEWING.getDescription()).build(),
+            AccessRight.builder().code(Authority.ROLE_VIEWING.getValue())
+                    .description(Authority.ROLE_VIEWING.getDescription()).build());
+
     private static final List<AccessRight> modificationRights = List.of(
-            AccessRight.builder().code("campaign_modification").description("Dodawanie akcji").build(),
-            AccessRight.builder().code("role_modification").description("Modyfikacja definicji roli").build(),
-            AccessRight.builder().code("user_role_granting").description("Modyfikacja roli użytkownika").build(),
-            AccessRight.builder().code("company_modification").description("Modyfikacja firm").build(),
-            AccessRight.builder().code("category_modification").description("Modyfikacja kategorii").build(),
-            AccessRight.builder().code("user_acceptance").description("Akceptowanie użytkowników").build(),
-            AccessRight.builder().code("user_management").description("Dezaktywowanie użytkowników").build(),
-            AccessRight.builder().code("journey_creation").description("Przypisywanie firm do siebie").build(),
-            AccessRight.builder().code("journey_creation_for_others").description("Przypisywanie firm do innych").build(),
-            AccessRight.builder().code("journey_modification_for_others").description("Edycja kontaktów innych").build(),
-            AccessRight.builder().code("app_settings").description("Ustawienia aplikacji").build()
+            AccessRight.builder().code(Authority.CAMPAIGN_MODIFICATION.getValue())
+                    .description(Authority.CAMPAIGN_MODIFICATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.ROLE_MODIFICATION.getValue())
+                    .description(Authority.ROLE_MODIFICATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.USER_ROLE_GRANTING.getValue())
+                    .description(Authority.USER_ROLE_GRANTING.getDescription()).build(),
+            AccessRight.builder().code(Authority.COMPANY_MODIFICATION.getValue())
+                    .description(Authority.COMPANY_MODIFICATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.CATEGORY_MODIFICATION.getValue())
+                    .description(Authority.CATEGORY_MODIFICATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.USER_ACCEPTANCE.getValue())
+                    .description(Authority.USER_ACCEPTANCE.getDescription()).build(),
+            AccessRight.builder().code(Authority.USER_MANAGEMENT.getValue())
+                    .description(Authority.USER_MANAGEMENT.getDescription()).build(),
+            AccessRight.builder().code(Authority.JOURNEY_CREATION.getValue())
+                    .description(Authority.JOURNEY_CREATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.JOURNEY_CREATION_FOR_OTHERS.getValue())
+                    .description(Authority.JOURNEY_CREATION_FOR_OTHERS.getDescription()).build(),
+            AccessRight.builder().code(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())
+                    .description(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getDescription()).build(),
+            AccessRight.builder().code(Authority.APP_SETTINGS.getValue())
+                    .description(Authority.APP_SETTINGS.getDescription()).build()
     );
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;

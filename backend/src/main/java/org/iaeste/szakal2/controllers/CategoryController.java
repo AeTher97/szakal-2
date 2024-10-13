@@ -24,20 +24,20 @@ public class CategoryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('category_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.categoryModification())")
     public CompanyCategory createCategory(@RequestBody @Valid CompanyCategoryCreationDTO companyCategoryCreationDTO) {
         return categoryService.createCategory(companyCategoryCreationDTO);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('category_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.categoryModification())")
     public CompanyCategory modifyCategory(@PathVariable("id") UUID id,
                                           @RequestBody @Valid CompanyCategoryCreationDTO companyCategoryCreationDTO) {
         return categoryService.modifyCategory(id, companyCategoryCreationDTO);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('category_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.categoryModification())")
     public void deleteCategory(@PathVariable("id") UUID categoryId) {
         categoryService.deleteCategory(categoryId);
     }

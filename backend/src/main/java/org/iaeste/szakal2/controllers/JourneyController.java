@@ -32,7 +32,7 @@ public class JourneyController {
 
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('journey_creation', 'journey_creation_for_others')")
+    @PreAuthorize("hasAnyAuthority(@authorityBean.journeyCreation(), @authorityBean.journeyCreationForOthers())")
     public ContactJourney createContactJourney(@RequestBody @Valid ContactJourneyCreationDTO contactJourneyCreationDTO) {
         if (AccessVerificationBean.isUser(contactJourneyCreationDTO.getUser().toString()) ||
                 AccessVerificationBean.hasRole("journey_creation_for_others")) {

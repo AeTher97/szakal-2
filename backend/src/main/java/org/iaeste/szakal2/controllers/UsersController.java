@@ -37,25 +37,25 @@ public class UsersController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('user_viewing')")
+    @PreAuthorize("hasAuthority(@authorityBean.userViewing())")
     public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAuthority('journey_creation_for_others')")
+    @PreAuthorize("hasAuthority(@authorityBean.journeyCreationForOthers())")
     public List<UserDTO> getUsers(@RequestParam String phrase) {
         return userService.searchUsers(phrase);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user_viewing') or @accessVerificationBean.isUser(#id.toString())")
+    @PreAuthorize("hasAuthority(@authorityBean.userViewing()) or @accessVerificationBean.isUser(#id.toString())")
     public UserDTO getUser(@PathVariable("id") UUID id) {
         return userService.getUserDTOById(id);
     }
 
     @PutMapping("/{id}/roles")
-    @PreAuthorize("hasAuthority('user_role_granting')")
+    @PreAuthorize("hasAuthority(@authorityBean.userRoleGranting())")
     public UserDTO updateUserRoles(@PathVariable("id") UUID id,
                                    @RequestBody UserRoleModificationDTO userRoleModificationDTO) {
         return userService.modifyUserRoles(id, userRoleModificationDTO);
@@ -69,14 +69,14 @@ public class UsersController {
 
 
     @PutMapping("/{id}/accept")
-    @PreAuthorize("hasAuthority('user_acceptance')")
+    @PreAuthorize("hasAuthority(@authorityBean.userAcceptance())")
     public UserDTO acceptUser(@PathVariable("id") UUID id) {
         return userService.acceptUser(id);
     }
 
 
     @PutMapping("/{id}/status")
-    @PreAuthorize("hasAuthority('user_management')")
+    @PreAuthorize("hasAuthority(@authorityBean.userManagement())")
     public UserDTO updateUserStatus(@PathVariable("id") UUID id, @RequestBody UpdateUserStatusDTO updateUserStatusDTO) {
         return userService.updateUserStatus(id, updateUserStatusDTO);
     }
@@ -122,7 +122,7 @@ public class UsersController {
 
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('user_acceptance')")
+    @PreAuthorize("hasAuthority(@authorityBean.userAcceptance())")
     public ResponseEntity<Object> deleteUserIfNotAccepted(@PathVariable("id") UUID id) {
         userService.deleteUserIfNotAccepted(id);
         return ResponseEntity.ok().build();

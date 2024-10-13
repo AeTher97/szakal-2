@@ -28,31 +28,31 @@ public class CompanyController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('company_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
     public Company createCompany(@RequestBody @Valid CompanyCreationDTO companyCreationDTO) {
         return companyService.createCompany(companyCreationDTO);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('company_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
     public void deleteCompany(@PathVariable("id") UUID id) {
         companyService.deleteCompany(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('company_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
     public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
         return companyService.updateCompany(id, companyModificationDTO);
     }
 
     @PutMapping("/{id}/contactPerson")
-    @PreAuthorize("hasAuthority('company_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
     public Company addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
         return companyService.addContactPerson(id, contactPersonCreationDTO);
     }
 
     @PutMapping("/{companyId}/contactPerson/{contactPersonId}")
-    @PreAuthorize("hasAuthority('company_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
     public Company modifyContactPerson(@PathVariable("companyId") UUID companyId, @PathVariable("contactPersonId") UUID contactPersonId, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
         return companyService.modifyContactPerson(companyId, contactPersonId, contactPersonCreationDTO);
     }
