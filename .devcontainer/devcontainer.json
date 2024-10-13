@@ -1,0 +1,20 @@
+{
+   "image":"mcr.microsoft.com/devcontainers/universal:2",
+   "features":{
+      "ghcr.io/devcontainers/features/docker-in-docker:2":{
+         
+      }
+   },
+   "forwardPorts":[
+      3000,
+      8080
+   ],
+   "postStartCommand":"/bin/bash .devcontainer/startup.sh",
+   "customizations":{
+      "vscode":{
+         "extensions":[
+            "vscjava.vscode-java-pack"
+         ]
+      }
+   }
+}

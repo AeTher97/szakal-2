@@ -42,6 +42,8 @@ public class InitService {
                     .description(Authority.USER_MANAGEMENT.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_CREATION.getValue())
                     .description(Authority.JOURNEY_CREATION.getDescription()).build(),
+            AccessRight.builder().code(Authority.USER_GROUP_MODIFICATION.getValue())
+                    .description(Authority.USER_GROUP_MODIFICATION.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_CREATION_FOR_OTHERS.getValue())
                     .description(Authority.JOURNEY_CREATION_FOR_OTHERS.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())
@@ -54,7 +56,9 @@ public class InitService {
     private final UsersRepository usersRepository;
     private final AccessRightRepository accessRightRepository;
 
-    public InitService(RolesRepository rolesRepository, UsersRepository usersRepository, AccessRightRepository accessRightRepository) {
+    public InitService(RolesRepository rolesRepository,
+                       UsersRepository usersRepository,
+                       AccessRightRepository accessRightRepository) {
         this.rolesRepository = rolesRepository;
         this.usersRepository = usersRepository;
         this.accessRightRepository = accessRightRepository;
