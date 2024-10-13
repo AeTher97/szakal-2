@@ -10,6 +10,7 @@ import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
+import org.iaeste.szakal2.security.Authority;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
@@ -63,7 +64,7 @@ public class JourneyService {
     @Transactional
     public ContactJourney updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole("journey_modification_for_others") ||
+        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
             return contactJourneyRepository.save(contactJourney);
@@ -75,7 +76,7 @@ public class JourneyService {
     @Transactional
     public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole("journey_modification_for_others") ||
+        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
             contactJourney.setContactStatus(contactEventDTO.getContactStatus());
@@ -95,7 +96,7 @@ public class JourneyService {
     @Transactional
     public ContactJourney finishJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole("journey_modification_for_others") ||
+        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(true);
             return contactJourneyRepository.save(contactJourney);
@@ -107,7 +108,7 @@ public class JourneyService {
     public ContactJourney removeUserFromJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
         if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
-                AccessVerificationBean.hasRole("journey_modification_for_others")) {
+                AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())) {
             contactJourney.setUser(null);
             return contactJourneyRepository.save(contactJourney);
         } else {
