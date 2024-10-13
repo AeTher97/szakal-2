@@ -15,7 +15,6 @@ import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
 
@@ -54,7 +53,7 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                 <CardContent orientation={"horizontal"} style={{flex: 1, flexWrap: "wrap", justifyContent: mobile ?  "center" : "flex-start"}}>
                     <div style={{display: "flex", flexDirection:"column", alignItems: "center", gap: 5}}>
                         <Avatar size={"lg"} sx={{width: mobile ? 250 : 80, height: mobile? 250 : 80}}
-                                src={user.profilePicture ? `data:image;base64,${user.profilePicture}` : ""}>
+                                src={user.profilePicture ? user.profilePicture : ""}>
                             {user.name[0]} {user.surname[0]}
                         </Avatar>
                         {isUser && <Button size={"sm"} onClick={() => setProfilePictureDialogOpen(true)}>Zmień</Button>}

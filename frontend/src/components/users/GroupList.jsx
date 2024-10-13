@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {Card, CardContent, CardOverflow, CircularProgress, Divider, Typography} from "@mui/joy";
+import {Card, CardContent, CardOverflow, CircularProgress, Divider, IconButton, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
 import LinkWithRouter from "../../utils/LinkWithRouter";
-import {useGroupsList} from "../../data/GroupData";
+import {useGroupsList} from "../../data/GroupsData";
+import AddGroupDialog from "./groups/AddGroupDialog";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 const GroupList = () => {
 
-    const {groups, loading} = useGroupsList();
+    const {groups, addGroup, deleteGroup, loading} = useGroupsList();
     const {hasRight} = useAccessRightsHelper();
 
-    console.log(groups)
+    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz usunąć grupę?")
+    const [addGroupOpen, setAddGroupOpen] = useState(false);
+
     return (
         <Card variant={"outlined"} sx={{flex: 2, minWidth: 200}}>
             {groups &&
@@ -23,8 +28,9 @@ const GroupList = () => {
                         </div>
                         <div>
                             <Button
-                                // onClick={() => setAddRoleOpen(true)}
-                            ><AddIcon/>Dodaj</Button>
+                                onClick={() => setAddGroupOpen(true)}>
+                                <AddIcon/>Dodaj
+                            </Button>
                         </div>
                     </CardContent>
                     <CardContent>
@@ -34,53 +40,50 @@ const GroupList = () => {
                         <Divider inset={"context"}/>
                         {groups.map((group, index) => {
                             return <div key={group.id}>
-                                <LinkWithRouter to={`groups/${group.id}`}
-                                                key={group.id}
-                                                style={{width: "100%"}}
-                                                underline={"none"}>
-                                    <div style={{
-                                        display: "flex",
-                                        width: "100%",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                        gap: 10,
-                                        flexWrap: "wrap"
-                                    }}>
+                                <div style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    paddingBottom: 10,
+                                    paddingTop: 10,
+                                    gap: 10,
+                                }}>
+                                    <LinkWithRouter to={`groups/${group.id}`}
+                                                    key={group.id}
+                                                    style={{width: "100%"}}
+                                                    underline={"none"}>
                                         <div style={{
                                             display: "flex",
                                             flexDirection: "column",
                                             justifyContent: "center"
                                         }}>
                                             <Typography level={"title-md"}>{group.name}</Typography>
-                                            <Typography level={"body-sm"}>Użytkownicy: {group.userList.length}</Typography>
-                                            <Typography level={"body-sm"}>Akcje: {group.campaignList.length}</Typography>
+                                            <Typography
+                                                level={"body-sm"}>Użytkownicy: {group.userList.length}</Typography>
+                                            <Typography
+                                                level={"body-sm"}>Akcje: {group.campaignList.length}</Typography>
                                         </div>
-                                        <div style={{
-                                            flex: 5,
-                                            display: "flex",
-                                            justifyContent: "flex-end",
-                                            flexWrap: "wrap",
-                                            gap: 5
-                                        }}>
-                                            {/*{role.accessRights.map(accessRight =>*/}
-                                            {/*    <Chip key={accessRight.id}*/}
-                                            {/*          sx={{backgroundColor: uuidToColor(accessRight.id)}}>*/}
-                                            {/*        {accessRight.description}*/}
-                                            {/*    </Chip>)}*/}
-                                        </div>
+                                    </LinkWithRouter>
 
+                                    <div>
+                                        <IconButton>
+                                            <DeleteIcon onClick={() => {
+                                                openDialog(() => {
+                                                    deleteGroup(group.id)
+                                                })
+                                            }}/>
+                                        </IconButton>
                                     </div>
-                                </LinkWithRouter>
 
+                                </div>
                                 {index !== groups.length - 1 && <Divider inset={"context"}/>}
-
                             </div>
                         })}
                     </CardContent>
                 </CardOverflow>}
-            {/*<AddRoleDialog open={addRoleOpen} addRole={addRole} close={() => setAddRoleOpen(false)}/>*/}
+            <AddGroupDialog open={addGroupOpen} addRole={addGroup} close={() => setAddGroupOpen(false)}/>
+            {render()}
         </Card>
     );
 };

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 public class UserGroupService {
 
@@ -72,10 +70,18 @@ public class UserGroupService {
             userService.saveUserList(usersToRemove);
             existingUserGroup.setUserList(userService.getUsers(userGroup.getUserList()));
         }
+        if (userGroup.getName() != null) {
+            existingUserGroup.setName(userGroup.getName());
+        }
         return userGroupRepository.save(existingUserGroup);
     }
 
+    @Transactional
     public void deleteUserGroup(UUID id) {
+        UserGroup existingUserGroup = getUserGroup(id);
+        List<User> usersInExistingGroup = existingUserGroup.getUserList();
+        usersInExistingGroup.forEach(user -> user.getUserGroups().remove(existingUserGroup));
+        userService.saveUserList(usersInExistingGroup);
         userGroupRepository.deleteById(id);
     }
 

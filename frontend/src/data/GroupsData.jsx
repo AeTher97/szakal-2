@@ -1,21 +1,32 @@
 import {useState} from "react";
-import {useData, usePost, usePut} from "./UseData";
+import {useData, useDelete, usePost, usePut} from "./UseData";
 
 export const useGroupsList = () => {
     const [groups, setGroups] = useState([]);
     const {loading} = useData(`/groups`, (data) => setGroups(data));
 
-    const {post} = usePost(`/roles`, (data) => setGroups(current => {
+    const {post} = usePost(`/groups`, (data) => setGroups(current => {
         return [...current, data]
     }))
 
-    // const addRole = (name, description) => {
-    //     post({
-    //         name, description, accessRights: []
-    //     })
-    // }
+    const {deleteReq} = useDelete(`/groups`)
 
-    return {groups, loading}
+    const addGroup = (name) => {
+        post({
+            name
+        })
+    }
+
+    const deleteGroup = (id) => {
+        deleteReq({}, `/groups/${id}`)
+            .then(() => {
+                setGroups(state => {
+                    return [...state.filter(group => group.id !== id)]
+                })
+            });
+    }
+
+    return {groups, addGroup, deleteGroup, loading}
 }
 
 export const useGroup = (id) => {

@@ -43,7 +43,7 @@ public class UsersController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAuthority(@authorityBean.journeyCreationForOthers())")
+    @PreAuthorize("hasAuthority('journey_creation_for_others') or hasAuthority('user_group_modification')")
     public List<UserDTO> getUsers(@RequestParam String phrase) {
         return userService.searchUsers(phrase);
     }

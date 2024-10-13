@@ -164,7 +164,7 @@ const JourneyDetails = () => {
                                         <div style={{display: "flex", gap: 5}}>
                                             <UserAvatar name={event.user.name}
                                                         surname={event.user.surname}
-                                                        image={`data:image;base64,${event.user.profilePicture}`}
+                                                        image={event.user.profilePicture}
                                                         text={false}
                                                         size={"sm"}/>
                                             <div>
@@ -227,7 +227,7 @@ const JourneyDetails = () => {
                                 <div style={{display: "flex", gap: 5, alignItems: "center"}}>
                                     <UserAvatar name={comment.user.name}
                                                 surname={comment.user.surname}
-                                                image={`data:image;base64,${comment.user.profilePicture}`}
+                                                image={comment.user.profilePicture}
                                                 overrideMobile={true}
                                                 size={"sm"}/>
 

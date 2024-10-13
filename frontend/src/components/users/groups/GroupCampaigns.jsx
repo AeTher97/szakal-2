@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Autocomplete, Card, CardActions, CardContent, Divider, IconButton, Typography} from "@mui/joy";
 import {useCampaignsList} from "../../../data/CampaignData";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,6 +9,7 @@ const CHOOSE_VALUE = {id: "choose", label: "Wybierz", disabled: true};
 const GroupCampaigns = ({groupCampaigns, save, saveLoading, addCampaign, deleteCampaign}) => {
 
     const {campaigns, loading} = useCampaignsList();
+    const [inputValue, setInputValue] = useState("");
 
     const getOptionDisabled = (option) => {
         return option.disabled
@@ -32,6 +33,10 @@ const GroupCampaigns = ({groupCampaigns, save, saveLoading, addCampaign, deleteC
             <CardContent>
                 <Typography level={"title-md"}>Akcje grupy</Typography>
                 <Divider style={{marginTop: 10}} inset={"context"}/>
+                {groupCampaigns.length === 0 &&
+                    <div style={{display: "flex", justifyContent: "center", padding: 6, paddingBottom: 8}}>
+                        <Typography>Brak akcji</Typography>
+                    </div>}
                 {groupCampaigns.map((campaign, index) => {
                     return <div key={campaign.id}>
                         <div style={{
@@ -54,8 +59,13 @@ const GroupCampaigns = ({groupCampaigns, save, saveLoading, addCampaign, deleteC
                               options={campaignsOptions}
                               getOptionDisabled={getOptionDisabled}
                               isOptionEqualToValue={isOptionEqualToValue}
+                              inputValue={inputValue}
+                              onInputChange={(e, value) => {
+                                  setInputValue(value)
+                              }}
                               onChange={(e, inputValue) => {
                                   addCampaign(campaigns.find(campaign => campaign.id === inputValue.id));
+                                  setInputValue("")
                               }}
                 />
             </CardContent>

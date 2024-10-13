@@ -5,7 +5,7 @@ import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useRolesList} from "../../data/RolesData";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
-import AddRoleDialog from "./AddRoleDialog";
+import AddRoleDialog from "./roles/AddRoleDialog";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {ROLE_MODIFICATION} from "../../utils/AccessRights";
 

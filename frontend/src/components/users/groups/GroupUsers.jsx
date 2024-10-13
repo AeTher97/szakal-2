@@ -43,8 +43,9 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
             <CardContent style={{flex: 0, padding: 16, paddingBottom: 0}}>
                 <Typography level={"title-md"}>Użytkownicy w grupie</Typography>
             </CardContent>
+            <Divider inset={"context"}/>
             <CardContent>
-                <List variant={"plain"} sx={{paddingBottom: 0}}>
+                {users.length > 0 && <List variant={"plain"} sx={{paddingBottom: 0, paddingTop: 0}}>
                     <ListItem>
                         <ListItemContent>
                             <Button variant={"plain"} size={"sm"}>Imię i Nazwisko</Button>
@@ -58,8 +59,8 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
                                     <ListItemDecorator>
                                         <UserAvatar
                                             name={user.name} surname={user.surname}
-                                            image={`data:image;base64,${user.profilePicture}`}
-                                            overrideMobile={true}/>
+                                            image={user.profilePicture}
+                                            overrideMobile={true} bold={false}/>
                                     </ListItemDecorator>
                                     <ListItemContent>
                                         <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -77,13 +78,14 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
 
                         </div>
                     })}
-                    <div style={{display: "flex", justifyContent: "center"}}>
-                        {users && users.length === 0 && <Typography>Brak użytkowników w grupie</Typography>}
-                    </div>
                     {pageNumber > 1 && <Pagination currentPage={currentPage} concise={true} numberOfPages={pageNumber}
                                                    margin={"10px"}
                                                    setPage={(page) => setCurrentPage(page)}/>}
-                </List>
+                </List>}
+                {users && users.length === 0 &&
+                    <div style={{display: "flex", justifyContent: "center", padding: 6, paddingBottom: 10}}>
+                        <Typography>Brak użytkowników w grupie</Typography>
+                    </div>}
                 <Divider/>
             </CardContent>
             <CardContent style={{paddingLeft: 16, paddingRight: 16}}>

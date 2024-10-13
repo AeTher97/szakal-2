@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../../redux/ReducerActions";
 import TabHeader from "../../main/TabHeader";
 import {LinearProgress, Typography} from "@mui/joy";
-import {useGroup} from "../../../data/GroupData";
+import {useGroup} from "../../../data/GroupsData";
 import GroupUsers from "./GroupUsers";
 import GroupCampaigns from "./GroupCampaigns";
 

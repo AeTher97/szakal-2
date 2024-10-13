@@ -7,7 +7,7 @@ import TabHeader from "../main/TabHeader";
 import UserDetails from "./UserDetails";
 import RoleDetails from "./roles/RoleDetails";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {ROLE_VIEWING, USER_VIEWING} from "../../utils/AccessRights";
+import {ROLE_VIEWING, USER_GROUP_MODIFICATION, USER_VIEWING} from "../../utils/AccessRights";
 import GroupDetails from "./groups/GroupDetails";
 import GroupList from "./GroupList";
 
@@ -25,7 +25,7 @@ const UsersHome = () => {
                     <div style={{display: "flex", flexWrap: "wrap", gap: 10}}>
                         {hasRight(USER_VIEWING) && <UsersList/>}
                         {hasRight(ROLE_VIEWING) && <RolesList/>}
-                        <GroupList/>
+                        {hasRight(USER_GROUP_MODIFICATION) && <GroupList/>}
                     </div>
                 </div>}/>
             <Route path={"/:id"} element={<UserDetails/>}/>

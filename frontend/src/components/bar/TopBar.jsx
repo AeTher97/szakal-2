@@ -42,7 +42,12 @@ const TopBar = () => {
             setCampaigns(campaigns);
 
             if (campaigns && campaigns.length > 0) {
-                dispatch(changeCampaignAction(campaigns[0].id))
+                if (getLocalStorageCampaign() && campaigns.map(campaign => campaign.id)
+                    .includes(getLocalStorageCampaign())) {
+                    dispatch(changeCampaignAction(getLocalStorageCampaign()));
+                } else {
+                    dispatch(changeCampaignAction(campaigns[0].id))
+                }
             }
         }, [loading, user]);
 
@@ -54,6 +59,10 @@ const TopBar = () => {
                 setCampaignValue(campaignsOptions.find(campaign => campaign.id === currentCampaign));
             }
         }, [currentCampaign, campaigns])
+
+    const getLocalStorageCampaign = () => {
+        return localStorage.getItem("defaultCampaign")
+    }
 
         const getOptionDisabled = (option) => {
             return option.disabled
@@ -88,7 +97,7 @@ const TopBar = () => {
                               }}
                 />
 
-                {user && <UserMenu name={name} surname={surname} image={`data:image;base64,${user.profilePicture}`}/>}
+                {user && <UserMenu name={name} surname={surname} image={user.profilePicture}/>}
             </div>
         );
     }

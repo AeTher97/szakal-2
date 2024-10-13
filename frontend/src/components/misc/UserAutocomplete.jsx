@@ -62,13 +62,13 @@ const UserAutocomplete = ({
                         surname: user.surname,
                         id: user.id,
                         email: user.email,
-                        image: `data:image;base64,${user.profilePicture}`
+                        profilePicture: user.profilePicture
                     }
                 }) : []}
             renderOption={(props, option) => (
                 <AutocompleteOption {...props}>
                     <ListItemDecorator style={{marginInlineEnd: 5}}>
-                        <UserAvatar name={option.name} surname={option.surname} image={option.image}
+                        <UserAvatar name={option.name} surname={option.surname} image={option.profilePicture}
                                     text={false}/>
                     </ListItemDecorator>
                     <ListItemContent sx={{fontSize: 'sm'}}>
