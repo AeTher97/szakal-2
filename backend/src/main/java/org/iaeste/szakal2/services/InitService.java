@@ -21,32 +21,33 @@ public class InitService {
 
     private static final List<AccessRight> viewingRights = List.of(
             AccessRight.builder().code(Authority.USER_VIEWING.getValue())
-                    .description("Przeglądanie listy użytkowników").build(),
-            AccessRight.builder().code(Authority.ROLE_VIEWING.getValue()
-            ).description("Przeglądanie dostępnych ról").build());
+                    .description(Authority.USER_VIEWING.getDescription()).build(),
+            AccessRight.builder().code(Authority.ROLE_VIEWING.getValue())
+                    .description(Authority.ROLE_VIEWING.getDescription()).build());
+
     private static final List<AccessRight> modificationRights = List.of(
             AccessRight.builder().code(Authority.CAMPAIGN_MODIFICATION.getValue())
-                    .description("Dodawanie akcji").build(),
+                    .description(Authority.CAMPAIGN_MODIFICATION.getDescription()).build(),
             AccessRight.builder().code(Authority.ROLE_MODIFICATION.getValue())
-                    .description("Modyfikacja definicji roli").build(),
+                    .description(Authority.ROLE_MODIFICATION.getDescription()).build(),
             AccessRight.builder().code(Authority.USER_ROLE_GRANTING.getValue())
-                    .description("Modyfikacja roli użytkownika").build(),
+                    .description(Authority.USER_ROLE_GRANTING.getDescription()).build(),
             AccessRight.builder().code(Authority.COMPANY_MODIFICATION.getValue())
-                    .description("Modyfikacja firm").build(),
+                    .description(Authority.COMPANY_MODIFICATION.getDescription()).build(),
             AccessRight.builder().code(Authority.CATEGORY_MODIFICATION.getValue())
-                    .description("Modyfikacja kategorii").build(),
+                    .description(Authority.CATEGORY_MODIFICATION.getDescription()).build(),
             AccessRight.builder().code(Authority.USER_ACCEPTANCE.getValue())
-                    .description("Akceptowanie użytkowników").build(),
+                    .description(Authority.USER_ACCEPTANCE.getDescription()).build(),
             AccessRight.builder().code(Authority.USER_MANAGEMENT.getValue())
-                    .description("Dezaktywowanie użytkowników").build(),
+                    .description(Authority.USER_MANAGEMENT.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_CREATION.getValue())
-                    .description("Przypisywanie firm do siebie").build(),
+                    .description(Authority.JOURNEY_CREATION.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_CREATION_FOR_OTHERS.getValue())
-                    .description("Przypisywanie firm do innych").build(),
+                    .description(Authority.JOURNEY_CREATION_FOR_OTHERS.getDescription()).build(),
             AccessRight.builder().code(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())
-                    .description("Edycja kontaktów innych").build(),
-            AccessRight.builder().code(Authority.APP_SETTINGS.getValue()
-            ).description("Ustawienia aplikacji").build()
+                    .description(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getDescription()).build(),
+            AccessRight.builder().code(Authority.APP_SETTINGS.getValue())
+                    .description(Authority.APP_SETTINGS.getDescription()).build()
     );
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;
