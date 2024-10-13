@@ -24,13 +24,13 @@ public class RoleController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('role_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.roleModification())")
     public Role createRole(@RequestBody @Valid RoleCreationDto roleCreationDto) {
         return roleService.createRole(roleCreationDto);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('role_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.roleModification())")
     public Role updateRole(@PathVariable("id") UUID id, @RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
         return roleService.updateRole(id, roleUpdateDTO);
     }
@@ -41,13 +41,13 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('role_viewing')")
+    @PreAuthorize("hasAuthority(@authorityBean.roleViewing())")
     public Role getRole(@PathVariable("id") UUID id) {
         return roleService.getRoleById(id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('role_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.roleModification())")
     public void deleteRole(@PathVariable("id") UUID id) {
         roleService.deleteRole(id);
     }

@@ -27,7 +27,7 @@ public class ApplicationSettingsController {
     }
 
     @PutMapping("/{name}")
-    @PreAuthorize("hasAuthority('app_settings')")
+    @PreAuthorize("hasAuthority(@authorityBean.appSettings())")
     public List<ApplicationSetting> setApplicationSetting(@PathVariable("name") String name,
                                                           @RequestBody @Valid SettingDTO settingDTO){
         return applicationSettingService.setApplicationSetting(name, settingDTO);

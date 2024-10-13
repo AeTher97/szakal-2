@@ -26,13 +26,13 @@ public class CampaignController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('campaign_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.campaignModification())")
     public Campaign createCampaign(@RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
         return campaignService.createCampaign(campaignCreationDTO);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('campaign_modification')")
+    @PreAuthorize("hasAuthority(@authorityBean.campaignModification())")
     public Campaign modifyCampaign(@PathVariable("id") UUID id, @RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
         return campaignService.modifyCampaign(id, campaignCreationDTO);
     }
@@ -56,7 +56,8 @@ public class CampaignController {
                                                            @RequestParam(required = false) String user,
                                                            @RequestParam int pageNumber) {
         return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
-                ContactJourneySearch.builder()
+                ContactJourneySearch
+                        .builder()
                         .companyName(companyName)
                         .campaignId(id)
                         .status(status)
