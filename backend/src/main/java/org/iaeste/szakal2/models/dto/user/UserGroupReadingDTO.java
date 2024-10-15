@@ -15,6 +15,7 @@ public class UserGroupReadingDTO {
     private List<User> userList;
     private List<Campaign> campaignList;
     private String name;
+    private String entryCode;
 
     public static UserGroupReadingDTO fromEntity(UserGroup userGroup) {
         UserGroupReadingDTO userGroupReadingDTO = new UserGroupReadingDTO();
@@ -22,6 +23,7 @@ public class UserGroupReadingDTO {
         userGroupReadingDTO.setName(userGroup.getName());
         userGroupReadingDTO.setUserList(userGroup.getUserList());
         userGroupReadingDTO.setCampaignList(userGroup.getCampaignList());
+        userGroupReadingDTO.setEntryCode(userGroup.getEntryCode());
         return userGroupReadingDTO;
     }
 }

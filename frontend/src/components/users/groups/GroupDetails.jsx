@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {addKnownItem, removeKnownItem} from "../../../redux/ReducerActions";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addKnownItem, removeKnownItem } from "../../../redux/ReducerActions";
 import TabHeader from "../../main/TabHeader";
-import {LinearProgress, Typography} from "@mui/joy";
-import {useGroup} from "../../../data/GroupsData";
+import { LinearProgress, Typography } from "@mui/joy";
+import { useGroup } from "../../../data/GroupsData";
 import GroupUsers from "./GroupUsers";
 import GroupCampaigns from "./GroupCampaigns";
+import JoinGroupDialog from './JoinGroupDialog';
 
 const GroupDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
-    const {group, loading, updateUsers, updateCampaigns, updateUsersLoading, updateCampaignsLoading}
+    const { group, loading, updateUsers, updateCampaigns, updateUsersLoading, updateCampaignsLoading }
         = useGroup(location.pathname.split("/")[4]);
     const [localGroup, setLocalGroup] = useState(null);
 
@@ -77,11 +78,12 @@ const GroupDetails = () => {
     }
 
     return (
-        <div style={{overflow: "auto"}}>
+        <div style={{ overflow: "auto" }}>
             {group && <TabHeader>
                 <Typography level={"h2"}>Grupa {group.name}</Typography>
+                <Typography>Kod dostępu: {group.entryCode}</Typography>
             </TabHeader>}
-            {loading && <LinearProgress/>}
+            {loading && <LinearProgress />}
             {group && localGroup && <div style={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -92,12 +94,12 @@ const GroupDetails = () => {
                 overflow: "hidden"
             }}>
                 {localGroup && <GroupUsers localGroup={localGroup}
-                                           addUser={addUser} deleteUser={deleteUser}
-                                           save={saveUsers} saveLoading={updateUsersLoading}
+                    addUser={addUser} deleteUser={deleteUser}
+                    save={saveUsers} saveLoading={updateUsersLoading}
                 />}
                 {localGroup && <GroupCampaigns groupCampaigns={localGroup.campaignList}
-                                               save={saveCampaigns} saveLoading={updateCampaignsLoading}
-                                               addCampaign={addCampaign} deleteCampaign={deleteCampaign}/>}
+                    save={saveCampaigns} saveLoading={updateCampaignsLoading}
+                    addCampaign={addCampaign} deleteCampaign={deleteCampaign} />}
             </div>}
         </div>
     );

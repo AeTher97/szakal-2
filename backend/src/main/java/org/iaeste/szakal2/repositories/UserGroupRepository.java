@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface UserGroupRepository extends JpaRepository<UserGroup, UUID> {
     UserGroup getUserGroupByName(String name);
+
+    UserGroup getUserGroupByEntryCode(String entryCode);
 }

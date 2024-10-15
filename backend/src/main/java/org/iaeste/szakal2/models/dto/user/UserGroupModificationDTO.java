@@ -1,4 +1,4 @@
-package org.iaeste.szakal2.models.dto;
+package org.iaeste.szakal2.models.dto.user;
 
 import lombok.Data;
 import org.iaeste.szakal2.models.entities.Campaign;

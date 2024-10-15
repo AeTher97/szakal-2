@@ -1,6 +1,7 @@
 package org.iaeste.szakal2.controllers;
 
-import org.iaeste.szakal2.models.dto.UserGroupModificationDTO;
+import org.iaeste.szakal2.models.dto.user.JoinGroupDTO;
+import org.iaeste.szakal2.models.dto.user.UserGroupModificationDTO;
 import org.iaeste.szakal2.models.dto.user.UserGroupReadingDTO;
 import org.iaeste.szakal2.services.UserGroupService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,11 @@ public class UserGroupsController {
     @PreAuthorize("hasAuthority('user_group_modification')")
     public UserGroupModificationDTO createUserGroup(@RequestBody UserGroupModificationDTO userGroup) {
         return UserGroupModificationDTO.fromEntity(userGroupService.createUserGroup(userGroup));
+    }
+
+    @PostMapping("/join")
+    public void joinGroup(@RequestBody JoinGroupDTO joinGroupDTO) {
+        userGroupService.joinUserGroup(joinGroupDTO.getEntryCode());
     }
 
     @GetMapping

@@ -1,28 +1,47 @@
 package org.iaeste.szakal2.services;
 
 import jakarta.transaction.Transactional;
+
+import org.apache.catalina.security.SecurityUtil;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.dto.UserGroupModificationDTO;
+import org.iaeste.szakal2.models.dto.user.UserGroupModificationDTO;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.models.entities.UserGroup;
 import org.iaeste.szakal2.repositories.UserGroupRepository;
+import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
 public class UserGroupService {
 
+    private static final int CODE_LENGTH = 7;
+
     private final UserGroupRepository userGroupRepository;
     private final UserService userService;
     private final CampaignService campaignService;
 
-    public UserGroupService(UserGroupRepository userGroupRepository, UserService userService, CampaignService campaignService) {
+    public UserGroupService(UserGroupRepository userGroupRepository, UserService userService,
+            CampaignService campaignService) {
         this.userGroupRepository = userGroupRepository;
         this.userService = userService;
         this.campaignService = campaignService;
+    }
+
+    @Transactional
+    public void joinUserGroup(String entryCode) {
+        UserGroup userGroup = getUserGroup(entryCode);
+        User user = userService.getUserById(SecurityUtils.getUserId());
+        if(!userGroup.getUserList().contains(user)){
+            userGroup.getUserList().add(user);
+            user.getUserGroups().add(userGroup);
+            userGroupRepository.save(userGroup);
+            userService.saveUserList(List.of(user));
+        }
     }
 
     @Transactional
@@ -32,6 +51,11 @@ public class UserGroupService {
         }
         UserGroup userGroupEntity = new UserGroup();
         userGroupEntity.setName(userGroup.getName());
+        String entryCode = generateEntryCode(CODE_LENGTH);
+        while (userGroupRepository.getUserGroupByEntryCode(entryCode) != null) {
+            entryCode = generateEntryCode(CODE_LENGTH);
+        }
+        userGroupEntity.setEntryCode(entryCode);
         List<User> userList = null;
 
         if (userGroup.getUserList() != null) {
@@ -92,5 +116,25 @@ public class UserGroupService {
 
     public List<UserGroup> getUserGroups() {
         return userGroupRepository.findAll();
+    }
+
+    private UserGroup getUserGroup(String entryCode) {
+        UserGroup userGroup = userGroupRepository.getUserGroupByEntryCode(entryCode);
+        if(userGroup == null){
+            throw new ResourceNotFoundException(STR."User group with entry code \{entryCode} not found");
+        }
+        return userGroup;
+    }
+
+    private String generateEntryCode(int length) {
+        int leftLimit = 48;
+        int rightLimit = 57;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        return buffer.toString();
     }
 }

@@ -54,3 +54,17 @@ export const useGroup = (id) => {
 
     return {group, updateUsers, updateCampaigns, loading, updateUsersLoading, updateCampaignsLoading}
 }
+
+export const useJoinGroup = () => {
+
+    const {post, loading} = usePost(`/groups/join`,
+        (data) => {});
+
+    const joinGroup = (entryCode) => {
+        return post({
+            entryCode
+        })
+    }
+
+    return joinGroup;
+}

@@ -36,4 +36,6 @@ public class UserGroup {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> userList = new ArrayList<>();
+
+    private String entryCode;
 }
