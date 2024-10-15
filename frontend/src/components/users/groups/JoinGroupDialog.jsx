@@ -140,7 +140,7 @@ const JoinGroupDialog = ({open, close}) => {
                             }
 
                             joinGroup(code.join("")).then((res) => {
-                                dispatch(showSuccess("Dołączono do grupy"));
+                                dispatch(showSuccess("Dołączono do grupy " + res.name));
                                 dispatch(reloadAction())
                                 setCode(INITIAL_STATE);
                                 close();
