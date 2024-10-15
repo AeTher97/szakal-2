@@ -24,8 +24,8 @@ const UsersHome = () => {
                     </TabHeader>
                     <div style={{display: "flex", flexWrap: "wrap", gap: 10}}>
                         {hasRight(USER_VIEWING) && <UsersList/>}
-                        {hasRight(ROLE_VIEWING) && <RolesList/>}
                         {hasRight(USER_GROUP_MODIFICATION) && <GroupList/>}
+                        {hasRight(ROLE_VIEWING) && <RolesList/>}
                     </div>
                 </div>}/>
             <Route path={"/:id"} element={<UserDetails/>}/>

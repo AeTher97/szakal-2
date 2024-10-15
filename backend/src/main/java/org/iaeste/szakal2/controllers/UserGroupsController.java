@@ -27,8 +27,8 @@ public class UserGroupsController {
     }
 
     @PostMapping("/join")
-    public void joinGroup(@RequestBody JoinGroupDTO joinGroupDTO) {
-        userGroupService.joinUserGroup(joinGroupDTO.getEntryCode());
+    public UserGroupReadingDTO joinGroup(@RequestBody JoinGroupDTO joinGroupDTO) {
+        return UserGroupReadingDTO.fromEntity(userGroupService.joinUserGroup(joinGroupDTO.getEntryCode()));
     }
 
     @GetMapping

@@ -20,6 +20,7 @@ export const SWITCH_THEME = "SWITCH_THEME"
 export const SWITCH_CAMPAIGN = "SWITCH_CAMPAIGN"
 export const ADD_ITEM = "ADD_ITEM"
 export const REMOVE_ITEM = "REMOVE_ITEM"
+export const REFRESH = "REFRESH"
 
 const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -77,7 +78,8 @@ const emptyState = {
     error: null,
     email: null,
     name: null,
-    surname: null
+    surname: null,
+    refresh: 0
 }
 
 const initialState = {
@@ -123,6 +125,11 @@ function authReducer(state = initialState, action) {
         case LOGOUT:
             clearLocalStorage();
             return emptyState;
+        case REFRESH:
+            return {
+                ...state,
+                refresh: state.refresh + 1
+            }
         case REFRESH_ATTEMPT:
         default:
             return state;

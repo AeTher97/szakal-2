@@ -25,11 +25,11 @@ export const useUsersSearch = (phrase) => {
 
 }
 
-export const useUserData = (id) => {
+export const useUserData = (id, refresh) => {
     const [user, setUser] = useState();
 
     const {loading} = useData(`/users/${id}`,
-        (data) => setUser(data), [id])
+        (data) => setUser(data), [id, refresh])
 
     const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`, (content) => setUser(content))
     const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`, (content) => setUser(content))

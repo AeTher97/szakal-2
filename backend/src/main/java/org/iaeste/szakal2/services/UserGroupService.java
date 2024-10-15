@@ -1,8 +1,6 @@
 package org.iaeste.szakal2.services;
 
 import jakarta.transaction.Transactional;
-
-import org.apache.catalina.security.SecurityUtil;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.user.UserGroupModificationDTO;
@@ -33,7 +31,7 @@ public class UserGroupService {
     }
 
     @Transactional
-    public void joinUserGroup(String entryCode) {
+    public UserGroup joinUserGroup(String entryCode) {
         UserGroup userGroup = getUserGroup(entryCode);
         User user = userService.getUserById(SecurityUtils.getUserId());
         if(!userGroup.getUserList().contains(user)){
@@ -41,7 +39,10 @@ public class UserGroupService {
             user.getUserGroups().add(userGroup);
             userGroupRepository.save(userGroup);
             userService.saveUserList(List.of(user));
+        } else {
+            throw new ResourceExistsException("Należysz już do tej grupy");
         }
+        return userGroup;
     }
 
     @Transactional

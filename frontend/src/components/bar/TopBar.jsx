@@ -11,10 +11,10 @@ import {Autocomplete} from "@mui/joy";
 
 const TopBar = () => {
 
-        const {name, surname, userId} = useSelector(state => state.auth);
+    const {name, surname, userId, refresh} = useSelector(state => state.auth);
         const {currentCampaign} = useSelector(state => state.campaigns);
 
-        const {user, loading} = useUserData(userId)
+    const {user, loading} = useUserData(userId, refresh)
         const [campaigns, setCampaigns] = useState([]);
         const [campaignValue, setCampaignValue]
             = useState({label: "Wybierz akcje", id: "choose"});

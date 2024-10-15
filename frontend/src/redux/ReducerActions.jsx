@@ -4,6 +4,7 @@ import {
     LOGIN_FAILED,
     LOGIN_SUCCESS,
     LOGOUT,
+    REFRESH,
     REFRESH_ATTEMPT,
     REFRESH_FAILED,
     REFRESH_SUCCESS,
@@ -118,4 +119,8 @@ export const addKnownItem = (itemId, itemName) => dispatch => {
 
 export const removeKnownItem = (itemId) => dispatch => {
     dispatch({type: REMOVE_ITEM, payload: {item: {id: itemId}}});
+}
+
+export const reloadAction = () => dispatch => {
+    dispatch({type: REFRESH})
 }

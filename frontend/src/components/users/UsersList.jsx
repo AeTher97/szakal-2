@@ -26,7 +26,7 @@ const UsersList = () => {
     const {users, loading, pageNumber} = useUsersList(currentPage - 1);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 200}}>
+        <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 270}}>
             <CardContent>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
