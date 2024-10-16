@@ -109,7 +109,6 @@ const JoinGroupDialog = ({open, close}) => {
                                         return;
                                     }
                                     setCodeCharacter(index, character);
-                                    console.log(value)
                                     if (index !== CODE_LENGTH - 1 && value.length !== 0) {
                                         const localRef = refs[index + 1].current;
                                         localRef.focus({fromCode: true});
@@ -119,9 +118,8 @@ const JoinGroupDialog = ({open, close}) => {
                                         localRef.focus({fromCode: true});
                                         setTimeout(() => {
                                             localRef.selectionStart = 10000;
-                                        }, 2)
+                                        }, 1)
                                     }
-
                                 }}
                                 onFocus={(e) => {
                                     if (refs[index].current.value.length === 1) {
@@ -129,7 +127,7 @@ const JoinGroupDialog = ({open, close}) => {
                                     }
                                 }}
                                 onKeyDown={(e) => {
-                                    if (e.code !== "Backspace") {
+                                    if (e.code !== "Backspace" && e.key !== "Backspace") {
                                         return
                                     }
                                     const localRef = refs[index].current;
