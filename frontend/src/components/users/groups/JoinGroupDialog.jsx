@@ -95,14 +95,13 @@ const JoinGroupDialog = ({open, close}) => {
                                 }}
                                 onChange={e => {
                                     e.preventDefault();
-                                    console.log(e.nativeEvent.inputType)
                                     if (e.nativeEvent.inputType === "insertFromPaste") {
                                         return;
                                     }
                                     const value = e.target.value;
                                     if (value.length === 7) {
                                         setText(value);
-                                        refs[CODE_LENGTH - 1].current.focus();
+                                        refs[CODE_LENGTH - 1].current.focus({fromCode: true});
                                         return;
                                     }
                                     const character = value.substring(value.length - 1, value.length);
@@ -110,22 +109,45 @@ const JoinGroupDialog = ({open, close}) => {
                                         return;
                                     }
                                     setCodeCharacter(index, character);
+                                    console.log(value)
                                     if (index !== CODE_LENGTH - 1 && value.length !== 0) {
                                         const localRef = refs[index + 1].current;
-                                        localRef.focus();
+                                        localRef.focus({fromCode: true});
                                     }
                                     if (value.length === 0 && index !== 0) {
                                         const localRef = refs[index - 1].current;
-                                        localRef.focus();
+                                        localRef.focus({fromCode: true});
                                         setTimeout(() => {
                                             localRef.selectionStart = 10000;
                                         }, 2)
                                     }
 
                                 }}
+                                onFocus={(e) => {
+                                    if (refs[index].current.value.length === 1) {
+                                        refs[index].current.setSelectionRange(0, 1);
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.code !== "Backspace") {
+                                        return
+                                    }
+                                    const localRef = refs[index].current;
+                                    const value = localRef.value;
+                                    if (value.length === 0 && index !== 0) {
+                                        const previusRef = refs[index - 1].current;
+                                        previusRef.focus({fromCode: true});
+                                        setTimeout(() => {
+                                            previusRef.selectionStart = 10000;
+                                        }, 2)
+
+                                    }
+                                }
+                                }
                                 onPaste={onPaste}
                                 value={code[index]}/>
-                        })}
+                        })
+                        }
                     </div>
                     <div style={{display: "flex", gap: 5}}>
                         <Button onClick={() => {

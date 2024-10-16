@@ -16,17 +16,15 @@ import Button from "@mui/joy/Button";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import Pagination from "../misc/Pagination";
-import {useMobileSize} from "../../utils/SizeQuery";
 import UserAvatar from "../UserAvatar";
 
 const UsersList = () => {
 
-    const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
     const {users, loading, pageNumber} = useUsersList(currentPage - 1);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 270}}>
+        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 2, minWidth: 270}}>
             <CardContent>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
@@ -44,7 +42,7 @@ const UsersList = () => {
                                 <ListItemButton>
                                     <ListItemDecorator>
                                         <UserAvatar image={user.profilePicture} name={user.name}
-                                                    surname={user.surname} bold={false}/>
+                                                    surname={user.surname} bold={false} overrideMobile={true}/>
                                     </ListItemDecorator>
                                     <ListItemContent>
                                         <div style={{display: "flex", justifyContent: "space-between"}}>
