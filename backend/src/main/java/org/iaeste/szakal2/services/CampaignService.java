@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,12 +58,12 @@ public class CampaignService {
         return campaignRepository.findAllByOrderByNameDesc(pageable);
     }
 
-    public Page<ContactJourney> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
-        return getJourneysByCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
+    public List<Campaign> getCampaigns(List<UUID> userList) {
+        return campaignRepository.findAllById(userList);
     }
 
-    public void truncate() {
-        campaignRepository.deleteAll();
+    public Page<ContactJourney> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
+        return getJourneysByCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
     }
 
     private Page<ContactJourney> getJourneysByCampaign(Pageable pageable, Specification<ContactJourney> specification) {

@@ -11,7 +11,7 @@ const CurrentCampaign = () => {
     const {campaign, loading} = useCampaign(currentCampaign);
     const mobile = useMobileSize();
 
-    if(currentCampaign === "none"){
+    if(currentCampaign === "none" || !currentCampaign){
         return <></>
     }
 

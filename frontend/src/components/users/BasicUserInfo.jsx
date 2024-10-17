@@ -15,7 +15,6 @@ import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
 

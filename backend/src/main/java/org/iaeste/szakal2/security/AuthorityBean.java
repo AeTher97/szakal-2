@@ -45,6 +45,10 @@ public class AuthorityBean {
         return Authority.JOURNEY_CREATION.getValue();
     }
 
+    public String userGroupModification() {
+        return Authority.USER_GROUP_MODIFICATION.getValue();
+    }
+
     public String journeyCreationForOthers() {
         return Authority.JOURNEY_CREATION_FOR_OTHERS.getValue();
     }

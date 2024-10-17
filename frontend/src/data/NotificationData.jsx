@@ -52,7 +52,7 @@ export const useNotificationList = () => {
     const intervalTime = 30000;
 
     const {loading} = useData("/notifications", (data) => {
-        console.info("Loaded notifications")
+        console.debug("Loaded notifications")
         setNotifications(data)
         for (let notification of data) {
             if (!notification.seen) {

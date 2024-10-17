@@ -16,6 +16,7 @@ public enum Authority {
     USER_MANAGEMENT("user_management", "Deaktywowanie użytkowników"),
     JOURNEY_CREATION("journey_creation", "Przypisywanie firm do siebie"),
     JOURNEY_CREATION_FOR_OTHERS("journey_creation_for_others", "Przypisywanie firm do innych"),
+    USER_GROUP_MODIFICATION("user_group_modification", "Modyfikacja grup użytkowników"),
     JOURNEY_MODIFICATION_FOR_OTHERS("journey_modification_for_others", "Edycja kontaktów innych"),
     APP_SETTINGS("app_settings", "Ustawienia aplikacji");
 

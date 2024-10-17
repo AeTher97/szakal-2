@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {useUsersList} from "../../data/UsersData";
 import {
-    Avatar,
     Card,
     CardContent,
     Chip,
@@ -11,23 +10,21 @@ import {
     ListItem,
     ListItemButton,
     ListItemContent,
-    ListItemDecorator,
-    Typography
+    ListItemDecorator
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import Pagination from "../misc/Pagination";
-import {useMobileSize} from "../../utils/SizeQuery";
+import UserAvatar from "../UserAvatar";
 
 const UsersList = () => {
 
-    const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
     const {users, loading, pageNumber} = useUsersList(currentPage - 1);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, flex: 2, minWidth: 200}}>
+        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 2, minWidth: 270}}>
             <CardContent>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
@@ -44,14 +41,12 @@ const UsersList = () => {
                             <ListItem>
                                 <ListItemButton>
                                     <ListItemDecorator>
-                                        <Avatar variant={"soft"} sx={{marginRight: 1}} src={`data:image;base64,${user.profilePicture}`}>
-                                            {user.name[0]}
-                                            {user.surname[0]}
-                                        </Avatar>
+                                        <UserAvatar image={user.profilePicture} name={user.name}
+                                                    surname={user.surname} bold={false} overrideMobile={true}/>
                                     </ListItemDecorator>
                                     <ListItemContent>
                                         <div style={{display: "flex", justifyContent: "space-between"}}>
-                                            <Typography>{user.name} {user.surname}</Typography>
+                                            <div/>
                                             <div>{user.roles.map(role => <Chip
                                                 sx={{backgroundColor: uuidToColor(role.id)}}
                                                 key={role.id}>{role.name}</Chip>
@@ -71,7 +66,7 @@ const UsersList = () => {
                     })}
                     {pageNumber > 1 && <Pagination currentPage={currentPage} concise={true} numberOfPages={pageNumber}
                                                    margin={"10px"}
-                                                   setPage={(page) => setCurrentPage(page)} />}
+                                                   setPage={(page) => setCurrentPage(page)}/>}
 
                 </List>
             </CardContent>

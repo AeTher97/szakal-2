@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "SzakalBackend",
+            "request": "launch",
+            "mainClass": "org.iaeste.szakal2.SzakalBackend",
+            "projectName": "backend",
+            "vmArgs": "--enable-preview",
+            "env": {
+                "DATABASE_URL": "localhost:5432/postgres",
+                "DATABASE_USERNAME": "postgres",
+                "DATABASE_PASSWORD": "postgres",
+                "JWT_SECRET": "devcontainers_preview_secret_do_not_use_in_productions",
+                "SPRING_PROFILES_ACTIVE" : "development"
+            }
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Script: start",
+            "request": "launch",
+            "command": "npm run start",
+            "cwd": "${workspaceFolder}/frontend"
+        }
+    ]
+}

@@ -5,7 +5,7 @@ import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useRolesList} from "../../data/RolesData";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
-import AddRoleDialog from "./AddRoleDialog";
+import AddRoleDialog from "./roles/AddRoleDialog";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {ROLE_MODIFICATION} from "../../utils/AccessRights";
 
@@ -17,7 +17,7 @@ const RolesList = () => {
 
 
     return (
-        <Card variant={"outlined"} sx={{flex: 2, minWidth: 200}}>
+        <Card variant={"outlined"} sx={{flex: 3, minWidth: 300}}>
 
             {roles &&
                 <CardOverflow>

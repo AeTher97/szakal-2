@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Tab, tabClasses, TabList, Tabs} from "@mui/joy";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {APP_SETTINGS, JOURNEY_CREATION, USER_VIEWING} from "../../utils/AccessRights";
-import {useFullColumnSize} from "../../utils/SizeQuery";
+import {CAMPAIGN_MODIFICATION, JOURNEY_CREATION, USER_VIEWING} from "../../utils/AccessRights";
 
 export const menuItems = [
     {path: "home", name: "Start"},
@@ -11,10 +10,10 @@ export const menuItems = [
     {path: "journeys", name: "Kontakty w tej akcji"},
     {path: "user-journeys", name: "Twoje Kontakty", right: JOURNEY_CREATION},
     {path: "categories", name: "Branże"},
-    {path: "campaigns", name: "Akcje"},
+    {path: "campaigns", name: "Akcje", right: CAMPAIGN_MODIFICATION},
     {path: "users", name: "Użytkownicy", right: USER_VIEWING},
     {path: "profile", name: "Profil"},
-    {path: "app-settings", name: "Ustawienia aplikacji", right: APP_SETTINGS}
+    {path: "app-settings", name: "Ustawienia aplikacji"}
 ]
 
 const MenuBar = () => {

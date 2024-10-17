@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import CompanyCategories from "./CompanyCategories";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {CATEGORY_MODIFICATION} from "../../utils/AccessRights";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
 
@@ -14,6 +16,8 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
     const [city, setCity] = useState("");
     const [postalCode, setPostalCode] = useState("");
     const [categories, setCategories] = useState([]);
+
+    const {hasRight} = useAccessRightsHelper()
 
     const onClose = () => {
         setName("");
@@ -119,8 +123,9 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                         }} placeholder={"Kod pocztowy"}/>
                                 </FormControl>
                             </Stack>
-                            <CompanyCategories categoriesList={categories} setCategories={setCategories}
-                                               allowAdding/>
+                            {hasRight(CATEGORY_MODIFICATION) && <CompanyCategories categoriesList={categories}
+                                                                                   setCategories={setCategories}
+                                                                                   allowAdding/>}
                         </div>
                         <Stack spacing={2}>
                             <Button type="submit">Zapisz</Button>
