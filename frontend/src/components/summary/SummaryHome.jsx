@@ -4,8 +4,12 @@ import TabHeader from "../main/TabHeader";
 import {Typography} from "@mui/joy";
 import CurrentCampaign from "./CurrentCampaign";
 import LogoCard from "./LogoCard";
+import {useMobileSize} from "../../utils/SizeQuery";
 
 const SummaryHome = () => {
+
+    const {mobile} = useMobileSize();
+
     return (
         <div>
             <TabHeader>
@@ -15,6 +19,7 @@ const SummaryHome = () => {
                 display: "flex",
                 justifyContent: "flex-start",
                 flexWrap: "wrap",
+                flexDirection: mobile ? "column" : "row",
                 alignItems: "stretch",
                 gap: 10,
                 paddingBottom: 100,

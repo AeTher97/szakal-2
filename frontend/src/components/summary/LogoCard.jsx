@@ -1,16 +1,20 @@
 import React from 'react';
 import {Card, CardContent, Typography} from "@mui/joy";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 
 const LogoCard = () => {
 
     const mobile = useMobileSize();
+    const mediumSize = useFullColumnSize();
     const {theme} = useSelector(state => state.theme);
 
 
     return (
-        <Card color={"primary"} sx={{flex: mobile ? 1 : "", minWidth: 250, maxWidth: 400}}>
+        <Card color={"primary"} sx={{
+            flex: (mobile || mediumSize) ? 1 : "", minWidth: 250,
+            maxWidth: (mobile || mediumSize) ? 1000 : 400
+        }}>
 
             <CardContent>
                 <div style={{display: "flex", justifyContent: "center"}}>
