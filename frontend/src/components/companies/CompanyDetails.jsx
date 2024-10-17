@@ -47,7 +47,7 @@ const CompanyDetails = () => {
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
 
     return (
-        <div style={{overflow: "auto"}}>
+        <div>
             {company && localCompany && <>
                 <TabHeader>
                     <div>

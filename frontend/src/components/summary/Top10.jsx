@@ -6,8 +6,8 @@ import {useSelector} from "react-redux";
 
 const Top10 = () => {
 
-    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1,1000)
     const mobile = useMobileSize();
+    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1,1000)
     const {currentCampaign} = useSelector(state => state.campaigns);
 
     if(currentCampaign === "none"){
@@ -35,6 +35,9 @@ const Top10 = () => {
         }
     })
 
+    if (currentCampaign === "none" || !currentCampaign) {
+        return <></>
+    }
 
     return (
         <Card invertedColors color={"primary"} variant={"solid"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>

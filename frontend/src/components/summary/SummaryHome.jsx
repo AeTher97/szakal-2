@@ -3,6 +3,7 @@ import Top10 from "./Top10";
 import TabHeader from "../main/TabHeader";
 import {Typography} from "@mui/joy";
 import CurrentCampaign from "./CurrentCampaign";
+import LogoCard from "./LogoCard";
 
 const SummaryHome = () => {
     return (
@@ -19,6 +20,7 @@ const SummaryHome = () => {
                 paddingBottom: 100,
                 overflow: "hidden"
             }}>
+                <LogoCard/>
                 <CurrentCampaign/>
                 <Top10/>
             </div>
