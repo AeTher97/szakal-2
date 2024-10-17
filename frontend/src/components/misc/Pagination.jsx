@@ -21,7 +21,7 @@ const Pagination = ({
     if (low < 1) {
         low = 1;
     }
-    let high = currentPage + Math.floor(showPages / 2);
+    let high = currentPage + Math.ceil(showPages / 2);
     if (high > numberOfPages) {
         high = numberOfPages
     }

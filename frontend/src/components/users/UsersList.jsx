@@ -24,7 +24,7 @@ const UsersList = () => {
     const {users, loading, pageNumber} = useUsersList(currentPage - 1);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: 270}}>
+        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: 300}}>
             <CardContent>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
@@ -65,7 +65,7 @@ const UsersList = () => {
                         </div>
                     })}
                     {pageNumber > 1 && <Pagination currentPage={currentPage} concise={true} numberOfPages={pageNumber}
-                                                   margin={"10px"}
+                                                   margin={"10px"} firstAndLast={true}
                                                    setPage={(page) => setCurrentPage(page)}/>}
 
                 </List>
