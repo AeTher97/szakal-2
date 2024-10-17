@@ -9,7 +9,6 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ClearIcon from '@mui/icons-material/Clear';
 
 import Button from "@mui/joy/Button";
-import {useSearchParams} from "react-router-dom";
 
 
 const CompanyTable = ({companies, search, setSort, clearSort}) => {
@@ -78,8 +77,10 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                                         {decodeContactStatus(company.currentJourney.contactStatus)}
                                     </Typography>
                                 </LinkWithRouter>
-                                <Typography>{company.currentJourney.user ? company.currentJourney.user.name : "Brak przypisanego użytkownika"}
-                                    {company.currentJourney.user ? company.currentJourney.user.surname : ""}</Typography>
+                                <Typography>{company.currentJourney.user ?
+                                    `${company.currentJourney.user.name} ${company.currentJourney.user.surname}`
+                                    : "Brak przypisanego użytkownika"}
+                                </Typography>
                                 <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
                             </div>
                             : <Typography>Wolna</Typography>}</td>
