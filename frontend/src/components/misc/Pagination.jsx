@@ -18,11 +18,13 @@ const Pagination = ({
     }
 
     let low = currentPage - Math.floor(showPages / 2);
+    let high = currentPage + Math.floor(showPages / 2);
     if (low < 1) {
+        high += 1 - low;
         low = 1;
     }
-    let high = currentPage + Math.ceil(showPages / 2);
     if (high > numberOfPages) {
+        low -= high - numberOfPages;
         high = numberOfPages
     }
 
@@ -31,21 +33,21 @@ const Pagination = ({
         pages.push(i);
     }
 
-    const firstPage = currentPage !== 1;
+    const firstPage = currentPage === 1;
     const notFirstPage = !firstPage;
-    const showFirstPageButton = (firstAndLast && firstPage) || !concise;
-    const firstPageButtonVisible = !concise && notFirstPage
+    const showFirstPageButton = firstAndLast;
+    const firstPageButtonVisible = (!concise || firstAndLast) && notFirstPage
 
     const lastPage = currentPage === numberOfPages;
     const notLastPage = !lastPage;
-    const showLastPageButton = (firstAndLast && notLastPage) || !concise;
-    const lastPageButtonVisible = !concise && notLastPage;
+    const showLastPageButton = firstAndLast;
+    const lastPageButtonVisible = (!concise || firstAndLast) && notLastPage;
 
     return (
         <div style={{display: "flex", justifyContent: "space-between", margin, flexWrap: "wrap"}}>
             <div style={{display: "flex", gap: 5}}>
                 {showFirstPageButton &&
-                    <Button style={{visibility: firstPageButtonVisible ? "hidden" : "visible"}}
+                    <Button style={{visibility: firstPageButtonVisible ? "visible" : "hidden"}}
                             size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
                             color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>}
                 <Button size={"sm"} variant={"outlined"} onClick={() => setPage(currentPage - 1)}
@@ -71,9 +73,9 @@ const Pagination = ({
                 }}
                     color={"neutral"}><KeyboardArrowRight/>{concise ? "" : "Następna"}</Button>
                 {showLastPageButton && <Button style={{visibility: lastPageButtonVisible ? "visible" : "hidden"}}
-                    size={"sm"} variant={"outlined"} onClick={() => {
-                    setPage(numberOfPages)}}
-                    color={"neutral"}>{concise ? "" : "Ostatnia"}<LastPageIcon/>
+                                               size={"sm"} variant={"outlined"} onClick={() => {
+                    setPage(numberOfPages)
+                }} color={"neutral"}>{concise ? "" : "Ostatnia"}<LastPageIcon/>
                 </Button>
                 }
             </div>
