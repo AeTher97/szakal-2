@@ -12,7 +12,7 @@ import {closeAlert} from "./redux/AlertActions";
 const AppWithoutCss = () => {
 
     const {theme} = useSelector(state => state.theme);
-    const {mode, setMode} = useColorScheme();
+    const {setMode} = useColorScheme();
 
     useEffect(() => {
         setMode(theme)

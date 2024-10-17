@@ -1,8 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {DialogTitle, FormLabel, Input, Modal, ModalDialog} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useJoinGroup} from '../../../data/GroupsData';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {reloadAction} from "../../../redux/ReducerActions";
 import {showSuccess} from "../../../redux/AlertActions";
 
@@ -18,6 +18,8 @@ const isNumeric = (str) => {
 const JoinGroupDialog = ({open, close}) => {
 
     const joinGroup = useJoinGroup();
+    const {theme} = useSelector(state => state.theme);
+
     const dispatch = useDispatch();
     const [code, setCode] = useState(INITIAL_STATE);
     const ref1 = useRef();
@@ -31,6 +33,17 @@ const JoinGroupDialog = ({open, close}) => {
     const refs = [ref1, ref2, ref3, ref4, ref5, ref6, ref7];
 
     const fieldArray = Array.from(Array(CODE_LENGTH).keys())
+
+    useEffect(() => {
+        if (open) {
+            document.addEventListener("paste", onPaste);
+        } else {
+            document.removeEventListener("paste", onPaste);
+        }
+        return () => {
+            document.removeEventListener("paste", onPaste);
+        }
+    }, [open]);
 
 
     const setCodeCharacter = (index, character) => {
@@ -87,10 +100,9 @@ const JoinGroupDialog = ({open, close}) => {
                                     width: 40,
                                     height: 50,
                                     padding: 5,
-                                    backgroundColor: "#191919",
-                                    borderBottom: "1px solid red",
+                                    backgroundColor: theme === "dark" ? "#191919" : "#ececec",
                                     boxShadow: "none",
-                                    border: "none",
+                                    // border: "none",
                                     textAlign: "center"
                                 }}
                                 onChange={e => {
@@ -142,7 +154,6 @@ const JoinGroupDialog = ({open, close}) => {
                                     }
                                 }
                                 }
-                                onPaste={onPaste}
                                 value={code[index]}/>
                         })
                         }
