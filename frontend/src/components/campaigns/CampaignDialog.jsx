@@ -2,18 +2,28 @@ import React, {useEffect, useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useSelector} from "react-redux";
+import UserGroupAutocomplete from "./UserGroupAutocomplete";
 
-const CampaignDialog = ({open, addCampaign, close, editedCampaign, modifyCampaign}) => {
+const CampaignDialog = ({
+                            open,
+                            addCampaign,
+                            close,
+                            editedCampaign,
+                            modifyCampaign,
+                            addToUserGroup = false
+                        }) => {
 
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
     const [description, setDescription] = useState("");
+    const [userGroupId, setUserGroupId] = useState("");
     const {theme} = useSelector(state => state.theme);
 
     const clear = () => {
         setName("")
         setStartDate("")
         setDescription("")
+        setUserGroupId("")
     }
 
     useEffect(() => {
@@ -34,7 +44,7 @@ const CampaignDialog = ({open, addCampaign, close, editedCampaign, modifyCampaig
                         if (editedCampaign) {
                             modifyCampaign(editedCampaign.id, name, startDate, description)
                         } else {
-                            addCampaign(name, startDate, description);
+                            addCampaign(name, startDate, userGroupId, description);
                         }
                         close();
                     }}>
@@ -57,6 +67,12 @@ const CampaignDialog = ({open, addCampaign, close, editedCampaign, modifyCampaig
                                        setStartDate(e.target.value)
                                    }}/>
                         </FormControl>
+                        {addToUserGroup && <FormControl>
+                            <FormLabel>Grupa użytkowników</FormLabel>
+                            <UserGroupAutocomplete onChange={(userGroup) => {
+                                setUserGroupId(userGroup.id);
+                            }}/>
+                        </FormControl>}
                         <FormControl>
                             <FormLabel>Opis</FormLabel>
                             <Textarea

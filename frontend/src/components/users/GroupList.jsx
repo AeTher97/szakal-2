@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {Card, CardContent, CardOverflow, CircularProgress, Divider, IconButton, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,7 +11,6 @@ import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 const GroupList = () => {
 
     const {groups, addGroup, deleteGroup, loading} = useGroupsList();
-    const {hasRight} = useAccessRightsHelper();
 
     const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz usunąć grupę?")
     const [addGroupOpen, setAddGroupOpen] = useState(false);

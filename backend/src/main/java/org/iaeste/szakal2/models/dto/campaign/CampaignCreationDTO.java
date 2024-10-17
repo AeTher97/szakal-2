@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +20,5 @@ public class CampaignCreationDTO {
     @NotNull
     private LocalDate startDate;
     private String description;
+    private UUID userGroupId;
 }

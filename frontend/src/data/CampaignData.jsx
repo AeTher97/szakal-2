@@ -22,11 +22,12 @@ export const useCampaignsList = (currentPage = 0) => {
             return [...current.filter(campaign => campaign.id !== data.id), data]
         }))
 
-    const addCampaign = (name, startDate, description) => {
+    const addCampaign = (name, startDate, userGroupId, description) => {
         post({
             name,
             startDate,
-            description
+            description,
+            userGroupId
         })
     }
 

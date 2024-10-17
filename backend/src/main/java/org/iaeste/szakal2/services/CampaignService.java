@@ -2,15 +2,17 @@ package org.iaeste.szakal2.services;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
-import org.iaeste.szakal2.models.dto.company.CompanySearch;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
+import org.iaeste.szakal2.models.entities.UserGroup;
 import org.iaeste.szakal2.repositories.CampaignRepository;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.JourneySpecification;
+import org.iaeste.szakal2.repositories.UserGroupRepository;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -29,14 +31,23 @@ public class CampaignService {
     private EntityManager entityManager;
     private final CampaignRepository campaignRepository;
     private final ContactJourneyRepository contactJourneyRepository;
+    private final UserGroupRepository userGroupRepository;
 
-    public CampaignService(CampaignRepository campaignRepository, ContactJourneyRepository contactJourneyRepository) {
+    public CampaignService(CampaignRepository campaignRepository,
+                           ContactJourneyRepository contactJourneyRepository,
+                           UserGroupRepository userGroupRepository) {
         this.campaignRepository = campaignRepository;
         this.contactJourneyRepository = contactJourneyRepository;
+        this.userGroupRepository = userGroupRepository;
     }
 
+    @Transactional
     public Campaign createCampaign(CampaignCreationDTO campaignCreationDTO) {
-        return campaignRepository.save(campaignFromCreationDTO(campaignCreationDTO));
+        Campaign campaign = campaignRepository.save(campaignFromCreationDTO(campaignCreationDTO));
+        if (campaignCreationDTO.getUserGroupId() != null) {
+            addCampaignToGroup(campaignCreationDTO.getUserGroupId(), campaign);
+        }
+        return campaign;
     }
 
     public Campaign modifyCampaign(UUID id, CampaignCreationDTO campaignCreationDTO) {
@@ -48,8 +59,8 @@ public class CampaignService {
     public Campaign getCampaignById(UUID id) {
         Optional<Campaign> campaignOptional = campaignRepository.findCampaignById(id);
         if (campaignOptional.isEmpty()) {
-            throw new ResourceNotFoundException(STR. """
-                    Campaign with id \{ id } does not exist""" );
+            throw new ResourceNotFoundException(STR."""
+                    Campaign with id \{id} does not exist""");
         }
         return campaignOptional.get();
     }
@@ -77,4 +88,16 @@ public class CampaignService {
                 .description(campaignCreationDTO.getDescription())
                 .build();
     }
+
+    private void addCampaignToGroup(UUID userGroupId, Campaign campaign) {
+        UserGroup userGroup = getUserGroup(userGroupId);
+        userGroup.getCampaignList().add(campaign);
+        userGroupRepository.save(userGroup);
+    }
+
+    private UserGroup getUserGroup(UUID id) {
+        return userGroupRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(STR."User group with id \{id} not found"));
+    }
+
 }
