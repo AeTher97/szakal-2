@@ -1,4 +1,4 @@
-import {Badge, Dropdown, Menu, MenuButton, MenuItem} from "@mui/joy";
+import {Badge, Dropdown, Menu, MenuButton, MenuItem, Typography} from "@mui/joy";
 import Link from "@mui/joy/Link";
 import {useNotificationList} from "../../data/NotificationData";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -29,7 +29,7 @@ const NotificationComponent = () => {
             <Menu>
                 <NotificationList notifications={notifications}/>
                 <MenuItem onClick={handleClose}>
-                    <Link>Zamknij</Link>
+                    <Link><Typography level={"body-sm"} color={"primary"}>Zamknij</Typography></Link>
                 </MenuItem>
             </Menu>
         </Dropdown>
