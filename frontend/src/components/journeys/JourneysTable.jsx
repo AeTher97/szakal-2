@@ -43,7 +43,8 @@ const JourneysTable = ({journeys}) => {
                 {journeys && journeys.map(journey =>
                     <tr key={journey.id}>
                         <td>
-                            <LinkWithRouter to={journey.id}
+                            <LinkWithRouter style={{wordBreak: "break-word"}}
+                                            to={journey.id}
                                             sx={theme => ({
                                                 color: `${!journey.finished ? theme.vars.palette.primary
                                                     : theme.vars.palette.primary["600"]}`
@@ -52,11 +53,11 @@ const JourneysTable = ({journeys}) => {
                             </LinkWithRouter>
                         </td>
                         <td>
-                            <Typography sx={theme => ({
+                            <Typography style={{wordBreak: "break-word"}} sx={theme => ({
                                 color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                             })}>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
                         </td>
-                        <td><Typography sx={theme => ({
+                        <td><Typography style={{wordBreak: "break-word"}} sx={theme => ({
                             color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                         })}>{decodeContactStatus(journey.contactStatus)} {journey.finished ? "(Zakończony)" : ""}
                         </Typography><

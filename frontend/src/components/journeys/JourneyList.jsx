@@ -5,8 +5,11 @@ import {
     AccordionDetails,
     AccordionGroup,
     AccordionSummary,
-    FormControl, FormLabel, Input,
-    LinearProgress, Select,
+    FormControl,
+    FormLabel,
+    Input,
+    LinearProgress,
+    Select,
     Typography
 } from "@mui/joy";
 import JourneysTable from "./JourneysTable";
@@ -145,7 +148,6 @@ const JourneyList = () => {
             </AccordionGroup> : renderFilters()}
 
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
-
 
             <JourneysTable journeys={journeys}/>
             {pagesNumber > 1 &&

@@ -64,7 +64,7 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                     <tr key={company.id}>
                         <td>
                             <div style={{display: "flex", flexDirection: "column"}}>
-                                <LinkWithRouter
+                                <LinkWithRouter style={{wordBreak: "break-word"}}
                                     to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
                                 <Typography>{company.www}</Typography>
                                 <Typography>{company.email}</Typography>
@@ -72,11 +72,11 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                         </td>
                         <td>{company.currentJourney ? <div>
                                 <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
-                                    <Typography>
+                                    <Typography style={{wordBreak: "break-word"}}>
                                         {decodeContactStatus(company.currentJourney.contactStatus)}
                                     </Typography>
                                 </LinkWithRouter>
-                                <Typography>{company.currentJourney.user ?
+                                <Typography style={{wordBreak: "break-word"}}>{company.currentJourney.user ?
                                     `${company.currentJourney.user.name} ${company.currentJourney.user.surname}`
                                     : "Brak przypisanego użytkownika"}
                                 </Typography>
