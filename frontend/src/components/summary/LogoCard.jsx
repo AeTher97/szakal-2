@@ -12,7 +12,7 @@ const LogoCard = () => {
 
     return (
         <Card color={"primary"} sx={{
-            flex: (mobile || mediumSize) ? 1 : "", minWidth: 250,
+            flex: 1, minWidth: 250,
             maxWidth: (mobile || mediumSize) ? 1000 : 400
         }}>
 
