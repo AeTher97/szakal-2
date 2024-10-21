@@ -125,7 +125,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                             </Stack>
                             {hasRight(CATEGORY_MODIFICATION) && <CompanyCategories categoriesList={categories}
                                                                                    setCategories={setCategories}
-                                                                                   allowAdding/>}
+                                                                                   allowAdding dialog/>}
                         </div>
                         <Stack spacing={2}>
                             <Button type="submit">Zapisz</Button>

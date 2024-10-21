@@ -1,12 +1,11 @@
 import React from 'react';
-import {IconButton, Sheet, Table, Typography} from "@mui/joy";
+import {Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import ClearIcon from '@mui/icons-material/Clear';
 
 import Button from "@mui/joy/Button";
 
@@ -45,8 +44,8 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                                     onClick={() => setSort("name", directionAscending ? "DESC" : "ASC")}>
                                 Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
                                 {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
-                            {sorted &&
-                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                            {/*{sorted &&*/}
+                            {/*    <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}*/}
                         </div>
                     </th>
                     <th style={{padding: "12px 6px"}}>

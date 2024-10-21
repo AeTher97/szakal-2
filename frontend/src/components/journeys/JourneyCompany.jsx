@@ -11,20 +11,21 @@ const JourneyCompany = ({company}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 <CardContent>
-                    <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"}>Nazwa</Typography><LinkWithRouter
+                    <div style={{gap: 10, display: "flex", minWidth: 200}}>
+                        <Typography level={"title-md"}
+                                    style={{wordBreak: "break-word"}}>Nazwa</Typography><LinkWithRouter
                         to={`/secure/companies/${company.id}`}>{company.name}
                     </LinkWithRouter>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"}>
+                        <Typography level={"title-md"} style={{wordBreak: "break-word"}}>
                             Email
                         </Typography>
                         <Typography>
                             {company.email}
                         </Typography>
                     </div>
-                    <div style={{gap: 10, display: "flex"}}>
+                    <div style={{gap: 10, display: "flex", flex: 1}}>
                         <Typography
                             level={"title-md"}>Adres
                         </Typography>
@@ -37,11 +38,12 @@ const JourneyCompany = ({company}) => {
                         <Typography level={"title-md"}>
                             Strona
                         </Typography>
-                        <Typography>{company.www}
+                        <Typography style={{wordBreak: "break-word"}}>
+                            {company.www}
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"}>
+                        <Typography level={"title-md"} style={{wordBreak: "break-word"}}>
                             Telefon
                         </Typography>
                         <Typography> {company.phone}

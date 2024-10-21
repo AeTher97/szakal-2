@@ -22,7 +22,6 @@ const Pagination = ({
 
     if (low < 1) {
         high += 1 - low;
-        low = 1;
     }
     if (high > numberOfPages) {
         low -= high - numberOfPages;

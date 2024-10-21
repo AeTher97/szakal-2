@@ -5,7 +5,8 @@ import {
     AccordionSummary,
     FormControl,
     FormLabel,
-    Input, LinearProgress,
+    Input,
+    LinearProgress,
     Select,
     Typography
 } from "@mui/joy";
@@ -27,6 +28,9 @@ import {useSelector} from "react-redux";
 import {useCategories} from "../../data/CategoriesData";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 
+const sanitizeFilters = (value) => {
+    return value.replace(/[^a-z0-9\s]/gi, '');
+}
 
 const filters = (mobile, categories, search, setSearch) => {
     if (categories) {
@@ -165,23 +169,42 @@ const CompanyList = () => {
         if (pageNumber < currentPage && pageNumber !== 0) {
             setCurrentPage(pageNumber);
         }
-    }, [pageNumber]);
+    }, [pageNumber, searchLoaded]);
+
+    useEffect(() => {
+        if (searchLoaded && currentPage !== 0 && searchParams.get("currentPage")
+            && Number(searchParams.get("currentPage"))
+            !== currentPage) {
+            setSearchParams({
+                ...removeNullFields(tempSearch),
+                currentPage: currentPage
+            })
+        }
+    }, [currentPage]);
 
 
     useEffect(() => {
         const currentValue = {
-            name: searchParams.get("name") && searchParams.get("name").replace(/[^a-z0-9\s]/gi, ''),
+            name: searchParams.get("name") && sanitizeFilters(searchParams.get("name")),
             category: searchParams.get("category"),
             status: searchParams.get("status"),
             hasAlumni: searchParams.get("hasAlumni") ? searchParams.get("hasAlumni") === "true" : "",
-            alumniDescription: searchParams.get("alumniDescription") && searchParams.get("alumniDescription").replace(/[^a-z0-9\s]/gi, ''),
-            committee: searchParams.get("committee") && searchParams.get("committee").replace(/[^a-z0-9\s]/gi, ''),
-            campaignName: searchParams.get("campaignName") && searchParams.get("campaignName").replace(/[^a-z0-9\s]/gi, ''),
-            sort: searchParams.get("sort") && searchParams.get("sort").replace(/[^a-z0-9,\s]/gi, '')
+            alumniDescription: searchParams.get("alumniDescription") && sanitizeFilters(searchParams.get("alumniDescription")),
+            committee: searchParams.get("committee") && sanitizeFilters(searchParams.get("committee")),
+            campaignName: searchParams.get("campaignName") && sanitizeFilters(searchParams.get("campaignName")),
+            sort: searchParams.get("sort") && searchParams.get("sort").replace(/[^a-z0-9,\s]/gi, ''),
+            currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, '')
+
+        }
+        if (!currentValue.sort) {
+            currentValue.sort = "name,ASC";
         }
         setTempSearch(removeNullFields(currentValue))
         setSearch(removeNullFields(currentValue));
         setSearchLoaded(true);
+        if (currentValue.currentPage) {
+            setCurrentPage(Number(currentValue.currentPage))
+        }
     }, [searchParams]);
 
 

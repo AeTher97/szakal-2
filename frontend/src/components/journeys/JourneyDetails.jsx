@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useAddContactJourney, useJourney} from "../../data/JourneyData";
+import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
 import {Divider, FormControl, Select, Stack, Textarea, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
@@ -67,7 +67,7 @@ const JourneyDetails = () => {
                     <Typography level={"h2"}>
                         Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
                     </Typography>
-                    <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
+                    <div style={{display: "flex", gap: 5, flexWrap: "wrap", justifyContent: "flex-end"}}>
                         {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
                             <Button onClick={() => {
                                 openDialog(() => closeJourney())
@@ -88,7 +88,8 @@ const JourneyDetails = () => {
                     gap: 10,
                     padding: "5px 0 5px 0",
                     paddingBottom: 10,
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    maxWidth: "100vw"
                 }}>
                     <JourneyInfo journey={journey}/>
                     <JourneyCompany company={journey.company}/>
