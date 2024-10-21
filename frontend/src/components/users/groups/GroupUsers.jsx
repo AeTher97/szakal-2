@@ -98,7 +98,7 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
                                       }
 
                                       addUser(user)
-                                  }} ignoreSelf={false}/>
+                                  }} ignoreSelf={false} clearOnSelect={true}/>
             </CardContent>
             <CardActions style={{padding: 16, paddingTop: 0}}>
                 <Button onClick={save} loading={saveLoading}>Zapisz</Button>

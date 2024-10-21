@@ -62,7 +62,7 @@ export const useCompany = (id) => {
 
     const updateContactDetails = (name, email, phone, website) => {
         return put({
-            name, email, phone, website
+            name, email, phone, www: website
         })
     }
 

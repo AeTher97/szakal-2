@@ -71,7 +71,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
 
                 </CardContent>
                 <CardActions>
-                    {canModify && <Button loading={updateContactDataLoading} onClick={() => {
+                    {canModify && <Button loading={updateContactDataLoading} type="submit" onClick={() => {
                         updateContactData(name, email, phone, www)
                     }}>Zapisz</Button>}
                 </CardActions>

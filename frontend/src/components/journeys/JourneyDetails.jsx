@@ -63,7 +63,7 @@ const JourneyDetails = () => {
 
     return (
         <>
-            {journey && <div style={{overflow: "auto", paddingBottom: 10}}>
+            {journey && <div style={{paddingBottom: 10}}>
                 <TabHeader>
                     <Typography level={"h2"}>
                         Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
