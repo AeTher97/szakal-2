@@ -12,16 +12,16 @@ const JourneyCompany = ({company}) => {
                 <Divider inset={"context"}/>
                 <CardContent>
                     <div style={{gap: 10, display: "flex", minWidth: 200}}>
-                        <Typography level={"title-md"}
-                                    style={{wordBreak: "break-word"}}>Nazwa</Typography><LinkWithRouter
+                        <Typography level={"title-md"}>Nazwa</Typography>
+                        <LinkWithRouter style={{wordBreak: "break-word"}}
                         to={`/secure/companies/${company.id}`}>{company.name}
                     </LinkWithRouter>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"} style={{wordBreak: "break-word"}}>
+                        <Typography>
                             Email
                         </Typography>
-                        <Typography>
+                        <Typography style={{wordBreak: "break-word"}}>
                             {company.email}
                         </Typography>
                     </div>
@@ -34,7 +34,6 @@ const JourneyCompany = ({company}) => {
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-
                         <Typography level={"title-md"}>
                             Strona
                         </Typography>
@@ -43,10 +42,10 @@ const JourneyCompany = ({company}) => {
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"} style={{wordBreak: "break-word"}}>
+                        <Typography level={"title-md"}>
                             Telefon
                         </Typography>
-                        <Typography> {company.phone}
+                        <Typography style={{wordBreak: "break-word"}}> {company.phone}
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
