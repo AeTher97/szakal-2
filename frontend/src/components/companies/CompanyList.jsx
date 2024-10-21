@@ -172,15 +172,14 @@ const CompanyList = () => {
     }, [pageNumber, searchLoaded]);
 
     useEffect(() => {
-        if (searchLoaded && currentPage !== 0 && searchParams.get("currentPage")
-            && Number(searchParams.get("currentPage"))
-            !== currentPage) {
+        if (searchLoaded && currentPage !== 0 && (!searchParams.get("currentPage")
+            || searchParams.get("currentPage") !== currentPage)) {
             setSearchParams({
                 ...removeNullFields(tempSearch),
                 currentPage: currentPage
             })
         }
-    }, [currentPage]);
+    }, [currentPage, searchLoaded]);
 
 
     useEffect(() => {
