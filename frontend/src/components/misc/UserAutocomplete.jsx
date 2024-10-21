@@ -54,6 +54,8 @@ const UserAutocomplete = ({
                 if (clearOnSelect) {
                     setValue(null);
                     setUserSearch("")
+                } else {
+                    setValue(value);
                 }
             }}
             options={users ? users

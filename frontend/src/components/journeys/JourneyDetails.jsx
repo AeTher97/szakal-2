@@ -38,7 +38,6 @@ const JourneyDetails = () => {
     const {userId} = useSelector(state => state.auth)
     const {journey, loading, addContactEvent, addComment, closeJourney, removeUser}
         = useJourney(location.pathname.split("/")[3]);
-    const {addJourney} = useAddContactJourney();
     const {hasRight} = useAccessRightsHelper()
 
     useEffect(() => {

@@ -19,8 +19,6 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
 
     const [user, setUser] = useState(null);
 
-    console.log(user);
-
     const clear = () => {
         setUser("")
     }
