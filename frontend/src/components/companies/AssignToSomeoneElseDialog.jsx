@@ -45,7 +45,7 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
                     <Stack spacing={2}>
                         <FormControl required>
                             <FormLabel>Użytkownik do przypisania</FormLabel>
-                            <UserAutocomplete setUser={setUser}/>
+                            <UserAutocomplete setUser={setUser} clearOnSelect={false}/>
                         </FormControl>
                         <Button type="submit">Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {

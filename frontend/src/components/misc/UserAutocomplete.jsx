@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Autocomplete,
     AutocompleteOption,
@@ -8,21 +8,22 @@ import {
     Typography
 } from "@mui/joy";
 import UserAvatar from "../UserAvatar";
-import {useUsersSearch} from "../../data/UsersData";
-import {useSelector} from "react-redux";
+import { useUsersSearch } from "../../data/UsersData";
+import { useSelector } from "react-redux";
 
 const UserAutocomplete = ({
-                              setUser = () => {
-                              },
-                              ignoreIds = [],
-                              ignoreSelf = true
-                          }) => {
+    setUser = () => {
+    },
+    ignoreIds = [],
+    ignoreSelf = true,
+    clearOnSelect = false
+}) => {
 
     const [userSearch, setUserSearch] = useState("");
     const [value, setValue] = useState(null);
 
-    const {users, loading} = useUsersSearch(userSearch);
-    const {userId} = useSelector(state => state.auth);
+    const { users, loading } = useUsersSearch(userSearch);
+    const { userId } = useSelector(state => state.auth);
 
     const filterOptions = createFilterOptions({
         matchFrom: 'any',
@@ -49,9 +50,13 @@ const UserAutocomplete = ({
                 setUserSearch(value);
             }}
             onChange={(e, value) => {
-                setUserSearch("")
                 setUser(value);
-                setValue(null);
+                if (clearOnSelect) {
+                    setValue(null);
+                    setUserSearch("")
+                } else {
+                    setValue(value);
+                }
             }}
             options={users ? users
                 .filter(user => !ignoredIdsList.includes(user.id))
@@ -67,11 +72,11 @@ const UserAutocomplete = ({
                 }) : []}
             renderOption={(props, option) => (
                 <AutocompleteOption {...props}>
-                    <ListItemDecorator style={{marginInlineEnd: 5}}>
+                    <ListItemDecorator style={{ marginInlineEnd: 5 }}>
                         <UserAvatar name={option.name} surname={option.surname} image={option.profilePicture}
-                                    text={false}/>
+                            text={false} />
                     </ListItemDecorator>
-                    <ListItemContent sx={{fontSize: 'sm'}}>
+                    <ListItemContent sx={{ fontSize: 'sm' }}>
                         {option.label}
                         <Typography level="body-xs">
                             {option.email}
