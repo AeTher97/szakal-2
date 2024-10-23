@@ -23,10 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CompanyService {
@@ -101,21 +98,13 @@ public class CompanyService {
         return companyOptional.get();
     }
 
-    public Page<Company> getCompanies(Pageable pageable) {
+    public Page<Company> getCompanies(CompanySearch companySearch, Pageable pageable) {
+//        return companyRepository.findAll(new CompanySpecification(companySearch, entityManager), pageable);
         return companyRepository.findAll(pageable);
     }
 
-    public Page<Company> getCompanies(CompanySearch companySearch, Pageable pageable) {
-        return companyRepository.findAll(new CompanySpecification(companySearch, entityManager), pageable);
-    }
-
-
-    public void truncate() {
-        companyRepository.deleteAll();
-    }
-
     private Company companyFromDTO(CompanyCreationDTO companyCreationDTO) {
-        List<CompanyCategory> categoriesList = new ArrayList<>();
+        Set<CompanyCategory> categoriesList = new HashSet<>();
         if (companyCreationDTO.getCategories() != null && !companyCreationDTO.getCategories().isEmpty()) {
             categoriesList.addAll(categoryRepository.findAllById(companyCreationDTO.getCategories()));
         }
@@ -123,7 +112,7 @@ public class CompanyService {
                 .categories(categoriesList)
                 .updateDate(LocalDateTime.now())
                 .insertDate(LocalDateTime.now())
-                .contactPeople(new ArrayList<>())
+                .contactPeople(new HashSet<>())
                 .updatedBy(userService.getUserById(SecurityUtils.getUserId()))
                 .build();
         BeanUtils.copyProperties(companyCreationDTO, company, Utils.getNullPropertyNames(companyCreationDTO));

@@ -5,10 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +32,8 @@ public class Company {
     @NotEmpty
     private String name;
     @Setter
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     @Setter
@@ -46,7 +51,7 @@ public class Company {
     @NotNull
     private LocalDateTime updateDate;
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JsonIgnoreProperties(value = {"roles"})
     private User updatedBy;
@@ -61,14 +66,15 @@ public class Company {
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<CompanyCategory> categories;
+    private Set<CompanyCategory> categories;
     @Setter
+    @Fetch(FetchMode.)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<ContactPerson> contactPeople;
+    private Set<ContactPerson> contactPeople;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     @JsonIgnoreProperties(value = {"company"})
-    private List<ContactJourney> contactJourneys;
+    private Set<ContactJourney> contactJourneys;
 
 
 }

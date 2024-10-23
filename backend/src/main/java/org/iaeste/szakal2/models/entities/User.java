@@ -55,7 +55,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Comment> comments;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserGroup> userGroups;
     @Setter
