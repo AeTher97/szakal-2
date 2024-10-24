@@ -24,7 +24,7 @@ public class ScheduledContact {
     private UUID id;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = {"contactJourneys", "updatedBy"})
+    @JsonIgnoreProperties(value = {"contactJourneys", "updatedBy", "address"})
     private Company company;
 
     @ManyToOne

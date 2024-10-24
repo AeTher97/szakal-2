@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.java.Log;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.scheduled.contact.ScheduledContactDTO;
@@ -43,6 +44,7 @@ public class ScheduledContactService {
         this.emailService = emailService;
     }
 
+    @Transactional
     public ScheduledContact schedule(ScheduledContactDTO scheduledContactDTO) {
         User user = userService.getUserById(scheduledContactDTO.getUser());
         Company company = companyService.getCompanyById(scheduledContactDTO.getCompany());
