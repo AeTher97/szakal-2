@@ -31,7 +31,7 @@ public class Campaign {
     private LocalDate startDate;
     @Setter
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campaign")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campaign", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
 

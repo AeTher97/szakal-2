@@ -36,7 +36,7 @@ const JourneyDetails = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const {userId} = useSelector(state => state.auth)
-    const {journey, loading, addContactEvent, addComment, closeJourney, removeUser}
+    const {journey, addContactEvent, addComment, closeJourney, removeUser}
         = useJourney(location.pathname.split("/")[3]);
     const {hasRight} = useAccessRightsHelper()
 

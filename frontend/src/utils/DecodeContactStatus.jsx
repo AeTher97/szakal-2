@@ -1,5 +1,4 @@
 export const decodeContactStatus = (status) => {
-
     switch (status) {
         case "ASSIGNED":
             return "Przypisana"

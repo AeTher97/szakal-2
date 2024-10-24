@@ -3,11 +3,10 @@ package org.iaeste.szakal2.services;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Validator;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.company.CompanyCreationDTO;
 import org.iaeste.szakal2.models.dto.company.CompanyModificationDTO;
-import org.iaeste.szakal2.models.dto.company.CompanySearch;
+import org.iaeste.szakal2.models.dto.company.CompanySearchDTO;
 import org.iaeste.szakal2.models.dto.company.ContactPersonCreationDTO;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
@@ -19,6 +18,7 @@ import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +60,7 @@ public class CompanyService {
         Optional<ContactPerson> contactPersonOptional = company.getContactPeople().stream()
                 .filter(contactPerson -> contactPerson.getId().equals(contactPersonId)).findAny();
 
-        if(contactPersonOptional.isEmpty()){
+        if (contactPersonOptional.isEmpty()) {
             throw new ResourceNotFoundException("Contact person not found");
         }
 
@@ -92,15 +92,16 @@ public class CompanyService {
     public Company getCompanyById(UUID id) {
         Optional<Company> companyOptional = companyRepository.findCompanyById(id);
         if (companyOptional.isEmpty()) {
-            throw new ResourceNotFoundException(STR. """
-                    Company with id \{ id } does not exist""" );
+            throw new ResourceNotFoundException(STR."""
+                    Company with id \{id} does not exist""");
         }
         return companyOptional.get();
     }
 
-    public Page<Company> getCompanies(CompanySearch companySearch, Pageable pageable) {
-//        return companyRepository.findAll(new CompanySpecification(companySearch, entityManager), pageable);
-        return companyRepository.findAll(pageable);
+    public Page<Company> getCompanies(CompanySearchDTO companySearchDTO, Pageable pageable) {
+        Page<Company> companyPage = companyRepository.findAll(new CompanySpecification(companySearchDTO, entityManager), pageable);
+        List<Company> companies = companyRepository.findAllById(companyPage.map(Company::getId).stream().toList());
+        return new PageImpl<>(companies, pageable, companyPage.getTotalElements());
     }
 
     private Company companyFromDTO(CompanyCreationDTO companyCreationDTO) {

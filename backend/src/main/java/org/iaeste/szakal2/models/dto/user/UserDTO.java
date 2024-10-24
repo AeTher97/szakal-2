@@ -6,8 +6,8 @@ import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.models.entities.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -21,7 +21,7 @@ public class UserDTO {
     private String name;
     private String surname;
     private LocalDateTime createdAt;
-    private List<Role> roles;
+    private Set<Role> roles;
     private byte[] profilePicture;
     private Map<UUID, String> campaigns;
 

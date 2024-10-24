@@ -3,10 +3,7 @@ package org.iaeste.szakal2.services;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.dto.journey.CommentCreationDTO;
-import org.iaeste.szakal2.models.dto.journey.ContactEventDTO;
-import org.iaeste.szakal2.models.dto.journey.ContactJourneyCreationDTO;
-import org.iaeste.szakal2.models.dto.journey.ContactJourneyStatusUpdatingDTO;
+import org.iaeste.szakal2.models.dto.journey.*;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
@@ -14,11 +11,14 @@ import org.iaeste.szakal2.security.Authority;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ public class JourneyService {
     }
 
     @Transactional
-    public ContactJourney createJourney(ContactJourneyCreationDTO contactJourneyCreationDTO) {
+    public ContactJourneyDetailsDTO createJourney(ContactJourneyCreationDTO contactJourneyCreationDTO) {
         User user = userService.getUserById(contactJourneyCreationDTO.getUser());
         Company company = companyService.getCompanyById(contactJourneyCreationDTO.getCompany());
         Campaign campaign = campaignService.getCampaignById(contactJourneyCreationDTO.getCampaign());
@@ -51,93 +51,99 @@ public class JourneyService {
                 .findContactJourneyByCampaignAndCompany(campaign, company);
         if (contactJourneyOptional.isPresent()) {
             ContactJourney contactJourney = contactJourneyOptional.get();
-            if(contactJourney.getUser() != null) {
+            if (contactJourney.getUser() != null) {
                 throw new ResourceExistsException("Contact journey for that company already happened in this campaign");
             } else {
                 contactJourney.setUser(user);
-                return contactJourneyRepository.save(contactJourney);
+                return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
             }
         }
-        return contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
+        return ContactJourneyDetailsDTO
+                .fromContactJourney(contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign)));
     }
 
     @Transactional
-    public ContactJourney updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
+    public ContactJourneyDetailsDTO updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
-            return contactJourneyRepository.save(contactJourney);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
         }
     }
 
     @Transactional
-    public ContactJourney addContactEvent(UUID id, ContactEventDTO contactEventDTO) {
+    public ContactJourneyDetailsDTO addContactEvent(UUID id, ContactEventCreationDTO contactEventCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
-            contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventDTO));
-            contactJourney.setContactStatus(contactEventDTO.getContactStatus());
-            return contactJourneyRepository.save(contactJourney);
+            contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
+            contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
         }
     }
 
     @Transactional
-    public ContactJourney addComment(UUID id, CommentCreationDTO commentCreationDTO) {
+    public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
-        return contactJourneyRepository.save(contactJourney);
+        return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
 
     @Transactional
-    public ContactJourney finishJourney(UUID id) {
+    public ContactJourneyDetailsDTO finishJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(true);
-            return contactJourneyRepository.save(contactJourney);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
         }
     }
 
-    public ContactJourney removeUserFromJourney(UUID id) {
+    public ContactJourneyDetailsDTO removeUserFromJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
         if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
                 AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())) {
             contactJourney.setUser(null);
-            return contactJourneyRepository.save(contactJourney);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
         }
     }
 
-    @Transactional
-    public ContactJourney getJourneyById(UUID id) {
+    public ContactJourneyDetailsDTO getJourneyDTOById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
         if (journeyOptional.isEmpty()) {
-            throw new ResourceNotFoundException(STR. """
-                    ContactJourney with id \{ id } does not exist""" );
+            throw new ResourceNotFoundException(STR."""
+                    ContactJourney with id \{id} does not exist""");
+        }
+        return ContactJourneyDetailsDTO.fromContactJourney(journeyOptional.get());
+    }
+
+    private ContactJourney getJourneyById(UUID id) {
+        Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
+        if (journeyOptional.isEmpty()) {
+            throw new ResourceNotFoundException(STR."""
+                    ContactJourney with id \{id} does not exist""");
         }
         return journeyOptional.get();
     }
 
-    public Page<ContactJourney> getJourneys(Pageable pageable) {
-        return contactJourneyRepository.findAllByOrderByJourneyStart(pageable);
-    }
-
-    public Page<ContactJourney> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
+    public Page<ContactJourneyListingDTO> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
         User user = userService.getUserById(userId);
         Campaign campaign = campaignService.getCampaignById(campaignID);
-        return contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
-    }
-
-    public void truncate() {
-        contactJourneyRepository.deleteAll();
+        Page<ContactJourney> contactJourneyPage
+                = contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
+        List<ContactJourney> contactJourneyList = contactJourneyRepository
+                .findAllById(contactJourneyPage.getContent().stream().map(ContactJourney::getId).toList());
+        return new PageImpl<>(contactJourneyList.stream().map(ContactJourneyListingDTO::fromContactJourney).toList(),
+                pageable, contactJourneyPage.getTotalElements());
     }
 
     private Comment commentFromDTO(ContactJourney contactJourney, CommentCreationDTO commentCreationDTO) {
@@ -149,17 +155,17 @@ public class JourneyService {
                 .build();
     }
 
-    private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventDTO contactEventDTO) {
-        User user = userService.getUserById(contactEventDTO.getUser());
-        Optional<ContactPerson> contactPersonOptional = contactPersonRepository.findContactPersonById(contactEventDTO.getContactPerson());
+    private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventCreationDTO contactEventCreationDTO) {
+        User user = userService.getUserById(contactEventCreationDTO.getUser());
+        Optional<ContactPerson> contactPersonOptional = contactPersonRepository.findContactPersonById(contactEventCreationDTO.getContactPerson());
 
         return ContactEvent.builder()
                 .contactPerson(contactPersonOptional.orElse(null))
                 .contactJourney(contactJourney)
                 .user(user)
                 .date(LocalDateTime.now())
-                .eventType(contactEventDTO.getContactStatus())
-                .description(contactEventDTO.getDescription())
+                .eventType(contactEventCreationDTO.getContactStatus())
+                .description(contactEventCreationDTO.getDescription())
                 .build();
     }
 
@@ -172,6 +178,8 @@ public class JourneyService {
                 .campaign(campaign)
                 .journeyStart(LocalDateTime.now())
                 .contactStatus(ContactStatus.ASSIGNED)
+                .comments(new HashSet<>())
+                .contactEvents(new HashSet<>())
                 .build();
     }
 }

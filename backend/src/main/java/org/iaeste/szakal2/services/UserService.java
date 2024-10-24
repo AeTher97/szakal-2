@@ -18,6 +18,7 @@ import org.iaeste.szakal2.utils.EmailLoader;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -175,7 +176,10 @@ public class UserService {
     }
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
-        return usersRepository.findAllByOrderBySurnameAsc(pageable).map(UserDTO::fromUser);
+        Page<User> userPage = usersRepository.findAllByOrderBySurnameAsc(pageable);
+        List<UserDTO> userList = usersRepository.findAllById(userPage.map(User::getId).stream().toList())
+                .stream().map(UserDTO::fromUser).toList();
+        return new PageImpl<>(userList, userPage.getPageable(), userPage.getTotalElements());
     }
 
     public List<User> getUsers(List<UUID> userList) {

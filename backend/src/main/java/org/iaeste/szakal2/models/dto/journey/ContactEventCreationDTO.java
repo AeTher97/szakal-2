@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ContactEventDTO {
+public class ContactEventCreationDTO {
 
     private UUID contactPerson;
     @NotNull
@@ -24,4 +24,5 @@ public class ContactEventDTO {
     private String description;
     @NotNull
     private ContactStatus contactStatus;
+
 }

@@ -130,6 +130,7 @@ const filters = (mobile, categories, search, setSearch) => {
 const CompanyList = () => {
 
     const [searchLoaded, setSearchLoaded] = useState(null);
+    const [pageNumberLoaded, setPageNumberLoaded] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchParams, setSearchParams] = useSearchParams();
     const [tempSearch, setTempSearch] = useState({
@@ -161,7 +162,7 @@ const CompanyList = () => {
         = useCompanyListWithCampaign(
         currentCampaign, currentPage - 1,
         search,
-        [searchLoaded, (currentCampaign !== '') ? true : null]
+        [pageNumberLoaded, (currentCampaign !== '') ? true : null]
     );
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
 
@@ -178,6 +179,9 @@ const CompanyList = () => {
                 ...removeNullFields(tempSearch),
                 currentPage: currentPage
             })
+        }
+        if (searchLoaded) {
+            setPageNumberLoaded(true);
         }
     }, [currentPage, searchLoaded]);
 
@@ -277,7 +281,7 @@ const CompanyList = () => {
 
             <CompanyTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
             {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
-                                           firstAndLast={true} concise={mobile}
+                                           firstAndLast={!mobile} concise={mobile}
                                            margin={"10px 0 10px 0"}
                                            setPage={pageNumber => setCurrentPage(pageNumber)}/>}
 

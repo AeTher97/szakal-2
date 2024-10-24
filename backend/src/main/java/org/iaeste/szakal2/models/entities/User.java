@@ -16,6 +16,11 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@NamedEntityGraph(name = "User.roles",
+        attributeNodes = {
+                @NamedAttributeNode("roles")
+        }
+)
 public class User {
 
     @Id
@@ -46,18 +51,18 @@ public class User {
     @Setter
     @NotNull
     private boolean active;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Role> roles;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<ContactJourney> contactJourneys;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<ContactJourney> contactJourneys;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Comment> comments;
+    private Set<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<UserGroup> userGroups;
+    private Set<UserGroup> userGroups;
     @Setter
     private byte[] profilePicture;
 
@@ -70,8 +75,8 @@ public class User {
                 .surname(userCreationDTO.getSurname())
                 .accepted(false)
                 .active(true)
-                .roles(new ArrayList<>())
-                .userGroups(new ArrayList<>())
+                .roles(new HashSet<>())
+                .userGroups(new HashSet<>())
                 .build();
     }
 

@@ -3,10 +3,15 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showError} from "../redux/AlertActions";
 
-export const useData = (baseUrl, updateFunction, triggers = [], urlParams = [], locks = []) => {
+export const useData = (baseUrl,
+                        updateFunction,
+                        triggers = [],
+                        urlParams = [],
+                        locks = []) => {
 
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
+
 
     let url = baseUrl;
     let first = true;
@@ -41,6 +46,7 @@ export const useData = (baseUrl, updateFunction, triggers = [], urlParams = [], 
         })
         return () => {
             mounted = false;
+            console.log("umount", url)
         }
     }, [...triggers]);
 
@@ -62,7 +68,7 @@ export const usePut = (url, updateFunction = () => {
                 updateFunction(res.data)
             }).catch(e => {
                 if (e.response.data && e.response.data.error) {
-                    console.log(e.response.data.error);
+                    console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
             }).finally(() => {
@@ -87,7 +93,7 @@ export const usePost = (url, updateFunction = () => {
                 return res.data;
             }).catch(e => {
                 if (e.response.data && e.response.data.error) {
-                    console.log(e.response.data.error);
+                    console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
                 throw e;
@@ -112,7 +118,7 @@ export const useDelete = (url, updateFunction = () => {
                 return res.data;
             }).catch(e => {
                 if (e.response.data && e.response.data.error) {
-                    console.log(e.response.data.error);
+                    console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
                 throw e;
