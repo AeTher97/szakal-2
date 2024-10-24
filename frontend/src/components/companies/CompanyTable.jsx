@@ -66,8 +66,8 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                             <div style={{display: "flex", flexDirection: "column"}}>
                                 <LinkWithRouter style={{wordBreak: "break-word"}}
                                     to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
-                                <Typography>{company.www}</Typography>
-                                <Typography>{company.email}</Typography>
+                                <Typography style={{wordBreak: "break-word"}}>{company.www}</Typography>
+                                <Typography style={{wordBreak: "break-word"}}>{company.email}</Typography>
                             </div>
                         </td>
                         <td>{company.currentJourney ? <div>
