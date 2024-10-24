@@ -1,12 +1,10 @@
 package org.iaeste.szakal2.models.dto.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.iaeste.szakal2.validation.PasswordsMatch;
 import org.iaeste.szakal2.validation.ValidPassword;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor

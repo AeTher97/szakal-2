@@ -1,19 +1,17 @@
 package org.iaeste.szakal2.models.dto.user;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.iaeste.szakal2.validation.PasswordsMatch;
 import org.iaeste.szakal2.validation.ValidPassword;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 @PasswordsMatch
-public class PasswordResetDTO extends PasswordChangeDTO{
+public class PasswordResetDTO extends PasswordChangeDTO {
 
     @NotEmpty
     private String code;
