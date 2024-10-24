@@ -3,8 +3,8 @@ package org.iaeste.szakal2;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
-import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.dto.user.UserDTO;
+import org.iaeste.szakal2.models.entities.AccessRight;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.repositories.AccessRightRepository;
 import org.iaeste.szakal2.services.UserService;
@@ -90,7 +90,7 @@ public class UserIntegrationTest extends IntegrationTestWithTools {
         assertThat(integrationTestDatabase.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
                 .get().getRoles().size()).isEqualTo(1);
         assertThat(integrationTestDatabase.getUsersRepository().findUserByEmailIgnoreCase("administrator@szakal.org")
-                .get().getRoles().get(0).getName()).isEqualTo("VIEWING");
+                .get().getRoles().iterator().next().getName()).isEqualTo("VIEWING");
 
     }
 

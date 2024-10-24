@@ -129,7 +129,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
         ContactJourney contactJourney1 = integrationTestDatabase.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getComments().size());
-        assertEquals("Nie idzie za dobrze", contactJourney1.getComments().get(0).getComment());
+        assertEquals("Nie idzie za dobrze", contactJourney1.getComments().iterator().next().getComment());
         contactJourneyRepository.deleteById(contactJourney1.getId());
         contactJourneyRepository.flush();
 
@@ -143,7 +143,8 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
                 .contentType(ContentType.JSON)
                 .body(STR. """
                         {
-                              "contactPerson" : "\{ contactJourney.getCompany().getContactPeople().get(0).getId() }",
+                              "contactPerson" : "\{contactJourney.getCompany().getContactPeople().iterator()
+                        .next().getId()}",
                               "user" : "\{ contactJourney.getUser().getId() }",
                               "contactJourney" : "\{ contactJourney.getId() }",
                               "description" : "Tried calling",
@@ -156,7 +157,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
         ContactJourney contactJourney1 = integrationTestDatabase.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getContactEvents().size());
-        assertEquals("Tried calling", contactJourney1.getContactEvents().get(0).getDescription());
-        assertEquals(NOT_INTERESTED, contactJourney1.getContactEvents().get(0).getEventType());
+        assertEquals("Tried calling", contactJourney1.getContactEvents().iterator().next().getDescription());
+        assertEquals(NOT_INTERESTED, contactJourney1.getContactEvents().iterator().next().getEventType());
     }
 }
