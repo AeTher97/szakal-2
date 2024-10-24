@@ -2,7 +2,7 @@ package org.iaeste.szakal2.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
-import org.iaeste.szakal2.models.dto.company.CompanySearch;
+import org.iaeste.szakal2.models.dto.company.CompanySearchDTO;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.models.entities.ContactJourney;
@@ -10,15 +10,14 @@ import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class CompanySpecification implements Specification<Company> {
 
-    private final CompanySearch criteria;
+    private final CompanySearchDTO criteria;
     private final EntityManager entityManager;
 
-    public CompanySpecification(CompanySearch criteria, EntityManager entityManager) {
+    public CompanySpecification(CompanySearchDTO criteria, EntityManager entityManager) {
         this.criteria = criteria;
         this.entityManager = entityManager;
     }

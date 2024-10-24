@@ -37,12 +37,12 @@ const AuthProvider = () => {
     axios.interceptors.request.use(async request => {
 
         if (expirationTime && isTokenOutdated(expirationTime)) {
-            console.log("Refreshing token");
+            console.info("Refreshing token");
             const result = await getAuthToken()
                 .then((payload) => {
                     return payload;
                 }).catch(() => {
-                    console.log('Error in refresh');
+                    console.error('Error in refresh');
                     return null;
                 })
 

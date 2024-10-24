@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CompanySearch {
+public class CompanySearchDTO {
     private String name;
     private UUID campaign;
     private ContactStatus contactStatus;

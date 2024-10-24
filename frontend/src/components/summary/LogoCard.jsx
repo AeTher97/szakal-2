@@ -30,7 +30,7 @@ const LogoCard = () => {
                     Jeśli nie masz dostępu do żadnych akcji zgłoś się
                     do swojego koordynatora po kod do grupy. Możesz go wpisać w zakładce ustawienia aplikacji.
                     <br/><br/>
-                    Jeśli masz jakikolwiek feedback użyj przycisku na dole strony.
+                    Masz jakikolwiek feedback? Użyj przycisku na dole strony.
                     <br/><br/>
                     Pomyślnych kontaktów!
                     <br/>

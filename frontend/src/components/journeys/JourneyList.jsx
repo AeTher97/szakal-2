@@ -27,7 +27,7 @@ import Button from "@mui/joy/Button";
 const JourneyList = () => {
     const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [searchLoaded, setSearchLoaded] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [tempSearch, setTempSearch] = useState({
@@ -44,7 +44,8 @@ const JourneyList = () => {
         user: null
     });
 
-    const {journeys, loading, pagesNumber} = useCurrentCampaignJourneyList(currentPage - 1, search);
+    const {journeys, loading, pagesNumber}
+        = useCurrentCampaignJourneyList(currentPage - 1, search, searchLoaded);
 
 
     useEffect(() => {
@@ -56,6 +57,7 @@ const JourneyList = () => {
         }
         setTempSearch(currentValue)
         setSearch(currentValue);
+        setSearchLoaded(true);
     }, [searchParams]);
 
 

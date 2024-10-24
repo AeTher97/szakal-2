@@ -40,7 +40,7 @@ export const useConfirmationDialog = (text) => {
     }, onReject = () => {
         setOpen(false)
     }) => {
-        console.log("called")
+        console.info("called")
         setOpen(true);
         setOnReject(() => onReject)
         setOnConfirm(() => onConfirm)

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,7 +65,7 @@ public class IntegrationTestDatabase {
 
         if (usersRepository.findUserByEmailIgnoreCase(email).isPresent()) {
             User user = usersRepository.findUserByEmailIgnoreCase(email).get();
-            user.getRoles().get(0).getAccessRights().addAll(accessRightList.stream().map(accessRight ->
+            user.getRoles().iterator().next().getAccessRights().addAll(accessRightList.stream().map(accessRight ->
                     accessRightRepository.findAccessRightById(accessRight).get()).toList());
             return usersRepository.save(user);
         }
@@ -80,7 +80,7 @@ public class IntegrationTestDatabase {
                 .surname(username)
                 .accepted(true)
                 .active(true)
-                .roles(rolesRepository.findAllById(List.of(role.getId())))
+                .roles(new HashSet<>(rolesRepository.findAllById(List.of(role.getId()))))
                 .build());
     }
 
@@ -139,7 +139,7 @@ public class IntegrationTestDatabase {
                 .email("email@gami.com")
                 .updateDate(LocalDateTime.now())
                 .insertDate(LocalDateTime.now())
-                .contactPeople(new ArrayList<>())
+                .contactPeople(new HashSet<>())
                 .updatedBy(usersRepository.findAll().get(0))
                 .build());
         if (addContactPerson) {

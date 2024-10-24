@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,19 +16,50 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraph(name = "Company.listing",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+                @NamedAttributeNode("categories"),
+                @NamedAttributeNode(value = "contactJourneys", subgraph = "journey-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "journey-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("campaign")
+                        })
+        })
+@NamedEntityGraph(name = "Company.address",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+        })
+@NamedEntityGraph(name = "Company.detail",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+                @NamedAttributeNode("categories"),
+                @NamedAttributeNode("updatedBy"),
+                @NamedAttributeNode(value = "contactJourneys", subgraph = "journey-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "journey-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("campaign")
+                        })
+        })
 public class Company {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Setter
     @NotNull
     @NotEmpty
     private String name;
     @Setter
-    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
     @Setter
     private String phone;
@@ -46,7 +76,7 @@ public class Company {
     @NotNull
     private LocalDateTime updateDate;
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JsonIgnoreProperties(value = {"roles"})
     private User updatedBy;
@@ -56,19 +86,18 @@ public class Company {
     @Setter
     private LocalDateTime deletedDate;
     @Setter
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "categories_companies",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<CompanyCategory> categories;
+    private Set<CompanyCategory> categories;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<ContactPerson> contactPeople;
+    private Set<ContactPerson> contactPeople;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     @JsonIgnoreProperties(value = {"company"})
-    private List<ContactJourney> contactJourneys;
-
+    private Set<ContactJourney> contactJourneys;
 
 }

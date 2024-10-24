@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
+import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.UserGroup;
@@ -16,6 +17,7 @@ import org.iaeste.szakal2.repositories.UserGroupRepository;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -73,12 +75,19 @@ public class CampaignService {
         return campaignRepository.findAllById(userList);
     }
 
-    public Page<ContactJourney> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
-        return getJourneysByCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
+    public Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
+        return getJourneysForCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
     }
 
-    private Page<ContactJourney> getJourneysByCampaign(Pageable pageable, Specification<ContactJourney> specification) {
-        return contactJourneyRepository.findAll(specification, pageable);
+    private Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, Specification<ContactJourney> specification) {
+        Page<ContactJourney> contactJourneyPage = contactJourneyRepository.findAll(specification, pageable);
+        List<ContactJourney> contactJourneys = contactJourneyRepository
+                .findAllById(contactJourneyPage.map(ContactJourney::getId).stream().toList());
+
+        return new PageImpl<>(contactJourneys.stream()
+                .map(ContactJourneyListingDTO::fromContactJourney)
+                .toList(), pageable, contactJourneyPage.getTotalElements());
+
     }
 
     private Campaign campaignFromCreationDTO(CampaignCreationDTO campaignCreationDTO) {

@@ -1,9 +1,7 @@
 package org.iaeste.szakal2.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,4 +28,7 @@ public class Address {
     private String postalCode;
     @Setter
     private String streetNumber;
+//    @OneToOne(mappedBy = "address")
+//    @JsonIgnore
+//    private Company company;
 }

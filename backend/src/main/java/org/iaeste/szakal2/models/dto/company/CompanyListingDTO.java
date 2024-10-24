@@ -14,7 +14,9 @@ import org.iaeste.szakal2.models.entities.ContactJourney;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -29,11 +31,11 @@ public class CompanyListingDTO {
     private String www;
     private String email;
     private LocalDateTime insertDate;
-    private List<CompanyCategory> categories;
-    private List<ContactJourneyMinimalDTO> contactJourneys;
+    private Set<CompanyCategory> categories;
+    private Set<ContactJourneyMinimalDTO> contactJourneys;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(value = {"company", "campaign", "contactEvents"})
-    private ContactJourney currentJourney;
+    private ContactJourneyMinimalDTO currentJourney;
 
     public static CompanyListingDTO fromCompany(Company company) {
         return fromCompany(company, null);
@@ -50,14 +52,11 @@ public class CompanyListingDTO {
                 .insertDate(company.getInsertDate())
                 .categories(company.getCategories())
                 .contactJourneys(company.getContactJourneys().stream()
-                        .map(contactJourney -> ContactJourneyMinimalDTO.builder()
-                                .id(contactJourney.getId())
-                                .campaignName(contactJourney.getCampaign().getName())
-                                .status(contactJourney.getContactStatus().name())
-                                .build()).toList())
-                .currentJourney(currentCampaign == null ? null : company.getContactJourneys().stream()
-                        .filter(contactJourney -> contactJourney.getCampaign().getId().equals(currentCampaign))
-                        .findAny().orElse(null))
+                        .map(ContactJourneyMinimalDTO::fromContactJourney).collect(Collectors.toSet()))
+                .currentJourney(currentCampaign == null ? null :
+                        company.getContactJourneys().stream()
+                                .filter(contactJourney -> contactJourney.getCampaign().getId().equals(currentCampaign))
+                                .findAny().map(ContactJourneyMinimalDTO::fromContactJourney).orElse(null))
                 .build();
     }
 }

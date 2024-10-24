@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
+import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
 import org.iaeste.szakal2.models.entities.Campaign;
-import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.services.CampaignService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,13 +48,13 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}/journeys")
-    public Page<ContactJourney> getCampaignContactJourneys(@PathVariable("id") UUID id,
-                                                           @RequestParam(defaultValue = "10") int pageSize,
-                                                           @RequestParam(required = false) String companyName,
-                                                           @RequestParam(required = false) String status,
-                                                           @RequestParam(required = false) String detailedStatus,
-                                                           @RequestParam(required = false) String user,
-                                                           @RequestParam int pageNumber) {
+    public Page<ContactJourneyListingDTO> getCampaignContactJourneys(@PathVariable("id") UUID id,
+                                                                     @RequestParam(defaultValue = "10") int pageSize,
+                                                                     @RequestParam(required = false) String companyName,
+                                                                     @RequestParam(required = false) String status,
+                                                                     @RequestParam(required = false) String detailedStatus,
+                                                                     @RequestParam(required = false) String user,
+                                                                     @RequestParam int pageNumber) {
         return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
                 ContactJourneySearch
                         .builder()

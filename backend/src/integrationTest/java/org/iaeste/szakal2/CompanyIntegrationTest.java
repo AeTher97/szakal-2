@@ -55,7 +55,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
         assertThat(company.getWww()).isEqualTo("iaeste.pl");
         assertThat(company.getEmail()).isEqualTo("company@email.com");
         assertThat(company.getCategories().size()).isEqualTo(1);
-        assertThat(company.getCategories().get(0).getName()).isEqualTo("Gardening");
+        assertThat(company.getCategories().iterator().next().getName()).isEqualTo("Gardening");
     }
 
     @Test
@@ -190,7 +190,7 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
         Company company2 = integrationTestDatabase.getCompany(company.getId());
 
         assertEquals(1, company2.getContactPeople().size());
-        assertEquals(company2.getContactPeople().get(0).getName(), "Asia Kowalska");
+        assertEquals(company2.getContactPeople().iterator().next().getName(), "Asia Kowalska");
 
         withAccessRights("company_modification")
                 .contentType(ContentType.JSON)
@@ -205,13 +205,14 @@ public class CompanyIntegrationTest extends IntegrationTestWithTools {
                         """)
                 .when()
                 .put(STR
-                        ."/api/companies/\{company.getId()}/contactPerson/\{company2.getContactPeople().get(0).getId()}")
+                        ."/api/companies/\{company.getId()}/contactPerson/\{company2.getContactPeople().iterator()
+                        .next().getId()}")
                 .then()
                 .statusCode(200);
 
         Company company3 = integrationTestDatabase.getCompany(company.getId());
 
-        assertEquals(company3.getContactPeople().get(0).getName(), "Patrycja Mazur");
+        assertEquals(company3.getContactPeople().iterator().next().getName(), "Patrycja Mazur");
 
     }
 }

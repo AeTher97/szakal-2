@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Log4j2
@@ -96,7 +97,7 @@ public class InitService {
         usersRepository.save(User.builder()
                 .email("administrator@szakal.org")
                 .password(passwordEncoder.encode("administrator"))
-                .roles(List.of(role))
+                .roles(Set.of(role))
                 .name("Admin")
                 .surname("Admin")
                 .createdAt(LocalDateTime.now())

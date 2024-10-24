@@ -87,7 +87,7 @@ public class CompanyController {
                 pageable = PageRequest.of(pageNumber, pageSize,springSort.descending());
             }
         }
-        return companyService.getCompanies(CompanySearch.builder()
+        return companyService.getCompanies(CompanySearchDTO.builder()
                                 .category(category)
                                 .contactStatus(contactStatus)
                                 .campaign(campaign)
