@@ -81,7 +81,7 @@ public class User {
     }
 
     public String getFullName() {
-        return STR."\{name}  \{surname}";
+        return STR."\{name} \{surname}";
     }
 
     public Map<UUID, String> availableCampaigns() {

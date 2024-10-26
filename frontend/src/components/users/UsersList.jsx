@@ -41,7 +41,7 @@ const UsersList = () => {
                             <ListItem>
                                 <ListItemButton>
                                     <ListItemDecorator>
-                                        <UserAvatar image={user.profilePicture} name={user.name}
+                                        <UserAvatar image={user.profilePicture} name={user.name} id={user.id}
                                                     surname={user.surname} bold={false} overrideMobile={true}/>
                                     </ListItemDecorator>
                                     <ListItemContent>

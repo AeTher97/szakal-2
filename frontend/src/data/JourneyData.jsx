@@ -43,6 +43,22 @@ export const useUserJourneyList = (page = 0) => {
     return {journeys, loading, pagesNumber}
 }
 
+
+export const useTop10 = () => {
+
+    const {currentCampaign} = useSelector(state => state.campaigns)
+    const [top10, setTop10] = useState([]);
+
+    const {loading} = useData(`/journeys/top10`,
+        (data) => {
+            setTop10(data.usersWithCount)
+        }, [currentCampaign],
+        [{name: "campaignId", value: currentCampaign}]
+        , [currentCampaign === "none" ? null : true])
+
+    return {top10}
+}
+
 export const useAddContactJourney = () => {
     const {post} = usePost(`/journeys`)
 

@@ -10,6 +10,7 @@ import org.iaeste.szakal2.repositories.ContactPersonRepository;
 import org.iaeste.szakal2.security.Authority;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
+import org.iaeste.szakal2.utils.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class JourneyService {
@@ -106,6 +104,7 @@ public class JourneyService {
         }
     }
 
+    @Transactional
     public ContactJourneyDetailsDTO removeUserFromJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
         if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
@@ -124,6 +123,34 @@ public class JourneyService {
                     ContactJourney with id \{id} does not exist""");
         }
         return ContactJourneyDetailsDTO.fromContactJourney(journeyOptional.get());
+    }
+
+    public Top10DTO getTop10(UUID campaignId) {
+        Campaign campaign = campaignService.getCampaignById(campaignId);
+        Map<String, Integer> top10 = new LinkedHashMap<>();
+
+        List<ContactJourney> journeys = contactJourneyRepository.findAllByCampaign(campaign);
+        journeys.forEach(journey -> {
+            if (journey.getUser() == null) {
+                return;
+            }
+            top10.computeIfAbsent(journey.getUser().getFullName(), _ -> 0);
+            top10.computeIfPresent(journey.getUser().getFullName(), (_, count) -> count + 1);
+        });
+
+        MapUtils.sortByValue(top10);
+
+        Top10DTO top10DTO = new Top10DTO();
+        for (int i = 0; i < 10; i++) {
+            if (i >= top10.size()) {
+                continue;
+            }
+            String fullName = top10.keySet().stream().toList().get(i);
+            int count = top10.get(fullName);
+            top10DTO.addUser(fullName, count);
+        }
+
+        return top10DTO;
     }
 
     private ContactJourney getJourneyById(UUID id) {
@@ -182,4 +209,5 @@ public class JourneyService {
                 .contactEvents(new HashSet<>())
                 .build();
     }
+
 }

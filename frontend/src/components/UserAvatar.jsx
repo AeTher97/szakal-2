@@ -1,17 +1,19 @@
 import React from 'react';
 import {Avatar, Typography} from "@mui/joy";
 import {useMobileSize} from "../utils/SizeQuery";
+import {uuidToColor} from "../utils/ColorForUUID";
 
 const UserAvatar = ({
                         name = "", surname = "", image = "", text = true, size, overrideMobile = false,
-                        hideName = false, bold = true
+                        hideName = false, bold = true, id
                     }) => {
 
     const mobile = useMobileSize();
 
     return (
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10}}>
-            <Avatar variant={"soft"} src={(!image || image.includes("null") || image.includes("undefined"))
+            <Avatar style={{backgroundColor: id ? uuidToColor(id) : "primary"}}
+                    variant={"soft"} src={(!image || image.includes("null") || image.includes("undefined"))
                 ? null : `data:image;base64,${image}`}
                     size={size}>
                 {name[0]}{surname[0]}

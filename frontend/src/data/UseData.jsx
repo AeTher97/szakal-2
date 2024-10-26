@@ -46,7 +46,6 @@ export const useData = (baseUrl,
         })
         return () => {
             mounted = false;
-            console.log("umount", url)
         }
     }, [...triggers]);
 

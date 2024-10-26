@@ -1,39 +1,14 @@
 import React from 'react';
 import {Card, CardContent, CircularProgress, Divider, Typography} from "@mui/joy";
-import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
+import {useTop10} from "../../data/JourneyData";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 
 const Top10 = () => {
 
     const mobile = useMobileSize();
-    const {journeys, loading} = useCurrentCampaignJourneyList(0, 1,1000)
+    const {top10, loading} = useTop10()
     const {currentCampaign} = useSelector(state => state.campaigns);
-
-    if(currentCampaign === "none"){
-        return <></>
-    }
-
-
-    const top10 = new Map();
-    journeys.forEach(journey => {
-        if(!journey.user){
-            return;
-        }
-        const currentStatForUser = top10.get(journey.user.id);
-        if (currentStatForUser) {
-            top10.set(journey.user.id, {
-                ...currentStatForUser,
-                count: currentStatForUser.count + 1
-            });
-        } else {
-            top10.set(journey.user.id, {
-                name: journey.user.name,
-                surname: journey.user.surname,
-                count: 1
-            })
-        }
-    })
 
     if (currentCampaign === "none" || !currentCampaign) {
         return <></>
@@ -44,15 +19,13 @@ const Top10 = () => {
                 <Typography level={"title-lg"}>Top 10</Typography>
             {!loading && <>
                 <Divider inset={"context"}/>
-                {journeys.length > 0 && <CardContent>
-                    {Array.from(top10, ([name, value]) => ({...value, id: name}))
-                        .sort((a, b) => a.count > b.count ? -1 : 1)
-                        .map((user, i) => {
+                {Object.keys(top10).length > 0 && <CardContent>
+                    {Object.keys(top10).map((key, i) => {
                             return <Typography
-                                key={user.id}>{i + 1}. {user.name} {user.surname} - {user.count}</Typography>
+                                key={key}>{i + 1}. {key} - {top10[key]}</Typography>
                         })}
                 </CardContent>}
-                {journeys.length === 0 && <Typography>Brak kontatków w akcji</Typography>}
+                {top10.length === 0 && <Typography>Brak kontatków w akcji</Typography>}
             </>}
             {loading && <div style={{display: "flex", justifyContent: "center"}}>
                 <CircularProgress/>

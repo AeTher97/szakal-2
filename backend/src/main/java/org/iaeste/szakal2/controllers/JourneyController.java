@@ -83,4 +83,9 @@ public class JourneyController {
         }
         return journeyService.getJourneys(userId, campaignId, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
+
+    @GetMapping("/top10")
+    public Top10DTO getTop10(@RequestParam UUID campaignId) {
+        return journeyService.getTop10(campaignId);
+    }
 }
