@@ -19,7 +19,7 @@ const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesL
             <Divider/>
             <CardContent orientation={"horizontal"} style={{flex: 0}}>
                 {localUser.roles.map(role => <Chip key={role.id}
-                                                   sx={{backgroundColor: uuidToColor(role.id)}}
+                                                   sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                                    endDecorator={<ChipDelete onDelete={() => {
                                                        setLocalUser(old => {
                                                            return {
@@ -39,7 +39,7 @@ const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesL
                 <div>
                     {roles.filter(role => {
                         return !localUser.roles.find(userRole => userRole.id === role.id);
-                    }).map(role => <Chip sx={{backgroundColor: uuidToColor(role.id)}}
+                    }).map(role => <Chip sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                          key={role.id}
                                          onClick={() => {
                                              setLocalUser(old => {

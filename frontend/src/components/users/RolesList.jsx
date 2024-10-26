@@ -69,7 +69,7 @@ const RolesList = () => {
                                         }}>
                                             {role.accessRights.map(accessRight =>
                                                 <Chip key={accessRight.id}
-                                                      sx={{backgroundColor: uuidToColor(accessRight.id)}}>
+                                                      sx={{backgroundColor: uuidToColor(accessRight.id, 0.5)}}>
                                                     {accessRight.description}
                                                 </Chip>)}
                                         </div>

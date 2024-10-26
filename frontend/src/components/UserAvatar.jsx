@@ -12,7 +12,7 @@ const UserAvatar = ({
 
     return (
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10}}>
-            <Avatar style={{backgroundColor: id ? uuidToColor(id) : "primary"}}
+            <Avatar style={{backgroundColor: id ? uuidToColor(id, 1) : "primary", color: "white"}}
                     variant={"soft"} src={(!image || image.includes("null") || image.includes("undefined"))
                 ? null : `data:image;base64,${image}`}
                     size={size}>

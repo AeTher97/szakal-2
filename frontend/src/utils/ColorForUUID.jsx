@@ -8,14 +8,14 @@ const hashCode = (str) => {
     return hash;
 }
 
-const intToRGB = (i) => {
+const intToRGB = (i, opacity = 0.7) => {
     const red = (i >> 16) & 0xFF;
     const green = (i >> 8) & 0xFF;
     const blue = i & 0xFF;
-    return `rgba(${red},${green},${blue},0.6)`;
+    return `rgba(${red},${green},${blue},${opacity})`;
 }
 
-export const uuidToColor = (uuid) => {
+export const uuidToColor = (uuid, opacity = 0.7) => {
     const hash = hashCode(uuid);
-    return intToRGB(hash);
+    return intToRGB(hash, opacity);
 }

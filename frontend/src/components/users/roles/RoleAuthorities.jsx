@@ -22,7 +22,7 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleL
             <Divider/>
             <CardContent orientation={"horizontal"} style={{flex: 0, display: "flex", flexWrap: "wrap"}}>
                 {localRole.accessRights.map(accessRight => <Chip key={accessRight.id}
-                                                                 sx={{backgroundColor: uuidToColor(accessRight.id)}}
+                                                                 sx={{backgroundColor: uuidToColor(accessRight.id, 0.5)}}
                                                                  endDecorator={hasRight(ROLE_MODIFICATION) ?
                                                                      <ChipDelete onDelete={() => {
                                                                          setLocalRole(old => {
@@ -46,7 +46,7 @@ const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleL
             <CardContent orientation={"horizontal"} sx={{display: "flex", flexWrap: "wrap"}}>
                 {accessRights && accessRights.filter(accessRight => {
                     return !localRole.accessRights.find(roleAccessRight => roleAccessRight.id === accessRight.id);
-                }).map(accessRight => <Chip sx={{backgroundColor: uuidToColor(role.id)}}
+                }).map(accessRight => <Chip sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                             key={accessRight.id}
                                             onClick={() => {
                                                 if (!hasRight(ROLE_MODIFICATION)) {

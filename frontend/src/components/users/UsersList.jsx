@@ -47,8 +47,13 @@ const UsersList = () => {
                                     <ListItemContent>
                                         <div style={{display: "flex", justifyContent: "space-between"}}>
                                             <div/>
-                                            <div>{user.roles.map(role => <Chip
-                                                sx={{backgroundColor: uuidToColor(role.id)}}
+                                            <div style={{
+                                                display: "flex",
+                                                flexWrap: "wrap",
+                                                justifyContent: "flex-end",
+                                                gap: 5
+                                            }}>{user.roles.map(role => <Chip
+                                                sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                                 key={role.id}>{role.name}</Chip>
                                             )}
                                             </div>
