@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useData, usePost, usePut} from "./UseData";
 
-export const useCategories = (currentPage = 0) => {
+export const useCategories = (pageNumberLoaded, currentPage = 0) => {
 
     const [reload, setReload] = useState(0);
     const [pageNumber, setPageNumber] = useState();
@@ -11,8 +11,8 @@ export const useCategories = (currentPage = 0) => {
             setCategories(data.content)
             setPageNumber(data.totalPages)
         },
-        [currentPage, reload], [{name: "pageNumber", value: currentPage},
-            {name: "pageSize", value: 9999}])
+        [currentPage, reload, pageNumberLoaded], [{name: "pageNumber", value: currentPage},
+            {name: "pageSize", value: 9999}], [pageNumberLoaded])
 
     const {post} = usePost(`/categories`, (content) => setCategories(current => {
         return [...current, content]

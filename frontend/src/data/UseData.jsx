@@ -47,7 +47,7 @@ export const useData = (baseUrl,
         return () => {
             mounted = false;
         }
-    }, [...triggers]);
+    }, [...triggers, ...locks]);
 
 
     return {loading}

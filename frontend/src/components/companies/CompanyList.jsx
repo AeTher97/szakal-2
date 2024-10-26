@@ -158,7 +158,8 @@ const CompanyList = () => {
     const mobile = useMobileSize();
     const {hasRight} = useAccessRightsHelper();
     const {currentCampaign} = useSelector(state => state.campaigns);
-    const {categories} = useCategories();
+    const {categories} = useCategories(pageNumberLoaded);
+
     const {companies, loading, pageNumber, addCompany}
         = useCompanyListWithCampaign(
         currentCampaign, currentPage - 1,
