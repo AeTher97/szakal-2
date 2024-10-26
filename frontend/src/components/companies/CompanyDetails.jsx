@@ -45,7 +45,6 @@ const CompanyDetails = () => {
 
     const thisCampaignJourney = company ?
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
-    console.log(company)
 
     return (
         <div>
