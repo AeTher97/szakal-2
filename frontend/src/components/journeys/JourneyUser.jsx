@@ -12,7 +12,7 @@ const JourneyUser = ({user}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 {user && <CardContent>
-                    <UserAvatar name={user.name} surname={user.surname}
+                    <UserAvatar name={user.name} surname={user.surname} id={user.id}
                                 image={user.profilePicture} overrideMobile/>
                     <Typography>{user.email}</Typography>
                 </CardContent>}

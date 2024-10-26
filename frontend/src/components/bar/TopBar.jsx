@@ -97,7 +97,7 @@ const TopBar = () => {
                               }}
                 />
 
-                {user && <UserMenu name={name} surname={surname} image={user.profilePicture}/>}
+                {user && <UserMenu name={name} surname={surname} image={user.profilePicture} id={userId}/>}
             </div>
         );
     }

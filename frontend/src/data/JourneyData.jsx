@@ -49,12 +49,12 @@ export const useTop10 = () => {
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [top10, setTop10] = useState([]);
 
-    const {loading} = useData(`/journeys/top10`,
+    const {} = useData(`/journeys/top10`,
         (data) => {
             setTop10(data.usersWithCount)
         }, [currentCampaign],
-        [{name: "campaignId", value: currentCampaign}]
-        , [currentCampaign === "none" ? null : true])
+        [{name: "campaignId", value: currentCampaign}],
+        [currentCampaign === "none" || currentCampaign.length === 0 ? null : true])
 
     return {top10}
 }

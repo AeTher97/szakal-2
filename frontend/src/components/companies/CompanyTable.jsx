@@ -23,7 +23,6 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
             overflow: 'auto',
             display: "flex",
         }}>
-
             <Table
                 variant={"outlined"}
                 stickyHeader
@@ -73,7 +72,7 @@ const CompanyTable = ({companies, search, setSort, clearSort}) => {
                         <td>{company.currentJourney ? <div>
                                 <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
                                     <Typography style={{wordBreak: "break-word"}}>
-                                        {decodeContactStatus(company.currentJourney.contactStatus)}
+                                        {decodeContactStatus(company.currentJourney.status)}
                                     </Typography>
                                 </LinkWithRouter>
                                 <Typography style={{wordBreak: "break-word"}}>{company.currentJourney.user ?

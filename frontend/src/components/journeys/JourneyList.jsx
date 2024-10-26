@@ -10,6 +10,7 @@ import {
     Input,
     LinearProgress,
     Select,
+    Skeleton,
     Typography
 } from "@mui/joy";
 import JourneysTable from "./JourneysTable";
@@ -151,7 +152,12 @@ const JourneyList = () => {
 
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
-            <JourneysTable journeys={journeys}/>
+            {!loading && <JourneysTable journeys={journeys}/>}
+            {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
+                {Array(10).fill(0).map(() => {
+                    return <Skeleton variant={"rectangular"} style={{height: 30}}/>
+                })}
+            </div>}
             {pagesNumber > 1 &&
                 <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
                             concise={mobile}

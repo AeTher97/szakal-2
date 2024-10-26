@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.ContactStatus;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -18,12 +19,14 @@ public class ContactJourneyMinimalDTO {
     private UUID id;
     private String campaignName;
     private ContactStatus status;
+    private LocalDateTime journeyStart;
 
     public static ContactJourneyMinimalDTO fromContactJourney(ContactJourney contactJourney) {
         return ContactJourneyMinimalDTO.builder()
                 .id(contactJourney.getId())
                 .campaignName(contactJourney.getCampaign().getName())
                 .status(contactJourney.getContactStatus())
+                .journeyStart(contactJourney.getJourneyStart())
                 .build();
     }
 }

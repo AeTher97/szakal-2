@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     Autocomplete,
     AutocompleteOption,
@@ -8,8 +8,8 @@ import {
     Typography
 } from "@mui/joy";
 import UserAvatar from "../UserAvatar";
-import { useUsersSearch } from "../../data/UsersData";
-import { useSelector } from "react-redux";
+import {useUsersSearch} from "../../data/UsersData";
+import {useSelector} from "react-redux";
 
 const UserAutocomplete = ({
     setUser = () => {
@@ -73,7 +73,8 @@ const UserAutocomplete = ({
             renderOption={(props, option) => (
                 <AutocompleteOption {...props}>
                     <ListItemDecorator style={{ marginInlineEnd: 5 }}>
-                        <UserAvatar name={option.name} surname={option.surname} image={option.profilePicture}
+                        <UserAvatar id={option.id} name={option.name} surname={option.surname}
+                                    image={option.profilePicture}
                             text={false} />
                     </ListItemDecorator>
                     <ListItemContent sx={{ fontSize: 'sm' }}>

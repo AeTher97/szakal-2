@@ -8,6 +8,7 @@ import {
     Input,
     LinearProgress,
     Select,
+    Skeleton,
     Typography
 } from "@mui/joy";
 import Option from "@mui/joy/Option";
@@ -185,7 +186,6 @@ const CompanyList = () => {
         }
     }, [currentPage, searchLoaded]);
 
-
     useEffect(() => {
         const currentValue = {
             name: searchParams.get("name") && sanitizeFilters(searchParams.get("name")),
@@ -279,11 +279,18 @@ const CompanyList = () => {
 
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
-            <CompanyTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>
+            {!loading &&
+                <CompanyTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>}
+            {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
+                {Array(10).fill(0).map(() => {
+                    return <Skeleton variant={"rectangular"} style={{height: 30}}/>
+                })}
+            </div>}
             {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
                                            firstAndLast={!mobile} concise={mobile}
                                            margin={"10px 0 10px 0"}
                                            setPage={pageNumber => setCurrentPage(pageNumber)}/>}
+
 
             <AddCompanyDialog
                 open={addCompanyOpen}

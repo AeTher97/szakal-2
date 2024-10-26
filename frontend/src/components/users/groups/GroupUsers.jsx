@@ -59,7 +59,7 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
                                     <ListItemDecorator>
                                         <UserAvatar
                                             name={user.name} surname={user.surname}
-                                            image={user.profilePicture}
+                                            image={user.profilePicture} id={user.id}
                                             overrideMobile={true} bold={false}/>
                                     </ListItemDecorator>
                                     <ListItemContent>

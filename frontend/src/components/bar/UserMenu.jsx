@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {changeThemeAction, logoutAction} from "../../redux/ReducerActions";
 import {useNavigate} from "react-router-dom";
 
-const UserMenu = ({name, surname, image}) => {
+const UserMenu = ({name, surname, image, id}) => {
 
     const mobile = useMobileSize();
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const UserMenu = ({name, surname, image}) => {
             <Dropdown>
                 <MenuButton
                     sx={{border: "none", padding: "0 10px 0 0"}}>
-                    <UserAvatar name={name} surname={surname} image={image}/>
+                    <UserAvatar name={name} surname={surname} image={image} id={id}/>
                 </MenuButton>
                 <Menu>
                     <MenuItem onClick={() => {

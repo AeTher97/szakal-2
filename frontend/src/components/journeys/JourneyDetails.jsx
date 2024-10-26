@@ -163,6 +163,7 @@ const JourneyDetails = () => {
                                     }}>
                                         <div style={{display: "flex", gap: 5}}>
                                             <UserAvatar name={event.user.name}
+                                                        id={event.user.id}
                                                         surname={event.user.surname}
                                                         image={event.user.profilePicture}
                                                         text={false}
@@ -226,6 +227,7 @@ const JourneyDetails = () => {
                             }}>
                                 <div style={{display: "flex", gap: 5, alignItems: "center"}}>
                                     <UserAvatar name={comment.user.name}
+                                                id={comment.user.id}
                                                 surname={comment.user.surname}
                                                 image={comment.user.profilePicture}
                                                 overrideMobile={true}
