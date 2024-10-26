@@ -58,8 +58,8 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public Company getCompany(@PathVariable("id") UUID id) {
-        return companyService.getCompanyById(id);
+    public CompanyDetailsDTO getCompany(@PathVariable("id") UUID id) {
+        return companyService.getCompanyDTOById(id);
     }
 
     @GetMapping

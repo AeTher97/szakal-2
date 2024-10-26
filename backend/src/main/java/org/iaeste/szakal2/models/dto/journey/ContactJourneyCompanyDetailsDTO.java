@@ -3,9 +3,7 @@ package org.iaeste.szakal2.models.dto.journey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
-import org.iaeste.szakal2.models.dto.company.CompanyDetailsDTO;
 import org.iaeste.szakal2.models.dto.user.UserDTO;
-import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.ContactStatus;
 
@@ -16,11 +14,10 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-public class ContactJourneyDetailsDTO {
+public class ContactJourneyCompanyDetailsDTO {
 
     private UUID id;
-    private CompanyDetailsDTO company;
-    private CampaignDTO campaign;
+    private ContactJourneyDetailsDTO.CampaignDTO campaign;
     @JsonIgnoreProperties(value = {"accessRights", "campaigns", "roles"})
     private UserDTO user;
     private Set<ContactEventDetailsDTO> contactEvents;
@@ -29,13 +26,12 @@ public class ContactJourneyDetailsDTO {
     private ContactStatus contactStatus;
     private boolean finished;
 
-    public static ContactJourneyDetailsDTO fromContactJourney(ContactJourney contactJourney) {
-        return ContactJourneyDetailsDTO.builder()
+    public static ContactJourneyCompanyDetailsDTO fromContactJourney(ContactJourney contactJourney) {
+        return ContactJourneyCompanyDetailsDTO.builder()
                 .id(contactJourney.getId())
                 .contactStatus(contactJourney.getContactStatus())
                 .journeyStart(contactJourney.getJourneyStart())
-                .company(CompanyDetailsDTO.fromCompany(contactJourney.getCompany()))
-                .campaign(CampaignDTO.fromCampaign(contactJourney.getCampaign()))
+                .campaign(ContactJourneyDetailsDTO.CampaignDTO.fromCampaign(contactJourney.getCampaign()))
                 .contactEvents(contactJourney.getContactEvents().stream().map(ContactEventDetailsDTO::fromContactEvent)
                         .collect(Collectors.toSet()))
                 .user(contactJourney.getUser() != null ? UserDTO.fromUser(contactJourney.getUser()) : null)
@@ -44,16 +40,4 @@ public class ContactJourneyDetailsDTO {
                 .build();
     }
 
-    @Data
-    @Builder
-    static class CampaignDTO {
-        private String name;
-
-        static CampaignDTO fromCampaign(Campaign campaign) {
-            return CampaignDTO
-                    .builder()
-                    .name(campaign.getName())
-                    .build();
-        }
-    }
 }

@@ -4,10 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
-import org.iaeste.szakal2.models.dto.company.CompanyCreationDTO;
-import org.iaeste.szakal2.models.dto.company.CompanyModificationDTO;
-import org.iaeste.szakal2.models.dto.company.CompanySearchDTO;
-import org.iaeste.szakal2.models.dto.company.ContactPersonCreationDTO;
+import org.iaeste.szakal2.models.dto.company.*;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
 import org.iaeste.szakal2.models.entities.ContactPerson;
@@ -96,6 +93,15 @@ public class CompanyService {
                     Company with id \{id} does not exist""");
         }
         return companyOptional.get();
+    }
+
+    public CompanyDetailsDTO getCompanyDTOById(UUID id) {
+        Optional<Company> companyOptional = companyRepository.findCompanyById(id);
+        if (companyOptional.isEmpty()) {
+            throw new ResourceNotFoundException(STR."""
+                    Company with id \{id} does not exist""");
+        }
+        return CompanyDetailsDTO.fromCompany(companyOptional.get());
     }
 
     public Page<Company> getCompanies(CompanySearchDTO companySearchDTO, Pageable pageable) {
