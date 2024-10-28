@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Checkbox, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
+import {Checkbox, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {TextareaAutosize} from "@mui/material";
+import InputWithLimit, {TextAreaWithLimit} from "../../utils/InputWithLimit";
 
-const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson,
-                                    contactPerson
-                                }) => {
+const ContactPersonDialog = ({
+                                 open, close, addContactPerson, modifyContactPerson,
+                                 contactPerson
+                             }) => {
 
     const [name, setName] = useState("");
     const [position, setPosition] = useState("");
@@ -72,63 +73,52 @@ const ContactPersonDialog = ({open, close, addContactPerson, modifyContactPerson
                     }
                 }}>
                     <Stack spacing={2}>
-                        <FormControl required>
-                            <FormLabel>Imię i Nazwisko</FormLabel>
-                            <Input autoFocus required
-                                   value={name}
-                                   onChange={(e) => {
-                                       setName(e.target.value)
-                                   }} placeholder={"Jan Kowalski"}/>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Stanowisko</FormLabel>
-                            <Input
+                        <InputWithLimit
+                            label={"Imię i Nazwisko"}
+                            required
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value)
+                            }} placeholder={"Jan Kowalski"}/>
+                        <InputWithLimit
+                            label={"Stanowisko"}
                                 value={position}
                                 onChange={(e) => {
                                     setPosition(e.target.value)
                                 }} placeholder={"CEO"}/>
-                        </FormControl>
                         <FormControl style={{display: "flex", flexDirection: "row", gap: 10}}>
                             <FormLabel>Alumn:</FormLabel>
                             <Checkbox
                                 checked={isAlumni}
                                 onChange={(e) => {
                                     setIsAlumni(e.target.checked)
-                                }} />
+                                }}/>
                         </FormControl>
-                        <FormControl>
-                            <FormLabel>Telefon</FormLabel>
-                            <Input
+                        <InputWithLimit
+                            label={"Telefon"}
                                 value={phone}
                                 onChange={(e) => {
                                     setPhone(e.target.value)
                                 }} placeholder={"+4800000000"}/>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Email</FormLabel>
-                            <Input
+                        <InputWithLimit
+                            label={"Email"}
                                 value={email}
                                 type={"email"}
                                 onChange={(e) => {
                                     setEmail(e.target.value)
                                 }} placeholder={"jan.kowalski@gmail.com"}/>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Komentarz</FormLabel>
-                            <Textarea
+                        <TextAreaWithLimit
+                            label={"Komentarz"}
                                 value={comment}
                                 onChange={(e) => {
                                     setComment(e.target.value)
                                 }} placeholder={"Człowiek z HRów"}/>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Komitet</FormLabel>
                             <Textarea
+                                label={"Komitet"}
                                 value={committee}
                                 onChange={(e) => {
                                     setCommittee(e.target.value)
                                 }} placeholder={"AGH"}/>
-                        </FormControl>
                         <Button type="submit">Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {
                             clear();

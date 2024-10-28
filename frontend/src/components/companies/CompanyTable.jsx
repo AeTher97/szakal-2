@@ -10,12 +10,14 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/joy/Button";
 
 
-const CompanyTable = ({companies, search, setSort, clearSort}) => {
+const CompanyTable = ({companies, search, setSort}) => {
 
     const mobile = useMobileSize();
 
     const sorted = search && search.sort;
     const directionAscending = sorted && search.sort.includes("ASC");
+
+    console.log(companies)
 
     return (
         <Sheet sx={{

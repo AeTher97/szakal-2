@@ -15,7 +15,7 @@ const CompanyCategories = ({
     const {hasRight} = useAccessRightsHelper();
     const canModify = hasRight(COMPANY_MODIFICATION);
     const [open, setOpen] = useState(false)
-    const {addCategory, reloadData, categories, loading} = useCategories();
+    const {addCategory, reloadData, categories, loading} = useCategories(true);
 
     const isOptionEqualToValue = (option) => {
         return option.id === "choose";

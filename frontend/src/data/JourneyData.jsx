@@ -6,7 +6,7 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pa
 
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
-    const [pagesNumber, setPagesNumber] = useState([]);
+    const [pagesNumber, setPagesNumber] = useState(0);
 
     const {loading} = useData(`/campaigns/${currentCampaign}/journeys`,
         (data) => {

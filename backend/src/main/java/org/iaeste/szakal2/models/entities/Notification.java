@@ -37,4 +37,6 @@ public class Notification {
     @Setter
     private LocalDateTime date;
 
+    private UUID journeyId;
+
 }

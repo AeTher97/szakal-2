@@ -1,20 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-    Avatar,
-    Card,
-    CardActions,
-    CardContent,
-    Divider,
-    FormControl,
-    FormLabel,
-    Input,
-    Stack,
-    Typography
-} from "@mui/joy";
+import {Avatar, Card, CardActions, CardContent, Divider, FormLabel, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
+import InputWithLimit from "../../utils/InputWithLimit";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
 
@@ -65,29 +55,22 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                         </FormLabel>
                         <Stack spacing={1}>
                             <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                                <FormControl>
-                                    <Input disabled={!isUser} style={{width: 180}} placeholder={"Imię"} value={name}
+                                <InputWithLimit disabled={!isUser} style={{width: 180}} placeholder={"Imię"}
+                                                value={name}
                                            onChange={(e) => {
                                                setName(e.target.value)
                                            }}/>
-                                </FormControl>
-                                <FormControl>
-                                    <Input disabled={!isUser} placeholder={"Nazwisko"} value={surname}
+                                <InputWithLimit disabled={!isUser} placeholder={"Nazwisko"} value={surname}
                                            onChange={(e) => {
                                                setSurname(e.target.value)
                                            }}/>
-                                </FormControl>
                             </div>
-                            <FormLabel>
-                                <Typography level={"title-sm"}>Email</Typography>
-                            </FormLabel>
-                            <FormControl>
                                 <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
-                                    <Input disabled={!isUser} placeholder={"Email"} value={email} onChange={(e) => {
+                                    <InputWithLimit label={"Email"} disabled={!isUser} placeholder={"Email"}
+                                                    value={email} onChange={(e) => {
                                         setEmail(e.target.value)
                                     }}/>
                                 </div>
-                            </FormControl>
                         </Stack>
                     </div>
 

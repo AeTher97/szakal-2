@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.iaeste.szakal2.models.dto.user.UserDTO;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.ContactStatus;
 
@@ -20,6 +21,7 @@ public class ContactJourneyMinimalDTO {
     private String campaignName;
     private ContactStatus status;
     private LocalDateTime journeyStart;
+    private UserDTO user;
 
     public static ContactJourneyMinimalDTO fromContactJourney(ContactJourney contactJourney) {
         return ContactJourneyMinimalDTO.builder()
@@ -27,6 +29,7 @@ public class ContactJourneyMinimalDTO {
                 .campaignName(contactJourney.getCampaign().getName())
                 .status(contactJourney.getContactStatus())
                 .journeyStart(contactJourney.getJourneyStart())
+                .user(contactJourney.getUser() != null ? UserDTO.fromUser(contactJourney.getUser()) : null)
                 .build();
     }
 }

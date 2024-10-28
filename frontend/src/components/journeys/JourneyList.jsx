@@ -29,6 +29,7 @@ const JourneyList = () => {
     const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchLoaded, setSearchLoaded] = useState(null);
+    const [pageNumberLoaded, setPageNumberLoaded] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [tempSearch, setTempSearch] = useState({
@@ -44,10 +45,28 @@ const JourneyList = () => {
         detailedStatus: null,
         user: null
     });
-
+    console.log(currentPage)
     const {journeys, loading, pagesNumber}
-        = useCurrentCampaignJourneyList(currentPage - 1, search, searchLoaded);
+        = useCurrentCampaignJourneyList(currentPage - 1, search, pageNumberLoaded);
 
+    useEffect(() => {
+        if (pagesNumber < currentPage && pagesNumber !== 0) {
+            setCurrentPage(pagesNumber);
+        }
+    }, [pagesNumber, searchLoaded]);
+
+    useEffect(() => {
+        if (searchLoaded && currentPage !== 0 && (!searchParams.get("currentPage")
+            || searchParams.get("currentPage") !== currentPage)) {
+            setSearchParams({
+                ...removeNullFields(tempSearch),
+                currentPage: currentPage
+            })
+        }
+        if (searchLoaded) {
+            setPageNumberLoaded(true);
+        }
+    }, [currentPage, searchLoaded]);
 
     useEffect(() => {
         const currentValue = {
@@ -55,10 +74,14 @@ const JourneyList = () => {
             status: searchParams.get("status"),
             detailedStatus: searchParams.get("detailedStatus"),
             user: searchParams.get("user"),
+            currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, '')
         }
         setTempSearch(currentValue)
         setSearch(currentValue);
         setSearchLoaded(true);
+        if (currentValue.currentPage) {
+            setCurrentPage(Number(currentValue.currentPage))
+        }
     }, [searchParams]);
 
 

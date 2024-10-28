@@ -28,16 +28,19 @@ public class JourneyService {
     private final CompanyService companyService;
     private final CampaignService campaignService;
     private final ContactPersonRepository contactPersonRepository;
+    private final NotificationService notificationService;
 
     public JourneyService(ContactJourneyRepository contactJourneyRepository,
                           UserService userService,
                           CompanyService companyService,
-                          CampaignService campaignService, ContactPersonRepository contactPersonRepository) {
+                          CampaignService campaignService, ContactPersonRepository contactPersonRepository,
+                          NotificationService notificationService) {
         this.contactJourneyRepository = contactJourneyRepository;
         this.userService = userService;
         this.companyService = companyService;
         this.campaignService = campaignService;
         this.contactPersonRepository = contactPersonRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -56,8 +59,14 @@ public class JourneyService {
                 return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
             }
         }
+        ContactJourney savedJourney = contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
+        if (!AccessVerificationBean.isUser(contactJourneyCreationDTO.getUser().toString())) {
+            notificationService.notify(user,
+                    STR."Zostałeś przypisany do firmy \{company.getName()} w akcji \{campaign.getName()} kliknij by przejść do kontaktu",
+                    savedJourney.getId());
+        }
         return ContactJourneyDetailsDTO
-                .fromContactJourney(contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign)));
+                .fromContactJourney(savedJourney);
     }
 
     @Transactional
@@ -66,6 +75,7 @@ public class JourneyService {
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
+            notifyOnJourneyModification(contactJourney);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -79,6 +89,7 @@ public class JourneyService {
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
             contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
+            notifyOnJourneyModification(contactJourney);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -89,6 +100,11 @@ public class JourneyService {
     public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
+        if (!AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz, kliknij by przejśc do kontaktu",
+                    contactJourney.getId());
+        }
         return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
 
@@ -98,6 +114,7 @@ public class JourneyService {
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(true);
+            notifyOnJourneyModification(contactJourney);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -208,6 +225,14 @@ public class JourneyService {
                 .comments(new HashSet<>())
                 .contactEvents(new HashSet<>())
                 .build();
+    }
+
+    private void notifyOnJourneyModification(ContactJourney contactJourney) {
+        if (!AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany kliknij by przejść do kontaktu",
+                    contactJourney.getId());
+        }
     }
 
 }

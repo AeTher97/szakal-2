@@ -17,7 +17,8 @@ const CategoriesHome = () => {
 
     const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
-    const {categories, loading, addCategory, modifyCategory, pageNumber} = useCategories(currentPage - 1);
+    const {categories, loading, addCategory, modifyCategory, pageNumber}
+        = useCategories(true, currentPage - 1);
     const [addCategoryOpen, setAddCategoryOpen] = useState(false);
     const {hasRight} = useAccessRightsHelper();
 

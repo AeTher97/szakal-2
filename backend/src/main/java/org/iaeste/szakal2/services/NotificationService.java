@@ -27,11 +27,16 @@ public class NotificationService {
     }
 
     public void notify(User user, String text) {
+        notify(user, text, null);
+    }
+
+    public void notify(User user, String text, UUID journeyId) {
         notificationRepository.save(Notification.builder()
                 .user(user)
                 .seen(false)
                 .date(LocalDateTime.now())
                 .text(text)
+                .journeyId(journeyId)
                 .build());
     }
 
