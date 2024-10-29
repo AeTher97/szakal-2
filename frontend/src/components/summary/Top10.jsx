@@ -29,6 +29,7 @@ const Top10 = () => {
         }
     });
 
+    let currentPlacement = 0;
 
     return (
         <Card invertedColors color={"primary"} variant={"solid"} sx={{flex: mobile ? 1 : "", minWidth: 250}}>
@@ -37,8 +38,17 @@ const Top10 = () => {
                 <Divider inset={"context"}/>
                 {top10List.length > 0 && <CardContent>
                     {top10List.map((entry, i) => {
+                        let displayPlacement = false;
+                        currentPlacement++;
+                        if (i !== 0) {
+                            if (top10List[i - 1].count !== entry.count) {
+                                displayPlacement = true;
+                            }
+                        } else {
+                            displayPlacement = true;
+                        }
                         return <Typography
-                            key={entry.name}>{i + 1}. {entry.name} - {entry.count}</Typography>
+                            key={entry.name}>{displayPlacement ? `${currentPlacement}. ` : ""}{entry.name} - {entry.count}</Typography>
                     })}
                 </CardContent>}
                 {top10.length === 0 && <Typography>Brak kontatków w akcji</Typography>}

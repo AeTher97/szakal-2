@@ -45,7 +45,6 @@ const JourneyList = () => {
         detailedStatus: null,
         user: null
     });
-    console.log(currentPage)
     const {journeys, loading, pagesNumber}
         = useCurrentCampaignJourneyList(currentPage - 1, search, pageNumberLoaded);
 
