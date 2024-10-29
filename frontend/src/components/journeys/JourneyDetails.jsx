@@ -25,7 +25,9 @@ export const contactStatusOptions
     {name: "TRAINING", text: "Szkolenie"},
     {name: "DIFFERENT_FORM_PARTNERSHIP", text: "Inna forma współpracy"},
     {name: "CALL_NEXT_YEAR", text: "Zadzwonić w przyszłym roku"},
-    {name: "INTERNSHIP", text: "Praktyka"}]
+    {name: "INTERNSHIP", text: "Praktyka"},
+    {name: "I_HAVE_TO_CONTACT_COMPANY", text: "Mam się skontaktować z firmą"},
+    {name: "COMPANY_WILL_REACH_OUT", text: "Firma ma się skontaktować"}]
 
 const JourneyDetails = () => {
 
