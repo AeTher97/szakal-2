@@ -1,12 +1,11 @@
 package org.iaeste.szakal2.repositories;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
+import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.ContactJourney;
+import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -50,6 +49,13 @@ public class JourneySpecification implements Specification<ContactJourney> {
 
         if (criteria.getDetailedStatus() != null) {
             predicateList.add(criteriaBuilder.equal(root.get("contactStatus"), criteria.getDetailedStatus()));
+        }
+
+        if(criteria.getEventText() != null){
+            SetJoin<Company, ContactPerson> join = root.joinSet("contactEvents", JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get("contactJourney").get("id"), root.get("id")));
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(join.get("description")),
+                            wrapWithPercent(criteria.getEventText().toLowerCase())));
         }
 
         if (criteria.getUser() != null) {

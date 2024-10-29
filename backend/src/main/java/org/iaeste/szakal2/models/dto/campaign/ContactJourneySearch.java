@@ -18,4 +18,5 @@ public class ContactJourneySearch {
     private String status;
     private String user;
     private String detailedStatus;
+    private String eventText;
 }

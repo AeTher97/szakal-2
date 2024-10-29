@@ -24,6 +24,7 @@ import Option from "@mui/joy/Option";
 import {contactStatusOptions} from "./JourneyDetails";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/joy/Button";
+import {sanitizeFilters} from "../companies/CompanyList";
 
 const JourneyList = () => {
     const mobile = useMobileSize();
@@ -36,14 +37,16 @@ const JourneyList = () => {
         companyName: null,
         status: null,
         detailedStatus: null,
-        user: null
+        user: null,
+        eventText: null
     });
 
     const [search, setSearch] = useState({
         companyName: null,
         status: null,
         detailedStatus: null,
-        user: null
+        user: null,
+        eventText: null
     });
     const {journeys, loading, pagesNumber}
         = useCurrentCampaignJourneyList(currentPage - 1, search, pageNumberLoaded);
@@ -69,11 +72,12 @@ const JourneyList = () => {
 
     useEffect(() => {
         const currentValue = {
-            companyName: searchParams.get("companyName"),
+            companyName: searchParams.get("companyName") && sanitizeFilters(searchParams.get("companyName")),
             status: searchParams.get("status"),
             detailedStatus: searchParams.get("detailedStatus"),
             user: searchParams.get("user"),
-            currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, '')
+            currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, ''),
+            eventText: searchParams.get("eventText") && sanitizeFilters(searchParams.get("eventText"))
         }
         setTempSearch(currentValue)
         setSearch(currentValue);
@@ -147,6 +151,16 @@ const JourneyList = () => {
                            user: e.target.value
                        })}
                        size="sm" placeholder="Szukaj"
+                       startDecorator={<PersonIcon/>}/>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>Wydarzenie kontaktowe</FormLabel>
+                <Input value={tempSearch.eventText || ""}
+                       onChange={(e) => setTempSearch({
+                           ...tempSearch,
+                           eventText: e.target.value
+                       })}
+                       size="sm" placeholder="Opis"
                        startDecorator={<PersonIcon/>}/>
             </FormControl>
             <div>

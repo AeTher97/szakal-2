@@ -29,7 +29,7 @@ import {useSelector} from "react-redux";
 import {useCategories} from "../../data/CategoriesData";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 
-const sanitizeFilters = (value) => {
+export const sanitizeFilters = (value) => {
     return value.replace(/[^a-z0-9\s]/gi, '');
 }
 

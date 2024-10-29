@@ -49,12 +49,13 @@ public class CampaignController {
 
     @GetMapping("/{id}/journeys")
     public Page<ContactJourneyListingDTO> getCampaignContactJourneys(@PathVariable("id") UUID id,
-                                                                     @RequestParam(defaultValue = "10") int pageSize,
-                                                                     @RequestParam(required = false) String companyName,
-                                                                     @RequestParam(required = false) String status,
-                                                                     @RequestParam(required = false) String detailedStatus,
-                                                                     @RequestParam(required = false) String user,
-                                                                     @RequestParam int pageNumber) {
+                                                           @RequestParam(defaultValue = "10") int pageSize,
+                                                           @RequestParam(required = false) String companyName,
+                                                           @RequestParam(required = false) String status,
+                                                           @RequestParam(required = false) String detailedStatus,
+                                                           @RequestParam(required = false) String user,
+                                                           @RequestParam(required = false) String eventText,
+                                                           @RequestParam int pageNumber) {
         return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
                 ContactJourneySearch
                         .builder()
@@ -62,6 +63,7 @@ public class CampaignController {
                         .campaignId(id)
                         .status(status)
                         .detailedStatus(detailedStatus)
+                        .eventText(eventText)
                         .user(user)
                         .build());
     }
