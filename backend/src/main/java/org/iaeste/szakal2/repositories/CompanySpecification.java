@@ -67,7 +67,7 @@ public class CompanySpecification implements Specification<Company> {
         }
 
         if(criteria.getAlumniDescription() != null){
-            ListJoin<Company, ContactPerson> join = root.joinList("contactPeople", JoinType.LEFT);
+            SetJoin<Company, ContactPerson> join = root.joinSet("contactPeople", JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
             predicateList.add(criteriaBuilder.and(criteriaBuilder.like(criteriaBuilder.lower(join.get("comment")),
                     wrapWithPercent(criteria.getAlumniDescription().toLowerCase())),
@@ -76,7 +76,7 @@ public class CompanySpecification implements Specification<Company> {
         }
 
         if(criteria.getCommittee() != null){
-            ListJoin<Company, ContactPerson> join = root.joinList("contactPeople", JoinType.LEFT);
+            SetJoin<Company, ContactPerson> join = root.joinSet("contactPeople", JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
             predicateList.add(criteriaBuilder.and(criteriaBuilder.like(criteriaBuilder.lower(join.get("committee")),
                             wrapWithPercent(criteria.getCommittee().toLowerCase())),
@@ -85,7 +85,7 @@ public class CompanySpecification implements Specification<Company> {
         }
 
         if(criteria.getCampaignName() != null){
-            ListJoin<Company, ContactJourney> join = root.joinList("contactJourneys", JoinType.LEFT);
+            SetJoin<Company, ContactJourney> join = root.joinSet("contactJourneys", JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get("company").get("id"), root.get("id")));
             predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(join.get("campaign").get("name")),
                             wrapWithPercent(criteria.getCampaignName().toLowerCase()))

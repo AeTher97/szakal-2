@@ -85,8 +85,9 @@ const CompanyTable = ({companies, search, setSort}) => {
                             </div>
                             : <Typography>Wolna</Typography>}</td>
                         {!mobile && <td>
-                            {company.categories.map(category => {
-                                return <Typography key={category.id}>{category.name}</Typography>
+                            {company.categories.map((category, i) => {
+                                return <Typography
+                                    key={category.id}>{category.name}{i !== company.categories.length - 1 ? "," : ""}</Typography>
                             })}
                         </td>}
                         {!mobile && <td>
