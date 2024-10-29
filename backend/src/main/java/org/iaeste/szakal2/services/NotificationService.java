@@ -18,6 +18,7 @@ import java.util.UUID;
 @Log4j2
 public class NotificationService {
 
+    private static final int MAX_NOTIFICATIONS = 50;
     private final NotificationRepository notificationRepository;
     private final UserService userService;
 
@@ -63,13 +64,13 @@ public class NotificationService {
         User user = userService.getUserById(SecurityUtils.getUserId());
         List<Notification> notifications = notificationRepository
                 .findByUserOrderByDateDesc(user);
-        if (notifications.size() > 10) {
+        if (notifications.size() > MAX_NOTIFICATIONS) {
             int size = notifications.size();
-            for (int i = 10; i < notifications.size(); i++) {
+            for (int i = MAX_NOTIFICATIONS; i < notifications.size(); i++) {
                 notificationRepository.delete(notifications.get(i));
             }
             log.info("Deleted " + (size - notifications.size()) + " notifications for user" + SecurityUtils.getUserId());
-            return notifications.subList(0, 9);
+            return notifications.subList(0, MAX_NOTIFICATIONS);
         } else {
             return notifications;
         }

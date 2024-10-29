@@ -26,7 +26,7 @@ const NotificationComponent = () => {
                         </Badge> :
                     <NotificationsIcon/>}
             </MenuButton>
-            <Menu>
+            <Menu style={{maxHeight: 800, overflowY: "scroll"}}>
                 <NotificationList notifications={notifications}/>
                 <MenuItem onClick={handleClose}>
                     <Link><Typography level={"body-sm"} color={"primary"}>Zamknij</Typography></Link>

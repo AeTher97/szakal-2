@@ -105,6 +105,18 @@ public class JourneyService {
                     STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz, kliknij by przejśc do kontaktu",
                     contactJourney.getId());
         }
+        Set<User> usersToNotify = new HashSet<>();
+        contactJourney.getComments().forEach(comment -> {
+            if (!AccessVerificationBean.isUser(comment.getUser().getId().toString())
+                    && !comment.getUser().getId().equals(contactJourney.getUser().getId())) {
+                usersToNotify.add(comment.getUser());
+            }
+        });
+        usersToNotify.forEach(user -> {
+            notificationService.notify(user,
+                    STR."Nowy komentarz w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}, kliknij by przejśc do kontaktu",
+                    contactJourney.getId());
+        });
         return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
 
