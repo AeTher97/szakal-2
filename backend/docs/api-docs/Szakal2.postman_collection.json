@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"PPP2023\",\r\n    \"startDate\": \"2023-11-12\"\r\n}",
+							"raw": "{\r\n    \"name\": \"PPP2023\",\r\n    \"startDate\": \"2023-11-12\",\r\n    \"description\" : \"Testowa akcja\"\r\n    // ,\r\n    // \"userGroupId\" : \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -39,25 +39,34 @@
 				{
 					"name": "Modify Campaign",
 					"request": {
-                      "method": "PUT",
-                      "header": [],
-                      "url": {
-                        "raw": "{{address}}/api/campaigns/{{campaignId}}",
-                        "host": [
-                          "{{address}}"
-                        ],
-                        "path": [
-                          "api",
-                          "campaigns",
-                          "{{campaignId}}"
-                        ]
-                      }
-                    },
-                  "response": []
-                },
-              {
-                "name": "Get Campaign",
-                "request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"PPP2023\",\r\n    \"startDate\": \"2023-11-12\",\r\n    \"description\" : \"Testowa akcja\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/campaigns/{{campaignId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"campaigns",
+								"{{campaignId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Campaign",
+					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -73,50 +82,84 @@
 						}
 					},
 					"response": []
-              },
-              {
-                "name": "Get Campaigns",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/campaigns",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "campaigns"
-                    ]
-                  }
-                },
-                "response": []
-              },
-              {
-                "name": "Get contact journeys",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/campaigns/{{campaignId}}/journeys?pageNumber=0",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "campaigns",
-                      "{{campaignId}}",
-                      "journeys"
-                    ],
-                    "query": [
-                      {
-                        "key": "pageNumber",
-                        "value": "0"
-                      }
-                    ]
-                  }
-                },
-                "response": []
+				},
+				{
+					"name": "Get Campaigns",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/campaigns?pageNumber=1&pageSize=10",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"campaigns"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get contact journeys",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/campaigns/{{campaignId}}/journeys?pageSize=10&pageNumber= 0",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"campaigns",
+								"{{campaignId}}",
+								"journeys"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "pageNumber",
+									"value": " 0"
+								},
+								{
+									"key": "companyName",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "detailedStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "user",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -130,7 +173,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Gardening\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Ogrodnictwo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -196,30 +239,35 @@
 						}
 					},
 					"response": []
-                },
-              {
-                "name": "GetCategories",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/categories?pageNumber=0",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "categories"
-                    ],
-                    "query": [
-                      {
-                        "key": "pageNumber",
-                        "value": "0"
-                      }
-                    ]
-                  }
-                },
-                "response": []
+				},
+				{
+					"name": "GetCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/categories?pageNumber=0",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -260,7 +308,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Asia Kowalska\",\r\n    \"position\": \"HR admin\",\r\n    \"phone\": \"+481239321\",\r\n    \"comment\": \"HRy...\",\r\n    \"email\": \"asia@firma.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Asia Kowalska\",\r\n    \"position\": \"HR admin\",\r\n    \"phone\": \"+481239321\",\r\n    \"comment\": \"HRy...\",\r\n    \"email\": \"asia@firma.com\",\r\n    \"isAlumni\" : false,\r\n    \"comittee\" : null\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -319,54 +367,139 @@
 							"raw": "{{address}}/api/companies/{{companyId}}",
 							"host": [
 								"{{address}}"
-                            ],
-                          "path": [
-                            "api",
-                            "companies",
-                            "{{companyId}}"
-                          ]
-                        }
-                    },
-                  "response": []
-                },
-              {
-                "name": "GetCompanies",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/companies?pageNumber=0",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "companies"
-                    ],
-                    "query": [
-                      {
-                        "key": "pageNumber",
-                        "value": "0"
-                      }
-                    ]
-                  }
-                },
-                "response": []
-              },
-              {
-                "name": "Get Company",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/companies/{{companyId}}",
-                    "host": [
-                      "{{address}}"
 							],
 							"path": [
 								"api",
 								"companies",
 								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/companies/{{companyId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Companies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/companies?pageNumber= 0",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": " 0"
+								},
+								{
+									"key": "pageSize",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "campaign",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "contactStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "hasAlumni",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "alumniDescription",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "committee",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "campaignName",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Contact Person",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Asia Kowalska\",\r\n    \"position\": \"HR admin\",\r\n    \"phone\": \"+481239321\",\r\n    \"comment\": \"HRy...\",\r\n    \"email\": \"asia@firma.com\",\r\n    \"isAlumni\" : false,\r\n    \"comittee\" : null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/companies/{{companyId}}/contactPerson/{{contactPersonId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"companies",
+								"{{companyId}}",
+								"contactPerson",
+								"{{contactPersonId}}"
 							]
 						}
 					},
@@ -384,7 +517,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user\": \"1ed75d40-c80f-47d9-a662-4b9b2ed7d785\",\r\n    \"company\": \"5cf21472-ff44-42a5-a297-7177aa5a5d65\",\r\n    \"campaign\": \"b65e9bbd-ceea-4b80-8ba2-e6666d3d2d35\"\r\n}",
+							"raw": "{\r\n    \"user\": \"{{userId}}\",\r\n    \"company\": \"{{companyId}}\",\r\n    \"campaign\": \"{{campaignId}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -419,14 +552,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{address}}/api/journeys/{{$randomJobDescriptor}}/status",
+							"raw": "{{address}}/api/journeys/{{journeyId}}/status",
 							"host": [
 								"{{address}}"
 							],
 							"path": [
 								"api",
 								"journeys",
-								"{{$randomJobDescriptor}}",
+								"{{journeyId}}",
 								"status"
 							]
 						}
@@ -469,7 +602,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment\": \"Nie idzie za dobrze\"\r\n}",
+							"raw": "{\r\n    \"comment\": \"Nie idzie za dobrze\",\r\n    \"user\" : \"5435-fdsa-4324-fds32\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -489,49 +622,104 @@
 							]
 						}
 					},
-                  "response": []
-                },
-              {
-                "name": "Get Contact Journey",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/journeys/{{journeyId}}",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "journeys",
-                      "{{journeyId}}"
-                    ]
-                  }
-                },
-                "response": []
-              },
-              {
-                "name": "Get Contact Journeys",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/journeys?pageNumber=0",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "journeys"
-                    ],
-                    "query": [
-                      {
-                        "key": "pageNumber",
-                        "value": "0"
-                      }
-                    ]
-                  }
-                },
+					"response": []
+				},
+				{
+					"name": "Get Contact Journey",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/journeys/{{journeyId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{journeyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contact Journeys",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/journeys?pageNumber=0",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "campaignId",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove User From Journey",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/journeys/{{journeyId}}/removeUser",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{journeyId}}",
+								"removeUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finish Journey",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/journeys/{{journeyId}}/finish",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"journeys",
+								"{{journeyId}}",
+								"finish"
+							]
+						}
+					},
 					"response": []
 				}
 			]
@@ -612,49 +800,43 @@
 						}
 					},
 					"response": []
-                },
-              {
-                "name": "Get Roles",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/roles?pageNumber=0",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "roles"
-                    ],
-                    "query": [
-                      {
-                        "key": "pageNumber",
-                        "value": "0"
-                      }
-                    ]
-                  }
-                },
-                "response": []
-              },
-              {
-                "name": "Get Role",
-                "request": {
-                  "method": "GET",
-                  "header": [],
-                  "url": {
-                    "raw": "{{address}}/api/roles/{{roleId}}",
-                    "host": [
-                      "{{address}}"
-                    ],
-                    "path": [
-                      "api",
-                      "roles",
-                      "{{roleId}}"
-                    ]
-                  }
-                },
-                "response": []
+				},
+				{
+					"name": "Get Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/roles",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/roles/{{roleId}}",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"{{roleId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -799,7 +981,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{address}}/api/users?pageNumber=0&pageSize=10",
+							"raw": "{{address}}/api/users?pageNumber=0",
 							"host": [
 								"{{address}}"
 							],
@@ -814,7 +996,8 @@
 								},
 								{
 									"key": "pageSize",
-									"value": "10"
+									"value": "10",
+									"disabled": true
 								}
 							]
 						}
@@ -898,36 +1081,146 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Search Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/users/search?phrase=Michal",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "phrase",
+									"value": "Michal"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-            ]
-        },
-      {
-        "name": "Access Rights",
-        "item": [
-          {
-            "name": "Get Access Rights",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{address}}/api/accessRights?pageNumber=0",
-                "host": [
-                  "{{address}}"
-                ],
-                "path": [
-                  "api",
-                  "accessRights"
-                ],
-                "query": [
-                  {
-                    "key": "pageNumber",
-                    "value": "0"
-                  }
-                ]
-              }
-            },
-            "response": []
-          }
+			]
+		},
+		{
+			"name": "Access Rights",
+			"item": [
+				{
+					"name": "Get Access Rights",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/accessRights",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"accessRights"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "App Settings",
+			"item": [
+				{
+					"name": "Get Settings",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Groups",
+			"item": [
+				{
+					"name": "Create User Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Quizowicze\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/groups",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Group",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{address}}/api/groups/",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Groups",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Group",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
 			]
 		}
 	],
