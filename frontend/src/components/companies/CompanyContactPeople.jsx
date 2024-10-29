@@ -8,13 +8,13 @@ import ContactPersonDialog from "./ContactPersonDialog";
 
 const CompanyContactPeople = ({
                                   contactPeople, addContactPerson, addingContactPerson,
-                                  modifyContactPerson
+                                  modifyContactPerson, deleted
                               }) => {
 
     const [addContactPersonOpen, setAddContactPersonOpen] = useState(false);
     const [editedPerson, setEditedPerson] = useState(null);
     const {hasRight} = useAccessRightsHelper();
-    const canModify = hasRight(COMPANY_MODIFICATION);
+    const canModify = hasRight(COMPANY_MODIFICATION) && !deleted;
     const mobile = useMobileSize();
 
     return (
@@ -46,12 +46,12 @@ const CompanyContactPeople = ({
                                         <Typography>{person.email}</Typography>
                                         <Typography>{person.comment}</Typography>
                                     </div>
-                                    <div>
+                                    {canModify && <div>
                                         <Link onClick={() => {
                                             setEditedPerson(person)
                                             setAddContactPersonOpen(true)
                                         }}>Edytuj</Link>
-                                    </div>
+                                    </div>}
                                 </div>
                             </ListItem>
                             {i !== contactPeople.length - 1 && <Divider inset={"context"}/>}
@@ -65,7 +65,7 @@ const CompanyContactPeople = ({
                         </Typography>
                     </div>}
 
-                <Divider inset={"context"}/>
+                {canModify && <Divider inset={"context"}/>}
                 {canModify && <CardActions buttonFlex={"1"}>
                     <Button variant={"outlined"} color={"neutral"} onClick={() => {
                         setAddContactPersonOpen(true);

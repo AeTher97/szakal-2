@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useData, usePost, usePut} from "./UseData";
+import {useData, useDelete, usePost, usePut} from "./UseData";
 
 export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, locks) => {
     const [companies, setCompanies] = useState([])
@@ -59,6 +59,8 @@ export const useCompany = (id) => {
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`, (data) => setCompany(data));
+    const {loading: deletingCompany, deleteReq} = useDelete(`/companies/${id}`, () => {
+    });
 
     const updateContactDetails = (name, email, phone, website) => {
         return put({
@@ -95,9 +97,14 @@ export const useCompany = (id) => {
         }, `/companies/${id}/contactPerson/${contactPersonId}`)
     }
 
+    const deleteCompany = () => {
+        return deleteReq();
+    }
+
     return {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress, updatingAddress,
-        updateCategories, updatingCategories, addContactPerson, addingContactPerson, modifyContactPerson
+        updateCategories, updatingCategories, addContactPerson, addingContactPerson, modifyContactPerson,
+        deleteCompany, deletingCompany
     }
 
 }

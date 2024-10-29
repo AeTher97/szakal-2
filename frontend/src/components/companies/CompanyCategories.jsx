@@ -9,11 +9,11 @@ import CategoryDialog from "../categories/CategoryDialog";
 
 const CompanyCategories = ({
                                categoriesList, setCategories, updateCategories, updateCategoriesLoading,
-                               allowAdding, dialog = false
+                               allowAdding, dialog = false, deleted
                            }) => {
 
     const {hasRight} = useAccessRightsHelper();
-    const canModify = hasRight(COMPANY_MODIFICATION);
+    const canModify = hasRight(COMPANY_MODIFICATION) && !deleted;
     const [open, setOpen] = useState(false)
     const {addCategory, reloadData, categories, loading} = useCategories(true);
 

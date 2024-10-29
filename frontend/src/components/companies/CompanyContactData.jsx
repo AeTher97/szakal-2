@@ -9,7 +9,7 @@ import InputWithLimit from "../../utils/InputWithLimit";
 const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
 
     const {hasRight} = useAccessRightsHelper();
-    const canModify = hasRight(COMPANY_MODIFICATION);
+    const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const mobile = useMobileSize();
     const [name, setName] = useState("")

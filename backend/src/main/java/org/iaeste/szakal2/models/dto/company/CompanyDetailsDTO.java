@@ -28,6 +28,7 @@ public class CompanyDetailsDTO {
     private Set<CompanyCategory> categories;
     private Set<ContactJourneyCompanyDetailsDTO> contactJourneys;
     private LocalDateTime insertDate;
+    private boolean deleted;
 
     public static CompanyDetailsDTO fromCompany(Company company) {
         return CompanyDetailsDTO.builder()
@@ -43,6 +44,7 @@ public class CompanyDetailsDTO {
                 .contactJourneys(company.getContactJourneys().stream().map(ContactJourneyCompanyDetailsDTO::fromContactJourney)
                         .collect(Collectors.toSet()))
                 .insertDate(company.getInsertDate())
+                .deleted(company.isDeleted())
                 .build();
     }
 }

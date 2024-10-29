@@ -10,7 +10,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
 
 
     const {hasRight} = useAccessRightsHelper();
-    const canModify = hasRight(COMPANY_MODIFICATION);
+    const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const [city, setCity] = useState("");
     const [street, setStreet] = useState("");

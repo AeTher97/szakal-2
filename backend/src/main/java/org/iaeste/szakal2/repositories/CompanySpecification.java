@@ -91,6 +91,7 @@ public class CompanySpecification implements Specification<Company> {
                             wrapWithPercent(criteria.getCampaignName().toLowerCase()))
             );
         }
+        predicateList.add(criteriaBuilder.isFalse(root.get("deleted")));
 
         return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
     }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
 import {useCompany} from "../../data/CompaniesData";
@@ -13,6 +13,10 @@ import CompanyJourneys from "./CompanyJourneys";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import CompanyContactPeople from "./CompanyContactPeople";
 import AssignCompanyButton from "./AssignCompanyButton";
+import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
+import Button from "@mui/joy/Button";
+import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 
 const CompanyDetails = () => {
@@ -21,11 +25,17 @@ const CompanyDetails = () => {
     const dispatch = useDispatch();
     const [localCompany, setLocalCompany] = useState();
     const {currentCampaign} = useSelector(state => state.campaigns);
+    const navigate = useNavigate();
+    const {hasRight} = useAccessRightsHelper();
+    const {
+        openDialog,
+        render
+    } = useConfirmationDialog(`Czy na pewno chcesz usunąć firmę ${localCompany ? localCompany.name : ""}`)
 
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
         updatingAddress, updateCategories, updatingCategories,
-        addContactPerson, addingContactPerson, modifyContactPerson
+        addContactPerson, addingContactPerson, modifyContactPerson, deleteCompany
     } = useCompany(location.pathname.split("/")[3])
 
     useEffect(() => {
@@ -51,7 +61,18 @@ const CompanyDetails = () => {
             {company && localCompany && <>
                 <TabHeader>
                     <div>
-                        <Typography level={"h2"}>{company.name}</Typography>
+                        <Typography level={"h2"} color={company.deleted ? "danger" : null}
+                                    style={{textDecoration: ""}}>
+                            {company.deleted ? <>
+                                    <s>
+                                        {company.name}
+                                    </s>
+                                    (Usunięta)
+                                </> :
+                                <>
+                                    {company.name}
+                                </>}
+                        </Typography>
                         <Typography level={"title-sm"}>Dodana {formatLocalDateTime(company.insertDate)}</Typography>
                         <Typography level={"title-sm"}>Status w obecnej
                             akcji: {thisCampaignJourney ? decodeContactStatus(thisCampaignJourney.contactStatus) + `,
@@ -59,8 +80,15 @@ const CompanyDetails = () => {
                              ${thisCampaignJourney.user ? thisCampaignJourney.user.surname : ""}` : "Wolna"}
                         </Typography>
                     </div>
-                    <div>
-                        {currentCampaign!=='none' && <AssignCompanyButton company={company}/>}
+                    <div style={{display: "flex", flexWrap: "wrap", gap: 5, justifyContent: "flex-end"}}>
+                        {currentCampaign !== 'none' && !company.deleted && <AssignCompanyButton company={company}/>}
+                        {hasRight(COMPANY_MODIFICATION) && !company.deleted && <Button color={"danger"} onClick={() => {
+                            openDialog(() => {
+                                deleteCompany().then(() => {
+                                    navigate("/secure/companies");
+                                })
+                            })
+                        }}>Usuń firmę</Button>}
                     </div>
                 </TabHeader>
                 <div style={{
@@ -90,13 +118,15 @@ const CompanyDetails = () => {
                                                }
                                            })
                                        }}
+                                       deleted={localCompany.deleted}
                                        updateCategories={updateCategories}
                                        updateCategoriesLoading={updatingCategories}
                     />
                     <CompanyContactPeople addContactPerson={addContactPerson}
                                           modifyContactPerson={modifyContactPerson}
                                           contactPeople={company.contactPeople || []}
-                                          addingContactPerson={addingContactPerson}/>
+                                          addingContactPerson={addingContactPerson}
+                                          deleted={localCompany.deleted}/>
 
                 </div>
             </>}
@@ -104,6 +134,7 @@ const CompanyDetails = () => {
                 <div style={{display: "flex", justifyContent: "center"}}>
                     <LinearProgress/>
                 </div>}
+            {render()}
 
         </div>
     );
