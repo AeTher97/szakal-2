@@ -13,7 +13,7 @@ import {
     Skeleton,
     Typography
 } from "@mui/joy";
-import JourneysTable from "./JourneysTable";
+import JourneyTable from "./JourneyTable";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {useSearchParams} from "react-router-dom";
@@ -38,7 +38,8 @@ const JourneyList = () => {
         status: null,
         detailedStatus: null,
         user: null,
-        eventText: null
+        eventText: null,
+        sort: null
     });
 
     const [search, setSearch] = useState({
@@ -46,7 +47,8 @@ const JourneyList = () => {
         status: null,
         detailedStatus: null,
         user: null,
-        eventText: null
+        eventText: null,
+        sort: null
     });
     const {journeys, loading, pagesNumber}
         = useCurrentCampaignJourneyList(currentPage - 1, search, pageNumberLoaded);
@@ -77,7 +79,11 @@ const JourneyList = () => {
             detailedStatus: searchParams.get("detailedStatus"),
             user: searchParams.get("user"),
             currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, ''),
+            sort: searchParams.get("sort") && searchParams.get("sort").replace(/[^a-z0-9,\s]/gi, ''),
             eventText: searchParams.get("eventText") && sanitizeFilters(searchParams.get("eventText"))
+        }
+        if (!currentValue.sort && !pageNumberLoaded) {
+            currentValue.sort = "companyName,ASC";
         }
         setTempSearch(currentValue)
         setSearch(currentValue);
@@ -86,6 +92,20 @@ const JourneyList = () => {
             setCurrentPage(Number(currentValue.currentPage))
         }
     }, [searchParams]);
+
+    const setSort = (colum, direction) => {
+        setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
+        }));
+    }
+
+    const clearSort = () => {
+        setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: null
+        }))
+    }
 
 
     const renderFilters = () => {
@@ -188,10 +208,10 @@ const JourneyList = () => {
 
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
-            {!loading && <JourneysTable journeys={journeys}/>}
+            {!loading && <JourneyTable journeys={journeys} search={search} clearSort={clearSort} setSort={setSort}/>}
             {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
-                {Array(10).fill(0).map(() => {
-                    return <Skeleton variant={"rectangular"} style={{height: 30}}/>
+                {Array(10).fill(0).map((value, i) => {
+                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
                 })}
             </div>}
             {pagesNumber > 1 &&

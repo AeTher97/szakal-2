@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.iaeste.szakal2.models.dto.SzakalSort;
 
 import java.util.UUID;
 
@@ -19,4 +20,5 @@ public class ContactJourneySearch {
     private String user;
     private String detailedStatus;
     private String eventText;
+    private SzakalSort szakalSort;
 }

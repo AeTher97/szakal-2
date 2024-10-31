@@ -19,9 +19,9 @@ const CompanyTable = ({companies, search, setSort}) => {
 
     companies = companies.sort((a, b) => {
         if (a.name < b.name) {
-            return -1;
+            return directionAscending ? -1 : 1;
         } else if (a.name > b.name) {
-            return 1
+            return directionAscending ? 1 : -1
         } else {
             return 0;
         }

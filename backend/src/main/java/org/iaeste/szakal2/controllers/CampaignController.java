@@ -2,6 +2,7 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.iaeste.szakal2.models.dto.SzakalSort;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
@@ -49,13 +50,14 @@ public class CampaignController {
 
     @GetMapping("/{id}/journeys")
     public Page<ContactJourneyListingDTO> getCampaignContactJourneys(@PathVariable("id") UUID id,
-                                                           @RequestParam(defaultValue = "10") int pageSize,
-                                                           @RequestParam(required = false) String companyName,
-                                                           @RequestParam(required = false) String status,
-                                                           @RequestParam(required = false) String detailedStatus,
-                                                           @RequestParam(required = false) String user,
-                                                           @RequestParam(required = false) String eventText,
-                                                           @RequestParam int pageNumber) {
+                                                                     @RequestParam(defaultValue = "10") int pageSize,
+                                                                     @RequestParam(required = false) String companyName,
+                                                                     @RequestParam(required = false) String status,
+                                                                     @RequestParam(required = false) String detailedStatus,
+                                                                     @RequestParam(required = false) String user,
+                                                                     @RequestParam(required = false) String eventText,
+                                                                     @RequestParam int pageNumber,
+                                                                     @RequestParam(required = false) String sort) {
         return campaignService.getJourneysForCampaign(Pageable.ofSize(pageSize).withPage(pageNumber),
                 ContactJourneySearch
                         .builder()
@@ -65,6 +67,7 @@ public class CampaignController {
                         .detailedStatus(detailedStatus)
                         .eventText(eventText)
                         .user(user)
+                        .szakalSort(sort == null ? null : SzakalSort.fromString(sort))
                         .build());
     }
 

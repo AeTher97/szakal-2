@@ -48,15 +48,16 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                             streetNumber,
                             city,
                             postalCode);
-                        close();
+                        onClose();
                     }}>
                     <DialogTitle>
                         Dodaj firmę
                     </DialogTitle>
                     <Stack spacing={2}>
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                            <Stack spacing={2} sx={{overflow: "auto"}}>
-                                <InputWithLimit required={true} label={"Nazwa"} autoFocus
+                            <Stack spacing={2}>
+                                <InputWithLimit required={true} label={"Nazwa"}
+                                                autoFocus={true}
                                                 value={name}
                                                 onChange={(e) => {
                                                     setName(e.target.value)

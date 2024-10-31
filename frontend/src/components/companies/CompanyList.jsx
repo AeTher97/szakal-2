@@ -213,10 +213,10 @@ const CompanyList = () => {
 
 
     const setSort = (colum, direction) => {
-        setSearchParams({
+        setSearchParams(removeNullFields({
             ...tempSearch,
             sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
-        })
+        }));
     }
 
     const clearSort = () => {

@@ -3,8 +3,12 @@ import {FormControl, FormHelperText, FormLabel, Input, Textarea} from "@mui/joy"
 import {InfoOutlined} from "@mui/icons-material";
 
 const InputWithLimit = ({
-                            limit = 255, onChange = () => {
-    }, required, label, ...props
+                            limit = 255,
+                            onChange = () => {
+                            },
+                            required,
+                            label,
+                            ...props
                         }) => {
 
     const [length, setLength] = useState(0);

@@ -19,7 +19,8 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pa
             {name: "status", value: search.status},
             {name: "detailedStatus", value: search.detailedStatus},
             {name: "user", value: search.user},
-            {name: "eventText", value: search.eventText}],
+            {name: "eventText", value: search.eventText},
+            {name: "sort", value: search.sort}],
         [currentCampaign, searchLoaded, currentCampaign === "none" ? null : true])
 
     return {journeys, loading, pagesNumber}

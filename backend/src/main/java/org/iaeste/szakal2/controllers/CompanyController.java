@@ -76,27 +76,27 @@ public class CompanyController {
                                                 @RequestParam(required = false) String campaignName,
                                                 @RequestParam(required = false) String sort) {
         Pageable pageable;
-        if(sort == null) {
+        if (sort == null) {
             pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
         } else {
             SzakalSort szakalSort = SzakalSort.fromString(sort);
             Sort springSort = Sort.by(szakalSort.getColumnName());
-            if(szakalSort.getSortDirection().equals(SzakalSort.SortDirection.ASC)){
-                pageable = PageRequest.of(pageNumber, pageSize,springSort.ascending());
+            if (szakalSort.getSortDirection().equals(SzakalSort.SortDirection.ASC)) {
+                pageable = PageRequest.of(pageNumber, pageSize, springSort.ascending());
             } else {
-                pageable = PageRequest.of(pageNumber, pageSize,springSort.descending());
+                pageable = PageRequest.of(pageNumber, pageSize, springSort.descending());
             }
         }
         return companyService.getCompanies(CompanySearchDTO.builder()
-                                .category(category)
-                                .contactStatus(contactStatus)
-                                .campaign(campaign)
-                                .status(status)
-                                .hasAlumni(hasAlumni)
-                                .alumniDescription(alumniDescription)
-                                .campaignName(campaignName)
-                                .committee(committee)
-                                .name(name).build(), pageable)
+                        .category(category)
+                        .contactStatus(contactStatus)
+                        .campaign(campaign)
+                        .status(status)
+                        .hasAlumni(hasAlumni)
+                        .alumniDescription(alumniDescription)
+                        .campaignName(campaignName)
+                        .committee(committee)
+                        .name(name).build(), pageable)
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));
     }
 

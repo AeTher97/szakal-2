@@ -11,7 +11,6 @@ const JourneyComments = ({addComment, journey}) => {
     const {userId} = useSelector(state => state.auth)
     const [comment, setComment] = useState("");
 
-    console.log(journey.comments)
     return (
         <div style={{flex: 1}}>
             <Typography level={"h3"}>Komentarze</Typography>

@@ -3,7 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import TabHeader from "../main/TabHeader";
 import {LinearProgress, Typography} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
-import JourneysTable from "./JourneysTable";
+import JourneyTable from "./JourneyTable";
 import {useUserJourneyList} from "../../data/JourneyData";
 import JourneyDetails from "./JourneyDetails";
 import Pagination from "../misc/Pagination";
@@ -24,7 +24,7 @@ const UserJourneysHome = () => {
                     </TabHeader>
                     <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
 
-                    <JourneysTable journeys={journeys}/>
+                    <JourneyTable journeys={journeys}/>
                     {pagesNumber > 1 &&
                         <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
                                     concise={mobile} setPage={(page) => setCurrentPage(page)}
