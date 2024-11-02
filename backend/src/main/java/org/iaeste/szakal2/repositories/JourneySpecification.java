@@ -97,6 +97,10 @@ public class JourneySpecification implements Specification<ContactJourney> {
             }
         }
 
+        if (criteria.getUserId() != null) {
+            predicateList.add(criteriaBuilder.equal(root.get("user").get("id"), criteria.getUserId()));
+        }
+
         if (criteria.getSzakalSort() != null) {
             boolean asc = criteria.getSzakalSort().getSortDirection().equals(SzakalSort.SortDirection.ASC);
             switch (criteria.getSzakalSort().getColumnName()) {

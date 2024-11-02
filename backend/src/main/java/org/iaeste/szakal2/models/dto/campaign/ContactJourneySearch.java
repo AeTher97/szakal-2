@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ContactJourneySearch {
 
     private UUID campaignId;
+    private UUID userId;
     private String companyName;
     private String status;
     private String user;

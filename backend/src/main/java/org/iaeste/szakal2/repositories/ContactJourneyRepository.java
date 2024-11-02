@@ -34,9 +34,5 @@ public interface ContactJourneyRepository extends JpaRepository<ContactJourney, 
     @EntityGraph(value = "Journey.detail", type = EntityGraph.EntityGraphType.LOAD)
     Optional<ContactJourney> findContactJourneyByCampaignAndCompany(Campaign campaign, Company company);
 
-    Page<ContactJourney> findAllByOrderByJourneyStart(Pageable pageable);
-
-    Page<ContactJourney> findAllByUserAndCampaignOrderByJourneyStart(User user, Campaign campaign, Pageable pageable);
-
     List<ContactJourney> findAllByCampaign(Campaign campaign);
 }

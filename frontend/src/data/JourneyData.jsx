@@ -26,21 +26,27 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pa
     return {journeys, loading, pagesNumber}
 }
 
-export const useUserJourneyList = (page = 0) => {
+export const useUserJourneyList = (page = 0, search, searchLoaded) => {
 
     const {userId} = useSelector(state => state.auth)
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
-    const [pagesNumber, setPagesNumber] = useState([]);
+    const [pagesNumber, setPagesNumber] = useState(0);
 
     const {loading} = useData(`/journeys`,
         (data) => {
             setJourneys(data.content)
             setPagesNumber(data.totalPages)
-        }, [currentCampaign, page, userId], [{
+        }, [currentCampaign, page, userId, search], [{
             name: "pageNumber", value: page,
-        }, {name: "userId", value: userId},
-            {name: "campaignId", value: currentCampaign}], [currentCampaign, userId])
+        },
+            {name: "userId", value: userId},
+            {name: "campaignId", value: currentCampaign},
+            {name: "companyName", value: search.companyName},
+            {name: "status", value: search.status},
+            {name: "detailedStatus", value: search.detailedStatus},
+            {name: "eventText", value: search.eventText},
+            {name: "sort", value: search.sort}], [currentCampaign, userId])
 
     return {journeys, loading, pagesNumber}
 }

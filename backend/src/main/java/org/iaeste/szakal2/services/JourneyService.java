@@ -1,12 +1,16 @@
 package org.iaeste.szakal2.services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
+import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.*;
 import org.iaeste.szakal2.models.entities.*;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.ContactPersonRepository;
+import org.iaeste.szakal2.repositories.JourneySpecification;
 import org.iaeste.szakal2.security.Authority;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
@@ -23,6 +27,8 @@ import java.util.*;
 @Service
 public class JourneyService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     private final ContactJourneyRepository contactJourneyRepository;
     private final UserService userService;
     private final CompanyService companyService;
@@ -191,11 +197,10 @@ public class JourneyService {
         return journeyOptional.get();
     }
 
-    public Page<ContactJourneyListingDTO> getJourneys(UUID userId, UUID campaignID, Pageable pageable) {
-        User user = userService.getUserById(userId);
-        Campaign campaign = campaignService.getCampaignById(campaignID);
+    public Page<ContactJourneyListingDTO> getJourneys(Pageable pageable,
+                                                      ContactJourneySearch journeySearch) {
         Page<ContactJourney> contactJourneyPage
-                = contactJourneyRepository.findAllByUserAndCampaignOrderByJourneyStart(user, campaign, pageable);
+                = contactJourneyRepository.findAll(new JourneySpecification(journeySearch, entityManager), pageable);
         List<ContactJourney> contactJourneyList = contactJourneyRepository
                 .findAllById(contactJourneyPage.getContent().stream().map(ContactJourney::getId).toList());
         return new PageImpl<>(contactJourneyList.stream().map(ContactJourneyListingDTO::fromContactJourney).toList(),

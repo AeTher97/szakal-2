@@ -8,13 +8,14 @@ const InputWithLimit = ({
                             },
                             required,
                             label,
+                            formControlProps,
                             ...props
                         }) => {
 
     const [length, setLength] = useState(0);
 
     return (
-        <FormControl required={required} error={length > limit}>
+        <FormControl {...formControlProps} required={required} error={length > limit}>
             <FormLabel>{label}</FormLabel>
             <Input {...props} onChange={(e) => {
                 setLength(e.target.value.length);
@@ -30,13 +31,15 @@ const InputWithLimit = ({
 
 export const TextAreaWithLimit = ({
                                       limit = 255, onChange = () => {
-    }, ...props
+    },
+                                      formControlProps,
+                                      ...props
                                   }) => {
 
     const [length, setLength] = useState(0);
 
     return (
-        <FormControl error={length > limit}>
+        <FormControl {...formControlProps} error={length > limit}>
             <Textarea {...props} onChange={(e) => {
                 setLength(e.target.value.length);
                 onChange(e);

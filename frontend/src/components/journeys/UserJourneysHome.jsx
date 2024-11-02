@@ -1,19 +1,182 @@
-import React, {useState} from 'react';
-import {Route, Routes} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Route, Routes, useSearchParams} from "react-router-dom";
 import TabHeader from "../main/TabHeader";
-import {LinearProgress, Typography} from "@mui/joy";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionGroup,
+    AccordionSummary,
+    FormControl,
+    FormLabel,
+    Input,
+    LinearProgress,
+    Select,
+    Skeleton,
+    Typography
+} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import JourneyTable from "./JourneyTable";
 import {useUserJourneyList} from "../../data/JourneyData";
-import JourneyDetails from "./JourneyDetails";
+import JourneyDetails, {contactStatusOptions} from "./JourneyDetails";
 import Pagination from "../misc/Pagination";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {removeNullFields} from "../../utils/ObjectUtils";
+import {sanitizeFilters} from "../companies/CompanyList";
+import SearchIcon from "@mui/icons-material/Search";
+import Option from "@mui/joy/Option";
+import PersonIcon from "@mui/icons-material/Person";
+import Button from "@mui/joy/Button";
 
 const UserJourneysHome = () => {
 
     const mobile = useMobileSize();
     const [currentPage, setCurrentPage] = useState(1);
-    const {journeys, loading, pagesNumber} = useUserJourneyList(currentPage - 1);
+    const [searchLoaded, setSearchLoaded] = useState(null);
+    const [pageNumberLoaded, setPageNumberLoaded] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [tempSearch, setTempSearch] = useState({
+        companyName: null,
+        status: null,
+        detailedStatus: null,
+        eventText: null,
+        sort: null
+    });
+
+    const [search, setSearch] = useState({
+        companyName: null,
+        status: null,
+        detailedStatus: null,
+        eventText: null,
+        sort: null
+    });
+    const {journeys, loading, pagesNumber}
+        = useUserJourneyList(currentPage - 1, search, pageNumberLoaded);
+
+    useEffect(() => {
+        if (pagesNumber < currentPage && pagesNumber !== 0) {
+            setCurrentPage(pagesNumber);
+        }
+    }, [pagesNumber, searchLoaded]);
+
+    useEffect(() => {
+        if (searchLoaded && currentPage !== 0 && (!searchParams.get("currentPage")
+            || searchParams.get("currentPage") !== currentPage)) {
+            setSearchParams({
+                ...removeNullFields(tempSearch),
+                currentPage: currentPage
+            })
+        }
+        if (searchLoaded) {
+            setPageNumberLoaded(true);
+        }
+    }, [currentPage, searchLoaded]);
+
+    useEffect(() => {
+        const currentValue = {
+            companyName: searchParams.get("companyName") && sanitizeFilters(searchParams.get("companyName")),
+            status: searchParams.get("status"),
+            detailedStatus: searchParams.get("detailedStatus"),
+            currentPage: searchParams.get("currentPage") && searchParams.get("currentPage").replace(/[^0-9,\s]/gi, ''),
+            sort: searchParams.get("sort") && searchParams.get("sort").replace(/[^a-z0-9,\s]/gi, ''),
+            eventText: searchParams.get("eventText") && sanitizeFilters(searchParams.get("eventText"))
+        }
+        if (!currentValue.sort && !pageNumberLoaded) {
+            currentValue.sort = "companyName,ASC";
+        }
+        setTempSearch(currentValue)
+        setSearch(currentValue);
+        setSearchLoaded(true);
+        if (currentValue.currentPage) {
+            setCurrentPage(Number(currentValue.currentPage))
+        }
+    }, [searchParams]);
+
+    const setSort = (colum, direction) => {
+        setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
+        }));
+    }
+
+    const clearSort = () => {
+        setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: null
+        }))
+    }
+
+
+    const renderFilters = () => {
+        return <form onSubmit={e => {
+            e.preventDefault();
+            setSearchParams(removeNullFields(tempSearch));
+        }} style={{
+            marginBottom: 5,
+            marginTop: 10,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 15,
+            alignItems: "flex-end"
+        }}>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>Szukaj firmy</FormLabel>
+                <Input value={tempSearch.companyName || ""}
+                       onChange={(e) => setTempSearch({
+                           ...tempSearch,
+                           companyName: e.target.value
+                       })}
+                       size="sm" placeholder="Szukaj"
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>
+                    Status
+                </FormLabel>
+                <Select value={tempSearch.status || ""}
+                        onChange={(e, value) => {
+                            setTempSearch({
+                                ...search,
+                                status: value
+                            })
+                        }}>
+                    <Option value={"in-progress"}>W trakcie</Option>
+                    <Option value={"finished"}>Zakończone</Option>
+                    <Option value={""}>Wszystkie</Option>
+                </Select>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>
+                    Dokładny status
+                </FormLabel>
+                <Select value={tempSearch.detailedStatus || ""}
+                        onChange={(e, value) => {
+                            setTempSearch({
+                                ...search,
+                                detailedStatus: value
+                            })
+                        }}>
+                    {contactStatusOptions.map(option => {
+                        return <Option key={option.name} value={option.name}>{option.text}</Option>
+                    })}
+                    <Option value={""}>Wszystkie</Option>
+                </Select>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+                <FormLabel>Wydarzenie kontaktowe</FormLabel>
+                <Input value={tempSearch.eventText || ""}
+                       onChange={(e) => setTempSearch({
+                           ...tempSearch,
+                           eventText: e.target.value
+                       })}
+                       size="sm" placeholder="Opis"
+                       startDecorator={<PersonIcon/>}/>
+            </FormControl>
+            <div>
+                <Button size={"sm"} type={"submit"}>Szukaj</Button>
+            </div>
+        </form>
+    }
 
     return (
         <Routes>
@@ -22,9 +185,27 @@ const UserJourneysHome = () => {
                     <TabHeader>
                         <Typography level="h2">Twoje kontakty</Typography>
                     </TabHeader>
+
+                    {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
+                        borderRadius: 'sm', marginBottom: 1
+                    }}>
+                        <Accordion>
+                            <AccordionSummary>Filtry</AccordionSummary>
+                            <AccordionDetails>
+                                {renderFilters()}
+                            </AccordionDetails>
+                        </Accordion>
+                    </AccordionGroup> : renderFilters()}
                     <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
 
-                    <JourneyTable journeys={journeys}/>
+                    {!loading &&
+                        <JourneyTable journeys={journeys} search={search} clearSort={clearSort} setSort={setSort}/>}
+                    {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
+                        {Array(10).fill(0).map((value, i) => {
+                            return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
+                        })}
+                    </div>}
+
                     {pagesNumber > 1 &&
                         <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
                                     concise={mobile} setPage={(page) => setCurrentPage(page)}

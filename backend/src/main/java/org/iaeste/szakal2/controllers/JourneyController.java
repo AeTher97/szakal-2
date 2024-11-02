@@ -4,6 +4,8 @@ package org.iaeste.szakal2.controllers;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
+import org.iaeste.szakal2.models.dto.SzakalSort;
+import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.*;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.services.JourneyService;
@@ -73,15 +75,31 @@ public class JourneyController {
         return journeyService.getJourneyDTOById(id);
     }
 
+
     @GetMapping
     public Page<ContactJourneyListingDTO> getContactJourneys(@RequestParam(defaultValue = "10") int pageSize,
                                                              @RequestParam int pageNumber,
                                                              @RequestParam(required = false) UUID userId,
-                                                             @RequestParam(required = false) UUID campaignId) {
+                                                             @RequestParam(required = false) UUID campaignId,
+                                                             @RequestParam(required = false) String companyName,
+                                                             @RequestParam(required = false) String status,
+                                                             @RequestParam(required = false) String detailedStatus,
+                                                             @RequestParam(required = false) String eventText,
+                                                             @RequestParam(required = false) String sort) {
         if ((campaignId != null && userId == null) || (campaignId == null && userId != null)) {
             throw new ResourceNotFoundException("You have to call with both user and campaign id at once");
         }
-        return journeyService.getJourneys(userId, campaignId, Pageable.ofSize(pageSize).withPage(pageNumber));
+        return journeyService.getJourneys(Pageable.ofSize(pageSize).withPage(pageNumber),
+                ContactJourneySearch
+                        .builder()
+                        .companyName(companyName)
+                        .status(status)
+                        .detailedStatus(detailedStatus)
+                        .eventText(eventText)
+                        .userId(userId)
+                        .campaignId(campaignId)
+                        .szakalSort(sort == null ? null : SzakalSort.fromString(sort))
+                        .build());
     }
 
     @GetMapping("/top10")
