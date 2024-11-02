@@ -38,7 +38,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                 updateAddress(city, street, streetNumber, postalCode)
             }}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
-                    <Stack spacing={1} sx={{flex: mobile ? 1 : 0}}>
+                    <Stack spacing={1} sx={{flex: 1}}>
                         <FormLabel>
                             <Typography level={"title-sm"}>Miasto</Typography>
                         </FormLabel>

@@ -73,6 +73,9 @@ const UserJourneysHome = () => {
     }, [currentPage, searchLoaded]);
 
     useEffect(() => {
+        if (searchLoaded) {
+            return;
+        }
         const currentValue = {
             companyName: searchParams.get("companyName") && sanitizeFilters(searchParams.get("companyName")),
             status: searchParams.get("status"),
@@ -106,11 +109,13 @@ const UserJourneysHome = () => {
         }))
     }
 
-
     const renderFilters = () => {
         return <form onSubmit={e => {
             e.preventDefault();
             setSearchParams(removeNullFields(tempSearch));
+            setSearch({
+                ...removeNullFields(tempSearch)
+            })
         }} style={{
             marginBottom: 5,
             marginTop: 10,

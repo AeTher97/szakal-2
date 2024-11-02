@@ -46,7 +46,8 @@ export const useUserJourneyList = (page = 0, search, searchLoaded) => {
             {name: "status", value: search.status},
             {name: "detailedStatus", value: search.detailedStatus},
             {name: "eventText", value: search.eventText},
-            {name: "sort", value: search.sort}], [currentCampaign, userId])
+            {name: "sort", value: search.sort}],
+        [currentCampaign, userId, searchLoaded])
 
     return {journeys, loading, pagesNumber}
 }

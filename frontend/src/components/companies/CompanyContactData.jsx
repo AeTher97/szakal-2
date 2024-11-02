@@ -35,7 +35,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
-                    <Stack spacing={1} sx={{flex: mobile ? 1 : 0}}>
+                    <Stack spacing={1} sx={{flex: 1}}>
                             <FormLabel>
                                 <Typography level={"title-sm"}>Nazwa</Typography>
                             </FormLabel>

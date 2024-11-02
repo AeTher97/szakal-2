@@ -162,7 +162,8 @@ const CompanyList = () => {
 
     const {companies, loading, pageNumber, addCompany}
         = useCompanyListWithCampaign(
-        currentCampaign, currentPage - 1,
+        currentCampaign,
+        currentPage - 1,
         search,
         [pageNumberLoaded, (currentCampaign !== '') ? true : null]
     );
@@ -188,6 +189,9 @@ const CompanyList = () => {
     }, [currentPage, searchLoaded]);
 
     useEffect(() => {
+        if (searchLoaded) {
+            return;
+        }
         const currentValue = {
             name: searchParams.get("name") && sanitizeFilters(searchParams.get("name")),
             category: searchParams.get("category"),
@@ -230,6 +234,9 @@ const CompanyList = () => {
         return <form onSubmit={e => {
             e.preventDefault();
             setSearchParams(removeNullFields(tempSearch));
+            setSearch({
+                ...removeNullFields(tempSearch)
+            })
         }} style={{
             marginBottom: 5,
             marginTop: 10,
@@ -282,11 +289,13 @@ const CompanyList = () => {
 
             {!loading &&
                 <CompanyTable companies={companies} setSort={setSort} search={search} clearSort={clearSort}/>}
+
             {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
-                {Array(10).fill(0).map(() => {
-                    return <Skeleton variant={"rectangular"} style={{height: 30}}/>
+                {Array(10).fill(0).map((v, i) => {
+                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
                 })}
             </div>}
+
             {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
                                            firstAndLast={!mobile} concise={mobile}
                                            margin={"10px 0 10px 0"}

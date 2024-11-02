@@ -47,10 +47,10 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "flex-start",
                         gap: 20
                     }}>
-                        <Avatar size={"lg"} sx={{width: mobile ? 150 : 80, height: mobile ? 150 : 80}}
+                        <Avatar size={"lg"} sx={{width: mobile ? 175 : 100, height: mobile ? 175 : 100}}
                                 style={{backgroundColor: uuidToColor(user.id)}}
                                 src={user.profilePicture ? `data:image;base64,${user.profilePicture}` : ""}>
                             <Typography level={mobile ? "h1" : null}>
