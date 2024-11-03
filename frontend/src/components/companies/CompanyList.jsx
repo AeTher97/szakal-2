@@ -215,9 +215,12 @@ const CompanyList = () => {
         }
     }, [searchParams]);
 
-
     const setSort = (colum, direction) => {
         setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
+        }));
+        setSearch(removeNullFields({
             ...tempSearch,
             sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
         }));
@@ -225,6 +228,10 @@ const CompanyList = () => {
 
     const clearSort = () => {
         setSearchParams(removeNullFields({
+            ...tempSearch,
+            sort: null
+        }))
+        setSearch(removeNullFields({
             ...tempSearch,
             sort: null
         }))

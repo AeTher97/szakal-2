@@ -101,6 +101,10 @@ const JourneyList = () => {
             ...tempSearch,
             sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
         }));
+        setSearch(removeNullFields({
+            ...tempSearch,
+            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
+        }));
     }
 
     const clearSort = () => {
@@ -108,8 +112,11 @@ const JourneyList = () => {
             ...tempSearch,
             sort: null
         }))
+        setSearch(removeNullFields({
+            ...tempSearch,
+            sort: null
+        }))
     }
-
 
     const renderFilters = () => {
         return <form onSubmit={e => {
