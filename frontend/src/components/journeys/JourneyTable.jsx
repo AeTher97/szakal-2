@@ -7,7 +7,7 @@ import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ClearIcon from "@mui/icons-material/Clear";
 
-const JourneyTable = ({journeys, search, setSort, clearSort}) => {
+const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
 
     const sortedByCompany = search && search.sort && search.sort.includes("companyName")
     const sortedByUser = search && search.sort && search.sort.includes("user")
@@ -58,7 +58,7 @@ const JourneyTable = ({journeys, search, setSort, clearSort}) => {
                     <th style={{padding: "8px 6px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByCompany ? {paddingRight: 2} : {}}
-                                    onClick={() => setSort("companyName", directionAscending ? "DESC" : "ASC")}>
+                                    onClick={() => updateSort("companyName", directionAscending ? "DESC" : "ASC")}>
                                 Firma {sortedByCompany && !directionAscending && <KeyboardArrowUp/>}
                                 {sortedByCompany && directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByCompany &&
@@ -68,7 +68,7 @@ const JourneyTable = ({journeys, search, setSort, clearSort}) => {
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByUser ? {paddingRight: 2} : {}}
-                                    onClick={() => setSort("user", directionAscending ? "DESC" : "ASC")}>
+                                    onClick={() => updateSort("user", directionAscending ? "DESC" : "ASC")}>
                                 Użytkownik {sortedByUser && !directionAscending && <KeyboardArrowUp/>}
                                 {sortedByUser && directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByUser &&
@@ -78,7 +78,7 @@ const JourneyTable = ({journeys, search, setSort, clearSort}) => {
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByStatus ? {paddingRight: 2} : {}}
-                                    onClick={() => setSort("detailedStatus", directionAscending ? "DESC" : "ASC")}>
+                                    onClick={() => updateSort("detailedStatus", directionAscending ? "DESC" : "ASC")}>
                                 Status {sortedByStatus && !directionAscending && <KeyboardArrowUp/>}
                                 {sortedByStatus && directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByStatus &&

@@ -10,7 +10,7 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/joy/Button";
 
 
-const CompanyTable = ({companies, search, setSort}) => {
+const CompanyTable = ({companies, search, updateSort}) => {
 
     const mobile = useMobileSize();
 
@@ -50,11 +50,9 @@ const CompanyTable = ({companies, search, setSort}) => {
                     <th style={{padding: "8px 6px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}}
-                                    onClick={() => setSort("name", directionAscending ? "DESC" : "ASC")}>
+                                    onClick={() => updateSort("name", directionAscending ? "DESC" : "ASC")}>
                                 Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
                                 {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
-                            {/*{sorted &&*/}
-                            {/*    <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}*/}
                         </div>
                     </th>
                     <th style={{padding: "12px 6px"}}>

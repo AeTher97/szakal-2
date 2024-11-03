@@ -36,8 +36,10 @@ export const useData = (baseUrl,
                 updateFunction(res.data)
             }
         }).catch(e => {
-            if (e.response.data && e.response.data.error) {
+            if (e.response && e.response.data && e.response.data.error) {
                 dispatch(showError(e.response.data.error))
+            } else if (!e.response) {
+                dispatch(showError("Nie udało się załadować danych, sprawdź swoje połączenie z internetem"))
             }
         }).finally(() => {
             if (mounted) {
