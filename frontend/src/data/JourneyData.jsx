@@ -7,11 +7,13 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pa
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
     const [pagesNumber, setPagesNumber] = useState(0);
+    const [loaded, setLoaded] = useState(false);
 
     const {loading} = useData(`/campaigns/${currentCampaign}/journeys`,
         (data) => {
-            setJourneys(data.content)
-            setPagesNumber(data.totalPages)
+            setJourneys(data.content);
+            setPagesNumber(data.totalPages);
+            setLoaded(true);
         }, [currentCampaign, page, search],
         [{name: "pageNumber", value: page},
             {name: "pageSize", value: pageSize},
@@ -23,7 +25,7 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pa
             {name: "sort", value: search.sort}],
         [currentCampaign, searchLoaded, currentCampaign === "none" ? null : true])
 
-    return {journeys, loading, pagesNumber}
+    return {journeys, loading, loaded, pagesNumber}
 }
 
 export const useUserJourneyList = (page = 0, search, searchLoaded) => {
