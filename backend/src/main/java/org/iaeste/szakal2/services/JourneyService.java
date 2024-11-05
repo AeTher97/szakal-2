@@ -95,6 +95,7 @@ public class JourneyService {
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
             contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
+            contactJourney.setLastInteraction(LocalDateTime.now());
             notifyOnJourneyModification(contactJourney);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
@@ -188,7 +189,7 @@ public class JourneyService {
         return top10DTO;
     }
 
-    private ContactJourney getJourneyById(UUID id) {
+    public ContactJourney getJourneyById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
         if (journeyOptional.isEmpty()) {
             throw new ResourceNotFoundException(STR."""

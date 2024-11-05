@@ -24,7 +24,7 @@ const CompanyCategories = ({
     return (
         <Card sx={{flex: 1, minWidth: 200}}>
             <CardContent sx={{flex: 0}}>
-                <Typography>Branże</Typography>
+                <Typography>Kategorie</Typography>
             </CardContent>
             <Divider/>
             <CardContent>

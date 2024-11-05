@@ -16,7 +16,7 @@ const ScheduledContaxt = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <Card style={{flex: 1, overflow: "auto", minHeight: 300}}
+        <Card style={{overflow: "auto", minHeight: 300}}
               variant={"outlined"} color={"primary"}>
             <div style={{display: "flex", justifyContent: "space-between", justifyItems: "center"}}>
                 <Typography level={"h4"}>Zaplanowane kontakty</Typography>

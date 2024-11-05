@@ -1,5 +1,7 @@
 import {
+    ADD_FAVOURITE_JOURNEY,
     ADD_ITEM,
+    LOAD_FAVOURITE_JOURNEYS,
     LOGIN_ATTEMPT,
     LOGIN_FAILED,
     LOGIN_SUCCESS,
@@ -8,6 +10,7 @@ import {
     REFRESH_ATTEMPT,
     REFRESH_FAILED,
     REFRESH_SUCCESS,
+    REMOVE_FAVOURITE_JOURNEY,
     REMOVE_ITEM,
     SWITCH_CAMPAIGN,
     SWITCH_THEME,
@@ -58,7 +61,7 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
             dispatch({type: LOGIN_SUCCESS, payload: payload});
             const user = decodeToken(data.authToken);
             saveTokenInStorage(data.authToken, data.refreshToken, payload.userId, user.email, user.name, user.surname);
-            onSuccessCallback(data.accepted);
+            onSuccessCallback({accepted: data.accepted, authToken: data.authToken});
             updateAccessRights(user, data.authToken, dispatch)
             return data.accepted
         })
@@ -123,4 +126,35 @@ export const removeKnownItem = (itemId) => dispatch => {
 
 export const reloadAction = () => dispatch => {
     dispatch({type: REFRESH})
+}
+
+export const loadFavouriteJourneysAction = (authToken) => dispatch => {
+    axiosInstance.get("/favouriteJourneys", {
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
+    }).then((res) => {
+        dispatch({type: LOAD_FAVOURITE_JOURNEYS, payload: {items: res.data}})
+    }).catch(e => {
+        dispatch(showError(e.message));
+    })
+}
+
+export const addFavouriteJourney = (journeyId) => dispatch => {
+    axios.post("/favouriteJourneys", {
+        journeyId: journeyId
+    }).then((res) => {
+        dispatch({type: ADD_FAVOURITE_JOURNEY, payload: {item: res.data}});
+    }).catch(e => {
+        dispatch(showError(e.message));
+    })
+}
+
+export const removeFavouriteJourney = (journeyId) => dispatch => {
+    axios.delete(`/favouriteJourneys/${journeyId}`)
+        .then((_) => {
+            dispatch({type: REMOVE_FAVOURITE_JOURNEY, payload: {item: {id: journeyId}}})
+        }).catch(e => {
+        dispatch(showError(e.message));
+    })
 }

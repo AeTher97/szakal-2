@@ -4,12 +4,11 @@ import MenuBar from "../components/bar/MenuBar";
 import ContentColumn from "../components/main/ContentColumn";
 import InnerNavigation from "../navigation/InnerNavigation";
 import SecureRoute from "../utils/SecureRoute";
-import {useFullColumnSize, useMobileSize} from "../utils/SizeQuery";
-import Footer from "../components/Footer";
+import {useMediumSize} from "../utils/SizeQuery";
 
 const AppContainer = () => {
 
-    const mediumSize = useFullColumnSize();
+    const mediumSize = useMediumSize();
 
     return (
         <SecureRoute>

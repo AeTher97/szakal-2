@@ -47,7 +47,8 @@ const UserJourneysHome = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT])
+    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT],
+        [{name: "sort", value: "companyName,ASC"}])
     const {journeys, loading, pagesNumber}
         = useUserJourneyList(currentPage - 1, search, searchLoaded);
 

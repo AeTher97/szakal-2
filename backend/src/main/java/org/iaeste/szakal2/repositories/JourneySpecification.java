@@ -109,6 +109,8 @@ public class JourneySpecification implements Specification<ContactJourney> {
                         criteriaBuilder.desc(root.get("user").get("surname")));
                 case "companyName" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("company").get("name")) :
                         criteriaBuilder.desc(root.get("company").get("name")));
+                case "startDate" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("journeyStart")) :
+                        criteriaBuilder.desc(root.get("journeyStart")));
                 default -> throw new IllegalArgumentException("Sort not supported");
             }
         }

@@ -18,8 +18,8 @@ const LoginForm = ({redirectBack}) => {
         dispatch(loginAction({
             username: email,
             password: password
-        }, (isAccepted) => {
-            redirectBack(isAccepted);
+        }, (response) => {
+            redirectBack(response.accepted);
         }))
     }
 
@@ -56,6 +56,7 @@ const LoginForm = ({redirectBack}) => {
                 <FormControl>
                     <FormLabel>Email</FormLabel>
                     <Input
+                        data-testid="cypress-login-email"
                         color={error ? "danger" : "neutral"}
                         name="email"
                         type="email"
@@ -67,6 +68,7 @@ const LoginForm = ({redirectBack}) => {
                 <FormControl>
                     <FormLabel>Password</FormLabel>
                     <Input
+                        data-testid={"cypress-login-password"}
                         color={error ? "danger" : "neutral"}
                         name="password"
                         type="password"
@@ -76,7 +78,9 @@ const LoginForm = ({redirectBack}) => {
                     />
                 </FormControl>
 
-                <Button sx={{mt: 1 /* margin top */}} type={"submit"}>Zaloguj</Button>
+                <Button sx={{mt: 1 /* margin top */}}
+                        data-testid={"cypress-login-button"}
+                        type={"submit"}>Zaloguj</Button>
                 <Typography
                     endDecorator={<LinkWithRouter to="/sign-up">Zarejestruj się</LinkWithRouter>}
                     fontSize="sm"

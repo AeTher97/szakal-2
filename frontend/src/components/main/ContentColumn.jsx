@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
+import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
 import ScheduledContacts from "../notifications/ScheduledContacts";
 import {IconButton, Modal, ModalDialog} from "@mui/joy";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from "@mui/joy/Button";
 import Footer from "../Footer";
+import FavouriteJourneys from "./FavouriteJourneys";
 
 const ContentColumn = props => {
 
     const [notificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
-    const mediumSize = useFullColumnSize();
+    const mediumSize = useMediumSize();
     const small = useMobileSize();
 
     return (
@@ -32,9 +33,13 @@ const ContentColumn = props => {
                             marginBottom: 10,
                             flex: 1,
                             maxWidth: 300,
-                            paddingTop: 54
+                            paddingTop: 54,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 10
                         }}>
                         <ScheduledContacts/>
+                        <FavouriteJourneys/>
                     </div> :
                     <>
                         <IconButton style={{

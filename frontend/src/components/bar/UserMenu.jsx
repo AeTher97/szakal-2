@@ -17,6 +17,7 @@ const UserMenu = ({name, surname, image, id}) => {
         <div style={{margin: mobile ? 10 : 20}}>
             <Dropdown>
                 <MenuButton
+                    data-testid="user-avatar"
                     sx={{border: "none", padding: "0 10px 0 0"}}>
                     <UserAvatar name={name} surname={surname} image={image} id={id}/>
                 </MenuButton>

@@ -49,6 +49,14 @@ const UserDetails = ({userId}) => {
         setLocalUser(user)
     }, [user])
 
+    const renderActions = () => {
+        return <div style={{paddingBottom: mobile ? 5 : 0, display: "flex"}}>
+            {isCurrentUser && <Button size={mobile ? "sm" : "md"} style={{flex: 1}} onClick={() => {
+                setChangePasswordOpen(true)
+            }}>Zmień hasło</Button>}
+        </div>
+    }
+
     return (
         <div style={{overflow: "auto"}}>
             {user && localUser && <div>
@@ -57,12 +65,9 @@ const UserDetails = ({userId}) => {
                         <Typography overflow={"hidden"} noWrap level={"h2"}>{user.name} {user.surname}</Typography>
                         <Typography level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
                     </div>
-                    <div>
-                        {isCurrentUser && <Button size={mobile ? "sm" : "md"} onClick={() => {
-                            setChangePasswordOpen(true)
-                        }}>Zmień hasło</Button>}
-                    </div>
+                    {!mobile && renderActions()}
                 </TabHeader>
+                {mobile && renderActions()}
                 <div style={{
                     display: "flex",
                     justifyContent: "flex-start",

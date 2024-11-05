@@ -32,8 +32,8 @@ const AssignCompanyButton = ({company, fromJourneyPage}) => {
     if (thisCampaignJourney && thisCampaignJourney.user) {
         return;
     }
-    return (<>
-            {hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers && <Button
+    return (<div style={{flex: 1, display: "flex"}}>
+            {hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers && <Button style={{flex: 1}}
                 onClick={() => openDialog(() => {
                     addJourney(currentCampaign, company.id, userId)
                         .then((data) => {
@@ -46,10 +46,9 @@ const AssignCompanyButton = ({company, fromJourneyPage}) => {
                 })}>
                 Przypisz
             </Button>}
-            {
-                hasRight(JOURNEY_CREATION) && currentCampaign && canModifyOthers && <>
-                    <ButtonGroup color={"primary"} variant={"solid"} ref={anchorRef}>
-                        <Button
+            {hasRight(JOURNEY_CREATION) && currentCampaign && canModifyOthers && <div style={{flex: 1}}>
+                <ButtonGroup color={"primary"} variant={"solid"} ref={anchorRef} style={{flex: 1}}>
+                    <Button style={{flex: 1}}
                             onClick={() => openDialog(() => {
                                 addJourney(currentCampaign, company.id, userId)
                                     .then((data) => {
@@ -81,10 +80,10 @@ const AssignCompanyButton = ({company, fromJourneyPage}) => {
                                                    companyId={company.id}
                                                    navigate={navigate}
                                                    fromJourneyPage={fromJourneyPage}/>}
-                </>
+            </div>
             }
             {render()}
-        </>
+        </div>
     )
 };
 

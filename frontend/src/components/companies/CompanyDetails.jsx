@@ -17,6 +17,7 @@ import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 import Button from "@mui/joy/Button";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {useMobileSize} from "../../utils/SizeQuery";
 
 
 const CompanyDetails = () => {
@@ -27,6 +28,7 @@ const CompanyDetails = () => {
     const {currentCampaign} = useSelector(state => state.campaigns);
     const navigate = useNavigate();
     const {hasRight} = useAccessRightsHelper();
+    const mobile = useMobileSize();
     const {
         openDialog,
         render
@@ -56,6 +58,26 @@ const CompanyDetails = () => {
     const thisCampaignJourney = company ?
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
 
+    const renderActions = () => {
+        return <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 5,
+            justifyContent: "flex-end",
+            paddingBottom: mobile ? 5 : 0
+        }}>
+            {currentCampaign !== 'none' && !company.deleted && <AssignCompanyButton company={company}/>}
+            {hasRight(COMPANY_MODIFICATION) && !company.deleted &&
+                <Button style={{flex: mobile ? 0.4 : 1}} color={"danger"} onClick={() => {
+                    openDialog(() => {
+                        deleteCompany().then(() => {
+                            navigate("/secure/companies");
+                        })
+                    })
+                }}>Usuń firmę</Button>}
+        </div>
+    }
+
     return (
         <div>
             {company && localCompany && <>
@@ -80,17 +102,9 @@ const CompanyDetails = () => {
                              ${thisCampaignJourney.user ? thisCampaignJourney.user.surname : ""}` : "Wolna"}
                         </Typography>
                     </div>
-                    <div style={{display: "flex", flexWrap: "wrap", gap: 5, justifyContent: "flex-end"}}>
-                        {currentCampaign !== 'none' && !company.deleted && <AssignCompanyButton company={company}/>}
-                        {hasRight(COMPANY_MODIFICATION) && !company.deleted && <Button color={"danger"} onClick={() => {
-                            openDialog(() => {
-                                deleteCompany().then(() => {
-                                    navigate("/secure/companies");
-                                })
-                            })
-                        }}>Usuń firmę</Button>}
-                    </div>
+                    {!mobile && renderActions()}
                 </TabHeader>
+                {mobile && renderActions()}
                 <div style={{
                     display: "flex",
                     justifyContent: "flex-start",

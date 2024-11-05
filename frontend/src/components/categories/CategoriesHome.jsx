@@ -27,11 +27,11 @@ const CategoriesHome = () => {
             <Route path={"/"} element={
                 <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
                     <TabHeader>
-                        <Typography level="h2">Branże</Typography>
+                        <Typography level="h2">Kategorie</Typography>
                         {hasRight(CATEGORY_MODIFICATION) && <Button onClick={() => {
                             setAddCategoryOpen(true)
                         }}>
-                            <AddIcon/>Dodaj branżę
+                            <AddIcon/>Dodaj kategorię
                         </Button>}
                     </TabHeader>
 

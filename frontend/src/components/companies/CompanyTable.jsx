@@ -51,15 +51,15 @@ const CompanyTable = ({companies, search, updateSort}) => {
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("name", directionAscending ? "DESC" : "ASC")}>
-                                Firma {sorted && !directionAscending && <KeyboardArrowUp/>}
-                                {sorted && directionAscending && <KeyboardArrowDown/>}</Button>
+                                Firma {sorted && directionAscending && <KeyboardArrowUp/>}
+                                {sorted && !directionAscending && <KeyboardArrowDown/>}</Button>
                         </div>
                     </th>
                     <th style={{padding: "12px 6px"}}>
                         <Typography>Obecna akcja</Typography>
                     </th>
                     {!mobile && <th style={{padding: "12px 6px"}}>
-                        <Typography>Branże</Typography>
+                        <Typography>Kategorie</Typography>
                     </th>}
                     {!mobile && <th style={{padding: "12px 6px"}}>
                         <Typography>Historia kontaktu</Typography>

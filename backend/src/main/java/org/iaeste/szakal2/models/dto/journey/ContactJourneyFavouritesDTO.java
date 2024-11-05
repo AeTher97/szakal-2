@@ -12,18 +12,19 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class ContactJourneyListingDTO {
+public class ContactJourneyFavouritesDTO {
 
     private UUID id;
     private boolean finished;
     private CompanyMinimalDTO company;
+    private ContactJourneyDetailsDTO.CampaignDTO campaign;
     private UserMinimalDTO user;
     private ContactStatus contactStatus;
     private LocalDateTime journeyStart;
     private LocalDateTime lastInteraction;
 
-    public static ContactJourneyListingDTO fromContactJourney(ContactJourney contactJourney) {
-        return ContactJourneyListingDTO.builder()
+    public static ContactJourneyFavouritesDTO fromContactJourney(ContactJourney contactJourney) {
+        return ContactJourneyFavouritesDTO.builder()
                 .id(contactJourney.getId())
                 .finished(contactJourney.isFinished())
                 .company(CompanyMinimalDTO.fromCompany(contactJourney.getCompany()))
@@ -31,6 +32,7 @@ public class ContactJourneyListingDTO {
                 .contactStatus(contactJourney.getContactStatus())
                 .journeyStart(contactJourney.getJourneyStart())
                 .lastInteraction(contactJourney.getLastInteraction())
+                .campaign(ContactJourneyDetailsDTO.CampaignDTO.fromCampaign(contactJourney.getCampaign()))
                 .build();
     }
 }

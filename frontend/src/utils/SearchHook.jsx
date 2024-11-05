@@ -6,27 +6,37 @@ export const sanitizeFilters = (value) => {
     return value.replace(/[^a-z0-9,\s]/gi, '');
 }
 
-export const useSearch = (fields = []) => {
+export const useSearch = (fields = [], defaultValues = []) => {
 
     const [searchLoaded, setSearchLoaded] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const initialState = {};
-    fields.forEach(field => {
-        initialState[field] = null;
-    });
+    const getInitialState = () => {
+        const initialState = {};
+        fields.forEach(field => {
+            initialState[field] = null;
+        });
 
-    const [tempSearch, setTempSearch] = useState(initialState);
-    const [search, setSearch] = useState(initialState);
+        defaultValues.forEach(value => {
+            initialState[value.name] = value.value;
+        })
+
+        return initialState;
+    }
+
+    const [tempSearch, setTempSearch] = useState(getInitialState);
+    const [search, setSearch] = useState(getInitialState);
 
     useEffect(() => {
         if (searchLoaded) {
             return;
         }
-        const currentValue = {};
+        const currentValue = {...search};
 
         fields.forEach(field => {
-            currentValue[field] = searchParams.get(field) && sanitizeFilters(searchParams.get(field))
+            if (searchParams.get(field)) {
+                currentValue[field] = sanitizeFilters(searchParams.get(field))
+            }
         })
 
         setTempSearch(currentValue)
@@ -73,9 +83,9 @@ export const useSearch = (fields = []) => {
     return {search, searchNotSubmittedValue: tempSearch, searchLoaded, updateSearch, updateSort, clearSort, applySearch}
 }
 
-export const useSearchWithPagination = (fields = []) => {
+export const useSearchWithPagination = (fields = [], defaultValues = []) => {
 
-    const searchValue = useSearch(fields);
+    const searchValue = useSearch(fields, defaultValues);
     const {searchLoaded, search} = searchValue;
     const [pageNumber, setPageNumber] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);

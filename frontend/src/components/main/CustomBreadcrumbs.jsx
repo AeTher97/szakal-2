@@ -17,7 +17,7 @@ const CustomBreadcrumbs = () => {
     const pathMatches = [
         {path: "secure", component: <HomeIcon/>, pathOverride: "/secure/home"},
         {path: "companies", component: "Firmy"},
-        {path: "categories", component: "Branże"},
+        {path: "categories", component: "Kategorie"},
         {path: "user-journeys", component: "Twoje kontakty"},
         {path: "journeys", component: "Kontakty"},
         {path: "users", component: "Użytkownicy"},

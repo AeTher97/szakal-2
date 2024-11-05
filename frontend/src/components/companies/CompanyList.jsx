@@ -56,7 +56,8 @@ const CompanyList = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT]);
+    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT],
+        [{name: "sort", value: "name,ASC"}]);
 
     const {categories} = useCategories(searchLoaded);
     const {companies, loading, pageNumber, addCompany}

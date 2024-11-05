@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import SzakalLogo from "./SzakalLogo";
-import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
+import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
 import UserMenu from "./UserMenu";
 import {changeCampaignAction} from "../../redux/ReducerActions";
 import DrawerMenu from "./DrawerMenu";
@@ -20,7 +20,7 @@ const TopBar = () => {
             = useState({label: "Wybierz akcje", id: "choose"});
 
         const dispatch = useDispatch();
-        const mediumSize = useFullColumnSize();
+    const mediumSize = useMediumSize();
         const mobile = useMobileSize();
 
         const campaignsOptions = campaigns.map((campaign) => {

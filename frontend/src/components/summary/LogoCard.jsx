@@ -1,12 +1,12 @@
 import React from 'react';
 import {Card, CardContent, Typography} from "@mui/joy";
-import {useFullColumnSize, useMobileSize} from "../../utils/SizeQuery";
+import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
 import {useSelector} from "react-redux";
 
 const LogoCard = () => {
 
     const mobile = useMobileSize();
-    const mediumSize = useFullColumnSize();
+    const mediumSize = useMediumSize();
     const {theme} = useSelector(state => state.theme);
 
 

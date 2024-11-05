@@ -68,6 +68,8 @@ public class ContactJourney {
     @NotNull
     private LocalDateTime journeyStart;
     @Setter
+    private LocalDateTime lastInteraction;
+    @Setter
     @NotNull
     private boolean finished;
 }

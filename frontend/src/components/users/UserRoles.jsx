@@ -17,7 +17,7 @@ const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesL
                 <Typography level={"body-sm"}>Role które posiada użytkownik</Typography>
             </CardContent>
             <Divider/>
-            <CardContent orientation={"horizontal"} style={{flex: 0}}>
+            <CardContent orientation={mobile ? "vertical" : "horizontal"} style={{flex: 0}}>
                 {localUser.roles.map(role => <Chip key={role.id}
                                                    sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                                    endDecorator={<ChipDelete onDelete={() => {

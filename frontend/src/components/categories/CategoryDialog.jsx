@@ -15,7 +15,7 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
     return (
         <Modal open={open}>
             <ModalDialog>
-                <DialogTitle>{localCategory ? "Edytuj branżę" : "Dodaj branżę"}</DialogTitle>
+                <DialogTitle>{localCategory ? "Edytuj kategorię" : "Dodaj kategorię"}</DialogTitle>
                     <Stack spacing={2}>
                         <FormControl required>
                             <FormLabel>Nazwa</FormLabel>

@@ -8,11 +8,20 @@ import {stores} from "./redux/Stores";
 import AuthProvider from "./utils/AuthProvider";
 import {RouterWrapper} from "./navigation/MainNavigation";
 import {closeAlert} from "./redux/AlertActions";
+import {loadFavouriteJourneysAction} from "./redux/ReducerActions";
 
 const AppWithoutCss = () => {
 
     const {theme} = useSelector(state => state.theme);
+    const {isAuthenticated, accessToken} = useSelector(state => state.auth)
     const {setMode} = useColorScheme();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            dispatch(loadFavouriteJourneysAction(accessToken))
+        }
+    }, [isAuthenticated])
 
     useEffect(() => {
         setMode(theme)

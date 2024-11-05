@@ -49,7 +49,7 @@ const JourneyCompany = ({company}) => {
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography level={"title-md"}>Branże</Typography>
+                        <Typography level={"title-md"}>Kategorie</Typography>
                         <Typography>{company.categories.map(category => <Typography key={category.id}>
                             {category.name}
                         </Typography>)}

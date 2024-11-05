@@ -6,12 +6,18 @@ import Button from "@mui/joy/Button";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ClearIcon from "@mui/icons-material/Clear";
+import {formatLocalDate} from "../../utils/DateUtils";
+import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
 
 const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
+
+    const mediumSize = useMediumSize();
+    const mobile = useMobileSize();
 
     const sortedByCompany = search && search.sort && search.sort.includes("companyName")
     const sortedByUser = search && search.sort && search.sort.includes("user")
     const sortedByStatus = search && search.sort && search.sort.includes("detailedStatus")
+    const sortedByStartDate = search && search.sort && search.sort.includes("startDate")
 
     const directionAscending = search && search.sort && search.sort.includes("ASC");
 
@@ -19,9 +25,14 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
         if (sortedByCompany) {
             return journey.company.name;
         } else if (sortedByUser) {
+            if (!journey.user) {
+                return "Z"
+            }
             return journey.user.surname;
         } else if (sortedByStatus) {
             return decodeContactStatus(journey.contactStatus);
+        } else if (sortedByStartDate) {
+            return journey.journeyStart;
         }
     }
 
@@ -59,8 +70,8 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByCompany ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("companyName", directionAscending ? "DESC" : "ASC")}>
-                                Firma {sortedByCompany && !directionAscending && <KeyboardArrowUp/>}
-                                {sortedByCompany && directionAscending && <KeyboardArrowDown/>}</Button>
+                                Firma {sortedByCompany && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByCompany && !directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByCompany &&
                                 <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
                         </div>
@@ -69,18 +80,33 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByUser ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("user", directionAscending ? "DESC" : "ASC")}>
-                                Użytkownik {sortedByUser && !directionAscending && <KeyboardArrowUp/>}
-                                {sortedByUser && directionAscending && <KeyboardArrowDown/>}</Button>
+                                Użytkownik {sortedByUser && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByUser && !directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByUser &&
                                 <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
                         </div>
                     </th>
+                    {!mobile && <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button variant={"plain"} size={"sm"} style={sortedByUser ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("startDate", directionAscending ? "DESC" : "ASC")}>
+                                Data rozpoczęcia {sortedByStartDate && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByStartDate && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByStartDate &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>}
+                    {!mediumSize && <th style={{padding: "12px 6px"}}>
+                        <Typography>
+                            Ostatnia interakcja
+                        </Typography>
+                    </th>}
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sortedByStatus ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("detailedStatus", directionAscending ? "DESC" : "ASC")}>
-                                Status {sortedByStatus && !directionAscending && <KeyboardArrowUp/>}
-                                {sortedByStatus && directionAscending && <KeyboardArrowDown/>}</Button>
+                                Status {sortedByStatus && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByStatus && !directionAscending && <KeyboardArrowDown/>}</Button>
                             {sortedByStatus &&
                                 <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
                         </div>
@@ -105,6 +131,16 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
                                 color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                             })}>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
                         </td>
+                        {!mobile && <td>
+                            <Typography sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{formatLocalDate(journey.journeyStart)}</Typography>
+                        </td>}
+                        {!mediumSize && <td>
+                            <Typography sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{journey.lastInteraction ? formatLocalDate(journey.lastInteraction) : "Brak interakcji"}</Typography>
+                        </td>}
                         <td><Typography style={{wordBreak: "break-word"}} sx={theme => ({
                             color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                         })}>{decodeContactStatus(journey.contactStatus)} {journey.finished ? "(Zakończony)" : ""}

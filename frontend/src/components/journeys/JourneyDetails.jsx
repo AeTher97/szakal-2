@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
+import {addFavouriteJourney, addKnownItem, removeFavouriteJourney, removeKnownItem} from "../../redux/ReducerActions";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../main/TabHeader";
-import {Typography} from "@mui/joy";
+import {IconButton, Tooltip, Typography} from "@mui/joy";
 import JourneyUser from "./JourneyUser";
 import JourneyCompany from "./JourneyCompany";
 import JourneyInfo from "./JourneyInfo";
@@ -15,6 +15,9 @@ import {JOURNEY_MODIFICATION_FOR_OTHERS} from "../../utils/AccessRights";
 import AssignCompanyButton from "../companies/AssignCompanyButton";
 import JourneyContactEvents from "./JourneyContactEvents";
 import JourneyComments from "./JourneyComments";
+import {useMobileSize} from "../../utils/SizeQuery";
+import {Star, StarOutline} from "@mui/icons-material";
+
 
 export const contactStatusOptions
     = [{name: "WAITING_FOR_RESPONSE", text: "Oczekiwanie na odpowiedź"},
@@ -34,9 +37,11 @@ const JourneyDetails = () => {
         const location = useLocation();
         const dispatch = useDispatch();
         const {userId} = useSelector(state => state.auth)
+    const {favouriteJourneys} = useSelector(state => state.favouriteJourneys)
         const {journey, addContactEvent, addComment, closeJourney, removeUser}
             = useJourney(location.pathname.split("/")[3]);
         const {hasRight} = useAccessRightsHelper()
+    const mobile = useMobileSize();
 
         useEffect(() => {
             if (journey) {
@@ -52,29 +57,56 @@ const JourneyDetails = () => {
         const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
             = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
 
-
         const isUser = journey && journey.user && (userId === journey.user.id);
+    const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {
+        if (!journey) {
+            return false;
+        }
+        return favouriteJourney.contactJourney.id === journey.id;
+    })
 
-        return (
-            <>
-                {journey && <div style={{paddingBottom: 10}}>
-                    <TabHeader>
-                        <Typography level={"h2"}>
-                            Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
-                        </Typography>
-                        <div style={{display: "flex", gap: 5, flexWrap: "wrap", justifyContent: "flex-end"}}>
-                            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
-                                <Button onClick={() => {
-                                    openDialog(() => closeJourney())
-                                }}>Zakończ</Button>}
-                            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
-                                <Button variant={"outlined"} onClick={() => {
-                                    openRemoveUserFromJourneyDialog(() => removeUser())
-                                }}>Odepnij osobę z IAESTE</Button>}
-                            {!journey.user && !journey.finished &&
-                                <AssignCompanyButton company={journey.company} fromJourneyPage={true}/>}
-                        </div>
+
+    const renderActions = () => {
+        return <div
+            style={{
+                display: "flex", gap: 5, flexWrap: "wrap", justifyContent: mobile ? "stretch" : "flex-end",
+                paddingBottom: mobile ? 5 : 0
+            }}>
+            <Tooltip title={"Dodaj do ulubionych"}>
+                <IconButton variant={"soft"} onClick={() => {
+                    if (favouriteJourneyObject) {
+                        dispatch(removeFavouriteJourney(favouriteJourneyObject.id));
+                    } else {
+                        dispatch(addFavouriteJourney(journey.id));
+                    }
+                }}>
+                    {!favouriteJourneyObject && <StarOutline color={"warning"}/>}
+                    {favouriteJourneyObject && <Star color={"warning"}/>}
+                </IconButton>
+            </Tooltip>
+            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                <Button style={{flex: mobile ? 1 : 0}} onClick={() => {
+                    openDialog(() => closeJourney())
+                }}>Zakończ</Button>}
+            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                <Button variant={"outlined"} onClick={() => {
+                    openRemoveUserFromJourneyDialog(() => removeUser())
+                }}>Odepnij osobę z IAESTE</Button>}
+            {!journey.user && !journey.finished &&
+                <AssignCompanyButton company={journey.company} fromJourneyPage={true}/>}
+        </div>
+    }
+
+    return (
+        <>
+            {journey && <div style={{paddingBottom: 10}}>
+                <TabHeader>
+                    <Typography level={"h2"}>
+                        Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
+                    </Typography>
+                    {!mobile && renderActions()}
                     </TabHeader>
+                {mobile && renderActions()}
                     <div style={{
                         display: "flex",
                         justifyContent: "flex-start",
