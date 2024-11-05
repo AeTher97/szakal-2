@@ -176,16 +176,15 @@ public class JourneyService {
             top10.computeIfPresent(journey.getUser().getFullName(), (_, count) -> count + 1);
         });
 
-        log.info(top10);
-        MapUtils.sortByValue(top10);
+        Map<String, Integer> sortedTop10 = MapUtils.sortByValue(top10);
 
         Top10DTO top10DTO = new Top10DTO();
         for (int i = 0; i < 10; i++) {
             if (i >= top10.size()) {
                 continue;
             }
-            String fullName = top10.keySet().stream().toList().get(i);
-            int count = top10.get(fullName);
+            String fullName = sortedTop10.keySet().stream().toList().get(i);
+            int count = sortedTop10.get(fullName);
             top10DTO.addUser(fullName, count);
         }
 
