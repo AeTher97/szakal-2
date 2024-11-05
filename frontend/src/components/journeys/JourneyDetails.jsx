@@ -73,7 +73,7 @@ const JourneyDetails = () => {
                 paddingBottom: mobile ? 5 : 0
             }}>
             <Tooltip title={"Dodaj do ulubionych"}>
-                <IconButton variant={"soft"} onClick={() => {
+                <IconButton variant={"outlined"} onClick={() => {
                     if (favouriteJourneyObject) {
                         dispatch(removeFavouriteJourney(favouriteJourneyObject.id));
                     } else {

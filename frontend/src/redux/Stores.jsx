@@ -36,8 +36,8 @@ const getAuthFromStorage = () => {
 
 
     if (accessToken) {
-        const result = {...decodeToken(accessToken)};
-        const refreshResult = {...decodeToken(refreshToken)}
+        const result = decodeToken(accessToken);
+        const refreshResult = decodeToken(refreshToken)
 
         if (isTokenOutdated(refreshResult.expirationTime)) {
             return emptyState;

@@ -9,7 +9,7 @@ import AuthProvider from "./utils/AuthProvider";
 import {RouterWrapper} from "./navigation/MainNavigation";
 import {closeAlert} from "./redux/AlertActions";
 import {loadFavouriteJourneysAction} from "./redux/ReducerActions";
-import {isTokenOutdated} from "./utils/TokenUtils";
+import {decodeToken, isTokenOutdated} from "./utils/TokenUtils";
 
 const AppWithoutCss = () => {
 
@@ -20,7 +20,7 @@ const AppWithoutCss = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isAuthenticated && !isTokenOutdated(accessToken) && !loadedFavouriteJourneys) {
+        if (isAuthenticated && !isTokenOutdated(decodeToken(accessToken).expirationTime) && !loadedFavouriteJourneys) {
             dispatch(loadFavouriteJourneysAction(accessToken))
                 .then(() => setLoadedFavouriteJourneys(true));
         }

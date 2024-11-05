@@ -14,10 +14,11 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
     const mediumSize = useMediumSize();
     const mobile = useMobileSize();
 
-    const sortedByCompany = search && search.sort && search.sort.includes("companyName")
-    const sortedByUser = search && search.sort && search.sort.includes("user")
-    const sortedByStatus = search && search.sort && search.sort.includes("detailedStatus")
-    const sortedByStartDate = search && search.sort && search.sort.includes("startDate")
+    const sortedByCompany = search && search.sort && search.sort.includes("companyName");
+    const sortedByUser = search && search.sort && search.sort.includes("user");
+    const sortedByStatus = search && search.sort && search.sort.includes("detailedStatus");
+    const sortedByStartDate = search && search.sort && search.sort.includes("startDate");
+    const sortedByLastInteractionDate = search && search.sort && search.sort.includes("lastInteraction");
 
     const directionAscending = search && search.sort && search.sort.includes("ASC");
 
@@ -33,6 +34,8 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
             return decodeContactStatus(journey.contactStatus);
         } else if (sortedByStartDate) {
             return journey.journeyStart;
+        } else if (sortedByLastInteractionDate) {
+            return journey.lastInteraction ? journey.lastInteraction : "z";
         }
     }
 
@@ -96,10 +99,17 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
                                 <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
                         </div>
                     </th>}
-                    {!mediumSize && <th style={{padding: "12px 6px"}}>
-                        <Typography>
-                            Ostatnia interakcja
-                        </Typography>
+                    {!mediumSize && <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button variant={"plain"} size={"sm"}
+                                    style={sortedByLastInteractionDate ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("lastInteraction", directionAscending ? "DESC" : "ASC")}>
+                                Ostatnia interakcja {sortedByLastInteractionDate && directionAscending &&
+                                <KeyboardArrowUp/>}
+                                {sortedByLastInteractionDate && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByLastInteractionDate &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
                     </th>}
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
