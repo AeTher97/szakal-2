@@ -46,8 +46,10 @@ const JourneyDetails = () => {
         useEffect(() => {
             if (journey) {
                 dispatch(addKnownItem(location.pathname.split("/")[3], `Kontakt z ${journey.company.name}`));
+                document.title = `Kontakt z ${journey.company.name}`;
                 return () => {
                     dispatch(removeKnownItem(location.pathname.split("/")[4]))
+                    document.title = "Szakal 2";
                 }
             }
         }, [location, journey]);

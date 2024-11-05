@@ -15,7 +15,7 @@ on:
     branches: [ "!master", "*" ]
 
 jobs:
-  build:
+  integrationTests:
 
     runs-on: ubuntu-22.04
 
@@ -34,4 +34,35 @@ jobs:
       - name: Run integration test
         working-directory: ./backend
         run: ./gradlew integrationTest
+
+  cypressTests:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: gradle
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
+
+      - name: Remove wrong java versions
+        working-directory: ./
+        run: sudo apt remove temurin-8-jdk temurin-11-jdk
+
+      - name: Set up env
+        working-directory: ./
+        run: sudo bash ./setup-env.sh
+
+      - name: Run cypress tests
+        working-directory: ./frontend
+        run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
+
+      - name: Destroy env
+        working-directory: ./
+        run: sudo bash ./backend/run-backend.sh stop
 

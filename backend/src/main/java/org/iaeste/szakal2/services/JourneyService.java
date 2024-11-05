@@ -248,7 +248,7 @@ public class JourneyService {
     }
 
     private void notifyOnJourneyModification(ContactJourney contactJourney) {
-        if (!AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
+        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
                     STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany kliknij by przejść do kontaktu",
                     contactJourney.getId());

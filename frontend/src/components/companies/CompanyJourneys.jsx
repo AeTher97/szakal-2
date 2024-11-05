@@ -22,7 +22,6 @@ const CompanyJourneys = ({localCompany}) => {
                         <LinkWithRouter
                             to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {decodeContactStatus(journey.contactStatus)}</LinkWithRouter>
                         <Typography>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
-                        <Typography>Liczba praktykantów: 0</Typography>
                         {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}
                     </div>)}
                 </CardContent>

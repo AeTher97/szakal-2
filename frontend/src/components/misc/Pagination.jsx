@@ -57,7 +57,7 @@ const Pagination = ({
                         style={{visibility: currentPage !== 1 ? "visible" : "hidden"}}
                         color={"neutral"}><KeyboardArrowLeft/>{concise ? "" : "Poprzednia"}</Button>
             </div>
-            <div style={{display: "flex", gap: 5}}>
+            <div style={{display: "flex", gap: 5}} data-testid="pagination-pages-container">
                 {low > 1 && <Typography>...</Typography>}
                 {pages.map(page => {
                     return <Button size={"sm"} variant={page === currentPage ? "soft" : "outlined"}

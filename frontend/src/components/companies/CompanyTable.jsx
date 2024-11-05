@@ -52,7 +52,8 @@ const CompanyTable = ({companies, search, updateSort, numberOfItems, setItemsPer
                     <th style={{padding: "8px 6px"}}>
                         <div style={{display: "flex"}}>
                             <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}}
-                                    onClick={() => updateSort("name", directionAscending ? "DESC" : "ASC")}>
+                                    onClick={() => updateSort("name", directionAscending ? "DESC" : "ASC")}
+                                    data-testid={"companies-sort-by-name"}>
                                 Firma {sorted && directionAscending && <KeyboardArrowUp/>}
                                 {sorted && !directionAscending && <KeyboardArrowDown/>}</Button>
                         </div>
@@ -68,53 +69,55 @@ const CompanyTable = ({companies, search, updateSort, numberOfItems, setItemsPer
                     </th>}
                 </tr>
                 </thead>
-                <tbody>
-                {companies && companies.map(company =>
-                    <tr key={company.id}>
-                        <td>
-                            <div style={{display: "flex", flexDirection: "column"}}>
-                                <LinkWithRouter style={{wordBreak: "break-word"}}
-                                                to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
-                                <Typography style={{wordBreak: "break-word"}}>{company.www}</Typography>
-                                <Typography style={{wordBreak: "break-word"}}>{company.email}</Typography>
-                            </div>
-                        </td>
-                        <td>{company.currentJourney ? <div>
-                                <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
-                                    <Typography style={{wordBreak: "break-word"}}>
-                                        {decodeContactStatus(company.currentJourney.status)}
-                                    </Typography>
-                                </LinkWithRouter>
-                                <Typography style={{wordBreak: "break-word"}}>{company.currentJourney.user ?
-                                    `${company.currentJourney.user.name} ${company.currentJourney.user.surname}`
-                                    : "Brak przypisanego użytkownika"}
-                                </Typography>
-                                <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
-                            </div>
-                            : <Typography>Wolna</Typography>}</td>
-                        {!mobile && <td>
-                            {company.categories.map((category, i) => {
-                                return <Typography
-                                    key={category.id}>{category.name}{i !== company.categories.length - 1 ? "," : ""}</Typography>
-                            })}
-                        </td>}
-                        {!mobile && <td>
-                            {company.contactJourneys && company.contactJourneys.map(journey => {
-                                return <div key={journey.id}>
-                                    <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
-                                        <Typography key={journey.campaignName}>
-                                            {journey.campaignName}
+                <tbody data-testid="company-table">
+                {companies && companies.map((company, i) => {
+                    const testId = `company-${i}`;
+                        return <tr key={company.id} data-testid={testId}>
+                            <td>
+                                <div style={{display: "flex", flexDirection: "column"}}>
+                                    <LinkWithRouter style={{wordBreak: "break-word"}}
+                                                    to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
+                                    <Typography style={{wordBreak: "break-word"}}>{company.www}</Typography>
+                                    <Typography style={{wordBreak: "break-word"}}>{company.email}</Typography>
+                                </div>
+                            </td>
+                            <td>{company.currentJourney ? <div>
+                                    <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
+                                        <Typography style={{wordBreak: "break-word"}}>
+                                            {decodeContactStatus(company.currentJourney.status)}
                                         </Typography>
                                     </LinkWithRouter>
-                                    <Typography>
-                                        {decodeContactStatus(journey.status)}
+                                    <Typography style={{wordBreak: "break-word"}}>{company.currentJourney.user ?
+                                        `${company.currentJourney.user.name} ${company.currentJourney.user.surname}`
+                                        : "Brak przypisanego użytkownika"}
                                     </Typography>
+                                    <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
                                 </div>
-                            })}
-                            {(!company.contactJourneys || company.contactJourneys.length === 0) &&
-                                <Typography>Nie kontaktowano się z firmą</Typography>}
-                        </td>}
-                    </tr>
+                                : <Typography>Wolna</Typography>}</td>
+                            {!mobile && <td>
+                                {company.categories.map((category, i) => {
+                                    return <Typography
+                                        key={category.id}>{category.name}{i !== company.categories.length - 1 ? "," : ""}</Typography>
+                                })}
+                            </td>}
+                            {!mobile && <td>
+                                {company.contactJourneys && company.contactJourneys.map(journey => {
+                                    return <div key={journey.id}>
+                                        <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
+                                            <Typography key={journey.campaignName}>
+                                                {journey.campaignName}
+                                            </Typography>
+                                        </LinkWithRouter>
+                                        <Typography>
+                                            {decodeContactStatus(journey.status)}
+                                        </Typography>
+                                    </div>
+                                })}
+                                {(!company.contactJourneys || company.contactJourneys.length === 0) &&
+                                    <Typography>Nie kontaktowano się z firmą</Typography>}
+                            </td>}
+                        </tr>
+                    }
                 )}
                 </tbody>
                 <tfoot>
@@ -127,8 +130,10 @@ const CompanyTable = ({companies, search, updateSort, numberOfItems, setItemsPer
                     <td>
                         <div style={{display: "flex", gap: 5}}>
                             Elementów na stronę:
-                            {Array(3).fill(0).map((value, i) => {
-                                return <Link key={i} onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                            {Array(3).fill(0).map((_, i) => {
+                                return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
+                                             key={i}
+                                             onClick={() => setItemsPerPage(itemsPerPageValues[i])}
                                              underline={(itemsPerPageValues[i] === itemsPerPage || itemsPerPageValues[i] === Number(itemsPerPage))
                                                  ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
                             })}

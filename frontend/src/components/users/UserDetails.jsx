@@ -47,6 +47,12 @@ const UserDetails = ({userId}) => {
 
     useEffect(() => {
         setLocalUser(user)
+        if (user) {
+            document.title = `${user.name} ${user.surname}`;
+            return () => {
+                document.title = "Szakal 2"
+            }
+        }
     }, [user])
 
     const renderActions = () => {

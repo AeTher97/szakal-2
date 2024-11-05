@@ -70,7 +70,8 @@ const JourneyList = () => {
         }}>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>Szukaj firmy</FormLabel>
-                <Input value={searchNotSubmittedValue.companyName || ""}
+                <Input data-testid="journey-search-company-name"
+                       value={searchNotSubmittedValue.companyName || ""}
                        onChange={(e) => {
                            updateSearch(COMPANY_NAME, e.target.value);
                        }}
@@ -79,34 +80,40 @@ const JourneyList = () => {
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>
-                    Status
+                    Statusz
                 </FormLabel>
-                <Select value={searchNotSubmittedValue.status || ""}
+                <Select data-testid="journey-search-status"
+                        value={searchNotSubmittedValue.status || ""}
                         onChange={(e, value) => {
                             updateSearch(STATUS, value);
                         }}>
-                    <Option value={"in-progress"}>W trakcie</Option>
-                    <Option value={"finished"}>Zakończone</Option>
-                    <Option value={""}>Wszystkie</Option>
+                    <Option data-testid="journey-search-status-in-progress" value={"in-progress"}>W trakcie</Option>
+                    <Option data-testid="journey-search-status-finished" value={"finished"}>Zakończone</Option>
+                    <Option data-testid="journey-search-status-all" value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>
                     Dokładny status
                 </FormLabel>
-                <Select value={searchNotSubmittedValue.detailedStatus || ""}
+                <Select data-testid="journey-search-detailed-status"
+                        value={searchNotSubmittedValue.detailedStatus || ""}
                         onChange={(e, value) => {
                             updateSearch(DETAILED_STATUS, value);
                         }}>
                     {contactStatusOptions.map(option => {
-                        return <Option key={option.name} value={option.name}>{option.text}</Option>
+                        return <Option data-testid={`journey-search-detailed-status-${option.name}`}
+                                       key={option.name} value={option.name}>
+                            {option.text}
+                        </Option>
                     })}
-                    <Option value={""}>Wszystkie</Option>
+                    <Option data-testid={`journey-search-detailed-status-all`} value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>Użytkownik</FormLabel>
-                <Input value={searchNotSubmittedValue.user || ""}
+                <Input data-testid="journey-search-user-name"
+                       value={searchNotSubmittedValue.user || ""}
                        onChange={(e) => {
                            updateSearch(USER, e.target.value);
                        }}
@@ -115,7 +122,8 @@ const JourneyList = () => {
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>Wydarzenie kontaktowe</FormLabel>
-                <Input value={searchNotSubmittedValue.eventText || ""}
+                <Input data-testid="journey-search-contact-event-text"
+                       value={searchNotSubmittedValue.eventText || ""}
                        onChange={(e) => {
                            updateSearch(EVENT_TEXT, e.target.value);
                        }}
@@ -123,7 +131,7 @@ const JourneyList = () => {
                        startDecorator={<PersonIcon/>}/>
             </FormControl>
             <div>
-                <Button size={"sm"} type={"submit"}>Szukaj</Button>
+                <Button data-testid="journey-search-button" size={"sm"} type={"submit"}>Szukaj</Button>
             </div>
         </form>
     }

@@ -13,7 +13,7 @@ const SummaryHome = () => {
     return (
         <div>
             <TabHeader>
-                <Typography level={"h2"}>Witaj w Szakal 2.0</Typography>
+                <Typography level={"h2"}>Witaj w Szakal 2</Typography>
             </TabHeader>
             <div style={{
                 display: "flex",
