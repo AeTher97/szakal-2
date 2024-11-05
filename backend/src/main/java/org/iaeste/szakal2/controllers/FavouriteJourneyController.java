@@ -3,7 +3,6 @@ package org.iaeste.szakal2.controllers;
 import jakarta.validation.Valid;
 import org.iaeste.szakal2.models.dto.favourite.journey.FavouriteJourneyDTO;
 import org.iaeste.szakal2.models.dto.favourite.journey.FavouriteJourneyListingDTO;
-import org.iaeste.szakal2.models.entities.FavouriteJourney;
 import org.iaeste.szakal2.services.FavouriteJourneyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class FavouriteJourneyController {
     }
 
     @PostMapping
-    public FavouriteJourney addFavouriteJourney(@RequestBody @Valid FavouriteJourneyDTO favouriteJourneyDTO) {
+    public FavouriteJourneyListingDTO addFavouriteJourney(@RequestBody @Valid FavouriteJourneyDTO favouriteJourneyDTO) {
         return favouriteJourneyService.addFavouriteJourney(favouriteJourneyDTO);
     }
 

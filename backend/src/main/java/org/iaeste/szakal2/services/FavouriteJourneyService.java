@@ -34,16 +34,16 @@ public class FavouriteJourneyService {
         return favouriteJourneyRepository.findFavouriteJourneyByUserId(SecurityUtils.getUserId());
     }
 
-    public FavouriteJourney addFavouriteJourney(FavouriteJourneyDTO favouriteJourneyDTO) {
+    public FavouriteJourneyListingDTO addFavouriteJourney(FavouriteJourneyDTO favouriteJourneyDTO) {
         ContactJourney contactJourney = journeyService.getJourneyById(favouriteJourneyDTO.getJourneyId());
         List<FavouriteJourney> favouriteJourneys = getFavouriteJourneys();
         if (favouriteJourneys.stream().anyMatch(favouriteJourney -> favouriteJourney.getContactJourney().getId().equals(contactJourney.getId()))) {
             throw new ResourceExistsException("Journey already added to favourites");
         }
-        return favouriteJourneyRepository.save(FavouriteJourney.builder()
+        return FavouriteJourneyListingDTO.fromFavouriteJourney(favouriteJourneyRepository.save(FavouriteJourney.builder()
                 .userId(SecurityUtils.getUserId())
                 .contactJourney(contactJourney)
-                .build());
+                .build()));
     }
 
     public void deleteFavouriteJourney(UUID id) {
