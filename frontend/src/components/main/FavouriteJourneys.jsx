@@ -40,7 +40,7 @@ const FavouriteJourneys = () => {
                                     level={"body-sm"}>{favouriteJourney.contactJourney.campaign.name}</Typography>
                             </div>
                             <div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                                <Typography sx={theme => ({
+                                <Typography style={{textAlign: "right"}} sx={theme => ({
                                     color: `${!finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                                 })}
                                             level={"title-sm"}>{decodeContactStatus(favouriteJourney.contactJourney.contactStatus)}</Typography>

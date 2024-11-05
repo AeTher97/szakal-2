@@ -3,6 +3,7 @@ package org.iaeste.szakal2.services;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Log4j2
 public class JourneyService {
 
     @PersistenceContext
@@ -174,6 +176,7 @@ public class JourneyService {
             top10.computeIfPresent(journey.getUser().getFullName(), (_, count) -> count + 1);
         });
 
+        log.info(top10);
         MapUtils.sortByValue(top10);
 
         Top10DTO top10DTO = new Top10DTO();
