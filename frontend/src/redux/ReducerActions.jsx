@@ -129,7 +129,7 @@ export const reloadAction = () => dispatch => {
 }
 
 export const loadFavouriteJourneysAction = (authToken) => dispatch => {
-    axiosInstance.get("/favouriteJourneys", {
+    return axiosInstance.get("/favouriteJourneys", {
         headers: {
             'Authorization': `Bearer ${authToken}`
         }
