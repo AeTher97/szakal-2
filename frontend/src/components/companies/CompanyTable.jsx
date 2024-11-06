@@ -1,5 +1,5 @@
 import React from 'react';
-import {Sheet, Table, Typography} from "@mui/joy";
+import {Link, Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
@@ -9,8 +9,9 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
 import Button from "@mui/joy/Button";
 
+export const itemsPerPageValues = [10, 20, 50];
 
-const CompanyTable = ({companies, search, updateSort}) => {
+const CompanyTable = ({companies, search, updateSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
 
     const mobile = useMobileSize();
 
@@ -26,6 +27,7 @@ const CompanyTable = ({companies, search, updateSort}) => {
             return 0;
         }
     })
+
 
     return (
         <Sheet sx={{
@@ -115,6 +117,26 @@ const CompanyTable = ({companies, search, updateSort}) => {
                     </tr>
                 )}
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        Liczba elementów: {numberOfItems}
+                    </td>
+                    {!mobile && <td/>}
+                    {!mobile && <td/>}
+                    <td>
+                        <div style={{display: "flex", gap: 5}}>
+                            Elementów na stronę:
+                            {Array(3).fill(0).map((value, i) => {
+                                return <Link key={i} onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                                             underline={(itemsPerPageValues[i] === itemsPerPage || itemsPerPageValues[i] === Number(itemsPerPage))
+                                                 ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
+                            })}
+
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
             </Table>
         </Sheet>
     );

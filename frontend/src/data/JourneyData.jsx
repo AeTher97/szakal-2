@@ -2,30 +2,32 @@ import {useData, usePost, usePut} from "./UseData";
 import {useSelector} from "react-redux";
 import {useState} from "react";
 
-export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded, pageSize = 10) => {
+export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded) => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
     const [pagesNumber, setPagesNumber] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
     const [loaded, setLoaded] = useState(false);
 
     const {loading} = useData(`/campaigns/${currentCampaign}/journeys`,
         (data) => {
             setJourneys(data.content);
             setPagesNumber(data.totalPages);
+            setTotalCount(data.totalElements)
             setLoaded(true);
         }, [currentCampaign, page, search],
         [{name: "pageNumber", value: page},
-            {name: "pageSize", value: pageSize},
             {name: "companyName", value: search.companyName},
             {name: "status", value: search.status},
             {name: "detailedStatus", value: search.detailedStatus},
             {name: "user", value: search.user},
+            {name: "pageSize", value: search.pageSize},
             {name: "eventText", value: search.eventText},
             {name: "sort", value: search.sort}],
         [currentCampaign, searchLoaded, currentCampaign === "none" ? null : true])
 
-    return {journeys, loading, loaded, pagesNumber}
+    return {journeys, loading, loaded, pagesNumber, totalCount}
 }
 
 export const useUserJourneyList = (page = 0, search, searchLoaded) => {
@@ -34,11 +36,13 @@ export const useUserJourneyList = (page = 0, search, searchLoaded) => {
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
     const [pagesNumber, setPagesNumber] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
 
     const {loading} = useData(`/journeys`,
         (data) => {
             setJourneys(data.content)
             setPagesNumber(data.totalPages)
+            setTotalCount(data.totalElements)
         }, [currentCampaign, page, userId, search], [{
             name: "pageNumber", value: page,
         },
@@ -46,12 +50,13 @@ export const useUserJourneyList = (page = 0, search, searchLoaded) => {
             {name: "campaignId", value: currentCampaign},
             {name: "companyName", value: search.companyName},
             {name: "status", value: search.status},
+            {name: "pageSize", value: search.pageSize},
             {name: "detailedStatus", value: search.detailedStatus},
             {name: "eventText", value: search.eventText},
             {name: "sort", value: search.sort}],
         [currentCampaign, userId, searchLoaded])
 
-    return {journeys, loading, pagesNumber}
+    return {journeys, loading, pagesNumber, totalCount}
 }
 
 

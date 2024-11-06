@@ -13,4 +13,5 @@ public interface CampaignRepository extends JpaRepository<Campaign, UUID> {
     Optional<Campaign> findCampaignById(UUID id);
 
     Page<Campaign> findAllByOrderByNameDesc(Pageable pageable);
+
 }

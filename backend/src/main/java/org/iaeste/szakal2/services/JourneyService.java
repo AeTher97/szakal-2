@@ -254,5 +254,4 @@ public class JourneyService {
                     contactJourney.getId());
         }
     }
-
 }

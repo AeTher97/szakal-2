@@ -36,6 +36,7 @@ const ALUMNI_DESCRIPTION = "alumniDescription";
 const COMMITTEE = "committee";
 const CAMPAIGN_NAME = "campaignName";
 const SORT = "sort";
+const PAGE_SIZE = "pageSize";
 
 const CompanyList = () => {
 
@@ -56,11 +57,11 @@ const CompanyList = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT],
-        [{name: "sort", value: "name,ASC"}]);
+    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT, PAGE_SIZE],
+        [{name: SORT, value: "name,ASC"}, {name: PAGE_SIZE, value: 10}]);
 
     const {categories} = useCategories(searchLoaded);
-    const {companies, loading, pageNumber, addCompany}
+    const {companies, loading, pageNumber, totalCount, addCompany}
         = useCompanyListWithCampaign(
         currentCampaign,
         currentPage - 1,
@@ -197,7 +198,10 @@ const CompanyList = () => {
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
             {!loading &&
-                <CompanyTable companies={companies} updateSort={updateSort} search={search} clearSort={clearSort}/>}
+                <CompanyTable companies={companies} updateSort={updateSort} search={search} clearSort={clearSort}
+                              numberOfItems={totalCount} setItemsPerPage={(count) => {
+                    updateSearch(PAGE_SIZE, count);
+                }} itemsPerPage={search.pageSize}/>}
 
             {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
                 {Array(10).fill(0).map((v, i) => {

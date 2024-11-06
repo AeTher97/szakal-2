@@ -35,7 +35,4 @@ public class Campaign {
     @JsonIgnore
     private List<ContactJourney> contactJourneys;
 
-    public List<UUID> contactJourneys() {
-        return contactJourneys.stream().map(ContactJourney::getId).toList();
-    }
 }

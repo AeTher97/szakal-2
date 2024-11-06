@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
+import org.iaeste.szakal2.models.dto.campaign.CampaignHomeDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
 import org.iaeste.szakal2.models.entities.Campaign;
@@ -56,6 +57,12 @@ public class CampaignService {
         Campaign campaign = getCampaignById(id);
         BeanUtils.copyProperties(campaignCreationDTO, campaign, Utils.getNullPropertyNames(campaignCreationDTO));
         return campaignRepository.save(campaign);
+    }
+
+    public CampaignHomeDTO getCampaignHomeDTOById(UUID id) {
+        Campaign campaign = getCampaignById(id);
+        int count = contactJourneyRepository.countAllByCampaign(campaign);
+        return CampaignHomeDTO.fromCampaign(campaign, count);
     }
 
     public Campaign getCampaignById(UUID id) {

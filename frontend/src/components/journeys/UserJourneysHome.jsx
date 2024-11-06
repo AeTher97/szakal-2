@@ -32,6 +32,7 @@ const DETAILED_STATUS = "detailedStatus";
 const CURRENT_PAGE = "currentPage";
 const SORT = "sort";
 const EVENT_TEXT = "eventText";
+const PAGE_SIZE = "pageSize";
 
 const UserJourneysHome = () => {
 
@@ -47,9 +48,9 @@ const UserJourneysHome = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT],
-        [{name: "sort", value: "companyName,ASC"}])
-    const {journeys, loading, pagesNumber}
+    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT, PAGE_SIZE],
+        [{name: "sort", value: "companyName,ASC"}, {name: PAGE_SIZE, value: 10}])
+    const {journeys, loading, totalCount, pagesNumber}
         = useUserJourneyList(currentPage - 1, search, searchLoaded);
 
     useEffect(() => {
@@ -141,7 +142,9 @@ const UserJourneysHome = () => {
 
                     {!loading &&
                         <JourneyTable journeys={journeys} search={search} clearSort={clearSort}
-                                      updateSort={updateSort}/>}
+                                      updateSort={updateSort} umberOfItems={totalCount} setItemsPerPage={(count) => {
+                            updateSearch(PAGE_SIZE, count);
+                        }} itemsPerPage={search.pageSize}/>}
                     {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
                         {Array(10).fill(0).map((value, i) => {
                             return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>

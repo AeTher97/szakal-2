@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.models.dto.SzakalSort;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
+import org.iaeste.szakal2.models.dto.campaign.CampaignHomeDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
 import org.iaeste.szakal2.models.entities.Campaign;
@@ -39,8 +40,8 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}")
-    public Campaign getCampaign(@PathVariable("id") UUID id) {
-        return campaignService.getCampaignById(id);
+    public CampaignHomeDTO getCampaign(@PathVariable("id") UUID id) {
+        return campaignService.getCampaignHomeDTOById(id);
     }
 
     @GetMapping

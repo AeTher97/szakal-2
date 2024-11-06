@@ -23,8 +23,9 @@ const CurrentCampaign = () => {
 
                 <Divider inset={"context"}/>
                 <div>
-                    <Typography>Rozpoczęta: {formatLocalDate(campaign.startDate)}</Typography>
-                    <Typography level={"title-md"}>{campaign.description}</Typography>
+                    <Typography level={"title-md"}>Rozpoczęta: {formatLocalDate(campaign.startDate)}</Typography>
+                    <Typography level={"title-md"}>Liczba kontaktów: {campaign.journeyCount}</Typography>
+                    {campaign.description && <Typography>Opis: {campaign.description}</Typography>}
                 </div>
             </CardContent>}
             {loading && <div style={{display: "flex", justifyContent: "center"}}>

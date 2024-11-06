@@ -44,11 +44,18 @@ export const useSearch = (fields = [], defaultValues = []) => {
         setSearchLoaded(true);
     }, [searchParams]);
 
+
+    useEffect(() => {
+        if (search.pageSize !== tempSearch.pageSize && searchLoaded) {
+            applySearch();
+        }
+    }, [search, tempSearch]);
+
     const updateSearch = (itemName, value) => {
         setTempSearch({
             ...tempSearch,
             [itemName]: value
-        })
+        });
     }
 
     const updateSort = (colum, direction) => {

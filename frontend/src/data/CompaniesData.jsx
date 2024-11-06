@@ -4,6 +4,7 @@ import {useData, useDelete, usePost, usePut} from "./UseData";
 export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, locks) => {
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
+    const [totalCount, setTotalCount] = useState(0)
 
     if(campaignId === "none"){
         campaignId = null;
@@ -13,6 +14,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
         (data) => {
             setCompanies(data.content)
             setPageNumber(data.totalPages)
+            setTotalCount(data.totalElements)
         }, [campaignId, search, currentPage],
         [{name: "campaign", value: campaignId},
             {name: "pageNumber", value: currentPage},
@@ -23,6 +25,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
             {name: "alumniDescription", value: search.alumniDescription},
             {name: "committee", value: search.committee},
             {name: "campaignName", value: search.campaignName},
+            {name: "pageSize", value: search.pageSize},
             {name: "sort", value: search.sort}], locks)
 
     const {post} = usePost(`/companies`,
@@ -46,7 +49,7 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
         })
     }
 
-    return {companies, loading, pageNumber, addCompany}
+    return {companies, loading, pageNumber, totalCount, addCompany}
 }
 
 export const useCompany = (id) => {

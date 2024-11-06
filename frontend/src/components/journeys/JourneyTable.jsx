@@ -1,5 +1,5 @@
 import React from 'react';
-import {IconButton, Sheet, Table, Typography} from "@mui/joy";
+import {IconButton, Link, Sheet, Table, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 import {decodeContactStatus} from "../../utils/DecodeContactStatus";
 import Button from "@mui/joy/Button";
@@ -8,8 +8,9 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ClearIcon from "@mui/icons-material/Clear";
 import {formatLocalDate} from "../../utils/DateUtils";
 import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
+import {itemsPerPageValues} from "../companies/CompanyTable";
 
-const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
+const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
 
     const mediumSize = useMediumSize();
     const mobile = useMobileSize();
@@ -159,6 +160,28 @@ const JourneyTable = ({journeys, search, updateSort, clearSort}) => {
                     </tr>
                 )}
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        Liczba elementów: {numberOfItems}
+                    </td>
+                    <td/>
+                    {!mobile && <td/>}
+                    {!mediumSize && <td/>}
+                    <td>
+                        <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
+                            Elementów na stronę:
+                            {Array(3).fill(0).map((value, i) => {
+                                return <Link key={i} onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                                             underline={(itemsPerPageValues[i] === itemsPerPage ||
+                                                 itemsPerPageValues[i] === Number(itemsPerPage))
+                                                 ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
+                            })}
+
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
             </Table>
         </Sheet>
     );

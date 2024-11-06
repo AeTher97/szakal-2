@@ -32,7 +32,8 @@ const ScheduledContactDialog = ({open, close}) => {
     const [searchObject, setSearchObject] = useState({});
 
     const {companies, loading: companiesLoading}
-        = useCompanyListWithCampaign(currentCampaign, 0, searchObject)
+        = useCompanyListWithCampaign(currentCampaign, 0, searchObject,
+        [(currentCampaign !== '') ? true : null, open])
     const {userId} = useSelector(state => state.auth);
     const {theme} = useSelector(state => state.theme);
 
@@ -87,8 +88,8 @@ const ScheduledContactDialog = ({open, close}) => {
                                 inputValue={companySearch}
                                 options={companies.map(company => {
                                     return {
-                                        label: company.name,
-                                        id: company.id
+                                        id: company.id,
+                                        label: company.name
                                     }
                                 })}/>
                         </FormControl>
