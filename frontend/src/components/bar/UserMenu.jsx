@@ -14,11 +14,11 @@ const UserMenu = ({name, surname, image, id}) => {
     const {theme} = useSelector(state => state.theme);
 
     return (
-        <div style={{margin: mobile ? 10 : 20}}>
+        <div style={{margin: 10}}>
             <Dropdown>
                 <MenuButton
                     data-testid="user-avatar"
-                    sx={{border: "none", padding: "0 10px 0 0"}}>
+                    style={{border: "none", padding: "10px"}}>
                     <UserAvatar name={name} surname={surname} image={image} id={id}/>
                 </MenuButton>
                 <Menu>

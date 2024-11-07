@@ -3,7 +3,7 @@ import {Typography} from "@mui/joy";
 
 const SzakalLogo = () => {
     return (
-        <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10, margin: 10}}>
+        <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10, paddingLeft: 10}}>
             <img src={"/szakal_logo.svg"} style={{height: 50}}/>
             <Typography level={"title-lg"}>Szakal 2.0</Typography>
         </div>

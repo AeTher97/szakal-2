@@ -91,7 +91,7 @@ const TopBar = () => {
                               value={campaignValue}
                               getOptionDisabled={getOptionDisabled}
                               isOptionEqualToValue={isOptionEqualToValue}
-                              style={{width: mediumSize ? 1000 : 200, margin: mediumSize ? 10 : 20}}
+                              style={{width: mediumSize ? 1000 : 200, margin: 10}}
                               onChange={(e, inputValue) => {
                                   dispatch(changeCampaignAction(inputValue.id))
                               }}
