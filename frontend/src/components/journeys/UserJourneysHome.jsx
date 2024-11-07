@@ -142,7 +142,7 @@ const UserJourneysHome = () => {
 
                     {!loading &&
                         <JourneyTable journeys={journeys} search={search} clearSort={clearSort}
-                                      updateSort={updateSort} umberOfItems={totalCount} setItemsPerPage={(count) => {
+                                      updateSort={updateSort} numberOfItems={totalCount} setItemsPerPage={(count) => {
                             updateSearch(PAGE_SIZE, count);
                         }} itemsPerPage={search.pageSize}/>}
                     {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>

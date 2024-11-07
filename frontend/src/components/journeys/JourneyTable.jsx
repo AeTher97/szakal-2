@@ -36,11 +36,12 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
         } else if (sortedByStartDate) {
             return journey.journeyStart;
         } else if (sortedByLastInteractionDate) {
-            return journey.lastInteraction ? journey.lastInteraction : "z";
+            return journey.lastInteraction ? journey.lastInteraction : (directionAscending ? "4000" : "0");
         }
     }
 
     journeys = journeys.sort((a, b) => {
+        console.log(getSortingProperty(a), getSortingProperty(b))
         if (getSortingProperty(a) > getSortingProperty(b)) {
             return directionAscending ? 1 : -1;
         } else if (getSortingProperty(a) < getSortingProperty(b)) {

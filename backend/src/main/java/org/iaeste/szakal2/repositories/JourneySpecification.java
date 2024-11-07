@@ -11,6 +11,7 @@ import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class JourneySpecification implements Specification<ContactJourney> {
@@ -111,8 +112,15 @@ public class JourneySpecification implements Specification<ContactJourney> {
                         criteriaBuilder.desc(root.get("company").get("name")));
                 case "startDate" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("journeyStart")) :
                         criteriaBuilder.desc(root.get("journeyStart")));
-                case "lastInteraction" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("lastInteraction")) :
-                        criteriaBuilder.desc(root.get("lastInteraction")));
+                case "lastInteraction" -> {
+                    final Date MIN_DATE = new Date(0L);
+                    final Date MAX_DATE = new Date(4000, 0, 0);
+
+                    Order lastInteractionOrder = asc ?
+                            criteriaBuilder.asc(criteriaBuilder.coalesce(root.get("lastInteraction"), MAX_DATE)) :
+                            criteriaBuilder.desc(criteriaBuilder.coalesce(root.get("lastInteraction"), MIN_DATE));
+                    query.orderBy(lastInteractionOrder);
+                }
                 default -> throw new IllegalArgumentException("Sort not supported");
             }
         }
