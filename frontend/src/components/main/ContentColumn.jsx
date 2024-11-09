@@ -27,7 +27,7 @@ const ContentColumn = props => {
             }}>
                 <div style={{
                     maxWidth: 1200, flex: 1, display: "flex", flexDirection: "column",
-                    paddingBottom: 0, marginLeft: small ? 0 : 10, marginRight: small ? 0 : 10
+                    paddingBottom: 0, marginLeft: 10, marginRight: 10
                 }}>
                     {props.children}
                 </div>
