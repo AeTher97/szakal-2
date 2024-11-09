@@ -34,7 +34,7 @@ const MenuBar = () => {
 
 
     return (
-        <Tabs style={{alignSelf: "flex-start"}}
+        <Tabs style={{alignSelf: "flex-start", marginBottom: 5}}
               onChange={(e, value) => {
                   navigate(value);
               }} value={path}>
@@ -50,11 +50,11 @@ const MenuBar = () => {
                          padding: 0.5,
                          paddingBottom: 0.8,
                          bgcolor: 'background.level1',
-                         borderRadius: 'xl',
+                         borderRadius: 'md',
                          [`& .${tabClasses.root}[aria-selected="true"]`]: {
                              boxShadow: 'sm',
                              bgcolor: 'background.surface',
-                             borderRadius: 'xl',
+                             borderRadius: 'md',
                              // color: 'white',
                              fontWeight: 600
                          },
