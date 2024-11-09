@@ -38,7 +38,7 @@ const JourneyCompany = ({company}) => {
                             Strona
                         </Typography>
                         <Typography style={{wordBreak: "break-word"}}>
-                            <Link href={`https://${company.www}`}>
+                            <Link href={`https://${company.www.replace("https://", "").replace("http://", "")}`}>
                                 {company.www}
                             </Link>
                         </Typography>
