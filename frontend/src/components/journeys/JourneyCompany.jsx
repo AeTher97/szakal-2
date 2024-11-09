@@ -14,8 +14,8 @@ const JourneyCompany = ({company}) => {
                     <div style={{gap: 10, display: "flex", minWidth: 200}}>
                         <Typography level={"title-md"}>Nazwa</Typography>
                         <LinkWithRouter style={{wordBreak: "break-word"}}
-                        to={`/secure/companies/${company.id}`}>{company.name}
-                    </LinkWithRouter>
+                                        to={`/secure/companies/${company.id}`}>{company.name}
+                        </LinkWithRouter>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
                         <Typography>
@@ -50,10 +50,12 @@ const JourneyCompany = ({company}) => {
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
                         <Typography level={"title-md"}>Kategorie</Typography>
-                        <Typography>{company.categories.map(category => <Typography key={category.id}>
-                            {category.name}
-                        </Typography>)}
-                        </Typography>
+                        <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
+                            {company.categories.map((category, i) =>
+                                <Typography key={category.id}>
+                                    {category.name} {i !== company.categories.length - 1 ? "," : ""}
+                                </Typography>)}
+                        </div>
                     </div>
                 </CardContent>
             </CardOverflow>

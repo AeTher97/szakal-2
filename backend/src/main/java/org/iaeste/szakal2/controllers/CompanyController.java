@@ -41,14 +41,14 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
-    public Company modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
-        return companyService.updateCompany(id, companyModificationDTO);
+    public CompanyDetailsDTO modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
+        return CompanyDetailsDTO.fromCompany(companyService.updateCompany(id, companyModificationDTO));
     }
 
     @PutMapping("/{id}/contactPerson")
     @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
-    public Company addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
-        return companyService.addContactPerson(id, contactPersonCreationDTO);
+    public CompanyDetailsDTO addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
+        return CompanyDetailsDTO.fromCompany(companyService.addContactPerson(id, contactPersonCreationDTO));
     }
 
     @PutMapping("/{companyId}/contactPerson/{contactPersonId}")
