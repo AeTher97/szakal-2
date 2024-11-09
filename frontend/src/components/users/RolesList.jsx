@@ -45,17 +45,19 @@ const RolesList = () => {
                                         display: "flex",
                                         width: "100%",
                                         justifyContent: "space-between",
-                                        alignItems: "center",
+                                        alignItems: "flex-start",
                                         paddingBottom: 10,
                                         paddingTop: 10,
                                         gap: 10,
-                                        flexWrap: "wrap"
+                                        flexWrap: "wrap",
+                                        flexDirection: "column"
                                     }}>
                                         <div style={{
                                             display: "flex",
                                             flex: 2,
                                             flexDirection: "column",
-                                            justifyContent: "center"
+                                            justifyContent: "center",
+                                            alignItems: "flex-start"
                                         }}>
                                             <Typography level={"title-md"}>{role.name}</Typography>
                                             <Typography level={"body-sm"}>{role.description}</Typography>
@@ -63,7 +65,7 @@ const RolesList = () => {
                                         <div style={{
                                             flex: 5,
                                             display: "flex",
-                                            justifyContent: "flex-end",
+                                            justifyContent: "flex-start",
                                             flexWrap: "wrap",
                                             gap: 5
                                         }}>

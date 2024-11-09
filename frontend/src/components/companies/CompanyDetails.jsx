@@ -73,7 +73,7 @@ const CompanyDetails = () => {
         }}>
             {currentCampaign !== 'none' && !company.deleted && <AssignCompanyButton company={company}/>}
             {hasRight(COMPANY_MODIFICATION) && !company.deleted &&
-                <Button style={{flex: mobile ? 0.4 : 1}} color={"danger"} onClick={() => {
+                <Button style={{flex: mobile && !thisCampaignJourney ? 0.4 : 1}} color={"danger"} onClick={() => {
                     openDialog(() => {
                         deleteCompany().then(() => {
                             navigate("/secure/companies");

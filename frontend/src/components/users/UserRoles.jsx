@@ -5,7 +5,7 @@ import Button from "@mui/joy/Button";
 import {useRolesList} from "../../data/RolesData";
 import {useMobileSize} from "../../utils/SizeQuery";
 
-const UserRoles = ({user, localUser, setLocalUser, updateUserRoles, updateRolesLoading}) => {
+const UserRoles = ({localUser, setLocalUser, updateUserRoles, updateRolesLoading}) => {
 
     const {roles, loading: rolesLoading} = useRolesList();
     const mobile = useMobileSize();
