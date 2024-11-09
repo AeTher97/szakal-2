@@ -14,6 +14,7 @@ const Footer = () => {
             flexDirection: mobile ? "column" : "row", gap: 5,
             justifySelf: "flex-end"
         }}>
+            <div style={{display: "flex", flexWrap: "wrap", gap: 5}}>
             <Typography level={"body-xs"}>
                 Made by
             </Typography>
@@ -26,6 +27,7 @@ const Footer = () => {
             <Typography level={"body-xs"}>
                 {new Date().getFullYear()}
             </Typography>
+            </div>
             <Typography level={"body-xs"}>
                 Dostrzegłeś jakiś problem lub masz pomysł?
                 <Link style={{marginLeft: 5}}
