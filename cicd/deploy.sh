@@ -1,11 +1,13 @@
 #!/bin/bash
 
-cd frontend || exit
-mkdir node_modules
-sudo chown -R $USER "./node_modules"
-sudo npm install
-CI='' sudo npm run build
-cd ..
+if $3 -eq true; then {
+  cd frontend || exit
+  mkdir node_modules
+  sudo chown -R $USER "./node_modules"
+  sudo npm install
+  CI='' sudo npm run build
+  cd ..
+} fi;
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir temp
 cp -r backend/. temp/
