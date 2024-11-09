@@ -55,7 +55,7 @@ const JourneyCompany = ({company}) => {
                         <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
                             {company.categories.map((category, i) =>
                                 <Typography key={category.id}>
-                                    {category.name} {i !== company.categories.length - 1 ? "," : ""}
+                                    {category.name}{i !== company.categories.length - 1 ? "," : ""}
                                 </Typography>)}
                         </div>
                     </div>
