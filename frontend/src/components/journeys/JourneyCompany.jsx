@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
+import {Card, CardContent, CardOverflow, Divider, Link, Typography} from "@mui/joy";
 import LinkWithRouter from "../../utils/LinkWithRouter";
 
 const JourneyCompany = ({company}) => {
@@ -38,7 +38,9 @@ const JourneyCompany = ({company}) => {
                             Strona
                         </Typography>
                         <Typography style={{wordBreak: "break-word"}}>
-                            {company.www}
+                            <Link href={`https://${company.www}`}>
+                                {company.www}
+                            </Link>
                         </Typography>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
