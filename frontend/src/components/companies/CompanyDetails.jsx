@@ -52,6 +52,10 @@ const CompanyDetails = () => {
     useEffect(() => {
         if (company) {
             setLocalCompany(company)
+            document.title = company.name;
+            return () => {
+                document.title = "Szakal 2";
+            }
         }
     }, [company]);
 

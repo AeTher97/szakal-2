@@ -72,7 +72,10 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                 <tr>
                     <th style={{padding: "8px 6px"}}>
                         <div style={{display: "flex"}}>
-                            <Button variant={"plain"} size={"sm"} style={sortedByCompany ? {paddingRight: 2} : {}}
+                            <Button data-testid={"journeys-sort-by-company-name"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByCompany ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("companyName", directionAscending ? "DESC" : "ASC")}>
                                 Firma {sortedByCompany && directionAscending && <KeyboardArrowUp/>}
                                 {sortedByCompany && !directionAscending && <KeyboardArrowDown/>}</Button>
@@ -82,7 +85,10 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                     </th>
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
-                            <Button variant={"plain"} size={"sm"} style={sortedByUser ? {paddingRight: 2} : {}}
+                            <Button data-testid={"journeys-sort-by-user-name"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByUser ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("user", directionAscending ? "DESC" : "ASC")}>
                                 Użytkownik {sortedByUser && directionAscending && <KeyboardArrowUp/>}
                                 {sortedByUser && !directionAscending && <KeyboardArrowDown/>}</Button>
@@ -92,7 +98,10 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                     </th>
                     {!mobile && <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
-                            <Button variant={"plain"} size={"sm"} style={sortedByUser ? {paddingRight: 2} : {}}
+                            <Button data-testid={"journeys-sort-by-start-date"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByUser ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("startDate", directionAscending ? "DESC" : "ASC")}>
                                 Data rozpoczęcia {sortedByStartDate && directionAscending && <KeyboardArrowUp/>}
                                 {sortedByStartDate && !directionAscending && <KeyboardArrowDown/>}</Button>
@@ -102,7 +111,9 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                     </th>}
                     {!mediumSize && <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
-                            <Button variant={"plain"} size={"sm"}
+                            <Button data-testid={"journeys-sort-by-last-interaction-date"}
+                                    variant={"plain"}
+                                    size={"sm"}
                                     style={sortedByLastInteractionDate ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("lastInteraction", directionAscending ? "DESC" : "ASC")}>
                                 Ostatnia interakcja {sortedByLastInteractionDate && directionAscending &&
@@ -114,7 +125,10 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                     </th>}
                     <th style={{padding: "8px 0px"}}>
                         <div style={{display: "flex"}}>
-                            <Button variant={"plain"} size={"sm"} style={sortedByStatus ? {paddingRight: 2} : {}}
+                            <Button data-testid={"journeys-sort-by-status"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByStatus ? {paddingRight: 2} : {}}
                                     onClick={() => updateSort("detailedStatus", directionAscending ? "DESC" : "ASC")}>
                                 Status {sortedByStatus && directionAscending && <KeyboardArrowUp/>}
                                 {sortedByStatus && !directionAscending && <KeyboardArrowDown/>}</Button>
@@ -124,7 +138,7 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody data-testid={`journey-table`}>
                 {journeys && journeys.map(journey =>
                     <tr key={journey.id}>
                         <td>
@@ -172,7 +186,9 @@ const JourneyTable = ({journeys, search, updateSort, clearSort, numberOfItems, s
                         <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
                             Elementów na stronę:
                             {Array(3).fill(0).map((value, i) => {
-                                return <Link key={i} onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                                return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
+                                             key={i}
+                                             onClick={() => setItemsPerPage(itemsPerPageValues[i])}
                                              underline={(itemsPerPageValues[i] === itemsPerPage ||
                                                  itemsPerPageValues[i] === Number(itemsPerPage))
                                                  ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>

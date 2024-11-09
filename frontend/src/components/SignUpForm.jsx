@@ -67,7 +67,7 @@ const SignUpForm = () => {
                 variant="outlined">
                 <div>
                     <Typography level="h4" component="h1">
-                        <b>Szakal 2.0</b>
+                        <b>Szakal 2</b>
                     </Typography>
                     <Typography level="body-sm">Zarejestruj się</Typography>
                 </div>

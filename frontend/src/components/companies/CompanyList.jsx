@@ -87,7 +87,8 @@ const CompanyList = () => {
         }}>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>Szukaj firmy</FormLabel>
-                <Input value={searchNotSubmittedValue.name || ""}
+                <Input data-testid="company-search-name"
+                       value={searchNotSubmittedValue.name || ""}
                        onChange={(e) => {
                            updateSearch(NAME, e.target.value)
                        }}
@@ -99,14 +100,16 @@ const CompanyList = () => {
                     <FormLabel>
                         Kategoria
                     </FormLabel>
-                    <Select value={searchNotSubmittedValue.category || ""} style={{minWidth: 120}}
+                    <Select data-testid="company-search-category"
+                            value={searchNotSubmittedValue.category || ""} style={{minWidth: 120}}
                             onChange={(e, value) => {
                                 updateSearch(CATEGORY, value);
                             }}>
                         {categories.map(category => {
-                            return <Option value={category.name} key={category.id}>{category.name}</Option>
+                            return <Option data-testid={`company-search-category-${category.name}`}
+                                           value={category.name} key={category.id}>{category.name}</Option>
                         })}
-                        <Option value={""}>Wszystkie</Option>
+                        <Option data-testid={`company-search-category-Wszystkie`} value={""}>Wszystkie</Option>
                     </Select>
                 </FormControl>
             }
@@ -114,33 +117,37 @@ const CompanyList = () => {
                 <FormLabel>
                     Status
                 </FormLabel>
-                <Select value={searchNotSubmittedValue.status || ""} style={{minWidth: 120}}
+                <Select data-testid="company-search-status"
+                        value={searchNotSubmittedValue.status || ""} style={{minWidth: 120}}
                         onChange={(e, value) => {
                             updateSearch(STATUS, value);
                         }}>
-                    <Option value={"free"}>Wolna</Option>
-                    <Option value={"taken"}>Zajęta</Option>
-                    <Option value={""}>Wszystkie</Option>
+                    <Option data-testid="company-search-status-free" value={"free"}>Wolna</Option>
+                    <Option data-testid="company-search-status-taken" value={"taken"}>Zajęta</Option>
+                    <Option data-testid="company-search-status-all" value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
                 <FormLabel>
                     Posiada alumna
                 </FormLabel>
-                <Select value={!searchNotSubmittedValue.hasAlumni ? "" : searchNotSubmittedValue.hasAlumni}
+                <Select data-testid="company-search-has-alumni"
+                        value={!searchNotSubmittedValue.hasAlumni ? "" : searchNotSubmittedValue.hasAlumni}
                         style={{minWidth: 120}}
                         onChange={(e, value) => {
                             updateSearch(HAS_ALUMNI, value);
                         }}>
-                    <Option value={""}>Tak/Nie</Option>
-                    <Option value={true}>Tak</Option>
+                    <Option data-testid="company-search-has-alumni-all" value={""}>Tak/Nie</Option>
+                    <Option data-testid="company-search-has-alumni-yes" value={true}>Tak</Option>
                 </Select>
             </FormControl>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
                 <FormLabel>
                     Opis alumna
                 </FormLabel>
-                <Input value={searchNotSubmittedValue.alumniDescription || ""} style={{minWidth: 80, maxWidth: 105}}
+                <Input data-testid="company-search-alumni-description"
+                       value={searchNotSubmittedValue.alumniDescription || ""}
+                       style={{minWidth: 80, maxWidth: 105}}
                        onChange={(e) => {
                            updateSearch(ALUMNI_DESCRIPTION, e.target.value);
                        }} placeholder={"Szukaj"}
@@ -150,7 +157,9 @@ const CompanyList = () => {
                 <FormLabel>
                     Komitet alumna
                 </FormLabel>
-                <Input value={searchNotSubmittedValue.committee || ""} style={{minWidth: 80, maxWidth: 105}}
+                <Input data-testid="company-search-alumni-committee"
+                       value={searchNotSubmittedValue.committee || ""}
+                       style={{minWidth: 80, maxWidth: 105}}
                        onChange={(e) => {
                            updateSearch(COMMITTEE, e.target.value)
                        }} placeholder={"Komitet"}
@@ -160,14 +169,16 @@ const CompanyList = () => {
                 <FormLabel>
                     Akcja
                 </FormLabel>
-                <Input value={searchNotSubmittedValue.campaignName || ""} style={{minWidth: 80, maxWidth: 105}}
+                <Input data-testid="company-search-campaign"
+                       value={searchNotSubmittedValue.campaignName || ""}
+                       style={{minWidth: 80, maxWidth: 105}}
                        onChange={(e) => {
                            updateSearch(CAMPAIGN_NAME, e.target.value)
                        }} placeholder={"Akcja"}
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             <div>
-                <Button size={"sm"} type={"submit"}>Szukaj</Button>
+                <Button data-testid="company-search-category-button" size={"sm"} type={"submit"}>Szukaj</Button>
             </div>
         </form>
     }

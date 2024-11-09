@@ -1,6 +1,4 @@
-
-
-    /* width */
+/* width */
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -20,3 +18,8 @@
     background: #f1f1f1;
 }
 
+.rainbow-text {
+    background-image: linear-gradient(to left, violet, indigo, cyan, green, yellow, orange, red);
+    -webkit-background-clip: text;
+    color: transparent;
+}

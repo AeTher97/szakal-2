@@ -48,11 +48,13 @@ public class ContactJourneyDetailsDTO {
     @Builder
     static class CampaignDTO {
         private String name;
+        private UUID id;
 
         static CampaignDTO fromCampaign(Campaign campaign) {
             return CampaignDTO
                     .builder()
                     .name(campaign.getName())
+                    .id(campaign.getId())
                     .build();
         }
     }

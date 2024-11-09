@@ -46,6 +46,13 @@ Don't use this method for running in production, put properties in actual enviro
 11. Go to `localhost:3000`
 12. Use the app
 
+#### Alternative way of running development stack
+
+Run the `setup-env.sh` script as a superuser, works only on Linux, for developing on Windows machines
+I recomment to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install) as an easy option for a linux vm.
+
+To stop the backend delete the postgres container and run `sudo bash ./frontend/cypress/run-backend.sh stop`.
+
 ### Hosting frontend from spring
 It is possible to build production frontend version and host it directly from spring server.
 To do that run `./build-and-copy.sh` script in the project root to create sources in spring public directory. After that, launch the server as above skipping all the steps after step 6.

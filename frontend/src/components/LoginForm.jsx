@@ -49,7 +49,7 @@ const LoginForm = ({redirectBack}) => {
                 </div>
                 <div>
                     <Typography level="h4" component="h1">
-                        <b>Szakal 2.0</b>
+                        <b>Szakal 2</b>
                     </Typography>
                     <Typography level="body-sm">Zaloguj się by kontynuować</Typography>
                 </div>
@@ -95,9 +95,22 @@ const LoginForm = ({redirectBack}) => {
                 >
                     Nie pamiętasz hasła?
                 </Typography>
-                <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
-                    Made by GRAFIKA AGH
-                </Typography>
+                <div style={{display: "flex", justifyContent: "center", gap: 5}}>
+                    <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
+                        Made by
+                    </Typography>
+                    <p className={"rainbow-text"} style={{
+                        fontSize: "smaller",
+                        margin: 0,
+                        position: "relative",
+                        top: 1
+                    }}>
+                        GRAFIKA AGH
+                    </p>
+                    <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
+                        2024
+                    </Typography>
+                </div>
             </Sheet>
 
         </form>
