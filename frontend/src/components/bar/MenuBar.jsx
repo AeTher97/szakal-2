@@ -34,43 +34,50 @@ const MenuBar = () => {
 
 
     return (
-        <div style={{width: "100%"}}>
-            {<Tabs sx={{backgroundColor: 'transparent'}} onChange={(e, value) => {
-                navigate(value);
-            }} value={path}>
-                <TabList
-                    sx={{
-                        overflow: 'auto',
-                        scrollSnapType: 'x mandatory',
-                        '&::-webkit-scrollbar': {height: 5},
-                        '&::-webkit-scrollbar-track': {background: "#f1f1f1"},
-                        '&::-webkit-scrollbar-thumb': {background: " #888"},
-                        '&::-webkit-scrollbar-thumb:hover': {background: " #555"},
-                        p: 0.5,
-                        gap: 0.5,
-                        [`& .${tabClasses.root}[aria-selected="true"]`]: {
-                            boxShadow: 'sm',
-                            bgcolor: 'transparent',
-                            // color: 'white',
-                            fontWeight: 600
-                        },
-                        [`& .${tabClasses.root}[aria-selected="true"]:after`]: {
-                            color: "primary.500"
-                        }
-                    }}>
-                    {menuItems.map(item => {
-                        if (item.right && !hasRight(item.right)) {
-                            return undefined;
-                        } else {
-                            return <Tab key={item.name} value={item.path} sx={{
-                                flex: 'none',
-                                scrollSnapAlign: 'start'
-                            }}>{item.name}</Tab>;
-                        }
-                    })}
-                </TabList>
-            </Tabs>}
-        </div>
+        <Tabs style={{alignSelf: "flex-start"}}
+              onChange={(e, value) => {
+                  navigate(value);
+              }} value={path}>
+            <TabList disableUnderline
+                     sx={{
+                         justifyContent: 'center',
+                         overflow: 'auto',
+                         scrollSnapType: 'x mandatory',
+                         '&::-webkit-scrollbar': {height: 7},
+                         '&::-webkit-scrollbar-track': {background: "#555"},
+                         '&::-webkit-scrollbar-thumb': {background: "#888"},
+                         '&::-webkit-scrollbar-thumb:hover': {background: "#f1f1f1", cursor: "pointer"},
+                         padding: 0.5,
+                         paddingBottom: 0.8,
+                         bgcolor: 'background.level1',
+                         borderRadius: 'xl',
+                         [`& .${tabClasses.root}[aria-selected="true"]`]: {
+                             boxShadow: 'sm',
+                             bgcolor: 'background.surface',
+                             borderRadius: 'xl',
+                             // color: 'white',
+                             fontWeight: 600
+                         },
+                         [`& .${tabClasses.root}[aria-selected="true"]:after`]: {
+                             color: "primary.500",
+                             bottom: 4
+                         }
+                     }}>
+                {menuItems.map(item => {
+                    if (item.right && !hasRight(item.right)) {
+                        return undefined;
+                    } else {
+                        return <Tab key={item.name}
+                                    indicatorInset
+                                    value={item.path}
+                                    sx={{
+                                        flex: 'none',
+                                        scrollSnapAlign: 'start'
+                                    }}>{item.name}</Tab>;
+                    }
+                })}
+            </TabList>
+        </Tabs>
     );
 };
 
