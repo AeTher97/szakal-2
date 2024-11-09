@@ -32,6 +32,12 @@ const AppWithoutCss = () => {
             .style.backgroundColor = theme === "light" ? "rgb(255,255,255)" : "rgb(11, 13, 14)";
     }, [theme]);
 
+    useEffect(() => {
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+            document.title = "Szakal 2 (Development)";
+        }
+    }, []);
+
     return <>
         <AuthProvider/>
         <main style={{
@@ -70,5 +76,16 @@ function App() {
     );
 }
 
+export const setDefaultTitle = () => {
+    if (isDevEnv()) {
+        document.title = "Szakal 2 (Development)";
+    } else {
+        document.title = "Szakal 2";
+    }
+}
+
+export const isDevEnv = () => {
+    return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+}
 
 export default App;

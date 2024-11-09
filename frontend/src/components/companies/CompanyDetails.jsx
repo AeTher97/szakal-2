@@ -18,6 +18,7 @@ import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
 import Button from "@mui/joy/Button";
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {isDevEnv, setDefaultTitle} from "../../App";
 
 
 const CompanyDetails = () => {
@@ -52,9 +53,9 @@ const CompanyDetails = () => {
     useEffect(() => {
         if (company) {
             setLocalCompany(company)
-            document.title = company.name;
+            document.title = `${company.name} ${isDevEnv() ? "(Development)" : ""}`;
             return () => {
-                document.title = "Szakal 2";
+                setDefaultTitle()
             }
         }
     }, [company]);

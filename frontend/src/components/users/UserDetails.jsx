@@ -14,6 +14,7 @@ import PasswordChangeDialog from "./PasswordChangeDialog";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRights";
 import {useMobileSize} from "../../utils/SizeQuery";
+import {isDevEnv, setDefaultTitle} from "../../App";
 
 const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -48,9 +49,9 @@ const UserDetails = ({userId}) => {
     useEffect(() => {
         setLocalUser(user)
         if (user) {
-            document.title = `${user.name} ${user.surname}`;
+            document.title = `${user.name} ${user.surname} ${isDevEnv() ? "(Development)" : ""}`;
             return () => {
-                document.title = "Szakal 2"
+                setDefaultTitle();
             }
         }
     }, [user])

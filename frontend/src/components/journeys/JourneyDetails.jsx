@@ -17,6 +17,7 @@ import JourneyContactEvents from "./JourneyContactEvents";
 import JourneyComments from "./JourneyComments";
 import {useMobileSize} from "../../utils/SizeQuery";
 import {Star, StarOutline} from "@mui/icons-material";
+import {isDevEnv, setDefaultTitle} from "../../App";
 
 
 export const contactStatusOptions
@@ -46,10 +47,10 @@ const JourneyDetails = () => {
         useEffect(() => {
             if (journey) {
                 dispatch(addKnownItem(location.pathname.split("/")[3], `Kontakt z ${journey.company.name}`));
-                document.title = `Kontakt z ${journey.company.name}`;
+                document.title = `Kontakt z ${journey.company.name} (${journey.campaign.name}) ${isDevEnv() ? "(Development)" : ""}`;
                 return () => {
                     dispatch(removeKnownItem(location.pathname.split("/")[4]))
-                    document.title = "Szakal 2";
+                    setDefaultTitle();
                 }
             }
         }, [location, journey]);
