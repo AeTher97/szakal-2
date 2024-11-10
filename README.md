@@ -48,8 +48,10 @@ Don't use this method for running in production, put properties in actual enviro
 
 #### Alternative way of running development stack
 
-Run the `setup-env.sh` script as a superuser, works only on Linux, for developing on Windows machines
-I recomment to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install) as an easy option for a linux vm.
+Run the `setup-env-docker.sh` or `setup-env-java.sh` scripts as a superuser, due to line endings on windows, testing
+data will only be loaded on linux system (some magic can be done with `dos2unix` though.
+For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
+as an easy option to get a linux VM.
 
 To stop the backend delete the postgres container and run `sudo bash ./frontend/cypress/run-backend.sh stop`.
 
