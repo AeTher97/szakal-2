@@ -56,7 +56,7 @@ jobs:
 
       - name: Set up env
         working-directory: ./
-        run: sudo bash ./setup-env.sh
+        run: sudo bash ./setup-env-java.sh
 
       - name: Run cypress tests
         working-directory: ./frontend
