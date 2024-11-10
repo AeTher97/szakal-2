@@ -49,7 +49,7 @@ Don't use this method for running in production, put properties in actual enviro
 #### Alternative way of running development stack
 
 Run the `setup-env-docker.sh` or `setup-env-java.sh` scripts as a superuser, due to line endings on windows, testing
-data will only be loaded on linux system (some magic can be done with `dos2unix` though.
+data will only be loaded on linux system (some magic can be done with `dos2unix` though).
 For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
 as an easy option to get a linux VM.
 
