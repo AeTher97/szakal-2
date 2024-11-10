@@ -96,9 +96,9 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                         <div style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "space-between"
+                            justifyContent: "space-between",
                         }}>
-                            <div style={{display: "flex", gap: 5}}>
+                            <div style={{display: "flex", gap: 5, flex: 2}}>
                                 <UserAvatar name={event.user.name}
                                             id={event.user.id}
                                             surname={event.user.surname}
@@ -112,8 +112,8 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                                         level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
                                 </div>
                             </div>
-                            <div>
-                                <Typography level={"body-sm"}>
+                            <div style={{flex: 1}}>
+                                <Typography level={"body-sm"} style={{textAlign: "right"}}>
                                     {decodeContactStatus(event.eventType)}
                                 </Typography>
                             </div>
