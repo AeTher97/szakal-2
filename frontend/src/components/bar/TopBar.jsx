@@ -7,7 +7,9 @@ import {changeCampaignAction} from "../../redux/ReducerActions";
 import DrawerMenu from "./DrawerMenu";
 import NotificationComponent from "../notifications/NotificationComponent";
 import {useUserData} from "../../data/UsersData";
-import {Autocomplete} from "@mui/joy";
+import {Autocomplete, IconButton, Tooltip} from "@mui/joy";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import JoinGroupDialog from "../users/groups/JoinGroupDialog";
 
 const TopBar = () => {
 
@@ -15,6 +17,7 @@ const TopBar = () => {
         const {currentCampaign} = useSelector(state => state.campaigns);
 
     const {user, loading} = useUserData(userId, refresh)
+    const [joinGroupDialogOpen, setJoinGroupDialogOpen] = useState(false);
         const [campaigns, setCampaigns] = useState([]);
         const [campaignValue, setCampaignValue]
             = useState({label: "Wybierz akcje", id: "choose"});
@@ -69,6 +72,9 @@ const TopBar = () => {
         }
 
         const isOptionEqualToValue = (option) => {
+            if (!campaignValue) {
+                return false;
+            }
             return campaignValue.id === option.id
         }
 
@@ -84,6 +90,12 @@ const TopBar = () => {
                 {!mobile && <div style={{flex: 1}}>
                     <SzakalLogo/>
                 </div>}
+                {!mobile && <Tooltip title={"Dołącz do grupy użytkowników"}>
+                    <IconButton style={{paddingLeft: 8, paddingRight: 8, marginRight: 3}}
+                                onClick={() => setJoinGroupDialogOpen(true)}>
+                        <GroupAddIcon/>
+                    </IconButton>
+                </Tooltip>}
                 <NotificationComponent/>
                 <Autocomplete loading={loading}
                               disableClearable
@@ -91,13 +103,13 @@ const TopBar = () => {
                               value={campaignValue}
                               getOptionDisabled={getOptionDisabled}
                               isOptionEqualToValue={isOptionEqualToValue}
-                              style={{width: mediumSize ? 1000 : 200, margin: 10}}
+                              style={{width: 200, margin: 10}}
                               onChange={(e, inputValue) => {
                                   dispatch(changeCampaignAction(inputValue.id))
                               }}
                 />
-
                 {user && <UserMenu name={name} surname={surname} image={user.profilePicture} id={userId}/>}
+                {!mobile && <JoinGroupDialog open={joinGroupDialogOpen} close={() => setJoinGroupDialogOpen(false)}/>}
             </div>
         );
     }

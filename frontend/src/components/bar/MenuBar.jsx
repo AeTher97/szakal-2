@@ -34,13 +34,13 @@ const MenuBar = () => {
 
 
     return (
-        <Tabs style={{alignSelf: "flex-start", marginBottom: 5}}
+        <Tabs style={{marginBottom: 5}}
               onChange={(e, value) => {
                   navigate(value);
               }} value={path}>
             <TabList disableUnderline
                      sx={{
-                         justifyContent: 'center',
+                         justifyContent: 'space-between',
                          overflow: 'auto',
                          scrollSnapType: 'x mandatory',
                          '&::-webkit-scrollbar': {height: 7},

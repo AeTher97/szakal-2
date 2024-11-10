@@ -1,4 +1,4 @@
-import {Badge, Dropdown, Menu, MenuButton, MenuItem, Typography} from "@mui/joy";
+import {Badge, Dropdown, Menu, MenuButton, MenuItem, Tooltip, Typography} from "@mui/joy";
 import Link from "@mui/joy/Link";
 import {useNotificationList} from "../../data/NotificationData";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -19,12 +19,14 @@ const NotificationComponent = () => {
                 handleClose();
             }
         }}>
-            <MenuButton sx={{border: "none"}}>
-                {newNotifications ?
-                    <Badge color={"danger"}>
+            <MenuButton sx={{border: "none", paddingLeft: "8px", paddingRight: "8px"}}>
+                <Tooltip title={"Powiadomienia"}>
+                    {newNotifications ?
+                        <Badge color={"danger"}>
                             <NotificationsIcon/>
                         </Badge> :
-                    <NotificationsIcon/>}
+                        <NotificationsIcon/>}
+                </Tooltip>
             </MenuButton>
             <Menu style={{maxHeight: 800, overflowY: "scroll"}}>
                 <NotificationList notifications={notifications}/>

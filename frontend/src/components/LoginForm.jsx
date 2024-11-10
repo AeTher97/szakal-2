@@ -108,7 +108,7 @@ const LoginForm = ({redirectBack}) => {
                         GRAFIKA AGH
                     </p>
                     <Typography fontSize={"smaller"} sx={{alignSelf: "center"}}>
-                        2024
+                        {new Date().getFullYear()}
                     </Typography>
                 </div>
             </Sheet>
