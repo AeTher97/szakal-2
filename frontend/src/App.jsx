@@ -33,7 +33,7 @@ const AppWithoutCss = () => {
     }, [theme]);
 
     useEffect(() => {
-        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        if (isDevEnv()) {
             document.title = "Szakal 2 (Development)";
         }
     }, []);
@@ -85,7 +85,7 @@ export const setDefaultTitle = () => {
 }
 
 export const isDevEnv = () => {
-    return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+    return import.meta.env.DEV;
 }
 
 export default App;
