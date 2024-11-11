@@ -20,7 +20,7 @@ import axios from "axios";
 import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
 import {showError} from "./AlertActions";
 
-const baseURL = process.env.REACT_APP_BACKEND_URL;
+const baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
 const axiosInstance = axios.create(
     {baseURL: baseURL}

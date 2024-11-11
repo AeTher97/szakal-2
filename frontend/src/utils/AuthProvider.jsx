@@ -59,7 +59,8 @@ const AuthProvider = () => {
 
     })
 
-    axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+    axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
+    console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
 
     return (<></>);
 
