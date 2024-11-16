@@ -259,6 +259,7 @@ public class UserService {
 
         return target;
     }
+
     private static BufferedImage createImage(int width, int height, boolean hasAlpha) {
         return new BufferedImage(width, height, hasAlpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
     }

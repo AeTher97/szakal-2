@@ -48,12 +48,16 @@ Don't use this method for running in production, put properties in actual enviro
 
 #### Alternative way of running development stack
 
-Run the `setup-env-docker.sh` or `setup-env-java.sh` scripts as a superuser. Due to line endings on windows testing
-data might not be loaded (some magic can be done with `dos2unix` though).
-For developing on Windows machines I recommend using [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
-as an easy option to get a linux VM.
+Run the `setup-env-docker.sh` or `setup-env-java.sh` scripts, you might have to make them executable by running
+`chmod +x {file}`. ~~Due to line endings on windows, testing
+data will only be loaded on linux system (some magic can be done with `dos2unix` though)
+For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
+as an easy option to get a linux VM.~~  This was fixed and should
+work on Windows now. Docker option should generally be easier to get up.
 
-For Java option, to stop the app backend delete the postgres container and run `sudo bash ./frontend/cypress/run-backend.sh stop`. For docker delete both postgres and szakal container.
+For Java option, to stop the app backend delete the postgres container and run
+`sudo bash ./frontend/cypress/run-backend.sh stop`.
+For docker delete both postgres and szakal container.
 
 ### Hosting frontend from spring
 It is possible to build production frontend version and host it directly from spring server.
