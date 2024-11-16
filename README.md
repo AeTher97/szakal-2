@@ -23,7 +23,7 @@ To compile and run the application following software has to be installed on the
 * Node.js with npm
 * Postgres database (directly on metal or in docker), launch scripts handle
 
-### Step-by-step guide of running for development
+### Methods for launching Szakal 2 App
 
 #### Docker method (the easiest, but worse for development since we don't get react development server)
 
