@@ -18,12 +18,43 @@ during various campaigns. The software is written in Java and React  and support
 ### Prerequisites 
 To compile and run the application following software has to be installed on the machine:
 * Git client
-* Java 21 or higher JDK (Java and gradle can be handled from Intellij, easier in my opinion)
-* Gradle
-* Node.js
-* Postgres database (directly on metal or in docker)
+* Java 21 or higher JDK (Java and gradle can be handled from Intellij, easier in my opinion), for command line script
+  JAVA_HOME has to be set up correctly.
+* Node.js with npm
+* Postgres database (directly on metal or in docker), launch scripts handle
 
 ### Step-by-step guide of running for development
+
+#### Docker method (the easiest, but worse for development since we don't get react development server)
+
+Run the `setup-env-docker.sh` script, you might have to make it executable by running
+`chmod +x {file}`. ~~Due to line endings on windows, testing
+data will only be loaded on linux system (some magic can be done with `dos2unix` though)
+For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
+as an easy option to get a linux VM.~~  This was fixed and should
+work on Windows now. Docker option should generally be easier to get up.
+
+#### Intellij IDEA method (best for development)
+
+Basic setup for intellij is commited to the repository so just opening the szakal-2 folder as project should give a good
+setup for development. Basic tasks for running are included so it should be as simple as provisioning postgres
+on localhost:5432 with default credentials (and szakal database created) and running tasks:
+
+* SzakalBackend
+* start
+
+from the top right menu.
+
+#### Github codespace (for users familiar with the project and technologies)
+
+Project is configured to run with codespaces directly on github.com. Launch is as easy as clicking appropriate buttons,
+
+![Launching Codespace](./docs/codespaces-example.png)
+
+There will be some learning curve there which might be worth adding additional docs, but for now I would just recommend
+this for advanced users.
+
+#### Command line method (the most manual and difficult)
 Don't use this method for running in production, put properties in actual environmental variables, don't use development profile to avoid csrf and cors from being disabled.
 1. Clone this repository
 2. Go into backend directory
@@ -48,16 +79,7 @@ Don't use this method for running in production, put properties in actual enviro
 
 #### Alternative way of running development stack
 
-Run the `setup-env-docker.sh` or `setup-env-java.sh` scripts, you might have to make them executable by running
-`chmod +x {file}`. ~~Due to line endings on windows, testing
-data will only be loaded on linux system (some magic can be done with `dos2unix` though)
-For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
-as an easy option to get a linux VM.~~  This was fixed and should
-work on Windows now. Docker option should generally be easier to get up.
 
-For Java option, to stop the app backend delete the postgres container and run
-`sudo bash ./frontend/cypress/run-backend.sh stop`.
-For docker delete both postgres and szakal container.
 
 ### Hosting frontend from spring
 It is possible to build production frontend version and host it directly from spring server.
