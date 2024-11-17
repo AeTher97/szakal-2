@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showError} from "../redux/AlertActions";
-import {defaultAxiosInstance} from "../redux/ReducerActions";
+import axios from "axios";
 
 export const useData = (baseUrl,
                         updateFunction,
@@ -31,7 +30,7 @@ export const useData = (baseUrl,
 
         let mounted = true;
         setLoading(true)
-        defaultAxiosInstance.get(url).then((res) => {
+        axios.get(url).then((res) => {
             if (mounted) {
                 updateFunction(res.data)
             }

@@ -16,7 +16,8 @@ public class SzakalRefreshSuccessHandler extends SessionCookieSuccessHandler imp
 
     private final ObjectMapper objectMapper;
 
-    public SzakalRefreshSuccessHandler() {
+    public SzakalRefreshSuccessHandler(int jwtExpirationTime) {
+        super(jwtExpirationTime);
         this.objectMapper = new ObjectMapper();
     }
 

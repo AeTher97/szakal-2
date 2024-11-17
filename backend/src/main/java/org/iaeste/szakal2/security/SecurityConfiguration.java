@@ -55,7 +55,7 @@ public class SecurityConfiguration {
     @Profile("development")
     public SecurityFilterChain devFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
@@ -70,8 +70,11 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .authenticationManager(authenticationManagerBean())
-                .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(), "/api/login"))
-                .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(), "/api/refresh"))
+                .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(),
+                        "/api/login", Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
+                .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(),
+                        "/api/refresh",
+                        Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
                 .addFilterBefore(new JwtAuthorizationFilter(authenticationManagerBean()), SecurityContextHolderAwareRequestFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
@@ -95,8 +98,10 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .authenticationManager(authenticationManagerBean())
-                .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(), "/api/login"))
-                .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(), "/api/refresh"))
+                .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(),
+                        "/api/login", Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
+                .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(),
+                        "/api/refresh", Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
                 .addFilterBefore(new JwtAuthorizationFilter(authenticationManagerBean()), SecurityContextHolderAwareRequestFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

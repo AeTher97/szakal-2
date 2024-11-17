@@ -23,7 +23,7 @@ import java.util.Optional;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
-    private static final String SESSION_COOKIE = "SESSION_COOKIE";
+    private static final String FGP_COOKIE = "FGP_COOKIE";
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         Optional<Cookie> sessionCookie = Arrays.stream(cookies)
-                .filter(cookie -> SESSION_COOKIE.equals(cookie.getName()))
+                .filter(cookie -> FGP_COOKIE.equals(cookie.getName()))
                 .findAny();
 
         if (sessionCookie.isEmpty()) {

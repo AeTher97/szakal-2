@@ -18,7 +18,8 @@ public class SzakalAuthenticationSuccessHandler extends SessionCookieSuccessHand
     private static final String REFRESH_COOKIE_NAME = "JWT_REFRESH";
     private static final String AUTHENTICATED_COOKIE_NAME = "AUTHENTICATED";
 
-    public SzakalAuthenticationSuccessHandler() {
+    public SzakalAuthenticationSuccessHandler(int jwtExpirationTime) {
+        super(jwtExpirationTime);
         this.objectMapper = new ObjectMapper();
     }
 
@@ -42,16 +43,17 @@ public class SzakalAuthenticationSuccessHandler extends SessionCookieSuccessHand
 
     private Cookie getRefreshCookie(String token) {
         Cookie cookie = new Cookie(REFRESH_COOKIE_NAME, token);
-        cookie.setMaxAge(86400);
+        cookie.setMaxAge(8640000);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setPath("/");
         cookie.setAttribute("SameSite", "Strict");
         return cookie;
     }
 
     private Cookie getAuthenticatedCookie() {
         Cookie cookie = new Cookie(AUTHENTICATED_COOKIE_NAME, "true");
-        cookie.setMaxAge(86400);
+        cookie.setMaxAge(8640000);
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "Strict");

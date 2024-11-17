@@ -80,7 +80,6 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
 export const refreshAction = (onSuccessCallback = () => null) => dispatch => {
     dispatch({type: REFRESH_ATTEMPT});
 
-    console.log("trying and failing")
     return defaultAxiosInstance.post('/refresh', null)
         .then(({data}) => {
             const payload = {
@@ -140,7 +139,7 @@ export const loadFavouriteJourneysAction = (authToken) => dispatch => {
 }
 
 export const addFavouriteJourney = (journeyId) => dispatch => {
-    axios.post("/favouriteJourneys", {
+    defaultAxiosInstance.post("/favouriteJourneys", {
         journeyId: journeyId
     }).then((res) => {
         dispatch({type: ADD_FAVOURITE_JOURNEY, payload: {item: res.data}});
@@ -150,7 +149,7 @@ export const addFavouriteJourney = (journeyId) => dispatch => {
 }
 
 export const removeFavouriteJourney = (journeyId) => dispatch => {
-    axios.delete(`/favouriteJourneys/${journeyId}`)
+    defaultAxiosInstance.delete(`/favouriteJourneys/${journeyId}`)
         .then((_) => {
             dispatch({type: REMOVE_FAVOURITE_JOURNEY, payload: {item: {id: journeyId}}})
         }).catch(e => {

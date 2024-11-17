@@ -22,9 +22,10 @@ public class JwtRefreshFilter extends UsernamePasswordAuthenticationFilter {
     private static final String REFRESH_COOKIE = "JWT_REFRESH";
 
     public static JwtRefreshFilter getJwtRefreshFilter(AuthenticationManager authenticationManager,
-                                                       String path) {
+                                                       String path,
+                                                       int jwtExpirationTime) {
         JwtRefreshFilter jwtRefreshFilter = new JwtRefreshFilter();
-        jwtRefreshFilter.setAuthenticationSuccessHandler(new SzakalRefreshSuccessHandler());
+        jwtRefreshFilter.setAuthenticationSuccessHandler(new SzakalRefreshSuccessHandler(jwtExpirationTime));
         jwtRefreshFilter.setAuthenticationFailureHandler(new SzakalAuthenticationFailureHandler());
         jwtRefreshFilter.setAuthenticationManager(authenticationManager);
         jwtRefreshFilter.setFilterProcessesUrl(path);

@@ -1,21 +1,21 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {isTokenOutdated} from "./TokenUtils";
-import {defaultAxiosInstance, refreshAction} from "../redux/ReducerActions";
+import axios from "axios";
+import {refreshAction} from "../redux/ReducerActions";
 
 const AuthProvider = () => {
-
-    let authTokenRequest;
-
-    function resetAuthTokenRequest() {
-        authTokenRequest = null;
-    }
-
 
     const {accessToken, expirationTime, isAuthenticated} = useSelector(state => {
         return state.auth
     });
     const dispatch = useDispatch();
+
+    let authTokenRequest;
+
+    const resetAuthTokenRequest = () => {
+        authTokenRequest = null;
+    }
 
 
     async function getAuthToken() {
@@ -29,24 +29,23 @@ const AuthProvider = () => {
         return authTokenRequest;
     }
 
-    if (defaultAxiosInstance.interceptors.request.handlers.length > 0) {
-        defaultAxiosInstance.interceptors.request.eject(defaultAxiosInstance.interceptors.request.handlers.length - 1);
+    if (axios.interceptors.request.handlers.length > 0) {
+        axios.interceptors.request.eject(axios.interceptors.request.handlers.length - 1);
     }
 
-    defaultAxiosInstance.interceptors.request.use(async request => {
+    axios.interceptors.request.use(async request => {
 
         const tokenExpired = expirationTime && isTokenOutdated(expirationTime);
-        const tokenRemovedButRefreshPresent = !accessToken && isAuthenticated;
-        const currentlyRefreshing = request.url === "/refresh";
+        const refreshPresent = !expirationTime && isAuthenticated;
 
-        // Don't stop this request on refresh
-        if ((tokenExpired || tokenRemovedButRefreshPresent) && !currentlyRefreshing) {
+        console.debug(expirationTime, isTokenOutdated(expirationTime), refreshPresent)
+        if (tokenExpired || refreshPresent) {
             console.info("Refreshing token");
             const result = await getAuthToken()
                 .then((payload) => {
                     return payload;
-                }).catch(() => {
-                    console.error('Error in refresh');
+                }).catch((e) => {
+                    console.error('Error in refresh', e);
                     return null;
                 })
 
@@ -62,7 +61,8 @@ const AuthProvider = () => {
         return request;
 
     })
-
+    axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
+    axios.defaults.withCredentials = true;
 
     return (<></>);
 
