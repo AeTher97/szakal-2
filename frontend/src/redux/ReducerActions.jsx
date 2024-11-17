@@ -17,17 +17,20 @@ import {
     UPDATE_ACCESS_RIGHTS
 } from "./Stores";
 import axios from "axios";
-import {decodeToken, saveTokenInStorage} from "../utils/TokenUtils";
+import {decodeToken, saveInfoInStorage} from "../utils/TokenUtils";
 import {showError} from "./AlertActions";
 
 const baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
-const axiosInstance = axios.create(
-    {baseURL: baseURL}
+export const defaultAxiosInstance = axios.create(
+    {
+        baseURL: baseURL,
+        withCredentials: true
+    }
 )
 
 const updateAccessRights = (user, authToken, dispatch) => {
-    return axiosInstance.get("/roles", {
+    return defaultAxiosInstance.get("/roles", {
         headers: {
             'Authorization': `Bearer ${authToken}`
         }
@@ -50,17 +53,16 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
     formData.append('password', password);
 
 
-    return axiosInstance.post('/login', formData)
+    return defaultAxiosInstance.post('/login', formData)
         .then(({data}) => {
             const payload = {
                 ...decodeToken(data.authToken),
-                accessToken: data.authToken,
-                refreshToken: data.refreshToken
+                accessToken: data.authToken
             };
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
             const user = decodeToken(data.authToken);
-            saveTokenInStorage(data.authToken, data.refreshToken, payload.userId, user.email, user.name, user.surname);
+            saveInfoInStorage(data.authToken, payload.userId, user.email, user.name, user.surname);
             onSuccessCallback({accepted: data.accepted, authToken: data.authToken});
             updateAccessRights(user, data.authToken, dispatch)
             return data.accepted
@@ -75,14 +77,11 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
         });
 };
 
-export const refreshAction = (refreshToken, onSuccessCallback = () => null) => dispatch => {
+export const refreshAction = (onSuccessCallback = () => null) => dispatch => {
     dispatch({type: REFRESH_ATTEMPT});
 
-    let formData = new FormData();
-    formData.append('refreshToken', refreshToken);
-
-
-    return axiosInstance.post('/refresh', formData)
+    console.log("trying and failing")
+    return defaultAxiosInstance.post('/refresh', null)
         .then(({data}) => {
             const payload = {
                 ...decodeToken(data.authToken),
@@ -129,7 +128,7 @@ export const reloadAction = () => dispatch => {
 }
 
 export const loadFavouriteJourneysAction = (authToken) => dispatch => {
-    return axiosInstance.get("/favouriteJourneys", {
+    return defaultAxiosInstance.get("/favouriteJourneys", {
         headers: {
             'Authorization': `Bearer ${authToken}`
         }

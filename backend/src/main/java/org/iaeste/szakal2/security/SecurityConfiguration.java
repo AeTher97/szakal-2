@@ -20,6 +20,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +43,9 @@ public class SecurityConfiguration {
     private final JwtConfiguration jwtConfiguration;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public SecurityConfiguration(UsersRepository usersRepository, RolesRepository rolesRepository, JwtConfiguration jwtConfiguration) {
+    public SecurityConfiguration(UsersRepository usersRepository,
+                                 RolesRepository rolesRepository,
+                                 JwtConfiguration jwtConfiguration) {
         this.usersRepository = usersRepository;
         this.rolesRepository = rolesRepository;
         this.jwtConfiguration = jwtConfiguration;
@@ -52,8 +55,8 @@ public class SecurityConfiguration {
     @Profile("development")
     public SecurityFilterChain devFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
@@ -78,7 +81,7 @@ public class SecurityConfiguration {
     @Profile("!development")
     public SecurityFilterChain prodFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizer -> authorizer
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
@@ -115,6 +118,7 @@ public class SecurityConfiguration {
     private UrlBasedCorsConfigurationSource corsConfiguration() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("localhost:3000");
         config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");

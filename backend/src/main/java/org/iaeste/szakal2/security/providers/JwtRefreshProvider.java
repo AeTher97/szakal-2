@@ -7,6 +7,7 @@ import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.RefreshTokenAuthentication;
 import org.iaeste.szakal2.security.TokenFactory;
+import org.iaeste.szakal2.security.utils.Fingerprint;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +38,11 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        return validateToken(authentication.getCredentials().toString());
+        if (authentication instanceof RefreshTokenAuthentication refreshTokenAuthentication) {
+            return validateToken(refreshTokenAuthentication.getRefreshToken());
+        } else {
+            throw new BadCredentialsException("Invalid authentication");
+        }
     }
 
     @Override
@@ -53,6 +59,11 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
+            String type = claims.get("type", String.class);
+            if (!type.equals("refresh")) {
+                throw new BadCredentialsException("Invalid refresh token");
+            }
+
             Optional<User> userOptional = usersRepository.findUserById(UUID.fromString(claims.getSubject()));
             if (userOptional.isEmpty()) {
                 throw new BadCredentialsException("User not found");
@@ -63,17 +74,23 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
             user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getId().toString())));
 
+            String userFingerprint = Fingerprint.generateFingerprint();
+
             return new RefreshTokenAuthentication(claims.getSubject(),
+                    null,
                     TokenFactory.generateAuthToken(user.getId(),
                             authorities.stream().map(GrantedAuthority::getAuthority).toList(),
                             user.getEmail(),
                             user.getName(),
                             user.getSurname(),
-                            jwtConfiguration), authorities);
+                            userFingerprint,
+                            jwtConfiguration),
+                    userFingerprint,
+                    authorities);
 
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage(), e);
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException | NullPointerException | NoSuchAlgorithmException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
         }
 

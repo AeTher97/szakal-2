@@ -1,8 +1,7 @@
 import React from 'react';
-import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {isTokenOutdated} from "./TokenUtils";
-import {refreshAction} from "../redux/ReducerActions";
+import {defaultAxiosInstance, refreshAction} from "../redux/ReducerActions";
 
 const AuthProvider = () => {
 
@@ -13,7 +12,7 @@ const AuthProvider = () => {
     }
 
 
-    const {refreshToken, accessToken, expirationTime} = useSelector(state => {
+    const {accessToken, expirationTime, isAuthenticated} = useSelector(state => {
         return state.auth
     });
     const dispatch = useDispatch();
@@ -21,7 +20,7 @@ const AuthProvider = () => {
 
     async function getAuthToken() {
         if (!authTokenRequest) {
-            authTokenRequest = dispatch(refreshAction(refreshToken));
+            authTokenRequest = dispatch(refreshAction());
             authTokenRequest.then(resp => {
                 resetAuthTokenRequest();
                 return resp;
@@ -30,13 +29,18 @@ const AuthProvider = () => {
         return authTokenRequest;
     }
 
-    if (axios.interceptors.request.handlers.length > 0) {
-        axios.interceptors.request.eject(axios.interceptors.request.handlers.length - 1);
+    if (defaultAxiosInstance.interceptors.request.handlers.length > 0) {
+        defaultAxiosInstance.interceptors.request.eject(defaultAxiosInstance.interceptors.request.handlers.length - 1);
     }
 
-    axios.interceptors.request.use(async request => {
+    defaultAxiosInstance.interceptors.request.use(async request => {
 
-        if (expirationTime && isTokenOutdated(expirationTime)) {
+        const tokenExpired = expirationTime && isTokenOutdated(expirationTime);
+        const tokenRemovedButRefreshPresent = !accessToken && isAuthenticated;
+        const currentlyRefreshing = request.url === "/refresh";
+
+        // Don't stop this request on refresh
+        if ((tokenExpired || tokenRemovedButRefreshPresent) && !currentlyRefreshing) {
             console.info("Refreshing token");
             const result = await getAuthToken()
                 .then((payload) => {
@@ -59,8 +63,6 @@ const AuthProvider = () => {
 
     })
 
-    axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
-    console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
 
     return (<></>);
 

@@ -19,7 +19,8 @@ public class UsernamePasswordFilter extends UsernamePasswordAuthenticationFilter
     private UsernamePasswordFilter() {
     }
 
-    public static UsernamePasswordFilter getUsernamePasswordFilter(AuthenticationManager authenticationManager, String path) {
+    public static UsernamePasswordFilter getUsernamePasswordFilter(AuthenticationManager authenticationManager,
+                                                                   String path) {
         UsernamePasswordFilter usernamePasswordFilter = new UsernamePasswordFilter();
         usernamePasswordFilter.setAuthenticationSuccessHandler(new SzakalAuthenticationSuccessHandler());
         usernamePasswordFilter.setAuthenticationFailureHandler(new SzakalAuthenticationFailureHandler());

@@ -6,8 +6,11 @@ import java.util.Collection;
 
 public class JwtTokenAuthentication extends TokenAuthentication {
 
-    public JwtTokenAuthentication(String principal, String token, Collection<? extends GrantedAuthority> grantedAuthorityList) {
-        super(principal, token, grantedAuthorityList);
+    public JwtTokenAuthentication(String principal,
+                                  String token,
+                                  String userFingerprint,
+                                  Collection<? extends GrantedAuthority> grantedAuthorityList) {
+        super(principal, token, userFingerprint, grantedAuthorityList);
     }
 
 }

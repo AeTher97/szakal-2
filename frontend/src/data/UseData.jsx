@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showError} from "../redux/AlertActions";
+import {defaultAxiosInstance} from "../redux/ReducerActions";
 
 export const useData = (baseUrl,
                         updateFunction,
@@ -11,7 +12,6 @@ export const useData = (baseUrl,
 
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
-
 
     let url = baseUrl;
     let first = true;
@@ -31,12 +31,12 @@ export const useData = (baseUrl,
 
         let mounted = true;
         setLoading(true)
-        axios.get(url).then((res) => {
+        defaultAxiosInstance.get(url).then((res) => {
             if (mounted) {
                 updateFunction(res.data)
             }
         }).catch(e => {
-            if (e.response && e.response.data && e.response.data.error) {
+            if (e.response?.data?.error) {
                 dispatch(showError(e.response.data.error))
             } else if (!e.response) {
                 dispatch(showError("Nie udało się załadować danych, sprawdź swoje połączenie z internetem"))
@@ -65,10 +65,10 @@ export const usePut = (url, updateFunction = () => {
     return {
         loading, put: (data, overrideUrl = undefined) => {
             setLoading(true)
-            return axios.put(overrideUrl ? overrideUrl : url, data).then(res => {
+            return axios.put(overrideUrl || url, data).then(res => {
                 updateFunction(res.data)
             }).catch(e => {
-                if (e.response.data && e.response.data.error) {
+                if (e.response.data?.error) {
                     console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
@@ -89,11 +89,11 @@ export const usePost = (url, updateFunction = () => {
     return {
         loading, post: (data, overrideUrl) => {
             setLoading(true)
-            return axios.post(overrideUrl ? overrideUrl : url, data).then(res => {
+            return axios.post(overrideUrl || url, data).then(res => {
                 updateFunction(res.data)
                 return res.data;
             }).catch(e => {
-                if (e.response.data && e.response.data.error) {
+                if (e.response.data?.error) {
                     console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
@@ -114,11 +114,11 @@ export const useDelete = (url, updateFunction = () => {
     return {
         loading, deleteReq: (data, overrideUrl) => {
             setLoading(true)
-            return axios.delete(overrideUrl ? overrideUrl : url, data).then(res => {
+            return axios.delete(overrideUrl || url, data).then(res => {
                 updateFunction(res.data)
                 return res.data;
             }).catch(e => {
-                if (e.response.data && e.response.data.error) {
+                if (e.response.data?.error) {
                     console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
