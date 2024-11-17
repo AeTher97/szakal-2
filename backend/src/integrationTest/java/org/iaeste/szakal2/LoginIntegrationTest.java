@@ -69,11 +69,10 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
                 .then()
                 .statusCode(200);
 
-        String sessionCookie = response.extract().cookie("FGP_COOKIE");
         String refreshCookie = response.extract().cookie("JWT_REFRESH");
 
         RestAssured.given()
-                .cookies(Map.of("FGP_COOKIE", sessionCookie, "JWT_REFRESH", refreshCookie))
+                .cookies(Map.of("JWT_REFRESH", refreshCookie))
                 .post("/api/refresh")
                 .then()
                 .statusCode(200)
