@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.security;
 
+import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
@@ -9,26 +10,32 @@ import java.util.Collection;
 public abstract class TokenAuthentication implements Authentication {
 
     private final String principal;
-    private final String token;
+    @Getter
+    private final String authToken;
+    @Getter
+    private final String userFingerprint;
     private final Collection<? extends GrantedAuthority> authorities;
     private boolean isAuthenticated;
 
-    public TokenAuthentication(String principal, String token, Collection<? extends GrantedAuthority> grantedAuthorityList) {
+    protected TokenAuthentication(String principal,
+                                  String authToken,
+                                  String userFingerprint,
+                                  Collection<? extends GrantedAuthority> grantedAuthorityList) {
+        this.userFingerprint = userFingerprint;
         this.authorities = grantedAuthorityList;
         this.principal = principal;
-        this.token = token;
+        this.authToken = authToken;
         this.isAuthenticated = true;
     }
 
     @Override
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
     @Override
     public Object getCredentials() {
-        return token;
+        return authToken;
     }
 
     @Override

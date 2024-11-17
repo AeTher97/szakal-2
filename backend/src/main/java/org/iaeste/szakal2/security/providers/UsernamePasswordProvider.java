@@ -5,6 +5,7 @@ import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.TokenFactory;
+import org.iaeste.szakal2.security.utils.Fingerprint;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,17 +53,22 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
 
         if (passwordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             try {
+                String userFingerprint = Fingerprint.generateFingerprint();
+
                 return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-                        new TokenHolder(
+                        new RefreshTokenHolder(
                                 TokenFactory.generateAuthToken(user.getId(),
                                         authorities.stream().map(GrantedAuthority::getAuthority).toList(),
                                         user.getEmail(),
                                         user.getName(),
                                         user.getSurname(),
+                                        userFingerprint,
                                         jwtConfiguration),
-                                TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration), user.isAccepted()),
+                                TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration),
+                                userFingerprint,
+                                user.isAccepted()),
                         authorities);
-            } catch (IOException | NullPointerException e) {
+            } catch (IOException | NullPointerException | NoSuchAlgorithmException e) {
                 throw new AuthenticationServiceException("Error occurred while trying to authenticate");
             }
         } else {

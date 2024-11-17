@@ -27,13 +27,20 @@ export const decodeToken = (accessToken) => {
     }
 }
 
-export const saveTokenInStorage = (accessToken, refreshToken, userId, email, name, surname) => {
+export const saveInfoInStorage = (accessToken, userId, email, name, surname) => {
     localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('userId', userId);
     localStorage.setItem('email', email);
     localStorage.setItem('name', name);
     localStorage.setItem('surname', surname);
+}
+
+export const clearLocalStorage = () => {
+    localStorage.removeItem("email")
+    localStorage.removeItem("name")
+    localStorage.removeItem("surname")
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("accessRights")
 }
 
 export const saveAccessRightsInStorage = (accessRights) => {
@@ -45,8 +52,7 @@ export const isTokenOutdated = (exp) => {
     return exp - 10 < (new Date().getTime() / 1000);
 }
 
-export const getHeaders = (token) => {
+export const getAuthHeader = (token) => {
     return `Bearer ${token}`;
-
 }
 

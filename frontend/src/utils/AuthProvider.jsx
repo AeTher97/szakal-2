@@ -1,27 +1,26 @@
 import React from 'react';
-import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {isTokenOutdated} from "./TokenUtils";
+import axios from "axios";
 import {refreshAction} from "../redux/ReducerActions";
 
 const AuthProvider = () => {
 
-    let authTokenRequest;
-
-    function resetAuthTokenRequest() {
-        authTokenRequest = null;
-    }
-
-
-    const {refreshToken, accessToken, expirationTime} = useSelector(state => {
+    const {accessToken, expirationTime, isAuthenticated} = useSelector(state => {
         return state.auth
     });
     const dispatch = useDispatch();
 
+    let authTokenRequest;
+
+    const resetAuthTokenRequest = () => {
+        authTokenRequest = null;
+    }
+
 
     async function getAuthToken() {
         if (!authTokenRequest) {
-            authTokenRequest = dispatch(refreshAction(refreshToken));
+            authTokenRequest = dispatch(refreshAction());
             authTokenRequest.then(resp => {
                 resetAuthTokenRequest();
                 return resp;
@@ -36,13 +35,17 @@ const AuthProvider = () => {
 
     axios.interceptors.request.use(async request => {
 
-        if (expirationTime && isTokenOutdated(expirationTime)) {
+        const tokenExpired = expirationTime && isTokenOutdated(expirationTime);
+        const refreshPresent = !expirationTime && isAuthenticated;
+
+        console.debug(expirationTime, isTokenOutdated(expirationTime), refreshPresent)
+        if (tokenExpired || refreshPresent) {
             console.info("Refreshing token");
             const result = await getAuthToken()
                 .then((payload) => {
                     return payload;
-                }).catch(() => {
-                    console.error('Error in refresh');
+                }).catch((e) => {
+                    console.error('Error in refresh', e);
                     return null;
                 })
 
@@ -58,9 +61,8 @@ const AuthProvider = () => {
         return request;
 
     })
-
     axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
-    console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
+    axios.defaults.withCredentials = true;
 
     return (<></>);
 

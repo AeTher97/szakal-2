@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
 
 
-const ScheduledContaxt = () => {
+const ScheduledContact = () => {
 
     const {scheduledContacts, removeScheduledContact,reloadData} = useScheduledContactList();
     const {openDialog, render} = useConfirmationDialog("Usunać kontakt?")
@@ -53,4 +53,4 @@ const ScheduledContaxt = () => {
     );
 };
 
-export default ScheduledContaxt;
+export default ScheduledContact;

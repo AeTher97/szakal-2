@@ -1,6 +1,7 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit"
-import {decodeToken, isTokenOutdated, saveAccessRightsInStorage, saveTokenInStorage} from "../utils/TokenUtils";
+import {clearLocalStorage, decodeToken, saveAccessRightsInStorage, saveInfoInStorage} from "../utils/TokenUtils";
 import alertReducer from "./AlertReducer";
+import {cookieExists} from "../utils/CookieUtils";
 
 export const LOGIN_ATTEMPT = "LOGIN_ATTEMPT"
 
@@ -28,28 +29,21 @@ export const ADD_FAVOURITE_JOURNEY = "ADD_JOURNEY"
 
 const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
     const email = localStorage.getItem("email");
     const name = localStorage.getItem("name");
     const surname = localStorage.getItem("surname");
-    const accessRights = localStorage.getItem("accessRights") ? localStorage.getItem("accessRights").split(",") : [];
-
+    const userId = localStorage.getItem("userId");
+    const accessRights = localStorage.getItem("accessRights")?.split(",") || [];
 
     if (accessToken) {
         const result = decodeToken(accessToken);
-        const refreshResult = decodeToken(refreshToken)
 
-        if (isTokenOutdated(refreshResult.expirationTime)) {
-            return emptyState;
-        }
-
-        if (result.error || refreshResult.error) {
+        if (result.error) {
             return result;
         } else {
             return {
                 ...result,
                 accessToken: accessToken,
-                refreshToken: refreshToken,
                 accessRights: accessRights,
                 isAuthenticated: true,
                 name: name,
@@ -58,18 +52,18 @@ const getAuthFromStorage = () => {
                 error: null
             }
         }
+    } else if (cookieExists("AUTHENTICATED")) {
+        return {
+            isAuthenticated: true,
+            name: name,
+            surname: surname,
+            email: email,
+            userId: userId,
+            error: null
+        }
     }
 
 };
-
-const clearLocalStorage = () => {
-    localStorage.removeItem("email")
-    localStorage.removeItem("name")
-    localStorage.removeItem("surname")
-    localStorage.removeItem("refreshToken")
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("accessRights")
-}
 
 const emptyState = {
     userId: null,
@@ -95,7 +89,12 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_SUCCESS:
         case REFRESH_SUCCESS:
-            saveTokenInStorage(action.payload.accessToken, state.refreshToken, action.payload.userId, action.payload.email, action.payload.name, action.payload.surname)
+            saveInfoInStorage(
+                action.payload.accessToken,
+                action.payload.userId,
+                action.payload.email,
+                action.payload.name,
+                action.payload.surname)
             return {
                 ...state,
                 ...action.payload,
@@ -212,7 +211,7 @@ function favouriteJourneysReducer(state = {favouriteJourneys: []}, action) {
 }
 
 
-export let stores = configureStore({
+export const stores = configureStore({
     reducer: combineReducers(
         {
             auth: authReducer,

@@ -19,11 +19,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Log4j2
-public class JwtAuthenticationProvider implements AuthenticationProvider {
+public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtConfiguration jwtConfiguration;
     private final RolesRepository rolesRepository;
-    private final SecretKeySpec key;
+    private final transient SecretKeySpec key;
 
     public JwtAuthenticationProvider(JwtConfiguration jwtConfiguration, RolesRepository rolesRepository) {
         this.jwtConfiguration = jwtConfiguration;
@@ -33,7 +33,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        return validateToken(authentication.getCredentials().toString());
+        if (authentication instanceof JwtTokenAuthentication jwtTokenAuthentication) {
+            validateFingerprint(jwtTokenAuthentication.getUserFingerprint(),
+                    jwtTokenAuthentication.getAuthToken(),
+                    key,
+                    jwtConfiguration.getIssuer());
+            return validateToken(jwtTokenAuthentication.getAuthToken());
+        } else {
+            throw new BadCredentialsException("Invalid authentication");
+        }
     }
 
     @Override
@@ -51,14 +59,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                     .parseClaimsJws(jwtToken).getBody();
 
             List<UUID> roles = ((List<String>) claims.get("roles"))
-                    .stream().map(string -> UUID.fromString(string)).toList();
+                    .stream().map(UUID::fromString).toList();
             Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 
             rolesRepository.findAllByIdIn(roles).forEach(role ->
                     grantedAuthorities.addAll(role.getAccessRights().stream().map(accessRight
                             -> new SimpleGrantedAuthority(accessRight.getCode())).toList()));
 
-            return new JwtTokenAuthentication(claims.getSubject(), jwtToken, grantedAuthorities);
+            return new JwtTokenAuthentication(claims.getSubject(), jwtToken, null, grantedAuthorities);
 
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
                  IllegalArgumentException e) {

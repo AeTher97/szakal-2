@@ -19,9 +19,11 @@ public class UsernamePasswordFilter extends UsernamePasswordAuthenticationFilter
     private UsernamePasswordFilter() {
     }
 
-    public static UsernamePasswordFilter getUsernamePasswordFilter(AuthenticationManager authenticationManager, String path) {
+    public static UsernamePasswordFilter getUsernamePasswordFilter(AuthenticationManager authenticationManager,
+                                                                   String path,
+                                                                   int jwtExpirationTime) {
         UsernamePasswordFilter usernamePasswordFilter = new UsernamePasswordFilter();
-        usernamePasswordFilter.setAuthenticationSuccessHandler(new SzakalAuthenticationSuccessHandler());
+        usernamePasswordFilter.setAuthenticationSuccessHandler(new SzakalAuthenticationSuccessHandler(jwtExpirationTime));
         usernamePasswordFilter.setAuthenticationFailureHandler(new SzakalAuthenticationFailureHandler());
         usernamePasswordFilter.setAuthenticationManager(authenticationManager);
         usernamePasswordFilter.setFilterProcessesUrl(path);

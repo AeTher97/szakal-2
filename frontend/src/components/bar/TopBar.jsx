@@ -35,7 +35,7 @@ const TopBar = () => {
         campaignsOptions.push({id: "choose", label: "Wybierz", disabled: true})
 
         useEffect(() => {
-            if (!user) {
+            if (!user || !user.campaigns) {
                 return;
             }
             const campaigns = []

@@ -3,12 +3,14 @@ package org.iaeste.szakal2;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import org.hamcrest.Matchers;
 import org.iaeste.szakal2.util.IntegrationTestWithTools;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class LoginIntegrationTest extends IntegrationTestWithTools {
@@ -58,20 +60,19 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
                 "testLogin",
                 "Password123!",
                 List.of());
-        String refreshToken = RestAssured.given()
+        ValidatableResponse response = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", "test-login@gmail.com")
                 .multiPart("password", "Password123!")
                 .when()
                 .post("/api/login")
                 .then()
-                .statusCode(200)
-                .extract()
-                .path("refreshToken");
+                .statusCode(200);
 
-        RestAssured.given().contentType(ContentType.MULTIPART)
-                .multiPart("refreshToken", refreshToken)
-                .when()
+        String refreshCookie = response.extract().cookie("JWT_REFRESH");
+
+        RestAssured.given()
+                .cookies(Map.of("JWT_REFRESH", refreshCookie))
                 .post("/api/refresh")
                 .then()
                 .statusCode(200)
