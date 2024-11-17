@@ -127,7 +127,7 @@ export const reloadAction = () => dispatch => {
 }
 
 export const loadFavouriteJourneysAction = (authToken) => dispatch => {
-    return defaultAxiosInstance.get("/favouriteJourneys", {
+    return axios.get("/favouriteJourneys", {
         headers: {
             'Authorization': `Bearer ${authToken}`
         }
@@ -139,7 +139,7 @@ export const loadFavouriteJourneysAction = (authToken) => dispatch => {
 }
 
 export const addFavouriteJourney = (journeyId) => dispatch => {
-    defaultAxiosInstance.post("/favouriteJourneys", {
+    axios.post("/favouriteJourneys", {
         journeyId: journeyId
     }).then((res) => {
         dispatch({type: ADD_FAVOURITE_JOURNEY, payload: {item: res.data}});
@@ -149,7 +149,7 @@ export const addFavouriteJourney = (journeyId) => dispatch => {
 }
 
 export const removeFavouriteJourney = (journeyId) => dispatch => {
-    defaultAxiosInstance.delete(`/favouriteJourneys/${journeyId}`)
+    axios.delete(`/favouriteJourneys/${journeyId}`)
         .then((_) => {
             dispatch({type: REMOVE_FAVOURITE_JOURNEY, payload: {item: {id: journeyId}}})
         }).catch(e => {
