@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Tab, tabClasses, TabList, Tabs} from "@mui/joy";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
@@ -22,6 +22,7 @@ const MenuBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const {hasRight} = useAccessRightsHelper();
+    const ref = useRef();
 
 
     useEffect(() => {
@@ -32,13 +33,25 @@ const MenuBar = () => {
         }
     }, [location]);
 
+    const horizontalScrollListener = (e) => {
+        e.preventDefault();
+        ref.current.scrollLeft += e.deltaY;
+    }
 
     return (
-        <Tabs style={{marginBottom: 5}}
-              onChange={(e, value) => {
-                  navigate(value);
-              }} value={path}>
-            <TabList disableUnderline
+        <Tabs
+            style={{marginBottom: 5}}
+            onChange={(e, value) => {
+                navigate(value);
+            }} value={path}
+            onMouseEnter={() => {
+                window.addEventListener("wheel", horizontalScrollListener, {passive: false})
+            }}
+            onMouseLeave={() => {
+                window.removeEventListener("wheel", horizontalScrollListener)
+            }}>
+            <TabList ref={ref}
+                     disableUnderline
                      sx={{
                          justifyContent: 'space-between',
                          overflow: 'auto',

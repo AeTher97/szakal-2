@@ -1,12 +1,14 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {isTokenOutdated} from "./TokenUtils";
+import {decodeToken, isTokenOutdated} from "./TokenUtils";
 import axios from "axios";
-import {refreshAction} from "../redux/ReducerActions";
+import {refreshAction, tokenSwitchedByAnotherTab} from "../redux/ReducerActions";
+import {REFRESH_FAILED} from "../redux/Stores";
+import {cookieExists} from "./CookieUtils";
 
 const AuthProvider = () => {
 
-    const {accessToken, expirationTime, isAuthenticated} = useSelector(state => {
+    const {accessToken, expirationTime} = useSelector(state => {
         return state.auth
     });
     const dispatch = useDispatch();
@@ -17,9 +19,9 @@ const AuthProvider = () => {
         authTokenRequest = null;
     }
 
-
     async function getAuthToken() {
         if (!authTokenRequest) {
+            console.debug("Refreshing token")
             authTokenRequest = dispatch(refreshAction());
             authTokenRequest.then(resp => {
                 resetAuthTokenRequest();
@@ -29,25 +31,64 @@ const AuthProvider = () => {
         return authTokenRequest;
     }
 
+    const abortSignal = (ogRequest) => {
+        const controller = new AbortController();
+        controller.abort("Nastąpiło wylogowanie");
+        dispatch({type: REFRESH_FAILED, error: "Nastąpiło wylogowanie"});
+        return {
+            ...ogRequest,
+            signal: controller.signal
+        }
+    }
+
     if (axios.interceptors.request.handlers.length > 0) {
         axios.interceptors.request.eject(axios.interceptors.request.handlers.length - 1);
     }
 
+    const checkIfAnotherTabRefreshedToken = () => {
+        const tokenRefreshedByDifferentTab = !localStorage.getItem("accessToken") ? false :
+            accessToken !== localStorage.getItem("accessToken");
+        let switchedTokenExpiration = null;
+        let newToken = null;
+
+        if (tokenRefreshedByDifferentTab) {
+            newToken = localStorage.getItem("accessToken");
+            const {expirationTime: exp} = decodeToken(newToken);
+            switchedTokenExpiration = exp;
+            dispatch(tokenSwitchedByAnotherTab(newToken, exp));
+        }
+
+        const tokenExpired = tokenRefreshedByDifferentTab ? isTokenOutdated(switchedTokenExpiration)
+            : isTokenOutdated(expirationTime);
+        const refreshPresent = cookieExists("AUTHENTICATED");
+
+        const currentToken = tokenRefreshedByDifferentTab ? newToken : accessToken;
+
+        return {tokenExpired, refreshPresent, currentToken};
+    }
+
     axios.interceptors.request.use(async request => {
+        const {tokenExpired, refreshPresent, currentToken} = checkIfAnotherTabRefreshedToken();
 
-        const tokenExpired = expirationTime && isTokenOutdated(expirationTime);
-        const refreshPresent = !expirationTime && isAuthenticated;
+        if ((tokenExpired && !refreshPresent) || !localStorage.getItem("accessToken")) {
+            return abortSignal(request);
+        }
 
-        console.debug(expirationTime, isTokenOutdated(expirationTime), refreshPresent)
-        if (tokenExpired || refreshPresent) {
-            console.info("Refreshing token");
+        if (tokenExpired && refreshPresent) {
+            console.debug("Attempting token refresh");
             const result = await getAuthToken()
                 .then((payload) => {
                     return payload;
                 }).catch((e) => {
-                    console.error('Error in refresh', e);
-                    return null;
+                    console.error('Refresh unsuccessful', e);
+                    return {
+                        abort: true
+                    }
                 })
+
+            if (result.abort) {
+                return abortSignal(request);
+            }
 
             if (result) {
                 request.headers['Authorization'] = `Bearer ${result.authToken}`;
@@ -55,7 +96,7 @@ const AuthProvider = () => {
         }
 
         if (!request.headers['Authorization'] && accessToken) {
-            request.headers['Authorization'] = `Bearer ${accessToken}`;
+            request.headers['Authorization'] = `Bearer ${currentToken}`;
         }
 
         return request;
@@ -64,7 +105,7 @@ const AuthProvider = () => {
     axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BACKEND_URL;
     axios.defaults.withCredentials = true;
 
-    return (<></>);
+    return <></>;
 
 };
 

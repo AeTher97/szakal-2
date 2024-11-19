@@ -49,9 +49,9 @@ export const useNotificationList = () => {
     const [notifications, setNotifications] = useState([]);
     const [newNotifications, setNewNotifications] = useState(false);
 
-    const intervalTime = 30000;
+    const reloadInterval = 30000;
 
-    const {loading} = useData("/notifications", (data) => {
+    useData("/notifications", (data) => {
         console.debug("Loaded notifications")
         setNotifications(data)
         for (let notification of data) {
@@ -59,14 +59,14 @@ export const useNotificationList = () => {
                 setNewNotifications(true);
             }
         }
-    }, [reload])
+    }, [reload]);
 
     const {put} = usePut("/notifications/seen");
 
     useEffect(() => {
         const interval = setInterval(() => setReload((state) => {
             return state + 1
-        }), intervalTime);
+        }), reloadInterval);
         return () => {
             clearInterval(interval);
         };

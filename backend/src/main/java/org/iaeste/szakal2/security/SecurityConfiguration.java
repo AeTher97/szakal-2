@@ -84,7 +84,8 @@ public class SecurityConfiguration {
                 )
                 .authenticationManager(authenticationManagerBean())
                 .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManagerBean(),
-                        "/api/login", Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
+                        "/api/login", Long.parseLong(jwtConfiguration.getAuthExpirationTime()),
+                        Long.parseLong(jwtConfiguration.getRefreshExpirationTime())))
                 .addFilter(JwtRefreshFilter.getJwtRefreshFilter(authenticationManagerBean(),
                         "/api/refresh", Integer.parseInt(jwtConfiguration.getAuthExpirationTime())))
                 .addFilterBefore(new JwtAuthorizationFilter(authenticationManagerBean()), SecurityContextHolderAwareRequestFilter.class)

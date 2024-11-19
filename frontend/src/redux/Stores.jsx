@@ -22,6 +22,7 @@ export const SWITCH_CAMPAIGN = "SWITCH_CAMPAIGN"
 export const ADD_ITEM = "ADD_ITEM"
 export const REMOVE_ITEM = "REMOVE_ITEM"
 export const REFRESH = "REFRESH"
+export const TOKEN_SWITCHED_BY_ANOTHER_TAB = "TOKEN_SWITCHED_BY_ANOTHER_TAB"
 
 export const LOAD_FAVOURITE_JOURNEYS = "LOAD_JOURNEYS";
 export const REMOVE_FAVOURITE_JOURNEY = "REMOVE_JOURNEY"
@@ -60,6 +61,10 @@ const getAuthFromStorage = () => {
             email: email,
             userId: userId,
             error: null
+        }
+    } else {
+        return {
+            isAuthenticated: false
         }
     }
 
@@ -132,6 +137,12 @@ function authReducer(state = initialState, action) {
             return {
                 ...state,
                 refresh: state.refresh + 1
+            }
+        case TOKEN_SWITCHED_BY_ANOTHER_TAB:
+            return {
+                ...state,
+                accessToken: action.payload.accessToken,
+                expirationTime: action.payload.expirationTime
             }
         case REFRESH_ATTEMPT:
         default:

@@ -15,11 +15,13 @@ import java.io.IOException;
 public class SzakalAuthenticationSuccessHandler extends SessionCookieSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper;
+    private final long refreshExpirationTime;
     private static final String REFRESH_COOKIE_NAME = "JWT_REFRESH";
     private static final String AUTHENTICATED_COOKIE_NAME = "AUTHENTICATED";
 
-    public SzakalAuthenticationSuccessHandler(int jwtExpirationTime) {
-        super(jwtExpirationTime);
+    public SzakalAuthenticationSuccessHandler(long authExpirationTime, long refreshExpirationTime) {
+        super(authExpirationTime);
+        this.refreshExpirationTime = refreshExpirationTime;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -43,7 +45,8 @@ public class SzakalAuthenticationSuccessHandler extends SessionCookieSuccessHand
 
     private Cookie getRefreshCookie(String token) {
         Cookie cookie = new Cookie(REFRESH_COOKIE_NAME, token);
-        cookie.setMaxAge(8640000);
+        //Millis to seconds
+        cookie.setMaxAge((int) this.refreshExpirationTime / 1000);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -53,7 +56,8 @@ public class SzakalAuthenticationSuccessHandler extends SessionCookieSuccessHand
 
     private Cookie getAuthenticatedCookie() {
         Cookie cookie = new Cookie(AUTHENTICATED_COOKIE_NAME, "true");
-        cookie.setMaxAge(8640000);
+        //Millis to seconds
+        cookie.setMaxAge((int) this.refreshExpirationTime / 1000);
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "Strict");

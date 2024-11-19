@@ -1,11 +1,9 @@
 import React from 'react';
 import {Link, Typography} from "@mui/joy";
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const NotAcceptedScreen = () => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     return (

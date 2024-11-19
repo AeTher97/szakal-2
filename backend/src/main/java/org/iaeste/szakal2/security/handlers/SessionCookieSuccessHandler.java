@@ -5,9 +5,9 @@ import jakarta.servlet.http.Cookie;
 public class SessionCookieSuccessHandler {
 
     private static final String FGP_COOKIE_NAME = "FGP_COOKIE";
-    private final int jwtExpirationTime;
+    private final long jwtExpirationTime;
 
-    public SessionCookieSuccessHandler(int jwtExpirationTime) {
+    public SessionCookieSuccessHandler(long jwtExpirationTime) {
         this.jwtExpirationTime = jwtExpirationTime;
     }
 
@@ -18,7 +18,7 @@ public class SessionCookieSuccessHandler {
         cookie.setSecure(true);
         cookie.setPath("/");
         //Millis to seconds
-        cookie.setMaxAge(jwtExpirationTime / 1000);
+        cookie.setMaxAge((int) jwtExpirationTime / 1000);
         cookie.setAttribute("SameSite", "Strict");
         return cookie;
     }

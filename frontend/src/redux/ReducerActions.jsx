@@ -8,12 +8,12 @@ import {
     LOGOUT,
     REFRESH,
     REFRESH_ATTEMPT,
-    REFRESH_FAILED,
     REFRESH_SUCCESS,
     REMOVE_FAVOURITE_JOURNEY,
     REMOVE_ITEM,
     SWITCH_CAMPAIGN,
     SWITCH_THEME,
+    TOKEN_SWITCHED_BY_ANOTHER_TAB,
     UPDATE_ACCESS_RIGHTS
 } from "./Stores";
 import axios from "axios";
@@ -77,7 +77,7 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
         });
 };
 
-export const refreshAction = (onSuccessCallback = () => null) => dispatch => {
+export const refreshAction = () => dispatch => {
     dispatch({type: REFRESH_ATTEMPT});
 
     return defaultAxiosInstance.post('/refresh', null)
@@ -88,13 +88,8 @@ export const refreshAction = (onSuccessCallback = () => null) => dispatch => {
             };
 
             dispatch({type: REFRESH_SUCCESS, payload: payload});
-            onSuccessCallback(data.authToken, data.refreshToken);
             updateAccessRights(decodeToken(data.authToken), data.authToken, dispatch)
             return data;
-        })
-        .catch(err => {
-            console.error('Refresh unsuccessful');
-            dispatch({type: REFRESH_FAILED, error: "Nastąpiło wylogowanie"});
         });
 };
 
@@ -104,6 +99,10 @@ export const setAccessRightsAction = (accessRights) => dispatch => {
 
 export const logoutAction = () => dispatch => {
     dispatch({type: LOGOUT});
+}
+
+export const tokenSwitchedByAnotherTab = (accessToken, expirationTime) => dispatch => {
+    dispatch({type: TOKEN_SWITCHED_BY_ANOTHER_TAB, payload: {accessToken, expirationTime}});
 }
 
 export const changeThemeAction = () => dispatch => {
