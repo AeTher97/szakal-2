@@ -11,6 +11,9 @@ if $3 -eq true; then {
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir temp
 cp -r backend/. temp/
+cp -r gradle temp/
+cp gradlew temp/
+echo "rootProject.name = 'root'" > temp/settings.gradle
 rm temp/.gitignore
 
 HEROKU_API_TOKEN=$1
