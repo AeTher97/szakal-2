@@ -9,7 +9,7 @@
       <env name="HEROKU_APP_DEFAULT_DOMAIN_NAME" value="xd.com" />
     </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="backend.main" />
+    <module name="szakal-2.backend.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.iaeste.szakal2.SzakalBackend" />
     <method v="2">
       <option name="Make" enabled="true" />
