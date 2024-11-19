@@ -24,10 +24,14 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.idea/**/checkstyle-idea.xml
+.idea/**/gradle.xml
+.idea/**/vcs.xml
 
 # Gradle
 .gradle
 .idea/**/libraries
+
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
@@ -36,9 +40,9 @@
  .idea/artifacts
  .idea/compiler.xml
  .idea/jarRepositories.xml
-# .idea/modules.xml
+ .idea/modules.xml
  .idea/*.iml
-# .idea/modules
+ .idea/modules
  *.iml
  *.ipr
 
