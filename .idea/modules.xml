@@ -4,9 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/szakal-2.iml" filepath="$PROJECT_DIR$/.idea//szakal-2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.integrationTest.iml" filepath="$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.integrationTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/backend/szakal-2.backend.test.iml" />
     </modules>
   </component>
 </project>
