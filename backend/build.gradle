@@ -105,6 +105,10 @@ bootRun {
     }
 }
 
+jar {
+    enabled = false
+}
+
 //Enable preview for java 21 features like STR to avoid compilation errors
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += "--enable-preview"
@@ -116,8 +120,4 @@ tasks.withType(Test).configureEach {
 
 tasks.withType(JavaExec).configureEach {
     jvmArgs += "--enable-preview"
-}
-
-jar {
-    enabled = false
 }

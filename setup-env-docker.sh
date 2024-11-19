@@ -1,9 +1,5 @@
 #!/bin/bash
 
-cd backend
-bash gradlew build
-cd ..
-
 bash build-docker.sh
 
 docker pull postgres

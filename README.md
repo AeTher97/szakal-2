@@ -16,12 +16,15 @@ during various campaigns. The software is written in Java and React  and support
 
 ## How to run
 ### Prerequisites 
-To compile and run the application following software has to be installed on the machine:
+
+To compile and run the application for development following software has to be installed on the machine:
 * Git client
 * Java 21 or higher JDK (Java and gradle can be handled from Intellij, easier in my opinion), for command line script
   JAVA_HOME has to be set up correctly.
 * Node.js with npm
 * Postgres database (directly on metal or in docker), launch scripts handle
+
+This is not required for the docker option as everything is set up in multi-stage build.
 
 ### Methods for launching Szakal 2 App
 
@@ -32,7 +35,11 @@ Run the `setup-env-docker.sh` script, you might have to make it executable by ru
 data will only be loaded on linux system (some magic can be done with `dos2unix` though)
 For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
 as an easy option to get a linux VM.~~  This was fixed and should
-work on Windows now. Docker option should generally be easier to get up.
+work on Windows now.
+
+Docker option should generally be the easiest to get up.
+This pulls a lot of data and can quite some time the first time is run. This option is not recommended
+for development because there is no hot swap on react and deployment is longer.
 
 #### Intellij IDEA method (best for development)
 
