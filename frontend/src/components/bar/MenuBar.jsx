@@ -24,6 +24,10 @@ const MenuBar = () => {
     const {hasRight} = useAccessRightsHelper();
     const ref = useRef();
 
+    const horizontalScrollListener = (e) => {
+        e.preventDefault();
+        ref.current.scrollLeft += e.deltaY;
+    }
 
     useEffect(() => {
         if (location.pathname && location.pathname.split("/").length > 2) {
@@ -31,18 +35,17 @@ const MenuBar = () => {
         } else {
             setPath("/")
         }
+        return () => {
+            window.removeEventListener("wheel", horizontalScrollListener)
+        }
     }, [location]);
-
-    const horizontalScrollListener = (e) => {
-        e.preventDefault();
-        ref.current.scrollLeft += e.deltaY;
-    }
 
     return (
         <Tabs
             style={{marginBottom: 5}}
             onChange={(e, value) => {
                 navigate(value);
+                window.removeEventListener("wheel", horizontalScrollListener)
             }} value={path}
             onMouseEnter={() => {
                 window.addEventListener("wheel", horizontalScrollListener, {passive: false})
