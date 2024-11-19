@@ -7,6 +7,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/misc.xml
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -25,7 +26,6 @@
 .idea/**/dbnavigator.xml
 
 # Gradle
-.idea/**/gradle.xml
 .idea/**/libraries
 
 # Gradle and Maven with auto-import
