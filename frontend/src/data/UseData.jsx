@@ -97,7 +97,7 @@ export const usePost = (url, updateFunction = () => {
                 updateFunction(res.data)
                 return res.data;
             }).catch(e => {
-                if (e.response.data?.error) {
+                if (e.response?.data?.error) {
                     console.error(e.response.data.error);
                     dispatch(showError(e.response.data.error))
                 }
