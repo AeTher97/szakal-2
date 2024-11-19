@@ -32,7 +32,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run integration test
-        working-directory: ./backend
+        working-directory: ./
         run: ./gradlew :backend:integrationTest
 
   cypressTests:
