@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {Card, Stack, Typography} from "@mui/joy";
-import {usePasswordReset} from "../data/UsersData";
 import Button from "@mui/joy/Button";
-import {useNavigate} from "react-router-dom";
 import InputWithLimit from "../utils/InputWithLimit";
+import {usePasswordReset} from "../data/AuthenticationData";
 
 const PasswordResetScreen = () => {
 
     const [email, setEmail] = useState("");
     const [resetSent, setResetSent] = useState(false);
     const {resetPassword} = usePasswordReset();
-    const navigate = useNavigate();
 
     return (
         <div style={{display: "flex", justifyContent: "center", padding: 20}}>
