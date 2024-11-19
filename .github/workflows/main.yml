@@ -36,7 +36,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run integration test
         working-directory: ./
-        run: ./gradlew :backend:integrationTest
+        run: chmod +x gradlew && ./gradlew :backend:integrationTest
 
       - name: Remove wrong java versions
         working-directory: ./
