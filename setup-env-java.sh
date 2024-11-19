@@ -5,10 +5,8 @@ sudo apt-get install net-tools -y
 java -version
 
 bash build-and-copy.sh
-cd backend
-JAVA_HOME="${JAVA_HOME_21_X64:-$JAVA_HOME_21_arm64}" bash gradlew build
+JAVA_HOME="${JAVA_HOME_21_X64:-$JAVA_HOME_21_arm64}" bash gradlew :backend:build
 sudo chmod 777 ./backend/build/libs/backend-1.0.0.jar
-cd ..
 
 docker pull postgres
 docker run --name postgres-end-to-end -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=szakal -v ./frontend/cypress/init.sql:/docker-entrypoint-initdb.d/init.sql -d postgres
