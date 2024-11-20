@@ -35,7 +35,7 @@ export const usePasswordReset = () => {
 
     const updatePassword = (password, repeatPassword, code) => {
         setUpdateLoading(true);
-        return defaultAxiosInstance.post("/users/reset-password", {
+        return defaultAxiosInstance.post("/users/reset-password-set-new", {
             password,
             repeatPassword,
             code

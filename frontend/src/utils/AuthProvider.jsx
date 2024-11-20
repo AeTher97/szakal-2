@@ -35,6 +35,8 @@ const AuthProvider = () => {
         const controller = new AbortController();
         controller.abort("Nastąpiło wylogowanie");
         dispatch({type: REFRESH_FAILED, error: "Nastąpiło wylogowanie"});
+        console.log("cacelling", ogRequest)
+
         return {
             ...ogRequest,
             signal: controller.signal

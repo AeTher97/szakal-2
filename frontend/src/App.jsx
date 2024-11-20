@@ -20,7 +20,7 @@ const AppWithoutCss = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isAuthenticated && !isTokenOutdated(decodeToken(accessToken).expirationTime) && !loadedFavouriteJourneys) {
+        if (isAuthenticated && accessToken && !isTokenOutdated(decodeToken(accessToken).expirationTime) && !loadedFavouriteJourneys) {
             dispatch(loadFavouriteJourneysAction(accessToken))
                 .then(() => setLoadedFavouriteJourneys(true));
         }
