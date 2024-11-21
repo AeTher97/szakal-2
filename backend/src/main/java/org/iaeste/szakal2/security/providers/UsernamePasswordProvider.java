@@ -16,7 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                                 userFingerprint,
                                 user.isAccepted()),
                         authorities);
-            } catch (IOException | NullPointerException | NoSuchAlgorithmException e) {
+            } catch (NullPointerException | NoSuchAlgorithmException e) {
                 throw new AuthenticationServiceException("Error occurred while trying to authenticate");
             }
         } else {

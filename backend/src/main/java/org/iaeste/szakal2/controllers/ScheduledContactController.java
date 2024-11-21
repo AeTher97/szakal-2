@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.iaeste.szakal2.models.dto.scheduled.contact.ScheduledContactDTO;
 import org.iaeste.szakal2.models.entities.ScheduledContact;
 import org.iaeste.szakal2.services.ScheduledContactService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

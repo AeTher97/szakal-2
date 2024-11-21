@@ -90,7 +90,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage(), e);
-        } catch (IOException | NullPointerException | NoSuchAlgorithmException e) {
+        } catch (NullPointerException | NoSuchAlgorithmException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
         }
 

@@ -1,7 +1,5 @@
 package org.iaeste.szakal2.exceptions;
 
-import org.springframework.http.HttpStatus;
-
 public class ResetTokenExpiredException extends SzakalException {
 
     public ResetTokenExpiredException(String message) {
@@ -12,8 +10,4 @@ public class ResetTokenExpiredException extends SzakalException {
         super(message, t);
     }
 
-    @Override
-    public HttpStatus getStatusCode() {
-        return HttpStatus.BAD_REQUEST;
-    }
 }

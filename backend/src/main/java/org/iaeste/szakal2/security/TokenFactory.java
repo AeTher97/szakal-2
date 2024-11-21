@@ -6,8 +6,7 @@ import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.springframework.security.crypto.codec.Hex;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -26,11 +25,12 @@ public class TokenFactory {
                                            String surname,
                                            String userFingerprint,
                                            JwtConfiguration jwtConfiguration)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws NoSuchAlgorithmException {
         String jwtIssuer = jwtConfiguration.getIssuer();
         String key = jwtConfiguration.getSecret();
         long authExp = Long.parseLong(jwtConfiguration.getAuthExpirationTime());
-        byte[] userFingerprintDigest = MessageDigest.getInstance("SHA-256").digest(userFingerprint.getBytes("UTF-8"));
+        byte[] userFingerprintDigest = MessageDigest.getInstance("SHA-256").digest(userFingerprint
+                .getBytes(StandardCharsets.UTF_8));
         String userFingerprintHash = new String(Hex.encode(userFingerprintDigest));
 
         return Jwts.builder().setSubject(id.toString()).claim("roles", roles)
@@ -44,7 +44,7 @@ public class TokenFactory {
     }
 
 
-    public static String generateRefreshToken(UUID id, JwtConfiguration jwtConfiguration) throws IOException {
+    public static String generateRefreshToken(UUID id, JwtConfiguration jwtConfiguration) {
 
         String jwtIssuer = jwtConfiguration.getIssuer();
         String key = jwtConfiguration.getSecret();

@@ -35,7 +35,8 @@ public class CampaignController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityBean.campaignModification())")
-    public Campaign modifyCampaign(@PathVariable("id") UUID id, @RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
+    public Campaign modifyCampaign(@PathVariable("id") UUID id,
+                                   @RequestBody @Valid CampaignCreationDTO campaignCreationDTO) {
         return campaignService.modifyCampaign(id, campaignCreationDTO);
     }
 
@@ -45,7 +46,8 @@ public class CampaignController {
     }
 
     @GetMapping
-    public Page<Campaign> getCampaigns(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+    public Page<Campaign> getCampaigns(@RequestParam(defaultValue = "10") int pageSize,
+                                       @RequestParam int pageNumber) {
         return campaignService.getCampaigns(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 

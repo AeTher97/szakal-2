@@ -10,10 +10,8 @@ import org.iaeste.szakal2.models.dto.journey.ContactJourneyMinimalDTO;
 import org.iaeste.szakal2.models.entities.Address;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
-import org.iaeste.szakal2.models.entities.ContactJourney;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;

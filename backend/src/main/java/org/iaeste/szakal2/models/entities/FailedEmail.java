@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-import org.iaeste.szakal2.services.EmailService;
-import org.iaeste.szakal2.utils.IcsUtils;
 
 import java.util.Date;
 import java.util.UUID;
@@ -21,13 +18,10 @@ import java.util.UUID;
 public class FailedEmail {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
-
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-
+    @Column(length = 5000)
     private String content;
     private String recipient;
     private String subject;

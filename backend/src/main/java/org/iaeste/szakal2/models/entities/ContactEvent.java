@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,9 +21,7 @@ import java.util.UUID;
 public class ContactEvent {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDateTime date;
     @ManyToOne
@@ -40,6 +37,7 @@ public class ContactEvent {
     @JsonIgnore
     private ContactJourney contactJourney;
     @NotNull
+    @Column(length = 2000)
     private String description;
     @Enumerated(EnumType.STRING)
     private ContactStatus eventType;

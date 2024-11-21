@@ -56,7 +56,7 @@ public class NotificationService {
             });
         }
         if (!exceptions.isEmpty()) {
-            throw exceptions.get(0);
+            throw exceptions.getFirst();
         }
     }
 

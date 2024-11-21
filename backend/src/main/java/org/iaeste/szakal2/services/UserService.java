@@ -186,8 +186,8 @@ public class UserService {
         return usersRepository.findAllById(userList);
     }
 
-    public List<User> saveUserList(List<User> users){
-        return usersRepository.saveAll(users);
+    public void saveUserList(List<User> users){
+        usersRepository.saveAll(users);
     }
 
     public List<UserDTO> searchUsers(String phrase) {
@@ -250,7 +250,7 @@ public class UserService {
             return img;
         }
 
-        BufferedImage target = createImage(img.getWidth(), img.getHeight(), false);
+        BufferedImage target = createImage(img.getWidth(), img.getHeight());
         Graphics2D g = target.createGraphics();
         // g.setColor(new Color(color, false));
         g.fillRect(0, 0, img.getWidth(), img.getHeight());
@@ -260,8 +260,8 @@ public class UserService {
         return target;
     }
 
-    private static BufferedImage createImage(int width, int height, boolean hasAlpha) {
-        return new BufferedImage(width, height, hasAlpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+    private static BufferedImage createImage(int width, int height) {
+        return new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
 }

@@ -5,27 +5,23 @@
 io-jsonwebtoken-jjwt-api = "0.11.5"
 io-jsonwebtoken-jjwt-impl = "0.11.5"
 io-jsonwebtoken-jjwt-jackson = "0.11.5"
+
 io-rest-assured-rest-assured = "5.3.2"
+
 org-postgresql-postgresql = "42.7.4"
-org-projectlombok-lombok = "1.18.30"
-org-springframework-boot-spring-boot-configuration-processor = "3.3.4"
-org-springframework-boot-spring-boot-devtools = "3.3.4"
-org-springframework-boot-spring-boot-starter-actuator = "3.3.4"
-org-springframework-boot-spring-boot-starter-data-jpa = "3.3.4"
-org-springframework-boot-spring-boot-starter-jdbc = "3.3.4"
-org-springframework-boot-spring-boot-starter-mail = "3.3.4"
-org-springframework-boot-spring-boot-starter-security = "3.3.4"
-org-springframework-boot-spring-boot-starter-test = "3.3.4"
-org-springframework-boot-spring-boot-starter-validation = "3.3.4"
-org-springframework-boot-spring-boot-starter-web = "3.3.4"
-org-springframework-boot-spring-boot-testcontainers = "3.3.4"
-org-springframework-security-spring-security-test = "6.3.3"
+
+springframework-boot-version = "3.3.5"
+org-springframework-security-spring-security-test = "6.4.1"
+spring-dependency-management-version = "1.1.6"
+
 org-testcontainers-junit-jupiter = "1.18.3"
 org-testcontainers-postgresql = "1.18.3"
 org-testcontainers-testcontainers = "1.18.3"
+
+org-projectlombok-lombok = "1.18.30"
 freefair = "8.6"
-springframework-boot-version = "3.2.3"
-spring-dependency-management-version = "1.1.4"
+
+
 
 [libraries]
 io-jsonwebtoken-jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "io-jsonwebtoken-jjwt-api" }
@@ -34,17 +30,17 @@ io-jsonwebtoken-jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", versio
 io-rest-assured-rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "io-rest-assured-rest-assured" }
 org-postgresql-postgresql = { module = "org.postgresql:postgresql", version.ref = "org-postgresql-postgresql" }
 org-projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "org-projectlombok-lombok" }
-org-springframework-boot-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "org-springframework-boot-spring-boot-configuration-processor" }
-org-springframework-boot-spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "org-springframework-boot-spring-boot-devtools" }
-org-springframework-boot-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "org-springframework-boot-spring-boot-starter-actuator" }
-org-springframework-boot-spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "org-springframework-boot-spring-boot-starter-data-jpa" }
-org-springframework-boot-spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version.ref = "org-springframework-boot-spring-boot-starter-jdbc" }
-org-springframework-boot-spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "org-springframework-boot-spring-boot-starter-mail" }
-org-springframework-boot-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "org-springframework-boot-spring-boot-starter-security" }
-org-springframework-boot-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "org-springframework-boot-spring-boot-starter-test" }
-org-springframework-boot-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "org-springframework-boot-spring-boot-starter-validation" }
-org-springframework-boot-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "org-springframework-boot-spring-boot-starter-web" }
-org-springframework-boot-spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers", version.ref = "org-springframework-boot-spring-boot-testcontainers" }
+org-springframework-boot-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers", version.ref = "springframework-boot-version" }
 org-springframework-security-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "org-springframework-security-spring-security-test" }
 org-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers-junit-jupiter" }
 org-testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "org-testcontainers-postgresql" }

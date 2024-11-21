@@ -58,7 +58,7 @@ public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider
                     .build()
                     .parseClaimsJws(jwtToken).getBody();
 
-            List<UUID> roles = ((List<String>) claims.get("roles"))
+            List<UUID> roles = ((List<String>) claims.get("roles", List.class))
                     .stream().map(UUID::fromString).toList();
             Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 

@@ -3,6 +3,7 @@ package org.iaeste.szakal2;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.iaeste.szakal2.services.InitService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,10 +27,10 @@ public class SzakalBackend {
     }
 
     public static void main(String[] args) {
-        String ENV_PORT = System.getenv().get("PORT");
-        String ENV_DYNO = System.getenv().get("DYNO");
-        if (ENV_PORT != null && ENV_DYNO != null) {
-            System.getProperties().put("server.port", ENV_PORT);
+        String envPort = System.getenv().get("PORT");
+        String envDyno = System.getenv().get("DYNO");
+        if (envPort != null && envDyno != null) {
+            System.getProperties().put("server.port", envPort);
         }
 
         SpringApplication.run(SzakalBackend.class, args);
@@ -47,7 +48,9 @@ public class SzakalBackend {
 
     @Bean
     public Validator getValidator() {
-        return Validation.buildDefaultValidatorFactory().getValidator();
+        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()){
+            return validatorFactory.getValidator();
+        }
     }
 
     @Bean
@@ -56,8 +59,6 @@ public class SzakalBackend {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("my.gmail@gmail.com");
-        mailSender.setPassword("password");
         mailSender.setUsername(System.getenv("EMAIL_USERNAME"));
         mailSender.setPassword(System.getenv("EMAIL_PASSWORD"));
 

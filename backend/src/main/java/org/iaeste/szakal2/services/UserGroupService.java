@@ -52,9 +52,9 @@ public class UserGroupService {
         }
         UserGroup userGroupEntity = new UserGroup();
         userGroupEntity.setName(userGroup.getName());
-        String entryCode = generateEntryCode(CODE_LENGTH);
+        String entryCode = generateEntryCode();
         while (userGroupRepository.getUserGroupByEntryCode(entryCode) != null) {
-            entryCode = generateEntryCode(CODE_LENGTH);
+            entryCode = generateEntryCode();
         }
         userGroupEntity.setEntryCode(entryCode);
         List<User> userList = null;
@@ -127,12 +127,12 @@ public class UserGroupService {
         return userGroup;
     }
 
-    private String generateEntryCode(int length) {
+    private String generateEntryCode() {
         int leftLimit = 48;
         int rightLimit = 57;
         Random random = new Random();
-        StringBuilder buffer = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
+        StringBuilder buffer = new StringBuilder(UserGroupService.CODE_LENGTH);
+        for (int i = 0; i < UserGroupService.CODE_LENGTH; i++) {
             int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
             buffer.append((char) randomLimitedInt);
         }

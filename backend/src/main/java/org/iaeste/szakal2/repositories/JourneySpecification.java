@@ -113,12 +113,12 @@ public class JourneySpecification implements Specification<ContactJourney> {
                 case "startDate" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("journeyStart")) :
                         criteriaBuilder.desc(root.get("journeyStart")));
                 case "lastInteraction" -> {
-                    final Date MIN_DATE = new Date(0L);
-                    final Date MAX_DATE = new Date(4000, 0, 0);
+                    final Date minDate = new Date(0L);
+                    final Date maxDate = new Date(4000, 0, 0);
 
                     Order lastInteractionOrder = asc ?
-                            criteriaBuilder.asc(criteriaBuilder.coalesce(root.get("lastInteraction"), MAX_DATE)) :
-                            criteriaBuilder.desc(criteriaBuilder.coalesce(root.get("lastInteraction"), MIN_DATE));
+                            criteriaBuilder.asc(criteriaBuilder.coalesce(root.get("lastInteraction"), maxDate)) :
+                            criteriaBuilder.desc(criteriaBuilder.coalesce(root.get("lastInteraction"), minDate));
                     query.orderBy(lastInteractionOrder);
                 }
                 default -> throw new IllegalArgumentException("Sort not supported");

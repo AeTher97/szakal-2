@@ -41,19 +41,23 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
-    public CompanyDetailsDTO modifyCompany(@PathVariable("id") UUID id, @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
+    public CompanyDetailsDTO modifyCompany(@PathVariable("id") UUID id,
+                                           @RequestBody @Valid CompanyModificationDTO companyModificationDTO) {
         return CompanyDetailsDTO.fromCompany(companyService.updateCompany(id, companyModificationDTO));
     }
 
     @PutMapping("/{id}/contactPerson")
     @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
-    public CompanyDetailsDTO addContactPerson(@PathVariable("id") UUID id, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
+    public CompanyDetailsDTO addContactPerson(@PathVariable("id") UUID id,
+                                              @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
         return CompanyDetailsDTO.fromCompany(companyService.addContactPerson(id, contactPersonCreationDTO));
     }
 
     @PutMapping("/{companyId}/contactPerson/{contactPersonId}")
     @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
-    public Company modifyContactPerson(@PathVariable("companyId") UUID companyId, @PathVariable("contactPersonId") UUID contactPersonId, @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
+    public Company modifyContactPerson(@PathVariable("companyId") UUID companyId,
+                                       @PathVariable("contactPersonId") UUID contactPersonId,
+                                       @RequestBody @Valid ContactPersonCreationDTO contactPersonCreationDTO) {
         return companyService.modifyContactPerson(companyId, contactPersonId, contactPersonCreationDTO);
     }
 
@@ -70,7 +74,7 @@ public class CompanyController {
                                                 @RequestParam(required = false) ContactStatus contactStatus,
                                                 @RequestParam(required = false) String category,
                                                 @RequestParam(required = false) String status,
-                                                @RequestParam(required = false) boolean hasAlumni,
+                                                @RequestParam(required = false) Boolean hasAlumni,
                                                 @RequestParam(required = false) String alumniDescription,
                                                 @RequestParam(required = false) String committee,
                                                 @RequestParam(required = false) String campaignName,

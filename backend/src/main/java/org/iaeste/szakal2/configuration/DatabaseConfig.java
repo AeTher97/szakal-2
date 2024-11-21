@@ -14,12 +14,6 @@ import java.net.URISyntaxException;
 @EnableConfigurationProperties(DatabaseProperties.class)
 public class DatabaseConfig {
 
-    private final ApplicationContext applicationContext;
-
-    public DatabaseConfig(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     @Bean
     public DataSource dataSource(DatabaseProperties databaseProperties) throws URISyntaxException {
         String dbUrl;
@@ -36,7 +30,7 @@ public class DatabaseConfig {
             password = databaseProperties.getPassword();
         }
 
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url(dbUrl);
         dataSourceBuilder.username(username);

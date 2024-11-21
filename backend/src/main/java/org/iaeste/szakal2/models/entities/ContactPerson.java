@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -17,9 +16,7 @@ import java.util.UUID;
 public class ContactPerson {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Setter
     @ManyToOne
@@ -37,6 +34,7 @@ public class ContactPerson {
     @Setter
     private String phone;
     @Setter
+    @Column(length = 4000)
     private String comment;
     @Setter
     private boolean isAlumni;

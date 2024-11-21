@@ -30,14 +30,6 @@ public class ExceptionHandlingController {
                 .body(new ErrorResponse(e.getMessage()));
     }
 
-//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-//    private ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException e){
-//        log.error(e.getMessage());
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON)
-//                .body(new ErrorResponse(e.getMessage()));
-//    }
-
     @ExceptionHandler(value = IllegalStateException.class)
     private ResponseEntity<Object> handleIllegalStateException(IllegalStateException e) {
         log.error(e.getMessage());

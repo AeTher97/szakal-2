@@ -43,7 +43,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Page<CompanyCategory> getCategories(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+    public Page<CompanyCategory> getCategories(@RequestParam(defaultValue = "10") int pageSize,
+                                               @RequestParam int pageNumber) {
         return categoryService.getCategories(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

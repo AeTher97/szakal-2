@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 @Log4j2
 public class UsernamePasswordFilter extends UsernamePasswordAuthenticationFilter {
@@ -37,11 +36,11 @@ public class UsernamePasswordFilter extends UsernamePasswordAuthenticationFilter
         String email = request.getParameter(getUsernameParameter());
         String password = request.getParameter(getPasswordParameter());
 
-        if (StringUtils.isEmpty(email)) {
+        if (email.isEmpty()) {
             throw new AuthenticationCredentialsNotFoundException("Username field not found");
         }
 
-        if (StringUtils.isEmpty(password)) {
+        if (password.isEmpty()) {
             throw new AuthenticationCredentialsNotFoundException("Password not found");
         }
 
