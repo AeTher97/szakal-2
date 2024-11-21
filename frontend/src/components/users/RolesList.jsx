@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Card, CardContent, CardOverflow, Chip, CircularProgress, Divider, Typography} from "@mui/joy";
 import {uuidToColor} from "../../utils/ColorForUUID";
-import LinkWithRouter from "../../utils/LinkWithRouter";
+import LinkWithRouter from "../misc/LinkWithRouter";
 import {useRolesList} from "../../data/RolesData";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AddRoleDialog from "./roles/AddRoleDialog";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {ROLE_MODIFICATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../utils/AccessRightsList";
 
 const RolesList = () => {
 

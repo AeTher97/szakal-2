@@ -96,7 +96,7 @@ public class CompanyController {
                         .contactStatus(contactStatus)
                         .campaign(campaign)
                         .status(status)
-                        .hasAlumni(hasAlumni)
+                        .hasAlumni(hasAlumni != null && hasAlumni)
                         .alumniDescription(alumniDescription)
                         .campaignName(campaignName)
                         .committee(committee)

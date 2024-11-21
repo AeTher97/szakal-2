@@ -1,236 +1,149 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionGroup,
-    AccordionSummary,
-    FormControl,
-    FormLabel,
-    Input,
-    LinearProgress,
-    Select,
-    Skeleton,
-    Typography
-} from "@mui/joy";
-import Option from "@mui/joy/Option";
-import SearchIcon from "@mui/icons-material/Search";
-import React, {useEffect, useState} from "react";
-import TabHeader from "../main/TabHeader";
-import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
+import React from 'react';
+import {Link, Sheet, Table, Typography} from "@mui/joy";
+import LinkWithRouter from "../misc/LinkWithRouter";
+import {useMobileSize} from "../../utils/MediaQuery";
+import {contactStatusUtils} from "../../utils/ContactStatusUtils";
+import {formatLocalDateTime} from "../../utils/DateUtils";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+
 import Button from "@mui/joy/Button";
-import AddIcon from "@mui/icons-material/Add";
-import CompanyTable from "./CompanyTable";
-import Pagination from "../misc/Pagination";
-import AddCompanyDialog from "./AddCompanyDialog";
-import {useMobileSize} from "../../utils/SizeQuery";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {useSelector} from "react-redux";
-import {useCategories} from "../../data/CategoriesData";
-import {useCompanyListWithCampaign} from "../../data/CompaniesData";
-import {useSearchWithPagination} from "../../utils/SearchHook";
 
-const NAME = "name";
-const CATEGORY = "category";
-const STATUS = "status";
-const HAS_ALUMNI = "hasAlumni";
-const ALUMNI_DESCRIPTION = "alumniDescription";
-const COMMITTEE = "committee";
-const CAMPAIGN_NAME = "campaignName";
-const SORT = "sort";
-const PAGE_SIZE = "pageSize";
+export const itemsPerPageValues = [10, 20, 50];
 
-const CompanyList = () => {
-
+const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
 
     const mobile = useMobileSize();
-    const {hasRight} = useAccessRightsHelper();
-    const {currentCampaign} = useSelector(state => state.campaigns);
-    const [addCompanyOpen, setAddCompanyOpen] = useState(false);
 
-    const {
-        search,
-        searchNotSubmittedValue,
-        searchLoaded,
-        currentPage,
-        updateSearch,
-        updateSort,
-        clearSort,
-        applySearch,
-        updateCurrentPage,
-        updatePageNumber
-    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT, PAGE_SIZE],
-        [{name: SORT, value: "name,ASC"}, {name: PAGE_SIZE, value: 10}]);
+    const sorted = search && search.sort;
+    const directionAscending = sorted && search.sort.includes("ASC");
 
-    const {categories} = useCategories(searchLoaded);
-    const {companies, loading, pageNumber, totalCount, addCompany}
-        = useCompanyListWithCampaign(
-        currentCampaign,
-        currentPage - 1,
-        search,
-        [searchLoaded, (currentCampaign !== '') ? true : null]
-    );
+    companies = companies.sort((a, b) => {
+        if (a.name < b.name) {
+            return directionAscending ? -1 : 1;
+        } else if (a.name > b.name) {
+            return directionAscending ? 1 : -1
+        } else {
+            return 0;
+        }
+    })
 
-    useEffect(() => {
-        updatePageNumber(pageNumber);
-    }, [loading]);
-
-    const renderFilters = () => {
-        return <form onSubmit={e => {
-            e.preventDefault();
-            applySearch();
-        }} style={{
-            marginBottom: 5,
-            marginTop: 10,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 15,
-            alignItems: "flex-end"
-        }}>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>Szukaj firmy</FormLabel>
-                <Input data-testid="company-search-name"
-                       value={searchNotSubmittedValue.name || ""}
-                       onChange={(e) => {
-                           updateSearch(NAME, e.target.value)
-                       }}
-                       size="sm" placeholder="Szukaj"
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            {categories &&
-                <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                    <FormLabel>
-                        Kategoria
-                    </FormLabel>
-                    <Select data-testid="company-search-category"
-                            value={searchNotSubmittedValue.category || ""} style={{minWidth: 120}}
-                            onChange={(e, value) => {
-                                updateSearch(CATEGORY, value);
-                            }}>
-                        {categories.map(category => {
-                            return <Option data-testid={`company-search-category-${category.name}`}
-                                           value={category.name} key={category.id}>{category.name}</Option>
-                        })}
-                        <Option data-testid={`company-search-category-Wszystkie`} value={""}>Wszystkie</Option>
-                    </Select>
-                </FormControl>
-            }
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Status
-                </FormLabel>
-                <Select data-testid="company-search-status"
-                        value={searchNotSubmittedValue.status || ""} style={{minWidth: 120}}
-                        onChange={(e, value) => {
-                            updateSearch(STATUS, value);
-                        }}>
-                    <Option data-testid="company-search-status-free" value={"free"}>Wolna</Option>
-                    <Option data-testid="company-search-status-taken" value={"taken"}>Zajęta</Option>
-                    <Option data-testid="company-search-status-all" value={""}>Wszystkie</Option>
-                </Select>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Posiada alumna
-                </FormLabel>
-                <Select data-testid="company-search-has-alumni"
-                        value={!searchNotSubmittedValue.hasAlumni ? "" : searchNotSubmittedValue.hasAlumni}
-                        style={{minWidth: 120}}
-                        onChange={(e, value) => {
-                            updateSearch(HAS_ALUMNI, value);
-                        }}>
-                    <Option data-testid="company-search-has-alumni-all" value={""}>Tak/Nie</Option>
-                    <Option data-testid="company-search-has-alumni-yes" value={true}>Tak</Option>
-                </Select>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Opis alumna
-                </FormLabel>
-                <Input data-testid="company-search-alumni-description"
-                       value={searchNotSubmittedValue.alumniDescription || ""}
-                       style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           updateSearch(ALUMNI_DESCRIPTION, e.target.value);
-                       }} placeholder={"Szukaj"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Komitet alumna
-                </FormLabel>
-                <Input data-testid="company-search-alumni-committee"
-                       value={searchNotSubmittedValue.committee || ""}
-                       style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           updateSearch(COMMITTEE, e.target.value)
-                       }} placeholder={"Komitet"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Akcja
-                </FormLabel>
-                <Input data-testid="company-search-campaign"
-                       value={searchNotSubmittedValue.campaignName || ""}
-                       style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           updateSearch(CAMPAIGN_NAME, e.target.value)
-                       }} placeholder={"Akcja"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <div>
-                <Button data-testid="company-search-category-button" size={"sm"} type={"submit"}>Szukaj</Button>
-            </div>
-        </form>
-    }
 
     return (
-        <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 10}}>
-            <TabHeader>
-                <Typography level="h2">Firmy</Typography>
-                <div>
-                    {hasRight(COMPANY_MODIFICATION) && <Button onClick={() => {
-                        setAddCompanyOpen(true)
-                    }}><AddIcon/>Dodaj</Button>}
-                </div>
-            </TabHeader>
+        <Sheet sx={{
+            borderRadius: 'sm',
+            overflow: 'auto',
+            display: "flex",
+        }}>
+            <Table
+                variant={"outlined"}
+                stickyHeader
+                hoverRow
+                sx={{
+                    '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
+                    '--Table-headerUnderlineThickness': '1px',
+                    '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
+                    '--TableCell-paddingY': '4px',
+                    '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
+                }}>
+                <thead>
+                <tr>
+                    <th style={{padding: "8px 6px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button variant={"plain"} size={"sm"} style={sorted ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("name", directionAscending ? "DESC" : "ASC")}
+                                    data-testid={"companies-sort-by-name"}>
+                                Firma {sorted && directionAscending && <KeyboardArrowUp/>}
+                                {sorted && !directionAscending && <KeyboardArrowDown/>}</Button>
+                        </div>
+                    </th>
+                    <th style={{padding: "12px 6px"}}>
+                        <Typography>Obecna akcja</Typography>
+                    </th>
+                    {!mobile && <th style={{padding: "12px 6px"}}>
+                        <Typography>Kategorie</Typography>
+                    </th>}
+                    {!mobile && <th style={{padding: "12px 6px"}}>
+                        <Typography>Historia kontaktu</Typography>
+                    </th>}
+                </tr>
+                </thead>
+                <tbody data-testid="company-table">
+                {companies && companies.map((company, i) => {
+                        const testId = `company-${i}`;
+                        return <tr key={company.id} data-testid={testId}>
+                            <td>
+                                <div style={{display: "flex", flexDirection: "column"}}>
+                                    <LinkWithRouter style={{wordBreak: "break-word"}}
+                                                    to={`${company.id}${window.location.search}`}>{company.name}</LinkWithRouter>
+                                    <Typography style={{wordBreak: "break-word"}}>{company.www}</Typography>
+                                    <Typography style={{wordBreak: "break-word"}}>{company.email}</Typography>
+                                </div>
+                            </td>
+                            <td>{company.currentJourney ? <div>
+                                    <LinkWithRouter to={`/secure/journeys/${company.currentJourney.id}`}>
+                                        <Typography style={{wordBreak: "break-word"}}>
+                                            {contactStatusUtils(company.currentJourney.status)}
+                                        </Typography>
+                                    </LinkWithRouter>
+                                    <Typography style={{wordBreak: "break-word"}}>{company.currentJourney.user ?
+                                        `${company.currentJourney.user.name} ${company.currentJourney.user.surname}`
+                                        : "Brak przypisanego użytkownika"}
+                                    </Typography>
+                                    <Typography>{formatLocalDateTime(company.currentJourney.journeyStart)}</Typography>
+                                </div>
+                                : <Typography>Wolna</Typography>}</td>
+                            {!mobile && <td>
+                                {company.categories.map((category, i) => {
+                                    return <Typography
+                                        key={category.id}>{category.name}{i !== company.categories.length - 1 ? "," : ""}</Typography>
+                                })}
+                            </td>}
+                            {!mobile && <td>
+                                {company.contactJourneys && company.contactJourneys.map(journey => {
+                                    return <div key={journey.id}>
+                                        <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
+                                            <Typography key={journey.campaignName}>
+                                                {journey.campaignName}
+                                            </Typography>
+                                        </LinkWithRouter>
+                                        <Typography>
+                                            {contactStatusUtils(journey.status)}
+                                        </Typography>
+                                    </div>
+                                })}
+                                {(!company.contactJourneys || company.contactJourneys.length === 0) &&
+                                    <Typography>Nie kontaktowano się z firmą</Typography>}
+                            </td>}
+                        </tr>
+                    }
+                )}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        Liczba elementów: {numberOfItems}
+                    </td>
+                    {!mobile && <td/>}
+                    {!mobile && <td/>}
+                    <td>
+                        <div style={{display: "flex", gap: 5}}>
+                            Elementów na stronę:
+                            {Array(3).fill(0).map((_, i) => {
+                                return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
+                                             key={i}
+                                             onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                                             underline={(itemsPerPageValues[i] === itemsPerPage || itemsPerPageValues[i] === Number(itemsPerPage))
+                                                 ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
+                            })}
 
-
-            {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
-                borderRadius: 'sm', marginBottom: 1
-            }}>
-                <Accordion>
-                    <AccordionSummary>Filtry</AccordionSummary>
-                    <AccordionDetails>
-                        {renderFilters()}
-                    </AccordionDetails>
-                </Accordion>
-            </AccordionGroup> : renderFilters()}
-
-            <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
-
-            {!loading &&
-                <CompanyTable companies={companies} updateSort={updateSort} search={search} clearSort={clearSort}
-                              numberOfItems={totalCount} setItemsPerPage={(count) => {
-                    updateSearch(PAGE_SIZE, count);
-                }} itemsPerPage={search.pageSize}/>}
-
-            {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
-                {Array(10).fill(0).map((v, i) => {
-                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
-                })}
-            </div>}
-
-            {pageNumber > 1 && <Pagination currentPage={currentPage} numberOfPages={pageNumber}
-                                           firstAndLast={!mobile} concise={mobile}
-                                           margin={"10px 0 10px 0"}
-                                           setPage={pageNumber => updateCurrentPage(pageNumber)}/>}
-
-
-            <AddCompanyDialog
-                open={addCompanyOpen}
-                close={() => setAddCompanyOpen(false)}
-                addCompany={addCompany}/>
-        </div>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </Table>
+        </Sheet>
     );
 };
 

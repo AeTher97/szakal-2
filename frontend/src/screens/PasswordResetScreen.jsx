@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Card, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import InputWithLimit from "../utils/InputWithLimit";
+import InputWithLimit from "../components/misc/InputWithLimit";
 import {usePasswordReset} from "../data/AuthenticationData";
 
 const PasswordResetScreen = () => {

@@ -26,3 +26,6 @@ yarn-error.log*
 .idea
 *.iws
 *.ipr
+
+### Cypress debug files ###
+/cypress/screenshots

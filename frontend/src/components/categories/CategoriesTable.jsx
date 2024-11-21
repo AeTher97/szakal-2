@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Link, Sheet, Table, Typography} from "@mui/joy";
 import CategoryDialog from "./CategoryDialog";
-import {CATEGORY_MODIFICATION} from "../../utils/AccessRights";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
+import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 
 const CategoriesTable = ({categories, modifyCategory}) => {
 
@@ -41,7 +41,7 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {categories && categories.map(category =>
+                {categories?.map(category =>
                     <tr key={category.id}>
                         <td>{category.name}</td>
                         <td>{hasRight(CATEGORY_MODIFICATION) &&

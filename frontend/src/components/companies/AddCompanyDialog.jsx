@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {DialogTitle, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import CompanyCategories from "./CompanyCategories";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {CATEGORY_MODIFICATION} from "../../utils/AccessRights";
-import InputWithLimit from "../../utils/InputWithLimit";
+import CompanyCategories from "./cards/CompanyCategories";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
+import InputWithLimit from "../misc/InputWithLimit";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
 

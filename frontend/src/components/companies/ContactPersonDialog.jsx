@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Checkbox, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import InputWithLimit, {TextAreaWithLimit} from "../../utils/InputWithLimit";
+import InputWithLimit, {TextAreaWithLimit} from "../misc/InputWithLimit";
 
 const ContactPersonDialog = ({
                                  open, close, addContactPerson, modifyContactPerson,

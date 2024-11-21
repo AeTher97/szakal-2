@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Card, CardContent, CardOverflow, CircularProgress, Divider, IconButton, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import AddIcon from "@mui/icons-material/Add";
-import LinkWithRouter from "../../utils/LinkWithRouter";
+import LinkWithRouter from "../misc/LinkWithRouter";
 import {useGroupsList} from "../../data/GroupsData";
 import AddGroupDialog from "./groups/AddGroupDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {useConfirmationDialog} from "../misc/ConfirmationDialog";
 
 const GroupList = () => {
 

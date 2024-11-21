@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, CardContent, Typography} from "@mui/joy";
-import {useMediumSize, useMobileSize} from "../../utils/SizeQuery";
+import {useMediumSize, useMobileSize} from "../../utils/MediaQuery";
 import {useSelector} from "react-redux";
 
 const LogoCard = () => {

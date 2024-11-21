@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
+import {addKnownItem, removeKnownItem} from "../../redux/MiscActions";
 import {useIsUser, useUserData} from "../../data/UsersData";
 import {Typography} from "@mui/joy";
-import TabHeader from "../main/TabHeader";
+import TabHeader from "../misc/TabHeader";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import BasicUserInfo from "./BasicUserInfo";
 import UserRoles from "./UserRoles";
 import UserManagement from "./UserManagement";
 import Button from "@mui/joy/Button";
 import PasswordChangeDialog from "./PasswordChangeDialog";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRights";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRightsList";
+import {useMobileSize} from "../../utils/MediaQuery";
 import {isDevEnv, setDefaultTitle} from "../../App";
 
 const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i

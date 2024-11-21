@@ -1,10 +1,10 @@
 import React from 'react';
 import {Card, CardActions, CardContent, Divider, Switch, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useMobileSize} from "../../utils/SizeQuery";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRights";
-import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
+import {useMobileSize} from "../../utils/MediaQuery";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRightsList";
+import {useConfirmationDialog} from "../misc/ConfirmationDialog";
 import {useNavigate} from "react-router-dom";
 
 const UserManagement = ({

@@ -57,7 +57,7 @@ export const useGroup = (id) => {
 
 export const useJoinGroup = () => {
 
-    const {post, loading} = usePost(`/groups/join`,
+    const {post} = usePost(`/groups/join`,
         (data) => {});
 
     return (entryCode) => {

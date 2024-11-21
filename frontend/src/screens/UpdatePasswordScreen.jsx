@@ -12,7 +12,7 @@ const UpdatePasswordScreen = () => {
     const [repeatPassword, setRepeatPassword] = useState("")
     const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
     const [passwordTooShort, setPasswordTooShort] = useState(false);
-    const [search, setSearch] = useSearchParams();
+    const [search] = useSearchParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {updatePassword} = usePasswordReset();
@@ -22,15 +22,16 @@ const UpdatePasswordScreen = () => {
         <div style={{display: "flex", justifyContent: "center", padding: 20}}>
             <Card style={{flex: 1, maxWidth: 400}}>
                 <Typography>Utwórz nowe hasło</Typography>
-                <form onSubmit={(e) => {
+                <form onSubmit={e => {
                     e.preventDefault();
                     if (passwordTooShort || passwordsDontMatch) {
                         return
                     }
-                    updatePassword(password, repeatPassword, search.get("code")).then((e) => {
+                    updatePassword(password, repeatPassword, search.get("code")).then(() => {
                             navigate("/login");
                             dispatch(showSuccess("Hasło zostało zmienione"));
-                    }).catch(e => {})
+                    }).catch(() => {
+                    })
                 }}>
                     <Stack spacing={1}>
                         <FormControl error={passwordTooShort}>

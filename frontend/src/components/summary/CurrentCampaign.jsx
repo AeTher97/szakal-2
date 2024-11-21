@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CircularProgress, Divider, Typography} from "@mui/joy";
 import {useSelector} from "react-redux";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useMobileSize} from "../../utils/MediaQuery";
 import {useCampaign} from "../../data/CampaignData";
 import {formatLocalDate} from "../../utils/DateUtils";
 

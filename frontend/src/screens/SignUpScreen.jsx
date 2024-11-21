@@ -1,6 +1,6 @@
 import React from 'react';
-import {useMobileSize} from "../utils/SizeQuery";
-import SignUpForm from "../components/SignUpForm";
+import {useMobileSize} from "../utils/MediaQuery";
+import SignUpForm from "../components/auth/SignUpForm";
 import {useSelector} from "react-redux";
 
 const SignUpScreen = () => {

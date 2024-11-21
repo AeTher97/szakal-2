@@ -1,18 +1,6 @@
 import React, {useState} from 'react';
-import {
-    Autocomplete, AutocompleteOption,
-    createFilterOptions,
-    DialogTitle,
-    FormControl,
-    FormLabel, ListItemContent, ListItemDecorator,
-    Modal,
-    ModalDialog,
-    Stack, Typography
-} from "@mui/joy";
+import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useUsersSearch} from "../../data/UsersData";
-import {useSelector} from "react-redux";
-import UserAvatar from "../UserAvatar";
 import UserAutocomplete from "../misc/UserAutocomplete";
 
 const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, companyId, navigate, fromJourneyPage}) => {

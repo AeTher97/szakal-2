@@ -1,30 +1,18 @@
 import './App.css';
 import '@fontsource/inter';
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {CssVarsProvider, Snackbar, useColorScheme} from "@mui/joy";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {stores} from "./redux/Stores";
-import AuthProvider from "./utils/AuthProvider";
-import {RouterWrapper} from "./navigation/MainNavigation";
+import AuthProvider from "./components/auth/AuthProvider";
+import {MainNavigationRoutes} from "./components/navigation/MainNavigationRoutes";
 import {closeAlert} from "./redux/AlertActions";
-import {loadFavouriteJourneysAction} from "./redux/ReducerActions";
-import {decodeToken, isTokenOutdated} from "./utils/TokenUtils";
 
-const AppWithoutCss = () => {
+const AppWithAuth = () => {
 
-    const [loadedFavouriteJourneys, setLoadedFavouriteJourneys] = useState(false);
     const {theme} = useSelector(state => state.theme);
-    const {isAuthenticated, accessToken} = useSelector(state => state.auth)
     const {setMode} = useColorScheme();
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (isAuthenticated && accessToken && !isTokenOutdated(decodeToken(accessToken).expirationTime) && !loadedFavouriteJourneys) {
-            dispatch(loadFavouriteJourneysAction(accessToken))
-                .then(() => setLoadedFavouriteJourneys(true));
-        }
-    }, [isAuthenticated, accessToken])
 
     useEffect(() => {
         setMode(theme)
@@ -46,18 +34,18 @@ const AppWithoutCss = () => {
             fontSize: "calc(10px + 2vmin)",
             color: "white"
         }}>
-            <RouterWrapper/>
+            <MainNavigationRoutes/>
         </main>
     </>
 }
 
-const AppWithoutRedux = () => {
+const AppWithCss = () => {
     const dispatch = useDispatch();
     const {severity, message, isOpen} = useSelector(state => state.alert);
 
     return (
         <CssVarsProvider>
-            <AppWithoutCss/>
+            <AppWithAuth/>
             {severity && <Snackbar open={isOpen} autoHideDuration={3000} color={severity} onClose={() => {
                 dispatch(closeAlert())
             }}>
@@ -71,7 +59,7 @@ function App() {
 
     return (
         <Provider store={stores}>
-            <AppWithoutRedux/>
+            <AppWithCss/>
         </Provider>
     );
 }

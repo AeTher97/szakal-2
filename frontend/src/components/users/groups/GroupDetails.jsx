@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addKnownItem, removeKnownItem } from "../../../redux/ReducerActions";
-import TabHeader from "../../main/TabHeader";
-import { LinearProgress, Typography } from "@mui/joy";
-import { useGroup } from "../../../data/GroupsData";
+import React, {useEffect, useState} from 'react';
+import {useLocation} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {addKnownItem, removeKnownItem} from "../../../redux/MiscActions";
+import TabHeader from "../../misc/TabHeader";
+import {LinearProgress, Typography} from "@mui/joy";
+import {useGroup} from "../../../data/GroupsData";
 import GroupUsers from "./GroupUsers";
 import GroupCampaigns from "./GroupCampaigns";
-import JoinGroupDialog from './JoinGroupDialog';
 
 const GroupDetails = () => {
 

@@ -17,7 +17,7 @@ import Button from "@mui/joy/Button";
 import Pagination from "../../misc/Pagination";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserAutocomplete from "../../misc/UserAutocomplete";
-import UserAvatar from "../../UserAvatar";
+import UserAvatar from "../../misc/UserAvatar";
 
 const PAGE_SIZE = 10;
 

@@ -3,7 +3,7 @@ import {DialogTitle, FormLabel, Input, Modal, ModalDialog} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useJoinGroup} from '../../../data/GroupsData';
 import {useDispatch, useSelector} from "react-redux";
-import {reloadAction} from "../../../redux/ReducerActions";
+import {reloadAction} from "../../../redux/MiscActions";
 import {showSuccess} from "../../../redux/AlertActions";
 
 const CODE_LENGTH = 7;

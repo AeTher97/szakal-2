@@ -38,7 +38,7 @@ const CampaignsTable = ({campaigns, editCampaign}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {campaigns && campaigns.map(campaign =>
+                {campaigns?.map(campaign =>
                     <tr key={campaign.id}>
                         <td>{campaign.name}</td>
                         <td>{formatLocalDate(campaign.startDate)}</td>

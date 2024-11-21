@@ -7,7 +7,7 @@ import {
     ListItemDecorator,
     Typography
 } from "@mui/joy";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "./UserAvatar";
 import {useUsersSearch} from "../../data/UsersData";
 import {useSelector} from "react-redux";
 

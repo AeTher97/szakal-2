@@ -3,7 +3,7 @@ import {Card, CardActions, CardContent, Chip, ChipDelete, Divider, Typography} f
 import {uuidToColor} from "../../utils/ColorForUUID";
 import Button from "@mui/joy/Button";
 import {useRolesList} from "../../data/RolesData";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useMobileSize} from "../../utils/MediaQuery";
 
 const UserRoles = ({localUser, setLocalUser, updateUserRoles, updateRolesLoading}) => {
 

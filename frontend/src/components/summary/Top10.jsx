@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CircularProgress, Divider, Typography} from "@mui/joy";
 import {useTop10} from "../../data/JourneyData";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useMobileSize} from "../../utils/MediaQuery";
 import {useSelector} from "react-redux";
 
 const Top10 = () => {

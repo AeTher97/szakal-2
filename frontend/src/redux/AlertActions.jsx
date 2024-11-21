@@ -1,4 +1,4 @@
-import {CLOSE_ALERT, SHOW_ERROR, SHOW_INFORMATION, SHOW_SUCCESS, SHOW_WARNING} from "./AlertReducer";
+import {CLOSE_ALERT, SHOW_ERROR, SHOW_INFORMATION, SHOW_SUCCESS, SHOW_WARNING} from "./AlertStore";
 
 
 export const showSuccess = (message) => dispatch => {

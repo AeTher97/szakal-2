@@ -1,0 +1,33 @@
+import React from 'react';
+import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
+import LinkWithRouter from "../../misc/LinkWithRouter";
+import {useMobileSize} from "../../../utils/MediaQuery";
+import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
+
+const CompanyJourneys = ({localCompany}) => {
+
+    const mobile = useMobileSize();
+
+    return (
+        <Card sx={{flex: 1, minWidth: 250}} variant={"soft"}>
+            <CardOverflow>
+                <CardContent>
+                    <Typography level={"title-md"}>Kontakty</Typography>
+                    <Typography level={"body-sm"}>Historia poprzednich kontaktów</Typography>
+                </CardContent>
+                <Divider inset={"context"}/>
+                <CardContent>
+                    {localCompany.contactJourneys.map((journey, i) => <div key={journey.id}
+                        style={{display: "flex", flexDirection: "column"}}>
+                        <LinkWithRouter
+                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {contactStatusUtils(journey.contactStatus)}</LinkWithRouter>
+                        <Typography>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
+                        {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}
+                    </div>)}
+                </CardContent>
+            </CardOverflow>
+        </Card>
+    );
+};
+
+export default CompanyJourneys;

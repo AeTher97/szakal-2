@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Card, CardActions, CardContent, Divider, FormLabel, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useMobileSize} from "../../utils/MediaQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
-import InputWithLimit from "../../utils/InputWithLimit";
+import InputWithLimit from "../misc/InputWithLimit";
 import {uuidToColor} from "../../utils/ColorForUUID";
 
 const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {

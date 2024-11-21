@@ -1,176 +1,205 @@
-import React, {useEffect} from 'react';
-import TabHeader from "../main/TabHeader";
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionGroup,
-    AccordionSummary,
-    FormControl,
-    FormLabel,
-    Input,
-    LinearProgress,
-    Select,
-    Skeleton,
-    Typography
-} from "@mui/joy";
-import JourneyTable from "./JourneyTable";
-import Pagination from "../misc/Pagination";
-import {useMobileSize} from "../../utils/SizeQuery";
-import {useCurrentCampaignJourneyList} from "../../data/JourneyData";
-import SearchIcon from "@mui/icons-material/Search";
-import Option from "@mui/joy/Option";
-import {contactStatusOptions} from "./JourneyDetails";
-import PersonIcon from "@mui/icons-material/Person";
+import React from 'react';
+import {IconButton, Link, Sheet, Table, Typography} from "@mui/joy";
+import LinkWithRouter from "../misc/LinkWithRouter";
+import {contactStatusUtils} from "../../utils/ContactStatusUtils";
 import Button from "@mui/joy/Button";
-import {useSearchWithPagination} from "../../utils/SearchHook";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import ClearIcon from "@mui/icons-material/Clear";
+import {formatLocalDate} from "../../utils/DateUtils";
+import {useMediumSize, useMobileSize} from "../../utils/MediaQuery";
+import {itemsPerPageValues} from "../companies/CompanyList";
 
-const COMPANY_NAME = "companyName";
-const STATUS = "status";
-const DETAILED_STATUS = "detailedStatus";
-const USER = "user";
-const CURRENT_PAGE = "currentPage";
-const PAGE_SIZE = "pageSize";
-const EVENT_TEXT = "eventText";
-const SORT = "sort";
+const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
 
-const JourneyList = () => {
+    const mediumSize = useMediumSize();
     const mobile = useMobileSize();
-    const {
-        search,
-        searchNotSubmittedValue,
-        searchLoaded,
-        currentPage,
-        updateSearch,
-        updateSort,
-        clearSort,
-        applySearch,
-        updateCurrentPage,
-        updatePageNumber
-    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT, PAGE_SIZE],
-        [{name: SORT, value: "companyName,ASC"}, {name: PAGE_SIZE, value: 10}]);
 
-    const {journeys, loading, totalCount, pagesNumber}
-        = useCurrentCampaignJourneyList(currentPage - 1, search, searchLoaded);
+    const sortedByCompany = search && search.sort && search.sort.includes("companyName");
+    const sortedByUser = search && search.sort && search.sort.includes("user");
+    const sortedByStatus = search && search.sort && search.sort.includes("detailedStatus");
+    const sortedByStartDate = search && search.sort && search.sort.includes("startDate");
+    const sortedByLastInteractionDate = search && search.sort && search.sort.includes("lastInteraction");
 
-    useEffect(() => {
-        updatePageNumber(pagesNumber);
-    }, [loading]);
+    const directionAscending = search && search.sort && search.sort.includes("ASC");
 
-    const renderFilters = () => {
-        return <form onSubmit={e => {
-            e.preventDefault();
-            applySearch();
-        }} style={{
-            marginBottom: 5,
-            marginTop: 10,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 15,
-            alignItems: "flex-end"
-        }}>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>Szukaj firmy</FormLabel>
-                <Input data-testid="journey-search-company-name"
-                       value={searchNotSubmittedValue.companyName || ""}
-                       onChange={(e) => {
-                           updateSearch(COMPANY_NAME, e.target.value);
-                       }}
-                       size="sm" placeholder="Szukaj"
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>
-                    Statusz
-                </FormLabel>
-                <Select data-testid="journey-search-status"
-                        value={searchNotSubmittedValue.status || ""}
-                        onChange={(e, value) => {
-                            updateSearch(STATUS, value);
-                        }}>
-                    <Option data-testid="journey-search-status-in-progress" value={"in-progress"}>W trakcie</Option>
-                    <Option data-testid="journey-search-status-finished" value={"finished"}>Zakończone</Option>
-                    <Option data-testid="journey-search-status-all" value={""}>Wszystkie</Option>
-                </Select>
-            </FormControl>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>
-                    Dokładny status
-                </FormLabel>
-                <Select data-testid="journey-search-detailed-status"
-                        value={searchNotSubmittedValue.detailedStatus || ""}
-                        onChange={(e, value) => {
-                            updateSearch(DETAILED_STATUS, value);
-                        }}>
-                    {contactStatusOptions.map(option => {
-                        return <Option data-testid={`journey-search-detailed-status-${option.name}`}
-                                       key={option.name} value={option.name}>
-                            {option.text}
-                        </Option>
-                    })}
-                    <Option data-testid={`journey-search-detailed-status-all`} value={""}>Wszystkie</Option>
-                </Select>
-            </FormControl>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>Użytkownik</FormLabel>
-                <Input data-testid="journey-search-user-name"
-                       value={searchNotSubmittedValue.user || ""}
-                       onChange={(e) => {
-                           updateSearch(USER, e.target.value);
-                       }}
-                       size="sm" placeholder="Szukaj"
-                       startDecorator={<PersonIcon/>}/>
-            </FormControl>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
-                <FormLabel>Wydarzenie kontaktowe</FormLabel>
-                <Input data-testid="journey-search-contact-event-text"
-                       value={searchNotSubmittedValue.eventText || ""}
-                       onChange={(e) => {
-                           updateSearch(EVENT_TEXT, e.target.value);
-                       }}
-                       size="sm" placeholder="Opis"
-                       startDecorator={<PersonIcon/>}/>
-            </FormControl>
-            <div>
-                <Button data-testid="journey-search-button" size={"sm"} type={"submit"}>Szukaj</Button>
-            </div>
-        </form>
+    const getSortingProperty = (journey) => {
+        if (sortedByCompany) {
+            return journey.company.name;
+        } else if (sortedByUser) {
+            if (!journey.user) {
+                return "Z"
+            }
+            return journey.user.surname;
+        } else if (sortedByStatus) {
+            return contactStatusUtils(journey.contactStatus);
+        } else if (sortedByStartDate) {
+            return journey.journeyStart;
+        } else if (sortedByLastInteractionDate) {
+            return journey.lastInteraction ? journey.lastInteraction : (directionAscending ? "4000" : "0");
+        }
     }
 
+    journeys = journeys.sort((a, b) => {
+        if (getSortingProperty(a) > getSortingProperty(b)) {
+            return directionAscending ? 1 : -1;
+        } else if (getSortingProperty(a) < getSortingProperty(b)) {
+            return directionAscending ? -1 : 1;
+        } else {
+            return 0
+        }
+    })
+
     return (
-        <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
-            <TabHeader>
-                <Typography level="h2">Kontakty w obecnej akcji</Typography>
-            </TabHeader>
+        <Sheet sx={{
+            borderRadius: 'sm',
+            overflow: 'auto',
+            display: "flex",
+        }}>
+            <Table
+                variant={"outlined"}
+                stickyHeader
+                hoverRow
+                sx={{
+                    '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
+                    '--Table-headerUnderlineThickness': '1px',
+                    '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
+                    '--TableCell-paddingY': '4px',
+                    '--TableCell-paddingX': '8px',
+                    '--TableCell-height': '0px'
+                }}>
+                <thead>
+                <tr>
+                    <th style={{padding: "8px 6px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button data-testid={"journeys-sort-by-company-name"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByCompany ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("companyName", directionAscending ? "DESC" : "ASC")}>
+                                Firma {sortedByCompany && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByCompany && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByCompany &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>
+                    <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button data-testid={"journeys-sort-by-user-name"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByUser ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("user", directionAscending ? "DESC" : "ASC")}>
+                                Użytkownik {sortedByUser && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByUser && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByUser &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>
+                    {!mobile && <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button data-testid={"journeys-sort-by-start-date"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByUser ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("startDate", directionAscending ? "DESC" : "ASC")}>
+                                Data rozpoczęcia {sortedByStartDate && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByStartDate && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByStartDate &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>}
+                    {!mediumSize && <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button data-testid={"journeys-sort-by-last-interaction-date"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByLastInteractionDate ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("lastInteraction", directionAscending ? "DESC" : "ASC")}>
+                                Ostatnia interakcja {sortedByLastInteractionDate && directionAscending &&
+                                <KeyboardArrowUp/>}
+                                {sortedByLastInteractionDate && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByLastInteractionDate &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>}
+                    <th style={{padding: "8px 0px"}}>
+                        <div style={{display: "flex"}}>
+                            <Button data-testid={"journeys-sort-by-status"}
+                                    variant={"plain"}
+                                    size={"sm"}
+                                    style={sortedByStatus ? {paddingRight: 2} : {}}
+                                    onClick={() => updateSort("detailedStatus", directionAscending ? "DESC" : "ASC")}>
+                                Status {sortedByStatus && directionAscending && <KeyboardArrowUp/>}
+                                {sortedByStatus && !directionAscending && <KeyboardArrowDown/>}</Button>
+                            {sortedByStatus &&
+                                <IconButton color={"warning"} size={"sm"} onClick={clearSort}><ClearIcon/></IconButton>}
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody data-testid={`journey-table`}>
+                {journeys && journeys.map(journey =>
+                    <tr key={journey.id}>
+                        <td>
+                            <LinkWithRouter style={{wordBreak: "break-word"}}
+                                            to={journey.id}
+                                            sx={theme => ({
+                                                color: `${!journey.finished ? theme.vars.palette.primary
+                                                    : theme.vars.palette.primary["600"]}`
+                                            })}
+                            >{journey.company.name}
+                            </LinkWithRouter>
+                        </td>
+                        <td>
+                            <Typography style={{wordBreak: "break-word"}} sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
+                        </td>
+                        {!mobile && <td>
+                            <Typography sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{formatLocalDate(journey.journeyStart)}</Typography>
+                        </td>}
+                        {!mediumSize && <td>
+                            <Typography sx={theme => ({
+                                color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                            })}>{journey.lastInteraction ? formatLocalDate(journey.lastInteraction) : "Brak interakcji"}</Typography>
+                        </td>}
+                        <td><Typography style={{wordBreak: "break-word"}} sx={theme => ({
+                            color: `${!journey.finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
+                        })}>{contactStatusUtils(journey.contactStatus)} {journey.finished ? "(Zakończony)" : ""}
+                        </Typography><
+                        /td>
+                    </tr>
+                )}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        Liczba elementów: {numberOfItems}
+                    </td>
+                    <td/>
+                    {!mobile && <td/>}
+                    {!mediumSize && <td/>}
+                    <td>
+                        <div style={{display: "flex", gap: 5, flexWrap: "wrap"}}>
+                            Elementów na stronę:
+                            {Array(3).fill(0).map((value, i) => {
+                                return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
+                                             key={i}
+                                             onClick={() => setItemsPerPage(itemsPerPageValues[i])}
+                                             underline={(itemsPerPageValues[i] === itemsPerPage ||
+                                                 itemsPerPageValues[i] === Number(itemsPerPage))
+                                                 ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
+                            })}
 
-            {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
-                borderRadius: 'sm', marginBottom: 1
-            }}>
-                <Accordion>
-                    <AccordionSummary>Filtry</AccordionSummary>
-                    <AccordionDetails>
-                        {renderFilters()}
-                    </AccordionDetails>
-                </Accordion>
-            </AccordionGroup> : renderFilters()}
-
-            <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
-
-            {!loading &&
-                <JourneyTable journeys={journeys} search={search} clearSort={clearSort} updateSort={updateSort}
-                              numberOfItems={totalCount} setItemsPerPage={(count) => {
-                    updateSearch(PAGE_SIZE, count);
-                }} itemsPerPage={search.pageSize}/>}
-            {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
-                {Array(10).fill(0).map((value, i) => {
-                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
-                })}
-            </div>}
-            {pagesNumber > 1 &&
-                <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
-                            concise={mobile}
-                            margin={"10px 0 10px 0"}
-                            setPage={(page) => updateCurrentPage(page)}/>}
-        </div>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </Table>
+        </Sheet>
     );
 };
 

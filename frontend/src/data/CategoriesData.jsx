@@ -12,9 +12,10 @@ export const useCategories = (pageNumberLoaded, currentPage = 0) => {
             setPageNumber(data.totalPages)
         },
         [currentPage, reload, pageNumberLoaded], [{name: "pageNumber", value: currentPage},
-            {name: "pageSize", value: 9999}], [pageNumberLoaded])
+            {name: "pageSize", value: 10000}], [pageNumberLoaded])
 
-    const {post} = usePost(`/categories`, (content) => setCategories(current => {
+    const {post} = usePost(`/categories`, (content) =>
+        setCategories(current => {
         return [...current, content]
     }))
 

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from "react-redux";
-import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {JOURNEY_CREATION} from "../../utils/AccessRights";
+import {useConfirmationDialog} from "../misc/ConfirmationDialog";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {JOURNEY_CREATION} from "../../utils/AccessRightsList";
 import Button from "@mui/joy/Button";
 import {ButtonGroup, IconButton, Menu, MenuItem} from "@mui/joy";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";

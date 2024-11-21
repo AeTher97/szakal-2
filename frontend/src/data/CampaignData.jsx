@@ -10,12 +10,12 @@ export const useCampaignsList = (currentPage = 0) => {
             setPageNumber(data.totalPages)
             setLoaded(true);
         },
-        [currentPage], [{name: "pageNumber", value: currentPage}] )
+        [currentPage], [{name: "pageNumber", value: currentPage}])
 
     const {loading: loadingPost, post} = usePost(`/campaigns`,
         (data) => setCampaigns(current => {
-        return [...current, data]
-    }))
+            return [...current, data]
+        }))
 
     const {loading: loadingPut, put} = usePut(`/campaigns`, (data) =>
         setCampaigns(current => {
@@ -39,7 +39,16 @@ export const useCampaignsList = (currentPage = 0) => {
         }, `/campaigns/${id}`)
     }
 
-    return {campaigns, addLoading: loadingPost, addCampaign, modifyCampaign, pageNumber, loading, loaded}
+    return {
+        campaigns,
+        addLoading: loadingPost,
+        updateLoading: loadingPut,
+        addCampaign,
+        modifyCampaign,
+        pageNumber,
+        loading,
+        loaded
+    }
 }
 
 export const useCampaign = (id) => {

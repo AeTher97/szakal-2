@@ -1,11 +1,11 @@
 import React from 'react';
 import {Card, CardActions, CardContent, Chip, ChipDelete, Divider, Typography} from "@mui/joy";
 import {uuidToColor} from "../../../utils/ColorForUUID";
-import {useMobileSize} from "../../../utils/SizeQuery";
+import {useMobileSize} from "../../../utils/MediaQuery";
 import {useAccessRightsList} from "../../../data/UseAccessRightsList";
 import Button from "@mui/joy/Button";
-import {useAccessRightsHelper} from "../../../data/AccessRightsHelper";
-import {ROLE_MODIFICATION} from "../../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../../utils/AccessRightsList";
 
 const RoleAuthorities = ({role, localRole, setLocalRole, updateRole, updateRoleLoading}) => {
 

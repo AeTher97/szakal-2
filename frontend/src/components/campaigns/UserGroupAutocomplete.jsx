@@ -19,7 +19,7 @@ const UserGroupAutocomplete = ({onChange}) => {
 
     const {groups, loading} = useGroupsList();
 
-    const groupsOptions = groups && groups.map((campaign) => {
+    const groupsOptions = groups?.map((campaign) => {
         return {
             label: campaign.name,
             id: campaign.id

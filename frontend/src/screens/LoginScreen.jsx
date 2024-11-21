@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginForm from "../components/LoginForm";
-import {useMobileSize} from "../utils/SizeQuery";
+import LoginForm from "../components/auth/LoginForm";
+import {useMobileSize} from "../utils/MediaQuery";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutAction} from "../redux/ReducerActions";
+import {logoutAction} from "../redux/AuthActions";
 
 const LoginScreen = props => {
 
@@ -23,7 +23,7 @@ const LoginScreen = props => {
             alignItems: "center"
         }}>
             {!isMobile && <div style={{flex: 1, overflow: "hidden", height: "100vh"}}>
-                <img src={"/iaeste.svg"}
+                <img alt={"Iaeste logo"} src={"/iaeste.svg"}
                      style={{
                          opacity: isLightTheme ? "0.1" : "0.3",
                          height: 2500,
@@ -35,7 +35,7 @@ const LoginScreen = props => {
             <div style={{flex: 1}}>
                 <LoginForm redirectBack={(active) => {
                     if (active) {
-                        if (location.state && location.state.from) {
+                        if (location.state?.from) {
                             if (location.state.from === "/secure" || location.state.from === "/") {
                                 navigate("/secure/home")
                             } else {

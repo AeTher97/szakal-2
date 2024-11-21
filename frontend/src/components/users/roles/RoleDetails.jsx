@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useRole} from "../../../data/RolesData";
 import {useLocation} from "react-router-dom";
-import {addKnownItem, removeKnownItem} from "../../../redux/ReducerActions";
+import {addKnownItem, removeKnownItem} from "../../../redux/MiscActions";
 import {useDispatch} from "react-redux";
 import RoleAuthorities from "./RoleAuthorities";
-import TabHeader from "../../main/TabHeader";
+import TabHeader from "../../misc/TabHeader";
 import {Typography} from "@mui/joy";
 import RoleBasicInfo from "./RoleBasicInfo";
 

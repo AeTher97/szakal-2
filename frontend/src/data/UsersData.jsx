@@ -91,6 +91,7 @@ export const useUserData = (id, refresh) => {
         updateUserDetails,
         updateUserDetailsLoading,
         updateProfilePicture,
+        updatePictureLoading,
         deleteNotAcceptedUser
     }
 }

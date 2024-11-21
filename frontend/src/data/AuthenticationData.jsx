@@ -1,7 +1,7 @@
-import {defaultAxiosInstance} from "../redux/ReducerActions";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {showError} from "../redux/AlertActions";
+import {defaultAxiosInstance} from "./AxiosWithoutAuth";
 
 export const useRegister = () => {
 

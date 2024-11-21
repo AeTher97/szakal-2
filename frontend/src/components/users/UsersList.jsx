@@ -13,10 +13,10 @@ import {
     ListItemDecorator
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
-import LinkWithRouter from "../../utils/LinkWithRouter";
+import LinkWithRouter from "../misc/LinkWithRouter";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import Pagination from "../misc/Pagination";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../misc/UserAvatar";
 
 const UsersList = () => {
 

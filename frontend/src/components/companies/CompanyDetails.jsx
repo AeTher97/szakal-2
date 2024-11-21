@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {addKnownItem, removeKnownItem} from "../../redux/ReducerActions";
+import {addKnownItem, removeKnownItem} from "../../redux/MiscActions";
 import {useCompany} from "../../data/CompaniesData";
-import TabHeader from "../main/TabHeader";
-import CompanyContactData from "./CompanyContactData";
+import TabHeader from "../misc/TabHeader";
+import CompanyContactData from "./cards/CompanyContactData";
 import {LinearProgress, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
-import CompanyAddress from "./CompanyAddress";
-import CompanyCategories from "./CompanyCategories";
-import CompanyJourneys from "./CompanyJourneys";
-import {decodeContactStatus} from "../../utils/DecodeContactStatus";
-import CompanyContactPeople from "./CompanyContactPeople";
+import CompanyAddress from "./cards/CompanyAddress";
+import CompanyCategories from "./cards/CompanyCategories";
+import CompanyJourneys from "./cards/CompanyJourneys";
+import {contactStatusUtils} from "../../utils/ContactStatusUtils";
+import CompanyContactPeople from "./cards/CompanyContactPeople";
 import AssignCompanyButton from "./AssignCompanyButton";
-import {useAccessRightsHelper} from "../../data/AccessRightsHelper";
-import {COMPANY_MODIFICATION} from "../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import {COMPANY_MODIFICATION} from "../../utils/AccessRightsList";
 import Button from "@mui/joy/Button";
-import {useConfirmationDialog} from "../../utils/ConfirmationDialog";
-import {useMobileSize} from "../../utils/SizeQuery";
+import {useConfirmationDialog} from "../misc/ConfirmationDialog";
+import {useMobileSize} from "../../utils/MediaQuery";
 import {isDevEnv, setDefaultTitle} from "../../App";
 
 
@@ -102,7 +102,7 @@ const CompanyDetails = () => {
                         </Typography>
                         <Typography level={"title-sm"}>Dodana {formatLocalDateTime(company.insertDate)}</Typography>
                         <Typography level={"title-sm"}>Status w obecnej
-                            akcji: {thisCampaignJourney ? decodeContactStatus(thisCampaignJourney.contactStatus) + `,
+                            akcji: {thisCampaignJourney ? contactStatusUtils(thisCampaignJourney.contactStatus) + `,
                              ${thisCampaignJourney.user ? thisCampaignJourney.user.name : "Brak przypisanego użytkownika"}
                              ${thisCampaignJourney.user ? thisCampaignJourney.user.surname : ""}` : "Wolna"}
                         </Typography>

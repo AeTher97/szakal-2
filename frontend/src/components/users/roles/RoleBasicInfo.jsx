@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useMobileSize} from "../../../utils/SizeQuery";
+import {useMobileSize} from "../../../utils/MediaQuery";
 import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useAccessRightsHelper} from "../../../data/AccessRightsHelper";
-import {ROLE_MODIFICATION} from "../../../utils/AccessRights";
+import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
+import {ROLE_MODIFICATION} from "../../../utils/AccessRightsList";
 
 const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) => {
 
