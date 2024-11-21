@@ -5,7 +5,6 @@
 # Szakal 2
 
 ![Deploy Status](https://github.com/AeTher97/szakal-2/actions/workflows/main.yml/badge.svg)
-![Validation Status](https://github.com/AeTher97/szakal-2/actions/workflows/branch-validation.yml/badge.svg?branch=master)
 
 Project for managing IAESTE AGH committee company contacts
 during various campaigns. The software is written in Java and React  and supports:
