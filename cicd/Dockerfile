@@ -4,7 +4,13 @@ RUN apt-get update \
 && apt-get -y install dos2unix nodejs npm openjdk-21-jdk && apt-get clean
 
 FROM basebuilder AS codebuilder
-COPY . /src
+COPY ./backend /src/backend
+COPY ./frontend /src/frontend
+COPY ./gradlew /src
+COPY ./settings.gradle /src
+COPY ./build-and-copy.sh /src
+COPY ./gradle /src/gradle
+
 WORKDIR /src
 
 RUN dos2unix gradlew \
@@ -12,7 +18,7 @@ RUN dos2unix gradlew \
 && ./build-and-copy.sh \
 && ./gradlew build
 
-FROM openjdk:24
+FROM openjdk:21
 COPY --from=codebuilder /src/backend/build/libs/backend-1.0.0.jar  szakal.jar
 
 EXPOSE 8080

@@ -16,7 +16,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
     public static final String COMPANY = "company";
     public static final String SURNAME = "surname";
     public static final String FINISHED = "finished";
-    private static final String LAST_INTERACTION = "last_interaction";
+    private static final String LAST_INTERACTION = "lastInteraction";
     private final transient ContactJourneySearch criteria;
 
     public JourneySpecification(ContactJourneySearch criteria) {
