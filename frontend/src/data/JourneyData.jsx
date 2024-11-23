@@ -13,8 +13,8 @@ export const useCurrentCampaignJourneyList = (search, searchLoaded, page = 0,) =
     const {loading} = useData(`/campaigns/${currentCampaign}/journeys`,
         (data) => {
             setJourneys(data.content);
-            setPagesNumber(data.totalPages);
-            setTotalCount(data.totalElements)
+            setPagesNumber(data.page.totalPages);
+            setTotalCount(data.page.totalElements)
             setLoaded(true);
         }, [currentCampaign, page, search],
         [{name: "pageNumber", value: page},
@@ -41,8 +41,8 @@ export const useUserJourneyList = (search, searchLoaded, page = 0) => {
     const {loading} = useData(`/journeys`,
         (data) => {
             setJourneys(data.content)
-            setPagesNumber(data.totalPages)
-            setTotalCount(data.totalElements)
+            setPagesNumber(data.page.totalPages)
+            setTotalCount(data.page.totalElements)
         }, [currentCampaign, page, userId, search], [{
             name: "pageNumber", value: page,
         },

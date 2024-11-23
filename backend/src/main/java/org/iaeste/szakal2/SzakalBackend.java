@@ -8,6 +8,7 @@ import org.iaeste.szakal2.services.InitService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,8 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Properties;
 
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
+
 @SpringBootApplication
 @EnableScheduling
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class SzakalBackend {
 
     private final InitService initService;

@@ -13,8 +13,8 @@ export const useCompanyListWithCampaign = (campaignId, search, locks, currentPag
     const {loading} = useData("/companies",
         (data) => {
             setCompanies(data.content)
-            setPageNumber(data.totalPages)
-            setTotalCount(data.totalElements)
+            setPageNumber(data.page.totalPages)
+            setTotalCount(data.page.totalElements)
         }, [campaignId, search, currentPage],
         [{name: "campaign", value: campaignId},
             {name: "pageNumber", value: currentPage},

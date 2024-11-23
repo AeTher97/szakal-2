@@ -9,7 +9,7 @@ export const useCategories = (pageNumberLoaded, currentPage = 0) => {
 
     const {loading} = useData(`/categories`, (data) => {
             setCategories(data.content)
-            setPageNumber(data.totalPages)
+            setPageNumber(data.page.totalPages)
         },
         [currentPage, reload, pageNumberLoaded], [{name: "pageNumber", value: currentPage},
             {name: "pageSize", value: 10000}], [pageNumberLoaded])

@@ -7,7 +7,7 @@ export const useUsersList = (page = 0) => {
     const [users, setUsers] = useState();
     const {loading} = useData(`/users`, (data) => {
             setUsers(data.content)
-            setPageNumber(data.totalPages)
+            setPageNumber(data.page.totalPages)
         },
         [page], [{name: "pageNumber", value: page}])
 

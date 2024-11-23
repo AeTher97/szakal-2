@@ -7,7 +7,7 @@ export const useCampaignsList = (currentPage = 0) => {
     const [loaded, setLoaded] = useState(false);
     const {loading} = useData(`/campaigns`, (data) => {
             setCampaigns(data.content)
-            setPageNumber(data.totalPages)
+            setPageNumber(data.page.totalPages)
             setLoaded(true);
         },
         [currentPage], [{name: "pageNumber", value: currentPage}])
