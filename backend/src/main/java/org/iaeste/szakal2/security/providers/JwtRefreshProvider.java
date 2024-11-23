@@ -87,13 +87,14 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                             user.getEmail(),
                             user.getName(),
                             user.getSurname(),
+                            user.isAccepted(),
                             userFingerprint,
                             jwtConfiguration),
                     userFingerprint,
                     authorities);
 
         } catch (JwtException | IllegalArgumentException e) {
-            throw new BadCredentialsException(e.getMessage(), e);
+            throw new BadCredentialsException("Jwt token invalid");
         } catch (NullPointerException | NoSuchAlgorithmException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
         }

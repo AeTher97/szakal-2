@@ -61,6 +61,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                                         user.getEmail(),
                                         user.getName(),
                                         user.getSurname(),
+                                        user.isAccepted(),
                                         userFingerprint,
                                         jwtConfiguration),
                                 TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration),

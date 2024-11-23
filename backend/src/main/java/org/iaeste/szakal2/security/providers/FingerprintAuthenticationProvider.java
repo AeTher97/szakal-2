@@ -40,7 +40,7 @@ public abstract class FingerprintAuthenticationProvider {
             }
         } catch (JwtException | IllegalArgumentException e) {
             log.info(e.getMessage());
-            throw new BadCredentialsException(e.getMessage(), e);
+            throw new BadCredentialsException("Jwt token invalid");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

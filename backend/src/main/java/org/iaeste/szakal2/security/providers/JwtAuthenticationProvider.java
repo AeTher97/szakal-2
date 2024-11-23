@@ -62,6 +62,11 @@ public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider
                     .parseSignedClaims(jwtToken)
                     .getPayload();
 
+            boolean isAccepted = claims.get("accepted", Boolean.class);
+            if (!isAccepted) {
+                throw new BadCredentialsException("User is not accepted");
+            }
+
             List<UUID> roles = ((List<String>) claims.get("roles", List.class))
                     .stream().map(UUID::fromString).toList();
             Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -72,9 +77,9 @@ public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider
 
             return new JwtTokenAuthentication(claims.getSubject(), jwtToken, null, grantedAuthorities);
 
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (JwtException | NullPointerException | IllegalArgumentException e) {
             log.info(e.getMessage());
-            throw new BadCredentialsException(e.getMessage(), e);
+            throw new BadCredentialsException("Jwt token invalid");
         }
 
     }

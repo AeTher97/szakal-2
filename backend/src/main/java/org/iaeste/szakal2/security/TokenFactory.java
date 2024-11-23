@@ -1,7 +1,6 @@
 package org.iaeste.szakal2.security;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.springframework.security.crypto.codec.Hex;
 
@@ -15,6 +14,8 @@ import java.util.UUID;
 
 public class TokenFactory {
 
+    private static final String ALGORITHM = "HmacSHA512";
+
     private TokenFactory() {
     }
 
@@ -23,6 +24,7 @@ public class TokenFactory {
                                            String email,
                                            String name,
                                            String surname,
+                                           boolean accepted,
                                            String userFingerprint,
                                            JwtConfiguration jwtConfiguration)
             throws NoSuchAlgorithmException {
@@ -33,14 +35,19 @@ public class TokenFactory {
                 .getBytes(StandardCharsets.UTF_8));
         String userFingerprintHash = new String(Hex.encode(userFingerprintDigest));
 
-        return Jwts.builder().setSubject(id.toString()).claim("roles", roles)
+        return Jwts.builder()
+                .subject(id.toString())
+                .claim("roles", roles)
                 .claim("type", "auth")
                 .claim("email", email)
                 .claim("name", name)
-                .claim("surname", surname).setIssuer(jwtIssuer)
+                .claim("surname", surname)
+                .claim("accepted", accepted)
+                .issuer(jwtIssuer)
                 .claim("userFingerprint", userFingerprintHash)
-                .setExpiration(new Date(System.currentTimeMillis() + authExp))
-                .signWith(new SecretKeySpec(key.getBytes(), SignatureAlgorithm.HS512.getJcaName())).compact();
+                .expiration(new Date(System.currentTimeMillis() + authExp))
+                .signWith(new SecretKeySpec(key.getBytes(), ALGORITHM))
+                .compact();
     }
 
 
@@ -51,10 +58,12 @@ public class TokenFactory {
         long refreshExp = Long.parseLong(jwtConfiguration.getRefreshExpirationTime());
 
 
-        return Jwts.builder().setSubject(id.toString()).setIssuer(jwtIssuer)
+        return Jwts.builder()
+                .subject(id.toString())
+                .issuer(jwtIssuer)
                 .claim("type", "refresh")
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExp))
-                .signWith(new SecretKeySpec(key.getBytes(), SignatureAlgorithm.HS512.getJcaName())).compact();
+                .expiration(new Date(System.currentTimeMillis() + refreshExp))
+                .signWith(new SecretKeySpec(key.getBytes(), ALGORITHM)).compact();
     }
 
 
