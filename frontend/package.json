@@ -14,7 +14,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.2",
     "@vitejs/plugin-react": "^4.3.3",
-    "axios": "1.7.4",
+    "axios": "1.7.7",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
