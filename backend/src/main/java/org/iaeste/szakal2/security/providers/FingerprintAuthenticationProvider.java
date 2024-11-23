@@ -1,12 +1,13 @@
 package org.iaeste.szakal2.security.providers;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.codec.Hex;
 
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,14 +20,15 @@ public abstract class FingerprintAuthenticationProvider {
 
     protected static void validateFingerprint(String fingerprint,
                                               String token,
-                                              SecretKeySpec key,
+                                              SecretKey key,
                                               String issuer) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
                     .requireIssuer(issuer)
                     .build()
-                    .parseClaimsJws(token).getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
 
             String userFingerprintHash = (String) claims.get("userFingerprint");
             byte[] userFingerprintDigestFromCookie = MessageDigest.getInstance("SHA-256")
@@ -36,8 +38,7 @@ public abstract class FingerprintAuthenticationProvider {
             if (!userFingerprintHash.equals(userFingerprintHashFromCookie)) {
                 throw new BadCredentialsException("User fingerprint mismatch");
             }
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
-                 IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             log.info(e.getMessage());
             throw new BadCredentialsException(e.getMessage(), e);
         } catch (NoSuchAlgorithmException e) {

@@ -1,7 +1,9 @@
 package org.iaeste.szakal2.security.providers;
 
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.UsersRepository;
@@ -16,8 +18,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,15 @@ import java.util.UUID;
 
 public class JwtRefreshProvider implements AuthenticationProvider {
 
+    private static final String ALGORITHM = "HmacSHA512";
     private final JwtConfiguration jwtConfiguration;
-    private final SecretKeySpec key;
+    private final SecretKey key;
     private final UsersRepository usersRepository;
 
     public JwtRefreshProvider(JwtConfiguration jwtConfiguration, UsersRepository usersRepository) {
         this.jwtConfiguration = jwtConfiguration;
-        this.key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), SignatureAlgorithm.HS512.getJcaName());
         this.usersRepository = usersRepository;
+        key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), ALGORITHM);
     }
 
     @Override
@@ -53,11 +56,12 @@ public class JwtRefreshProvider implements AuthenticationProvider {
     private Authentication validateToken(String jwtToken) {
 
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
                     .requireIssuer(jwtConfiguration.getIssuer())
                     .build()
-                    .parseClaimsJws(jwtToken).getBody();
+                    .parseSignedClaims(jwtToken)
+                    .getPayload();
 
             String type = claims.get("type", String.class);
             if (!type.equals("refresh")) {
@@ -88,7 +92,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                     userFingerprint,
                     authorities);
 
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage(), e);
         } catch (NullPointerException | NoSuchAlgorithmException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");
