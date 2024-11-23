@@ -2,8 +2,17 @@ import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import UserAutocomplete from "../misc/UserAutocomplete";
+import PropTypes from "prop-types";
 
-const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, companyId, navigate, fromJourneyPage}) => {
+const AssignToSomeoneElseDialog = ({
+                                       open,
+                                       close,
+                                       addJourney,
+                                       currentCampaign,
+                                       companyId,
+                                       navigate,
+                                       fromJourneyPage
+                                   }) => {
 
     const [user, setUser] = useState(null);
 
@@ -15,7 +24,7 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
         <Modal open={open}>
             <ModalDialog>
                 <DialogTitle>Przypisz firmę do osoby</DialogTitle>
-                <form onSubmit={(event, value) => {
+                <form onSubmit={(event) => {
                     event.preventDefault();
                     if (!user) {
                         return;
@@ -48,4 +57,14 @@ const AddContactPersonDialog = ({open, close, addJourney, currentCampaign, compa
         ;
 };
 
-export default AddContactPersonDialog;
+AssignToSomeoneElseDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    addJourney: PropTypes.func.isRequired,
+    currentCampaign: PropTypes.string.isRequired,
+    companyId: PropTypes.string.isRequired,
+    navigate: PropTypes.func.isRequired,
+    fromJourneyPage: PropTypes.bool.isRequired
+}
+
+export default AssignToSomeoneElseDialog;

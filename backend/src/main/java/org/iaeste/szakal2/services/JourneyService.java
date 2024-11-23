@@ -1,7 +1,5 @@
 package org.iaeste.szakal2.services;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
@@ -29,8 +27,6 @@ import java.util.*;
 @Log4j2
 public class JourneyService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final ContactJourneyRepository contactJourneyRepository;
     private final UserService userService;
     private final CompanyService companyService;
@@ -203,7 +199,7 @@ public class JourneyService {
     public Page<ContactJourneyListingDTO> getJourneys(Pageable pageable,
                                                       ContactJourneySearch journeySearch) {
         Page<ContactJourney> contactJourneyPage
-                = contactJourneyRepository.findAll(new JourneySpecification(journeySearch, entityManager), pageable);
+                = contactJourneyRepository.findAll(new JourneySpecification(journeySearch), pageable);
         List<ContactJourney> contactJourneyList = contactJourneyRepository
                 .findAllById(contactJourneyPage.getContent().stream().map(ContactJourney::getId).toList());
         return new PageImpl<>(contactJourneyList.stream().map(ContactJourneyListingDTO::fromContactJourney).toList(),
@@ -214,7 +210,7 @@ public class JourneyService {
         return Comment.builder()
                 .user(userService.getUserById(SecurityUtils.getUserId()))
                 .contactJourney(contactJourney)
-                .comment(commentCreationDTO.getComment())
+                .commentValue(commentCreationDTO.getComment())
                 .date(LocalDateTime.now())
                 .build();
     }

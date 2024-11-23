@@ -6,6 +6,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from "@mui/joy/Button";
 import Footer from "../components/misc/Footer";
 import FavouriteJourneys from "./FavouriteJourneys";
+import PropTypes from "prop-types";
 
 const AppContent = props => {
 
@@ -73,5 +74,9 @@ const AppContent = props => {
         </div>
     );
 };
+
+AppContent.propTypes = {
+    children: PropTypes.node.isRequired
+}
 
 export default AppContent;

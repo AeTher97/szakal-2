@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import PropTypes from "prop-types";
 
 const AddRoleDialog = ({open, addRole, close}) => {
 
@@ -42,6 +43,12 @@ const AddRoleDialog = ({open, addRole, close}) => {
             </ModalDialog>
         </Modal>
     );
+};
+
+AddRoleDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    addRole: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired
 };
 
 export default AddRoleDialog;

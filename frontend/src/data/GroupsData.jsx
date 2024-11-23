@@ -17,11 +17,15 @@ export const useGroupsList = () => {
         })
     }
 
+    const removeGroupFromArray = (groups, id) => {
+        return [...groups.filter(group => group.id !== id)]
+    }
+
     const deleteGroup = (id) => {
         deleteReq({}, `/groups/${id}`)
             .then(() => {
                 setGroups(state => {
-                    return [...state.filter(group => group.id !== id)]
+                    return removeGroupFromArray(state, id)
                 })
             });
     }
@@ -58,7 +62,8 @@ export const useGroup = (id) => {
 export const useJoinGroup = () => {
 
     const {post} = usePost(`/groups/join`,
-        (data) => {});
+        () => {
+        });
 
     return (entryCode) => {
         return post({

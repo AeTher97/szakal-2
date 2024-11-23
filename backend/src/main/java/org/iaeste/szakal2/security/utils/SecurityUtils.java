@@ -7,6 +7,9 @@ import java.util.UUID;
 
 public class SecurityUtils {
 
+    private SecurityUtils() {
+    }
+
     public static UUID getUserId() {
         return UUID.fromString(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }

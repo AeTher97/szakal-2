@@ -63,6 +63,14 @@ const CompanyDetails = () => {
     const thisCampaignJourney = company ?
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
 
+    const openDeleteCompanyDialog = () => {
+        openDialog(() => {
+            deleteCompany().then(() => {
+                navigate("/secure/companies");
+            })
+        })
+    }
+
     const renderActions = () => {
         return <div style={{
             display: "flex",
@@ -73,14 +81,14 @@ const CompanyDetails = () => {
         }}>
             {currentCampaign !== 'none' && !company.deleted && <AssignCompanyButton company={company}/>}
             {hasRight(COMPANY_MODIFICATION) && !company.deleted &&
-                <Button style={{flex: mobile && !thisCampaignJourney ? 0.4 : 1}} color={"danger"} onClick={() => {
-                    openDialog(() => {
-                        deleteCompany().then(() => {
-                            navigate("/secure/companies");
-                        })
-                    })
-                }}>Usuń firmę</Button>}
+                <Button style={{flex: mobile && !thisCampaignJourney ? 0.4 : 1}} color={"danger"}
+                        onClick={openDeleteCompanyDialog}>Usuń firmę</Button>}
         </div>
+    }
+
+    const getUserNameAndSurname = () => {
+        return `${thisCampaignJourney.user ? thisCampaignJourney.user.name : "Brak przypisanego użytkownika"}
+                             ${thisCampaignJourney.user ? thisCampaignJourney.user.surname : ""}`
     }
 
     return (
@@ -102,9 +110,8 @@ const CompanyDetails = () => {
                         </Typography>
                         <Typography level={"title-sm"}>Dodana {formatLocalDateTime(company.insertDate)}</Typography>
                         <Typography level={"title-sm"}>Status w obecnej
-                            akcji: {thisCampaignJourney ? contactStatusUtils(thisCampaignJourney.contactStatus) + `,
-                             ${thisCampaignJourney.user ? thisCampaignJourney.user.name : "Brak przypisanego użytkownika"}
-                             ${thisCampaignJourney.user ? thisCampaignJourney.user.surname : ""}` : "Wolna"}
+                            akcji: {thisCampaignJourney ? contactStatusUtils(thisCampaignJourney.contactStatus) +
+                                `, ${getUserNameAndSurname()}` : "Wolna"}
                         </Typography>
                     </div>
                     {!mobile && renderActions()}

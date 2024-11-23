@@ -14,6 +14,10 @@ import java.util.Map;
 
 public abstract class IntegrationTestWithTools extends IntegrationTest {
 
+    private static final String ADMINISTRATOR = "administrator";
+    private static final String PASSWORD = "password";
+    private static final String FGP_COOKIE = "FGP_COOKIE";
+
     @Autowired
     protected IntegrationTestDatabase integrationTestDatabase;
 
@@ -23,7 +27,7 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     }
 
     @AfterEach
-    public void CleanUpAfter() {
+    public void cleanUpAfter() {
         cleanUp();
     }
 
@@ -40,28 +44,28 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
 
     protected io.restassured.specification.RequestSpecification withAdminAuth() {
         integrationTestDatabase.createUser("administrator@szakal.org",
-                "administrator",
-                "administrator",
+                ADMINISTRATOR,
+                ADMINISTRATOR,
                 List.of("role_modification"));
-        ValidatableResponse response = requestToken("administrator@szakal.org", "administrator");
+        ValidatableResponse response = requestToken("administrator@szakal.org", ADMINISTRATOR);
         String authToken = getToken(response);
         String fgpCookie = getCookie(response);
         return RestAssured.given()
-                .cookies(Map.of("FGP_COOKIE", fgpCookie))
+                .cookies(Map.of(FGP_COOKIE, fgpCookie))
                 .header(new Header("Authorization", "Bearer " + authToken));
     }
 
     protected io.restassured.specification.RequestSpecification withAccessRights(String... accessRights) {
         integrationTestDatabase.createUser("test_user@szakal.org",
                 "test_user",
-                "password",
+                PASSWORD,
                 Arrays.stream(accessRights).toList());
 
-        ValidatableResponse response = requestToken("test_user@szakal.org", "password");
+        ValidatableResponse response = requestToken("test_user@szakal.org", PASSWORD);
         String authToken = getToken(response);
         String fgpCookie = getCookie(response);
         return RestAssured.given()
-                .cookies(Map.of("FGP_COOKIE", fgpCookie))
+                .cookies(Map.of(FGP_COOKIE, fgpCookie))
                 .header(new Header("Authorization", "Bearer " + authToken));
     }
 
@@ -74,14 +78,14 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
     private String getCookie(ValidatableResponse response) {
         return response
                 .extract()
-                .cookie("FGP_COOKIE");
+                .cookie(FGP_COOKIE);
     }
 
     private ValidatableResponse requestToken(String email, String password) {
         return RestAssured.given()
                 .contentType(ContentType.MULTIPART)
                 .multiPart("username", email)
-                .multiPart("password", password)
+                .multiPart(PASSWORD, password)
                 .when()
                 .post("/api/login")
                 .then()

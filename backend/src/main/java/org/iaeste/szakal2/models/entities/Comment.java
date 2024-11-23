@@ -24,8 +24,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @NotNull
-    @Column(length = 1000)
-    private String comment;
+    @Column(length = 1000, name = "comment")
+    private String commentValue;
     @NotNull
     private LocalDateTime date;
     @NotNull

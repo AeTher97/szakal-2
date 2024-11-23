@@ -60,7 +60,7 @@ const JourneyDetails = () => {
         const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
             = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
 
-        const isUser = journey && journey.user && (userId === journey.user.id);
+    const isUser = journey?.user && (userId === journey.user.id);
     const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {
         if (!journey) {
             return false;

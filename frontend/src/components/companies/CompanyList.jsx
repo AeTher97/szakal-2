@@ -6,16 +6,25 @@ import {contactStatusUtils} from "../../utils/ContactStatusUtils";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import {v4 as uuidv4} from 'uuid';
 
 import Button from "@mui/joy/Button";
+import PropTypes from "prop-types";
 
 export const itemsPerPageValues = [10, 20, 50];
 
-const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
+const CompanyList = ({
+                         companies,
+                         search,
+                         updateSort,
+                         numberOfItems,
+                         setItemsPerPage,
+                         itemsPerPage
+                     }) => {
 
     const mobile = useMobileSize();
 
-    const sorted = search && search.sort;
+    const sorted = search?.sort;
     const directionAscending = sorted && search.sort.includes("ASC");
 
     companies = companies.sort((a, b) => {
@@ -70,7 +79,7 @@ const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerP
                 </tr>
                 </thead>
                 <tbody data-testid="company-table">
-                {companies && companies.map((company, i) => {
+                {companies?.map((company, i) => {
                         const testId = `company-${i}`;
                         return <tr key={company.id} data-testid={testId}>
                             <td>
@@ -101,7 +110,7 @@ const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerP
                                 })}
                             </td>}
                             {!mobile && <td>
-                                {company.contactJourneys && company.contactJourneys.map(journey => {
+                                {company.contactJourneys?.map(journey => {
                                     return <div key={journey.id}>
                                         <LinkWithRouter to={`/secure/journeys/${journey.id}`}>
                                             <Typography key={journey.campaignName}>
@@ -132,7 +141,7 @@ const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerP
                             Elementów na stronę:
                             {Array(3).fill(0).map((_, i) => {
                                 return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
-                                             key={i}
+                                             key={uuidv4()}
                                              onClick={() => setItemsPerPage(itemsPerPageValues[i])}
                                              underline={(itemsPerPageValues[i] === itemsPerPage || itemsPerPageValues[i] === Number(itemsPerPage))
                                                  ? "always" : "hover"}>{itemsPerPageValues[i]}</Link>
@@ -146,5 +155,14 @@ const CompanyList = ({companies, search, updateSort, numberOfItems, setItemsPerP
         </Sheet>
     );
 };
+
+CompanyList.propTypes = {
+    companies: PropTypes.array.isRequired,
+    search: PropTypes.object.isRequired,
+    updateSort: PropTypes.func.isRequired,
+    numberOfItems: PropTypes.number.isRequired,
+    setItemsPerPage: PropTypes.func.isRequired,
+    itemsPerPage: PropTypes.number.isRequired
+}
 
 export default CompanyList;

@@ -10,8 +10,9 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import {useAddContactJourney} from "../../data/JourneyData";
 import AssignToSomeoneElseDialog from "./AssignToSomeoneElseDialog";
 import {useNavigate} from "react-router-dom";
+import PropTypes from "prop-types";
 
-const AssignCompanyButton = ({company, fromJourneyPage}) => {
+const AssignCompanyButton = ({company, fromJourneyPage = false}) => {
 
     const [open, setOpen] = React.useState(false);
     const {userId} = useSelector(state => state.auth);
@@ -25,13 +26,17 @@ const AssignCompanyButton = ({company, fromJourneyPage}) => {
 
     const canModifyOthers = hasRight("journey_modification_for_others");
 
-    const thisCampaignJourney = fromJourneyPage ? true : (company ?
-        company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null);
+    const findThisCompanyJourney = () => {
+        return company ? company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
+    }
+
+    const thisCampaignJourney = fromJourneyPage ? true : findThisCompanyJourney();
 
 
-    if (thisCampaignJourney && thisCampaignJourney.user) {
+    if (thisCampaignJourney?.user) {
         return;
     }
+
     return (<div style={{flex: 1, display: "flex"}}>
             {hasRight(JOURNEY_CREATION) && currentCampaign && !canModifyOthers && <Button style={{flex: 1}}
                 onClick={() => openDialog(() => {
@@ -86,5 +91,10 @@ const AssignCompanyButton = ({company, fromJourneyPage}) => {
         </div>
     )
 };
+
+AssignCompanyButton.propTypes = {
+    company: PropTypes.object.isRequired,
+    fromJourneyPage: PropTypes.bool
+}
 
 export default AssignCompanyButton;

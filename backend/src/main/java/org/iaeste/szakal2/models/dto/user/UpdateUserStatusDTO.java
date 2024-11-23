@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateUserStatusDTO {
 
-    public boolean active;
+    private boolean active;
 }

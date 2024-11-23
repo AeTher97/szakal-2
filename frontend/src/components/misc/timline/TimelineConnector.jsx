@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 const TimelineConnector = ({top}) => {
     return (
@@ -12,5 +13,9 @@ const TimelineConnector = ({top}) => {
 
     );
 };
+
+TimelineConnector.propTypes = {
+    top: PropTypes.bool
+}
 
 export default TimelineConnector;

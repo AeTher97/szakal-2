@@ -10,6 +10,7 @@ import {
 import UserAvatar from "./UserAvatar";
 import {useUsersSearch} from "../../data/UsersData";
 import {useSelector} from "react-redux";
+import PropTypes from "prop-types";
 
 const UserAutocomplete = ({
     setUser = () => {
@@ -88,5 +89,12 @@ const UserAutocomplete = ({
         />
     );
 };
+
+UserAutocomplete.propTypes = {
+    setUser: PropTypes.func.isRequired,
+    ignoreIds: PropTypes.array,
+    ignoreSelf: PropTypes.bool,
+    clearOnSelect: PropTypes.bool
+}
 
 export default UserAutocomplete;

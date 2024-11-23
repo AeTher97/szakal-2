@@ -23,6 +23,8 @@ import {contactStatusOptions} from "./JourneyDetails";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/joy/Button";
 import {useSearchWithPagination} from "../../utils/SearchHook";
+import {v4 as uuidv4} from 'uuid';
+
 
 const COMPANY_NAME = "companyName";
 const STATUS = "status";
@@ -50,7 +52,7 @@ const JourneyFilters = () => {
         [{name: SORT, value: "companyName,ASC"}, {name: PAGE_SIZE, value: 10}]);
 
     const {journeys, loading, totalCount, pagesNumber}
-        = useCurrentCampaignJourneyList(currentPage - 1, search, searchLoaded);
+        = useCurrentCampaignJourneyList(search, searchLoaded, currentPage - 1);
 
     useEffect(() => {
         updatePageNumber(pagesNumber);
@@ -156,17 +158,23 @@ const JourneyFilters = () => {
             <LinearProgress sx={{visibility: loading ? "visible" : "hidden", marginBottom: '5px'}}/>
 
             {!loading &&
-                <JourneyList journeys={journeys} search={search} clearSort={clearSort} updateSort={updateSort}
-                             numberOfItems={totalCount} setItemsPerPage={(count) => {
+                <JourneyList journeys={journeys}
+                             search={search}
+                             clearSort={clearSort}
+                             updateSort={updateSort}
+                             numberOfItems={totalCount}
+                             setItemsPerPage={(count) => {
                     updateSearch(PAGE_SIZE, count);
                 }} itemsPerPage={search.pageSize}/>}
             {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
-                {Array(10).fill(0).map((value, i) => {
-                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
+                {Array(10).fill(0).map(() => {
+                    return <Skeleton key={uuidv4()} variant={"rectangular"} style={{height: 30}}/>
                 })}
             </div>}
             {pagesNumber > 1 &&
-                <Pagination currentPage={currentPage} numberOfPages={pagesNumber} firstAndLast={!mobile}
+                <Pagination currentPage={currentPage}
+                            numberOfPages={pagesNumber}
+                            firstAndLast={!mobile}
                             concise={mobile}
                             margin={"10px 0 10px 0"}
                             setPage={(page) => updateCurrentPage(page)}/>}

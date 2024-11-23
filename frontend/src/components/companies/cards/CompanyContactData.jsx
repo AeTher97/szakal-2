@@ -4,7 +4,8 @@ import {Card, CardActions, CardContent, Divider, FormLabel, Stack, Typography} f
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
-import InputWithLimit from "../../misc/InputWithLimit";
+import PropTypes from "prop-types";
+import {InputWithLimit} from "../../misc/InputWithLimit";
 
 const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
 
@@ -18,10 +19,10 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
     const [www, setWWW] = useState("")
 
     useEffect(() => {
-        setName(localCompany.name)
-        setEmail(localCompany.email)
-        setPhone(localCompany.phone)
-        setWWW(localCompany.www)
+        setName(localCompany.name || "")
+        setEmail(localCompany.email || "")
+        setPhone(localCompany.phone || "")
+        setWWW(localCompany.www || "")
     }, [localCompany]);
 
     return (
@@ -36,31 +37,31 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
             <form style={{display: "flex", flexDirection: "column", flex: 1}}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
                     <Stack spacing={1} sx={{flex: 1}}>
-                            <FormLabel>
-                                <Typography level={"title-sm"}>Nazwa</Typography>
-                            </FormLabel>
+                        <FormLabel>
+                            <Typography level={"title-sm"}>Nazwa</Typography>
+                        </FormLabel>
                         <InputWithLimit disabled={!canModify} placeholder={"Nazwa"} value={name} onChange={(e) => {
-                                    setName(e.target.value)
-                                }}/>
-                            <FormLabel>
-                                <Typography level={"title-sm"}>Email</Typography>
-                            </FormLabel>
+                            setName(e.target.value)
+                        }}/>
+                        <FormLabel>
+                            <Typography level={"title-sm"}>Email</Typography>
+                        </FormLabel>
                         <InputWithLimit disabled={!canModify} placeholder={"Email"} value={email} onChange={(e) => {
-                                    setEmail(e.target.value)
-                                }}/>
-                            <FormLabel>
-                                <Typography level={"title-sm"}>Telefon</Typography>
-                            </FormLabel>
+                            setEmail(e.target.value)
+                        }}/>
+                        <FormLabel>
+                            <Typography level={"title-sm"}>Telefon</Typography>
+                        </FormLabel>
                         <InputWithLimit disabled={!canModify} placeholder={"Telefon"} value={phone} onChange={(e) => {
-                                    setPhone(e.target.value)
-                                }}/>
-                                <FormLabel>
-                                    <Typography level={"title-sm"}>Strona</Typography>
-                                </FormLabel>
+                            setPhone(e.target.value)
+                        }}/>
+                        <FormLabel>
+                            <Typography level={"title-sm"}>Strona</Typography>
+                        </FormLabel>
                         <InputWithLimit disabled={!canModify} placeholder={"WWW"} value={www} onChange={(e) => {
-                                    setWWW(e.target.value)
-                                }}/>
-                        </Stack>
+                            setWWW(e.target.value)
+                        }}/>
+                    </Stack>
 
                 </CardContent>
                 <CardActions>
@@ -72,5 +73,11 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
         </Card>
     )
 };
+
+CompanyContactData.propTypes = {
+    localCompany: PropTypes.object.isRequired,
+    updateContactData: PropTypes.func.isRequired,
+    updateContactDataLoading: PropTypes.bool.isRequired
+}
 
 export default CompanyContactData;

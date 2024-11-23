@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import PropTypes from "prop-types";
 
 const AddGroupDialog = ({open, addRole, close}) => {
     const [name, setName] = useState("");
@@ -31,6 +32,12 @@ const AddGroupDialog = ({open, addRole, close}) => {
             </ModalDialog>
         </Modal>
     );
+};
+
+AddGroupDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    addRole: PropTypes.func.isRequired,
 };
 
 export default AddGroupDialog;

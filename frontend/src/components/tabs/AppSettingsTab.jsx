@@ -50,8 +50,8 @@ const AppSettingsTab = () => {
         }
 
         useEffect(() => {
-            if (campaigns && getLocalStorageCampaign("default_campaign")) {
-                const campaign = campaigns.find(campaign => campaign.id === getLocalStorageCampaign("default_campaign"));
+            if (campaigns && getLocalStorageCampaign()) {
+                const campaign = campaigns.find(campaign => campaign.id === getLocalStorageCampaign());
                 if (!campaign) {
                     return;
                 }

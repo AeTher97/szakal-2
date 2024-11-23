@@ -1,12 +1,10 @@
 import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import LinkWithRouter from "../../misc/LinkWithRouter";
-import {useMobileSize} from "../../../utils/MediaQuery";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
+import PropTypes from "prop-types";
 
 const CompanyJourneys = ({localCompany}) => {
-
-    const mobile = useMobileSize();
 
     return (
         <Card sx={{flex: 1, minWidth: 250}} variant={"soft"}>
@@ -29,5 +27,9 @@ const CompanyJourneys = ({localCompany}) => {
         </Card>
     );
 };
+
+CompanyJourneys.propTypes = {
+    localCompany: PropTypes.object.isRequired
+}
 
 export default CompanyJourneys;

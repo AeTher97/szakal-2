@@ -1,8 +1,12 @@
 import React from 'react';
 import {Link, Sheet, Table, Typography} from "@mui/joy";
 import {formatLocalDate} from "../../utils/DateUtils";
+import PropTypes from "prop-types";
 
-const CampaignsTable = ({campaigns, editCampaign}) => {
+const CampaignsTable = ({
+                            campaigns,
+                            editCampaign
+                        }) => {
 
 
     return (
@@ -50,5 +54,10 @@ const CampaignsTable = ({campaigns, editCampaign}) => {
         </Sheet>
     );
 };
+
+CampaignsTable.propTypes = {
+    campaigns: PropTypes.array.isRequired,
+    editCampaign: PropTypes.func.isRequired
+}
 
 export default CampaignsTable;

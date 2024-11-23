@@ -96,7 +96,7 @@ export const useSearchWithPagination = (fields = [], defaultValues = []) => {
     const {searchLoaded, search} = searchValue;
     const [pageNumber, setPageNumber] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [_, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     const [pageNumberLoaded, setPageNumberLoaded] = useState(false);
 
     useEffect(() => {

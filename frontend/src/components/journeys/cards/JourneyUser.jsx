@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import UserAvatar from "../../misc/UserAvatar";
+import PropTypes from "prop-types";
 
 const JourneyUser = ({user}) => {
     return (
@@ -24,5 +25,9 @@ const JourneyUser = ({user}) => {
         </Card>
     );
 };
+
+JourneyUser.propTypes = {
+    user: PropTypes.object.isRequired
+}
 
 export default JourneyUser;

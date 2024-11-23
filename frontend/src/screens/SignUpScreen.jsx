@@ -17,7 +17,7 @@ const SignUpScreen = () => {
             alignItems: "center"
         }}>
             {!isMobile && <div style={{flex: 1, overflow: "hidden", height: "100vh"}}>
-                <img src={"/iaeste.svg"}
+                <img alt={"Iaeste logo"} src={"/iaeste.svg"}
                      style={{
                          opacity: isLightTheme ? "0.1" : "0.3",
                          height: 2500,

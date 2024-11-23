@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {changeThemeAction} from "../../redux/MiscActions";
 import {useNavigate} from "react-router-dom";
 import {logoutAction} from "../../redux/AuthActions";
+import PropTypes from "prop-types";
 
 const UserDropdownMenu = ({name, surname, image, id}) => {
 
@@ -40,6 +41,11 @@ const UserDropdownMenu = ({name, surname, image, id}) => {
     );
 };
 
-UserDropdownMenu.propTypes = {};
+UserDropdownMenu.propTypes = {
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    id: PropTypes.string.isRequired
+};
 
 export default UserDropdownMenu;

@@ -2,6 +2,7 @@ package org.iaeste.szakal2.security;
 
 import io.jsonwebtoken.Jwts;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
+import org.iaeste.szakal2.models.entities.User;
 import org.springframework.security.crypto.codec.Hex;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -21,10 +22,7 @@ public class TokenFactory {
 
     public static String generateAuthToken(UUID id,
                                            List<String> roles,
-                                           String email,
-                                           String name,
-                                           String surname,
-                                           boolean accepted,
+                                           User user,
                                            String userFingerprint,
                                            JwtConfiguration jwtConfiguration)
             throws NoSuchAlgorithmException {
@@ -39,10 +37,10 @@ public class TokenFactory {
                 .subject(id.toString())
                 .claim("roles", roles)
                 .claim("type", "auth")
-                .claim("email", email)
-                .claim("name", name)
-                .claim("surname", surname)
-                .claim("accepted", accepted)
+                .claim("email", user.getEmail())
+                .claim("name", user.getName())
+                .claim("surname", user.getSurname())
+                .claim("accepted", user.isAccepted())
                 .issuer(jwtIssuer)
                 .claim("userFingerprint", userFingerprintHash)
                 .expiration(new Date(System.currentTimeMillis() + authExp))

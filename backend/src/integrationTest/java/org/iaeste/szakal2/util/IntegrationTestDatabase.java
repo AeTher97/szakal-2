@@ -64,7 +64,7 @@ public class IntegrationTestDatabase {
                 createAccessRight(accessRightString).getId()).toList();
 
         if (usersRepository.findUserByEmailIgnoreCase(email).isPresent()) {
-            User user = usersRepository.findUserByEmailIgnoreCase(email).get();
+            User user = usersRepository.findUserByEmailIgnoreCase(email).orElseThrow(IllegalArgumentException::new);
             user.getRoles().iterator().next().getAccessRights().addAll(accessRightList.stream().map(accessRight ->
                     accessRightRepository.findAccessRightById(accessRight).get()).toList());
             return usersRepository.save(user);
@@ -185,7 +185,7 @@ public class IntegrationTestDatabase {
     @Transactional
     public ContactJourney getContactJourney(UUID id) {
         ContactJourney contactJourney = contactJourneyRepository
-                .findContactJourneyById(id).get();
+                .findContactJourneyById(id).orElseThrow(IllegalArgumentException::new);
         Hibernate.initialize(contactJourney.getContactEvents());
         Hibernate.initialize(contactJourney.getComments());
         return contactJourney;
@@ -193,7 +193,7 @@ public class IntegrationTestDatabase {
 
     @Transactional
     public Company getCompany(UUID id) {
-        Company company = companyRepository.findCompanyById(id).get();
+        Company company = companyRepository.findCompanyById(id).orElseThrow(IllegalArgumentException::new);
         Hibernate.initialize(company.getContactPeople());
         return company;
     }

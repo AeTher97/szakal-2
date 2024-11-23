@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Checkbox, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import InputWithLimit, {TextAreaWithLimit} from "../misc/InputWithLimit";
+import {InputWithLimit, TextAreaWithLimit} from "../misc/InputWithLimit";
+import PropTypes from "prop-types";
 
 const ContactPersonDialog = ({
-                                 open, close, addContactPerson, modifyContactPerson,
+                                 open,
+                                 close,
+                                 addContactPerson,
+                                 modifyContactPerson,
                                  contactPerson
                              }) => {
 
@@ -46,14 +50,17 @@ const ContactPersonDialog = ({
                 <form onSubmit={(event, value) => {
                     event.preventDefault();
                     if (contactPerson) {
-                        modifyContactPerson(contactPerson.id,
-                            name,
-                            position,
-                            isAlumni,
-                            phone,
-                            email,
-                            comment,
-                            committee)
+                        modifyContactPerson(
+                            {
+                                id: contactPerson.id,
+                                name,
+                                position,
+                                alumni: isAlumni,
+                                phone,
+                                email,
+                                comment,
+                                committee
+                            })
                             .then(() => {
                                 close();
                                 clear();
@@ -82,10 +89,10 @@ const ContactPersonDialog = ({
                             }} placeholder={"Jan Kowalski"}/>
                         <InputWithLimit
                             label={"Stanowisko"}
-                                value={position}
-                                onChange={(e) => {
-                                    setPosition(e.target.value)
-                                }} placeholder={"CEO"}/>
+                            value={position}
+                            onChange={(e) => {
+                                setPosition(e.target.value)
+                            }} placeholder={"CEO"}/>
                         <FormControl style={{display: "flex", flexDirection: "row", gap: 10}}>
                             <FormLabel>Alumn:</FormLabel>
                             <Checkbox
@@ -96,29 +103,29 @@ const ContactPersonDialog = ({
                         </FormControl>
                         <InputWithLimit
                             label={"Telefon"}
-                                value={phone}
-                                onChange={(e) => {
-                                    setPhone(e.target.value)
-                                }} placeholder={"+4800000000"}/>
+                            value={phone}
+                            onChange={(e) => {
+                                setPhone(e.target.value)
+                            }} placeholder={"+4800000000"}/>
                         <InputWithLimit
                             label={"Email"}
-                                value={email}
-                                type={"email"}
-                                onChange={(e) => {
-                                    setEmail(e.target.value)
-                                }} placeholder={"jan.kowalski@gmail.com"}/>
+                            value={email}
+                            type={"email"}
+                            onChange={(e) => {
+                                setEmail(e.target.value)
+                            }} placeholder={"jan.kowalski@gmail.com"}/>
                         <TextAreaWithLimit
                             label={"Komentarz"}
-                                value={comment}
-                                onChange={(e) => {
-                                    setComment(e.target.value)
-                                }} placeholder={"Człowiek z HRów"}/>
-                            <Textarea
-                                label={"Komitet"}
-                                value={committee}
-                                onChange={(e) => {
-                                    setCommittee(e.target.value)
-                                }} placeholder={"AGH"}/>
+                            value={comment}
+                            onChange={(e) => {
+                                setComment(e.target.value)
+                            }} placeholder={"Człowiek z HRów"}/>
+                        <Textarea
+                            label={"Komitet"}
+                            value={committee}
+                            onChange={(e) => {
+                                setCommittee(e.target.value)
+                            }} placeholder={"AGH"}/>
                         <Button type="submit">Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {
                             clear();
@@ -128,8 +135,15 @@ const ContactPersonDialog = ({
                 </form>
             </ModalDialog>
         </Modal>
-    )
-        ;
+    );
 };
+
+ContactPersonDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    addContactPerson: PropTypes.func.isRequired,
+    modifyContactPerson: PropTypes.func.isRequired,
+    contactPerson: PropTypes.object
+}
 
 export default ContactPersonDialog;

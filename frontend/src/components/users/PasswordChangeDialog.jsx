@@ -13,6 +13,7 @@ import {
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {usePasswordChange} from "../../data/UsersData";
+import PropTypes from "prop-types";
 
 const PasswordChangeDialog = ({open, close, userId}) => {
 
@@ -115,5 +116,11 @@ const PasswordChangeDialog = ({open, close, userId}) => {
         </Modal>
     );
 };
+
+PasswordChangeDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired
+}
 
 export default PasswordChangeDialog;

@@ -36,7 +36,7 @@ const UsersList = () => {
                     <div style={{display: "flex", justifyContent: "center"}}>
                         {loading && <CircularProgress/>}
                     </div>
-                    {!loading && users && users.map((user, index) => {
+                    {!loading && users?.map((user, index) => {
                         return <div key={user.id}>
                             <ListItem>
                                 <ListItemButton>
@@ -66,7 +66,6 @@ const UsersList = () => {
                                                 underline={"none"}/>
                             </ListItem>
                             {pageNumber > 1 || index !== users.length - 1 && <ListDivider/>}
-
                         </div>
                     })}
                     {pageNumber > 1 && <Pagination currentPage={currentPage} concise={true} numberOfPages={pageNumber}

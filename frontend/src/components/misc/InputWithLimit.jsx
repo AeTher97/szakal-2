@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {FormControl, FormHelperText, FormLabel, Input, Textarea} from "@mui/joy";
 import {InfoOutlined} from "@mui/icons-material";
+import PropTypes from "prop-types";
 
-const InputWithLimit = ({
-                            limit = 255,
-                            onChange = () => {
-                            },
-                            required,
-                            label,
-                            formControlProps,
-                            ...props
-                        }) => {
+export const InputWithLimit = ({
+                                   limit = 255,
+                                   onChange = () => {
+                                   },
+                                   required,
+                                   label,
+                                   formControlProps,
+                                   ...props
+                               }) => {
 
     const [length, setLength] = useState(0);
 
@@ -29,18 +30,27 @@ const InputWithLimit = ({
     );
 };
 
+InputWithLimit.propTypes = {
+    limit: PropTypes.number,
+    onChange: PropTypes.func,
+    required: PropTypes.bool,
+    label: PropTypes.string,
+    formControlProps: PropTypes.object
+}
+
 export const TextAreaWithLimit = ({
                                       limit = 255,
                                       onChange = () => {
                                       },
                                       formControlProps,
+                                      required,
                                       ...props
                                   }) => {
 
     const [length, setLength] = useState(0);
 
     return (
-        <FormControl {...formControlProps} error={length > limit}>
+        <FormControl {...formControlProps} error={length > limit} required={required}>
             <Textarea {...props} onChange={(e) => {
                 setLength(e.target.value.length);
                 onChange(e);
@@ -53,4 +63,9 @@ export const TextAreaWithLimit = ({
     );
 };
 
-export default InputWithLimit;
+TextAreaWithLimit.propTypes = {
+    limit: PropTypes.number,
+    onChange: PropTypes.func,
+    required: PropTypes.bool,
+    formControlProps: PropTypes.object
+}

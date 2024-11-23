@@ -9,8 +9,17 @@ import ClearIcon from "@mui/icons-material/Clear";
 import {formatLocalDate} from "../../utils/DateUtils";
 import {useMediumSize, useMobileSize} from "../../utils/MediaQuery";
 import {itemsPerPageValues} from "../companies/CompanyList";
+import PropTypes from "prop-types";
 
-const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, setItemsPerPage, itemsPerPage}) => {
+const JourneyList = ({
+                         journeys,
+                         search,
+                         updateSort,
+                         clearSort,
+                         numberOfItems,
+                         setItemsPerPage,
+                         itemsPerPage
+                     }) => {
 
     const mediumSize = useMediumSize();
     const mobile = useMobileSize();
@@ -36,7 +45,8 @@ const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, se
         } else if (sortedByStartDate) {
             return journey.journeyStart;
         } else if (sortedByLastInteractionDate) {
-            return journey.lastInteraction ? journey.lastInteraction : (directionAscending ? "4000" : "0");
+            const directionAscendingProperty = directionAscending ? "10000" : "0"
+            return journey.lastInteraction || directionAscendingProperty;
         }
     }
 
@@ -139,7 +149,7 @@ const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, se
                 </tr>
                 </thead>
                 <tbody data-testid={`journey-table`}>
-                {journeys && journeys.map(journey =>
+                {journeys?.map(journey =>
                     <tr key={journey.id}>
                         <td>
                             <LinkWithRouter style={{wordBreak: "break-word"}}
@@ -187,7 +197,7 @@ const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, se
                             Elementów na stronę:
                             {Array(3).fill(0).map((value, i) => {
                                 return <Link data-testid={`items-per-page-${itemsPerPageValues[i]}`}
-                                             key={i}
+                                             key={itemsPerPageValues[i]}
                                              onClick={() => setItemsPerPage(itemsPerPageValues[i])}
                                              underline={(itemsPerPageValues[i] === itemsPerPage ||
                                                  itemsPerPageValues[i] === Number(itemsPerPage))
@@ -202,5 +212,15 @@ const JourneyList = ({journeys, search, updateSort, clearSort, numberOfItems, se
         </Sheet>
     );
 };
+
+JourneyList.propTypes = {
+    journeys: PropTypes.array.isRequired,
+    search: PropTypes.object.isRequired,
+    updateSort: PropTypes.func.isRequired,
+    clearSort: PropTypes.func.isRequired,
+    numberOfItems: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    setItemsPerPage: PropTypes.func.isRequired,
+    itemsPerPage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
+}
 
 export default JourneyList;

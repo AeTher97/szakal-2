@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -31,10 +30,13 @@ public abstract class IntegrationTest {
     }
 
 
-    @BeforeEach
-    void setUp() {
+    private static void setBaseURI(int port) {
         RestAssured.baseURI = "http://localhost:" + port;
     }
 
+    @BeforeEach
+    void setUp() {
+        setBaseURI(port);
+    }
 
 }

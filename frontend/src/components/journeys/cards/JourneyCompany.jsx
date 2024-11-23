@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Link, Typography} from "@mui/joy";
 import LinkWithRouter from "../../misc/LinkWithRouter";
+import PropTypes from "prop-types";
 
 const JourneyCompany = ({company}) => {
     return (
@@ -65,5 +66,9 @@ const JourneyCompany = ({company}) => {
         </Card>
     );
 };
+
+JourneyCompany.propTypes = {
+    company: PropTypes.object.isRequired
+}
 
 export default JourneyCompany;

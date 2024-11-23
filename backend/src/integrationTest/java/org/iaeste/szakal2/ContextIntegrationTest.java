@@ -7,6 +7,6 @@ public class ContextIntegrationTest extends IntegrationTest {
 
     @Test
     public void contextLoads() {
-
+        //Just load context
     }
 }

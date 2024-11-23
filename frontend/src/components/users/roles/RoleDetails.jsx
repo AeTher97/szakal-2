@@ -12,9 +12,9 @@ const RoleDetails = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
-    const {role, loading, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
+    const {role, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
     const [localRole, setLocalRole] = useState(null);
-    const [udpateRoleDetailsLoading, setUpdateRoleDetailsLoading] = useState(false);
+    const [setUpdateRoleDetailsLoading] = useState(false);
 
 
     useEffect(() => {

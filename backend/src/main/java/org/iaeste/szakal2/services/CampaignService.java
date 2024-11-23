@@ -1,7 +1,5 @@
 package org.iaeste.szakal2.services;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
@@ -30,8 +28,6 @@ import java.util.UUID;
 @Service
 public class CampaignService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final CampaignRepository campaignRepository;
     private final ContactJourneyRepository contactJourneyRepository;
     private final UserGroupRepository userGroupRepository;
@@ -83,7 +79,7 @@ public class CampaignService {
     }
 
     public Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
-        return getJourneysForCampaign(pageable, new JourneySpecification(contactJourneySearch, entityManager));
+        return getJourneysForCampaign(pageable, new JourneySpecification(contactJourneySearch));
     }
 
     private Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, Specification<ContactJourney> specification) {

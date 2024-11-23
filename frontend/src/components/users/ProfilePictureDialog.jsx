@@ -3,6 +3,7 @@ import {DialogActions, DialogTitle, Modal, ModalDialog} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/AlertActions";
+import PropTypes from "prop-types";
 
 const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
 
@@ -32,7 +33,8 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
                         width: 300, height: 300, display: "flex", justifyContent: "center", alignItems: "center"
                         , position: "relative"
                     }}>
-                        {imageString && <img style={{position: "absolute"}} src={"/avatar_clip.svg"}/>}
+                        {imageString &&
+                            <img alt={"Avatar clip"} style={{position: "absolute"}} src={"/avatar_clip.svg"}/>}
                         {!imageString && <input ref={ref} type="file" id="myFile" onChange={(e) => {
                             if(e.target.files[0].size > 5242880) {
                                 ref.current.value = ""
@@ -41,7 +43,8 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
                             }
                             setFile(e.target.files[0])
                         }} name="filename" accept="image/png, image/gif, image/jpeg"/>}
-                        {imageString && <img style={{width: 300, height: 300,objectFit: "cover"}} src={imageString}/>}
+                        {imageString && <img alt={"User avatar"} style={{width: 300, height: 300, objectFit: "cover"}}
+                                             src={imageString}/>}
                         <div></div>
                     </div>
 
@@ -63,5 +66,11 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
         </Modal>
     );
 };
+
+ProfilePictureDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    updateProfilePicture: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired
+}
 
 export default ProfilePictureDialog;

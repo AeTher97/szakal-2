@@ -4,7 +4,8 @@ import Button from "@mui/joy/Button";
 import CompanyCategories from "./cards/CompanyCategories";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
-import InputWithLimit from "../misc/InputWithLimit";
+import {InputWithLimit} from "../misc/InputWithLimit";
+import PropTypes from "prop-types";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
 
@@ -37,17 +38,21 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
         <Modal open={open}>
             <ModalDialog sx={{overflow: "auto"}}>
                 <form
-                    onSubmit={(event, value) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
-                        addCompany(name,
+                        addCompany({
+                            name,
                             phone,
                             email,
                             www,
-                            categories.map(category => category.id),
-                            street,
-                            streetNumber,
-                            city,
-                            postalCode);
+                            address: {
+                                street,
+                                streetNumber,
+                                city,
+                                postalCode
+                            },
+                            categories: categories.map(category => category.id)
+                        })
                         onClose();
                     }}>
                     <DialogTitle>
@@ -121,6 +126,12 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
             </ModalDialog>
         </Modal>
     );
+};
+
+AddCampaignDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    addCompany: PropTypes.func.isRequired,
 };
 
 export default AddCampaignDialog;

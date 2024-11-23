@@ -16,11 +16,14 @@ export const useCategories = (pageNumberLoaded, currentPage = 0) => {
 
     const {post} = usePost(`/categories`, (content) =>
         setCategories(current => {
-        return [...current, content]
-    }))
+            return [...current, content]
+        }))
 
     const {put} = usePut(`/categories/id`, content => {
         setCategories(old => {
+            if (!old) {
+                return [content];
+            }
             return [...old.filter(category => category.id !== content.id), content]
         })
     })

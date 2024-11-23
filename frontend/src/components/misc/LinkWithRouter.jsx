@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from '@mui/joy/Link';
 import {Link as RouterLink} from 'react-router-dom';
+import PropTypes from "prop-types";
 
 const LinkWithRouter = ({to, children, overlay, underline, sx, style, color}) => {
 
@@ -11,6 +12,14 @@ const LinkWithRouter = ({to, children, overlay, underline, sx, style, color}) =>
     );
 };
 
-LinkWithRouter.propTypes = {};
+LinkWithRouter.propTypes = {
+    to: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    overlay: PropTypes.bool,
+    underline: PropTypes.string,
+    sx: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    style: PropTypes.object,
+    color: PropTypes.string
+};
 
 export default LinkWithRouter;

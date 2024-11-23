@@ -5,6 +5,10 @@ import org.testcontainers.utility.DockerImageName;
 
 public class SharedPostgresContainer {
 
+    private SharedPostgresContainer() {
+
+    }
+
     private static final PostgreSQLContainer<?> postgreSQLContainer;
 
     static {
