@@ -8,11 +8,12 @@ export function favouriteJourneysReducer(state = {favouriteJourneys: []}, action
             return {
                 favouriteJourneys: action.payload.items
             }
-        case REMOVE_FAVOURITE_JOURNEY:
+        case REMOVE_FAVOURITE_JOURNEY: {
             const newItems = state.favouriteJourneys.filter(item => item.id !== action.payload.item.id)
             return {
                 favouriteJourneys: newItems
             }
+        }
         case ADD_FAVOURITE_JOURNEY:
             return {
                 favouriteJourneys: [...state.favouriteJourneys, action.payload.item]

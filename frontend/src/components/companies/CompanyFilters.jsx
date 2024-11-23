@@ -27,6 +27,8 @@ import {useSelector} from "react-redux";
 import {useCategories} from "../../data/CategoriesData";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 import {useSearchWithPagination} from "../../utils/SearchHook";
+import {v4 as uuidv4} from 'uuid';
+
 
 const NAME = "name";
 const CATEGORY = "category";
@@ -64,9 +66,9 @@ const CompanyFilters = () => {
     const {companies, loading, pageNumber, totalCount, addCompany}
         = useCompanyListWithCampaign(
         currentCampaign,
-        currentPage - 1,
         search,
-        [searchLoaded, (currentCampaign !== '') ? true : null]
+        [searchLoaded, (currentCampaign !== '') ? true : null],
+        currentPage - 1
     );
 
     useEffect(() => {
@@ -216,7 +218,7 @@ const CompanyFilters = () => {
 
             {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
                 {Array(10).fill(0).map((v, i) => {
-                    return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
+                    return <Skeleton key={uuidv4()} variant={"rectangular"} style={{height: 30}}/>
                 })}
             </div>}
 

@@ -6,10 +6,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import CategoryDialog from "../../categories/CategoryDialog";
+import PropTypes from "prop-types";
 
 const CompanyCategories = ({
-                               categoriesList, setCategories, updateCategories, updateCategoriesLoading,
-                               allowAdding, dialog = false, deleted
+                               categoriesList,
+                               setCategories,
+                               updateCategories,
+                               updateCategoriesLoading,
+                               allowAdding = false,
+                               dialog = false,
+                               deleted = false
                            }) => {
 
     const {hasRight} = useAccessRightsHelper();
@@ -21,6 +27,19 @@ const CompanyCategories = ({
         return option.id === "choose";
     }
 
+    const removeCategory = (categories, id) => {
+        return categories.filter(categoryLocal => categoryLocal.id !== id)
+    }
+
+    const renderCategory = (category) => {
+        return <div key={category.id} style={{display: "flex", justifyContent: "space-between"}}>
+            <Typography key={category.id}>• {category.name}</Typography>
+            {canModify && <IconButton onClick={() => {
+                setCategories(old => removeCategory(old, category.id))
+            }}><DeleteIcon/></IconButton>}
+        </div>
+    }
+
     return (
         <Card sx={{flex: 1, minWidth: 200}}>
             <CardContent sx={{flex: 0}}>
@@ -28,15 +47,7 @@ const CompanyCategories = ({
             </CardContent>
             <Divider/>
             <CardContent>
-                {categoriesList && categoriesList.map(category =>
-                    <div key={category.id} style={{display: "flex", justifyContent: "space-between"}}>
-                        <Typography key={category.id}>• {category.name}</Typography>
-                        {canModify && <IconButton onClick={() => {
-                            setCategories(old => {
-                                return old.filter(categoryLocal => categoryLocal.id !== category.id)
-                            })
-                        }}><DeleteIcon/></IconButton>}
-                    </div>)}
+                {categoriesList?.map(category => renderCategory(category))}
                 {categoriesList && categoriesList.length === 0 &&
                     <Typography style={{alignSelf: "center"}}>Brak branż</Typography>}
             </CardContent>
@@ -76,7 +87,8 @@ const CompanyCategories = ({
                     </Button>}
             </CardActions>
             <CardActions>
-                {allowAdding && <Button variant={"outlined"} color={"neutral"} onClick={() => setOpen(true)}>
+                {allowAdding && <Button variant={"outlined"} color={"neutral"}
+                                        onClick={() => setOpen(true)}>
                     Dodaj
                 </Button>}
             </CardActions>
@@ -88,5 +100,15 @@ const CompanyCategories = ({
         </Card>
     );
 };
+
+CompanyCategories.propTypes = {
+    categoriesList: PropTypes.array.isRequired,
+    setCategories: PropTypes.func.isRequired,
+    updateCategories: PropTypes.func,
+    updateCategoriesLoading: PropTypes.bool,
+    allowAdding: PropTypes.bool,
+    deleted: PropTypes.bool,
+    dialog: PropTypes.bool,
+}
 
 export default CompanyCategories;

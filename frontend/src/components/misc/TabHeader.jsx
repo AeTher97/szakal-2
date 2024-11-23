@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 const TabHeader = ({children, style}) => {
     return (
@@ -7,5 +8,10 @@ const TabHeader = ({children, style}) => {
         </div>
     );
 };
+
+TabHeader.propTypes = {
+    children: PropTypes.node.isRequired,
+    style: PropTypes.object
+}
 
 export default TabHeader;

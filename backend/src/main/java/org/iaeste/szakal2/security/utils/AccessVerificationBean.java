@@ -12,7 +12,7 @@ import java.util.UUID;
 public class AccessVerificationBean {
 
 
-    public AccessVerificationBean() {
+    private AccessVerificationBean() {
     }
 
     public static boolean isUser(String id) {

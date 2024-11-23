@@ -5,17 +5,13 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import {Typography} from "@mui/joy";
+import PropTypes from "prop-types";
 
-const Pagination = ({
-                        currentPage = 0, numberOfPages = 0, setPage = () => {
-    },
-                        firstAndLast = false, showPages = 5,
-                        concise = false, margin = "10"
-                    }) => {
-
+const getPagesArray = (currentPage, showPages, numberOfPages, concise) => {
     if (concise) {
         showPages *= 0.6;
     }
+
 
     let low = currentPage - Math.floor(showPages / 2);
     let high = currentPage + Math.floor(showPages / 2);
@@ -35,6 +31,21 @@ const Pagination = ({
     for (let i = low; i <= high; i++) {
         pages.push(i);
     }
+    return {pages, low, high};
+}
+
+const Pagination = ({
+                        currentPage = 0,
+                        numberOfPages = 0,
+                        setPage = () => {
+                        },
+                        firstAndLast = false,
+                        showPages = 5,
+                        concise = false,
+                        margin = "10"
+                    }) => {
+
+    const {pages, low, high} = getPagesArray(currentPage, showPages, numberOfPages, concise);
 
     const firstPage = currentPage === 1;
     const notFirstPage = !firstPage;
@@ -83,8 +94,17 @@ const Pagination = ({
                 }
             </div>
         </div>
-    )
-        ;
+    );
 };
+
+Pagination.propTypes = {
+    currentPage: PropTypes.number.isRequired,
+    numberOfPages: PropTypes.number.isRequired,
+    setPage: PropTypes.func.isRequired,
+    firstAndLast: PropTypes.bool,
+    showPages: PropTypes.number,
+    concise: PropTypes.bool,
+    margin: PropTypes.string
+}
 
 export default Pagination;

@@ -5,6 +5,7 @@ import Button from "@mui/joy/Button";
 import {useSelector} from "react-redux";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 import Option from "@mui/joy/Option";
+import PropTypes from "prop-types";
 
 const contactReminderOptions = [
     {label: "2 dni przed", value: 48},
@@ -19,8 +20,7 @@ const hour = 60 * 60 * 1000;
 
 const dateToLocalISO = (date) => {
     const off = date.getTimezoneOffset()
-    const absoff = Math.abs(off)
-    return (new Date(date.getTime() - off * 60 * 1000).toISOString().substr(0, 23))
+    return (new Date(date.getTime() - off * 60 * 1000).toISOString().slice(0, 23))
 }
 
 const ScheduledContactDialog = ({open, close}) => {
@@ -32,8 +32,8 @@ const ScheduledContactDialog = ({open, close}) => {
     const [searchObject, setSearchObject] = useState({});
 
     const {companies, loading: companiesLoading}
-        = useCompanyListWithCampaign(currentCampaign, 0, searchObject,
-        [(currentCampaign !== '') ? true : null, open])
+        = useCompanyListWithCampaign(currentCampaign, searchObject,
+        [(currentCampaign !== '') ? true : null, open], 0);
     const {userId} = useSelector(state => state.auth);
     const {theme} = useSelector(state => state.theme);
 
@@ -44,7 +44,7 @@ const ScheduledContactDialog = ({open, close}) => {
     const [note, setNote] = useState("");
 
     useEffect(() => {
-        if(companySearch !== ""){
+        if (companySearch !== "") {
             setSearchObject({name: companySearch})
         } else {
             setSearchObject({})
@@ -62,8 +62,8 @@ const ScheduledContactDialog = ({open, close}) => {
                         tempDate.setTime(new Date(contactDate).getTime() - hour * beforeSelect);
                         addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note)
                             .then(() => {
-                            close();
-                        });
+                                close();
+                            });
                     } else {
                         addScheduledContact(company.id, userId, contactDate, reminderDate, note).then(() => {
                             close();
@@ -137,5 +137,10 @@ const ScheduledContactDialog = ({open, close}) => {
         </Modal>
     );
 };
+
+ScheduledContactDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired
+}
 
 export default ScheduledContactDialog;

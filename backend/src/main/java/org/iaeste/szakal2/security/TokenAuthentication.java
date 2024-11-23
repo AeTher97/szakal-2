@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public abstract class TokenAuthentication implements Authentication {
 
@@ -77,5 +78,15 @@ public abstract class TokenAuthentication implements Authentication {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = principal.hashCode();
+        result = 31 * result + Objects.hashCode(authToken);
+        result = 31 * result + Objects.hashCode(userFingerprint);
+        result = 31 * result + Objects.hashCode(authorities);
+        result = 31 * result + Boolean.hashCode(isAuthenticated);
+        return result;
     }
 }

@@ -4,6 +4,7 @@ import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, 
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
+import PropTypes from "prop-types";
 
 const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => {
     const mobile = useMobileSize();
@@ -84,5 +85,11 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
         </Card>
     )
 };
+
+CompanyAddress.propTypes = {
+    localCompany: PropTypes.object.isRequired,
+    updateAddress: PropTypes.func.isRequired,
+    updateAddressLoading: PropTypes.bool.isRequired
+}
 
 export default CompanyAddress;

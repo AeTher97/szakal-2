@@ -15,6 +15,7 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRightsList";
 import {useMobileSize} from "../../utils/MediaQuery";
 import {isDevEnv, setDefaultTitle} from "../../App";
+import PropTypes from "prop-types";
 
 const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -28,9 +29,17 @@ const UserDetails = ({userId}) => {
     const validIdFromPath = uuidCheck.test(idFromPath);
 
     const {
-        user, loading, updateUserRoles, updateRolesLoading, acceptUser, acceptUserLoading,
-        changeUserStatus, changeUserStatusLoading, updateUserDetails, updateUserDetailsLoading,
-        updateProfilePicture, deleteNotAcceptedUser
+        user,
+        updateUserRoles,
+        updateRolesLoading,
+        acceptUser,
+        acceptUserLoading,
+        changeUserStatus,
+        changeUserStatusLoading,
+        updateUserDetails,
+        updateUserDetailsLoading,
+        updateProfilePicture,
+        deleteNotAcceptedUser
     } = useUserData(validIdFromPath ? idFromPath : userId);
 
     const isCurrentUser = useIsUser(user ? user.id : "")
@@ -105,5 +114,9 @@ const UserDetails = ({userId}) => {
         </div>
     );
 };
+
+UserDetails.propTypes = {
+    userId: PropTypes.string
+}
 
 export default UserDetails;

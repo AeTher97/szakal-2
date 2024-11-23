@@ -2,7 +2,7 @@ import {useData, usePost, usePut} from "./UseData";
 import {useSelector} from "react-redux";
 import {useState} from "react";
 
-export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded) => {
+export const useCurrentCampaignJourneyList = (search, searchLoaded, page = 0,) => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [journeys, setJourneys] = useState([]);
@@ -30,7 +30,7 @@ export const useCurrentCampaignJourneyList = (page = 0, search, searchLoaded) =>
     return {journeys, loading, loaded, pagesNumber, totalCount}
 }
 
-export const useUserJourneyList = (page = 0, search, searchLoaded) => {
+export const useUserJourneyList = (search, searchLoaded, page = 0) => {
 
     const {userId} = useSelector(state => state.auth)
     const {currentCampaign} = useSelector(state => state.campaigns)
@@ -65,7 +65,7 @@ export const useTop10 = () => {
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [top10, setTop10] = useState([]);
 
-    const {} = useData(`/journeys/top10`,
+    useData(`/journeys/top10`,
         (data) => {
             setTop10(data.usersWithCount)
         }, [currentCampaign],

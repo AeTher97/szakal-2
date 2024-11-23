@@ -4,11 +4,24 @@ import {uuidToColor} from "../../utils/ColorForUUID";
 import Button from "@mui/joy/Button";
 import {useRolesList} from "../../data/RolesData";
 import {useMobileSize} from "../../utils/MediaQuery";
+import PropTypes from "prop-types";
 
-const UserRoles = ({localUser, setLocalUser, updateUserRoles, updateRolesLoading}) => {
+const UserRoles = ({
+                       localUser,
+                       setLocalUser,
+                       updateUserRoles,
+                       updateRolesLoading
+                   }) => {
 
-    const {roles, loading: rolesLoading} = useRolesList();
+    const {roles} = useRolesList();
     const mobile = useMobileSize();
+
+    const removeUserRole = (old, id) => {
+        return {
+            ...old,
+            roles: old.roles.filter(innerRole => innerRole.id !== id)
+        }
+    }
 
     return (
         <Card sx={{maxWidth: 640, flex: 1, minWidth: mobile ? 200 : 400}}>
@@ -21,12 +34,7 @@ const UserRoles = ({localUser, setLocalUser, updateUserRoles, updateRolesLoading
                 {localUser.roles.map(role => <Chip key={role.id}
                                                    sx={{backgroundColor: uuidToColor(role.id, 0.5)}}
                                                    endDecorator={<ChipDelete onDelete={() => {
-                                                       setLocalUser(old => {
-                                                           return {
-                                                               ...old,
-                                                               roles: old.roles.filter(innerRole => innerRole.id !== role.id)
-                                                           }
-                                                       })
+                                                       setLocalUser(old => removeUserRole(old, role.id))
                                                    }}/>}>
                     {role.name}
                 </Chip>)}
@@ -56,10 +64,17 @@ const UserRoles = ({localUser, setLocalUser, updateUserRoles, updateRolesLoading
             </CardContent>
             <CardActions>
                 <Button loading={updateRolesLoading}
-                    onClick={() => updateUserRoles(localUser.roles.map(localRole => localRole.id))}>Zapisz</Button>
+                        onClick={() => updateUserRoles(localUser.roles.map(localRole => localRole.id))}>Zapisz</Button>
             </CardActions>
         </Card>
     );
 };
+
+UserRoles.propTypes = {
+    localUser: PropTypes.object.isRequired,
+    setLocalUser: PropTypes.func.isRequired,
+    updateUserRoles: PropTypes.func.isRequired,
+    updateRolesLoading: PropTypes.bool
+}
 
 export default UserRoles;

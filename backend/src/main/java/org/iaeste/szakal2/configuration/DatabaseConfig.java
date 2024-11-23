@@ -2,7 +2,6 @@ package org.iaeste.szakal2.configuration;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

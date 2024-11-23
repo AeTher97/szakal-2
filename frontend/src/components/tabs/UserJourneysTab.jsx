@@ -25,6 +25,8 @@ import Option from "@mui/joy/Option";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/joy/Button";
 import {useSearchWithPagination} from "../../utils/SearchHook";
+import {v4 as uuidv4} from 'uuid';
+
 
 const COMPANY_NAME = "companyName";
 const STATUS = "status";
@@ -51,7 +53,7 @@ const UserJourneysTab = () => {
     } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT, PAGE_SIZE],
         [{name: "sort", value: "companyName,ASC"}, {name: PAGE_SIZE, value: 10}])
     const {journeys, loading, totalCount, pagesNumber}
-        = useUserJourneyList(currentPage - 1, search, searchLoaded);
+        = useUserJourneyList(search, searchLoaded, currentPage - 1);
 
     useEffect(() => {
         updatePageNumber(pagesNumber);
@@ -147,7 +149,7 @@ const UserJourneysTab = () => {
                         }} itemsPerPage={search.pageSize}/>}
                     {loading && <div style={{display: "flex", flexDirection: "column", gap: 5}}>
                         {Array(10).fill(0).map((value, i) => {
-                            return <Skeleton key={i} variant={"rectangular"} style={{height: 30}}/>
+                            return <Skeleton key={uuidv4()} variant={"rectangular"} style={{height: 30}}/>
                         })}
                     </div>}
 

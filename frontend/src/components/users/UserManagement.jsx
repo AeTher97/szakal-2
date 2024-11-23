@@ -6,6 +6,7 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRightsList";
 import {useConfirmationDialog} from "../misc/ConfirmationDialog";
 import {useNavigate} from "react-router-dom";
+import PropTypes from "prop-types";
 
 const UserManagement = ({
                             user,
@@ -68,7 +69,7 @@ const UserManagement = ({
             <CardActions>
                 <Button onClick={() => {
                     if (localUser.accepted && !user.accepted) {
-                        acceptUser().then(e => {
+                        acceptUser().then(() => {
                             if (localUser.active && !user.active) {
                                 changeUserState(localUser.active);
                             }
@@ -84,5 +85,16 @@ const UserManagement = ({
         </Card>
     );
 };
+
+UserManagement.propTypes = {
+    user: PropTypes.object.isRequired,
+    localUser: PropTypes.object.isRequired,
+    setLocalUser: PropTypes.func.isRequired,
+    acceptUser: PropTypes.func.isRequired,
+    deleteNotAcceptedUser: PropTypes.func.isRequired,
+    changeUserState: PropTypes.func.isRequired,
+    acceptUserLoading: PropTypes.bool,
+    changeUserStatusLoading: PropTypes.bool
+}
 
 export default UserManagement;

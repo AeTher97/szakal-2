@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Autocomplete} from "@mui/joy";
 import {useGroupsList} from "../../data/GroupsData";
+import PropTypes from "prop-types";
 
 const CHOOSE_VALUE = {id: "choose", label: "Wybierz", disabled: true};
 
@@ -46,5 +47,9 @@ const UserGroupAutocomplete = ({onChange}) => {
         />
     );
 };
+
+UserGroupAutocomplete.propTypes = {
+    onChange: PropTypes.func.isRequired
+}
 
 export default UserGroupAutocomplete;

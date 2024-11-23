@@ -18,6 +18,7 @@ import Pagination from "../../misc/Pagination";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserAutocomplete from "../../misc/UserAutocomplete";
 import UserAvatar from "../../misc/UserAvatar";
+import PropTypes from "prop-types";
 
 const PAGE_SIZE = 10;
 
@@ -106,5 +107,13 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
         </Card>
     );
 };
+
+GroupUsers.propTypes = {
+    localGroup: PropTypes.object.isRequired,
+    deleteUser: PropTypes.func.isRequired,
+    addUser: PropTypes.func.isRequired,
+    save: PropTypes.func.isRequired,
+    saveLoading: PropTypes.bool
+}
 
 export default GroupUsers;

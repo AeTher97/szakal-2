@@ -5,10 +5,14 @@ import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import {useMobileSize} from "../../../utils/MediaQuery";
 import ContactPersonDialog from "../ContactPersonDialog";
+import PropTypes from "prop-types";
 
 const CompanyContactPeople = ({
-                                  contactPeople, addContactPerson, addingContactPerson,
-                                  modifyContactPerson, deleted
+                                  contactPeople,
+                                  addContactPerson,
+                                  addingContactPerson,
+                                  modifyContactPerson,
+                                  deleted
                               }) => {
 
     const [addContactPersonOpen, setAddContactPersonOpen] = useState(false);
@@ -38,10 +42,17 @@ const CompanyContactPeople = ({
                                     <div style={{flex: 0.6}}>
                                         <Typography>{person.name}</Typography>
                                         <Typography level={"body-sm"}>{person.position}</Typography>
-                                        <Typography level={"body-sm"}>Alumn: {person.alumni ? "Tak" : "Nie"}</Typography>
-                                        {person.committee && <Typography level={"body-sm"}>Komitet: {person.committee}</Typography>}
+                                        <Typography
+                                            level={"body-sm"}>Alumn: {person.alumni ? "Tak" : "Nie"}</Typography>
+                                        {person.committee &&
+                                            <Typography level={"body-sm"}>Komitet: {person.committee}</Typography>}
                                     </div>
-                                    <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "flex-start"
+                                    }}>
                                         <Typography>{person.phone}</Typography>
                                         <Typography>{person.email}</Typography>
                                         <Typography>{person.comment}</Typography>
@@ -82,5 +93,13 @@ const CompanyContactPeople = ({
             </form>
         </Card>)
 };
+
+CompanyContactPeople.propTypes = {
+    contactPeople: PropTypes.array.isRequired,
+    addContactPerson: PropTypes.func.isRequired,
+    addingContactPerson: PropTypes.bool.isRequired,
+    modifyContactPerson: PropTypes.func.isRequired,
+    deleted: PropTypes.bool.isRequired
+}
 
 export default CompanyContactPeople;

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.codec.Hex;
 
@@ -42,7 +43,7 @@ public abstract class FingerprintAuthenticationProvider {
             log.info(e.getMessage());
             throw new BadCredentialsException("Jwt token invalid");
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new ApplicationContextException("No decryption algorithm for HS512", e);
         }
     }
 }

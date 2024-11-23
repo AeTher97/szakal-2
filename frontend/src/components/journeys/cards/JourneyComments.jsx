@@ -5,6 +5,7 @@ import UserAvatar from "../../misc/UserAvatar";
 import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {useSelector} from "react-redux";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
+import PropTypes from "prop-types";
 
 const JourneyComments = ({addComment, journey}) => {
 
@@ -67,5 +68,10 @@ const JourneyComments = ({addComment, journey}) => {
         </div>
     );
 };
+
+JourneyComments.propTypes = {
+    addComment: PropTypes.func.isRequired,
+    journey: PropTypes.object.isRequired
+}
 
 export default JourneyComments;

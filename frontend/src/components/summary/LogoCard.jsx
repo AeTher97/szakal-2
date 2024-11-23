@@ -18,7 +18,8 @@ const LogoCard = () => {
 
             <CardContent>
                 <div style={{display: "flex", justifyContent: "center"}}>
-                    <img src={theme === "dark" ? "/iaeste_white.svg" : "/iaeste.svg"} style={{width: 120}}/>
+                    <img alt={"Iaeste logo"} src={theme === "dark" ? "/iaeste_white.svg" : "/iaeste.svg"}
+                         style={{width: 120}}/>
                 </div>
                 <Typography level={"body-sm"}>
                     Przed Tobą System Zarządzania Akcjami Komitetu Lokalnego, narzędzie

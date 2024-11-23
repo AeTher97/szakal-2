@@ -5,6 +5,8 @@ import {useJoinGroup} from '../../../data/GroupsData';
 import {useDispatch, useSelector} from "react-redux";
 import {reloadAction} from "../../../redux/MiscActions";
 import {showSuccess} from "../../../redux/AlertActions";
+import {v4 as uuidv4} from 'uuid';
+import PropTypes from "prop-types";
 
 const CODE_LENGTH = 7;
 const INITIAL_STATE = [
@@ -74,7 +76,7 @@ const JoinGroupDialog = ({open, close}) => {
             <ModalDialog>
                 <DialogTitle>Dołącz do grupy użytkowników</DialogTitle>
                 <form
-                    onSubmit={(event, value) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
                     }}>
                     <FormLabel>Podaj kod grupy</FormLabel>
@@ -89,7 +91,7 @@ const JoinGroupDialog = ({open, close}) => {
                             const ref = refs[index];
                             return <Input
                                 slotProps={{input: {ref}}}
-                                key={index}
+                                key={uuidv4()}
                                 sx={{
                                     "& input": {
                                         textAlign: 'center',
@@ -133,7 +135,7 @@ const JoinGroupDialog = ({open, close}) => {
                                         }, 1)
                                     }
                                 }}
-                                onFocus={(e) => {
+                                onFocus={() => {
                                     if (refs[index].current.value.length === 1) {
                                         refs[index].current.setSelectionRange(0, 1);
                                     }
@@ -190,5 +192,10 @@ const JoinGroupDialog = ({open, close}) => {
         </Modal>
     );
 };
+
+JoinGroupDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired
+}
 
 export default JoinGroupDialog;

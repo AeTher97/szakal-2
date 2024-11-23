@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useData, useDelete, usePost, usePut} from "./UseData";
 
-export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, locks) => {
+export const useCompanyListWithCampaign = (campaignId, search, locks, currentPage = 0) => {
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
@@ -33,20 +33,8 @@ export const useCompanyListWithCampaign = (campaignId, currentPage = 0, search, 
             return [...current, data]
         }))
 
-    const addCompany = (name, phone, email, www, categories, street, streetNumber, city, postalCode) => {
-        post({
-            name,
-            phone,
-            email,
-            www,
-            address: {
-                street,
-                streetNumber,
-                city,
-                postalCode
-            },
-            categories
-        })
+    const addCompany = (company) => {
+        post(company)
     }
 
     return {companies, loading, pageNumber, totalCount, addCompany}
@@ -94,10 +82,8 @@ export const useCompany = (id) => {
         })
     }
 
-    const modifyContactPerson = (contactPersonId, name, position, alumni, phone, email, comment, committee) => {
-        return putContactPerson({
-            name, position, alumni, phone, email, comment, committee
-        }, `/companies/${id}/contactPerson/${contactPersonId}`)
+    const modifyContactPerson = (contactPerson) => {
+        return putContactPerson(contactPerson, `/companies/${id}/contactPerson/${contactPerson.id}`)
     }
 
     const deleteCompany = () => {

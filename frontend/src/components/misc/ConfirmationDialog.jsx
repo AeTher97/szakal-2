@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
 import {DialogActions, DialogTitle, Modal, ModalDialog} from "@mui/joy";
 import Button from "@mui/joy/Button";
+import PropTypes from "prop-types";
 
-const ConfirmationDialog = ({open, close, text, onConfirm, onReject}) => {
+const ConfirmationDialog = ({
+                                open,
+                                close,
+                                text,
+                                onConfirm,
+                                onReject = () => {
+                                }
+                            }) => {
 
     return (
         <Modal open={open}>
@@ -46,4 +54,12 @@ export const useConfirmationDialog = (text) => {
     }
 
     return {openDialog, render}
+}
+
+ConfirmationDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+    onConfirm: PropTypes.func,
+    onReject: PropTypes.func
 }

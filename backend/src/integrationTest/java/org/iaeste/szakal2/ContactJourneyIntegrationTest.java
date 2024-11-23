@@ -129,7 +129,7 @@ public class ContactJourneyIntegrationTest extends IntegrationTestWithTools {
 
         ContactJourney contactJourney1 = integrationTestDatabase.getContactJourney(contactJourney.getId());
         assertEquals(1, contactJourney1.getComments().size());
-        assertEquals("Nie idzie za dobrze", contactJourney1.getComments().iterator().next().getComment());
+        assertEquals("Nie idzie za dobrze", contactJourney1.getComments().iterator().next().getCommentValue());
         contactJourneyRepository.deleteById(contactJourney1.getId());
         contactJourneyRepository.flush();
 

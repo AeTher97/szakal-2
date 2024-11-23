@@ -3,15 +3,16 @@ import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, T
 import Button from "@mui/joy/Button";
 import {useSelector} from "react-redux";
 import UserGroupAutocomplete from "./UserGroupAutocomplete";
+import PropTypes from "prop-types";
 
 const AddOrEditCampaignDialog = ({
-                            open,
-                            addCampaign,
-                            close,
-                            editedCampaign,
-                            modifyCampaign,
-                            addToUserGroup = false
-                        }) => {
+                                     open,
+                                     addCampaign,
+                                     close,
+                                     editedCampaign,
+                                     modifyCampaign,
+                                     addToUserGroup = false
+                                 }) => {
 
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -39,7 +40,7 @@ const AddOrEditCampaignDialog = ({
             <ModalDialog>
                 <DialogTitle>Dodaj akcję</DialogTitle>
                 <form
-                    onSubmit={(event, value) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
                         if (editedCampaign) {
                             modifyCampaign(editedCampaign.id, name, startDate, description)
@@ -78,6 +79,7 @@ const AddOrEditCampaignDialog = ({
                             <Textarea
                                 style={{colorScheme: theme}}
                                 value={description}
+                                placeholder={"Opis"}
                                 onChange={(e) => {
                                     setDescription(e.target.value)
                                 }}/>
@@ -92,6 +94,15 @@ const AddOrEditCampaignDialog = ({
             </ModalDialog>
         </Modal>
     );
+};
+
+AddOrEditCampaignDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    addCampaign: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
+    editedCampaign: PropTypes.object,
+    modifyCampaign: PropTypes.func.isRequired,
+    addToUserGroup: PropTypes.bool
 };
 
 export default AddOrEditCampaignDialog;

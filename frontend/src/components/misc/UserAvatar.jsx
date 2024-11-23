@@ -2,10 +2,18 @@ import React from 'react';
 import {Avatar, Typography} from "@mui/joy";
 import {useMobileSize} from "../../utils/MediaQuery";
 import {uuidToColor} from "../../utils/ColorForUUID";
+import PropTypes from "prop-types";
 
 const UserAvatar = ({
-                        name = "", surname = "", image = "", text = true, size, overrideMobile = false,
-                        hideName = false, bold = true, id
+                        name = "",
+                        surname = "",
+                        image = "",
+                        text = true,
+                        size,
+                        overrideMobile = false,
+                        hideName = false,
+                        bold = true,
+                        id
                     }) => {
 
     const mobile = useMobileSize();
@@ -24,6 +32,16 @@ const UserAvatar = ({
     );
 };
 
-UserAvatar.propTypes = {};
+UserAvatar.propTypes = {
+    name: PropTypes.string,
+    surname: PropTypes.string,
+    image: PropTypes.string,
+    text: PropTypes.string,
+    size: PropTypes.string,
+    overrideMobile: PropTypes.bool,
+    hideName: PropTypes.bool,
+    bold: PropTypes.bool,
+    id: PropTypes.string.isRequired
+};
 
 export default UserAvatar;

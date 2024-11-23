@@ -3,6 +3,7 @@ import {Autocomplete, Card, CardActions, CardContent, Divider, IconButton, Typog
 import {useCampaignsList} from "../../../data/CampaignData";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/joy/Button";
+import PropTypes from "prop-types";
 
 const CHOOSE_VALUE = {id: "choose", label: "Wybierz", disabled: true};
 
@@ -75,5 +76,13 @@ const GroupCampaigns = ({groupCampaigns, save, saveLoading, addCampaign, deleteC
         </Card>
     );
 };
+
+GroupCampaigns.propTypes = {
+    groupCampaigns: PropTypes.array.isRequired,
+    save: PropTypes.func.isRequired,
+    saveLoading: PropTypes.bool,
+    addCampaign: PropTypes.func.isRequired,
+    deleteCampaign: PropTypes.func.isRequired
+}
 
 export default GroupCampaigns;

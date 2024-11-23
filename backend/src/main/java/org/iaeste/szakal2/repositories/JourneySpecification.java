@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.repositories;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.iaeste.szakal2.models.dto.SzakalSort;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
@@ -10,15 +9,17 @@ import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.iaeste.szakal2.models.entities.ContactStatus;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class JourneySpecification implements Specification<ContactJourney> {
 
-    private final ContactJourneySearch criteria;
+    public static final String COMPANY = "company";
+    public static final String SURNAME = "surname";
+    public static final String FINISHED = "finished";
+    private static final String LAST_INTERACTION = "last_interaction";
+    private final transient ContactJourneySearch criteria;
 
-    public JourneySpecification(ContactJourneySearch criteria, EntityManager entityManager) {
+    public JourneySpecification(ContactJourneySearch criteria) {
         this.criteria = criteria;
     }
 
@@ -52,15 +53,15 @@ public class JourneySpecification implements Specification<ContactJourney> {
         }
 
         if (criteria.getCompanyName() != null) {
-            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("company").get("name")),
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(COMPANY).get("name")),
                     wrapWithPercent(criteria.getCompanyName().toLowerCase())));
         }
 
         if (criteria.getStatus() != null) {
             if (criteria.getStatus().equals("in-progress")) {
-                predicateList.add(criteriaBuilder.isFalse(root.get("finished")));
-            } else if (criteria.getStatus().equals("finished")) {
-                predicateList.add(criteriaBuilder.isTrue(root.get("finished")));
+                predicateList.add(criteriaBuilder.isFalse(root.get(FINISHED)));
+            } else if (criteria.getStatus().equals(FINISHED)) {
+                predicateList.add(criteriaBuilder.isTrue(root.get(FINISHED)));
             }
         }
 
@@ -75,6 +76,19 @@ public class JourneySpecification implements Specification<ContactJourney> {
                     wrapWithPercent(criteria.getEventText().toLowerCase())));
         }
 
+        addUserSpecs(root, criteriaBuilder, predicateList);
+
+        if (criteria.getUserId() != null) {
+            predicateList.add(criteriaBuilder.equal(root.get("user").get("id"), criteria.getUserId()));
+        }
+
+        addSort(root, query, criteriaBuilder);
+
+
+        return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
+    }
+
+    private void addUserSpecs(Root<ContactJourney> root, CriteriaBuilder criteriaBuilder, List<Predicate> predicateList) {
         if (criteria.getUser() != null) {
             String[] parts = criteria.getUser().toLowerCase().split(" ");
             if (parts.length == 1) {
@@ -82,7 +96,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
                         criteriaBuilder.or(
                                 criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")),
                                         wrapWithPercent(parts[0])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get(SURNAME)),
                                         wrapWithPercent(parts[0])),
                                 criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email"))
                                         , wrapWithPercent(parts[0]))));
@@ -91,42 +105,39 @@ public class JourneySpecification implements Specification<ContactJourney> {
                         criteriaBuilder.or(
                                 criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("name")),
                                         wrapWithPercent(parts[0])),
-                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("surname")),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get(SURNAME)),
                                         wrapWithPercent(parts[1])),
                                 criteriaBuilder.like(criteriaBuilder.lower(root.get("user").get("email")),
                                         wrapWithPercent(parts[0]))));
             }
         }
+    }
 
-        if (criteria.getUserId() != null) {
-            predicateList.add(criteriaBuilder.equal(root.get("user").get("id"), criteria.getUserId()));
-        }
-
+    private void addSort(Root<ContactJourney> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         if (criteria.getSzakalSort() != null) {
             boolean asc = criteria.getSzakalSort().getSortDirection().equals(SzakalSort.SortDirection.ASC);
             switch (criteria.getSzakalSort().getColumnName()) {
                 case "detailedStatus" -> addCases(root, query, criteriaBuilder, asc);
-                case "user" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("user").get("surname")) :
-                        criteriaBuilder.desc(root.get("user").get("surname")));
-                case "companyName" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("company").get("name")) :
-                        criteriaBuilder.desc(root.get("company").get("name")));
+                case "user" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("user").get(SURNAME)) :
+                        criteriaBuilder.desc(root.get("user").get(SURNAME)));
+                case "companyName" -> query.orderBy(asc ? criteriaBuilder.asc(root.get(COMPANY).get("name")) :
+                        criteriaBuilder.desc(root.get(COMPANY).get("name")));
                 case "startDate" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("journeyStart")) :
                         criteriaBuilder.desc(root.get("journeyStart")));
-                case "lastInteraction" -> {
+                case LAST_INTERACTION -> {
                     final Date minDate = new Date(0L);
-                    final Date maxDate = new Date(4000, 0, 0);
+                    GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                    gregorianCalendar.set(4000, Calendar.JANUARY, 0);
+                    final Date maxDate = gregorianCalendar.getTime();
 
                     Order lastInteractionOrder = asc ?
-                            criteriaBuilder.asc(criteriaBuilder.coalesce(root.get("lastInteraction"), maxDate)) :
-                            criteriaBuilder.desc(criteriaBuilder.coalesce(root.get("lastInteraction"), minDate));
+                            criteriaBuilder.asc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), maxDate)) :
+                            criteriaBuilder.desc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), minDate));
                     query.orderBy(lastInteractionOrder);
                 }
                 default -> throw new IllegalArgumentException("Sort not supported");
             }
         }
-
-
-        return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
     }
 
 }

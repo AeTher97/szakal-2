@@ -4,8 +4,9 @@ import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, 
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {ROLE_MODIFICATION} from "../../../utils/AccessRightsList";
+import PropTypes from "prop-types";
 
-const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) => {
+const RoleBasicInfo = ({localRole, updateRoleInfo}) => {
 
     const mobile = useMobileSize();
 
@@ -66,5 +67,10 @@ const RoleBasicInfo = ({localRole, updateRoleInfo, updateRoleDetailsLoading}) =>
             </form>
         </Card>)
 };
+
+RoleBasicInfo.propTypes = {
+    localRole: PropTypes.object.isRequired,
+    updateRoleInfo: PropTypes.func.isRequired
+}
 
 export default RoleBasicInfo;

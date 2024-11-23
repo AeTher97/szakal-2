@@ -4,6 +4,7 @@ import Button from "@mui/joy/Button";
 import {useDispatch, useSelector} from "react-redux";
 import LinkWithRouter from "../misc/LinkWithRouter";
 import {loginAction} from "../../redux/AuthActions";
+import PropTypes from "prop-types";
 
 const LoginForm = ({redirectBack}) => {
 
@@ -116,5 +117,9 @@ const LoginForm = ({redirectBack}) => {
         </form>
     );
 };
+
+LoginForm.propTypes = {
+    redirectBack: PropTypes.func
+}
 
 export default LoginForm;

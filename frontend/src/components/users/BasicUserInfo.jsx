@@ -4,10 +4,17 @@ import Button from "@mui/joy/Button";
 import {useMobileSize} from "../../utils/MediaQuery";
 import {useSelector} from "react-redux";
 import ProfilePictureDialog from "./ProfilePictureDialog";
-import InputWithLimit from "../misc/InputWithLimit";
 import {uuidToColor} from "../../utils/ColorForUUID";
+import PropTypes from "prop-types";
+import {InputWithLimit} from "../misc/InputWithLimit";
 
-const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoading, updateProfilePicture}) => {
+const BasicUserInfo = ({
+                           user,
+                           localUser,
+                           updateUserDetails,
+                           updateUserDetailsLoading,
+                           updateProfilePicture
+                       }) => {
 
     const mobile = useMobileSize();
 
@@ -103,5 +110,13 @@ const BasicUserInfo = ({user, localUser, updateUserDetails, updateUserDetailsLoa
         </Card>
     )
 };
+
+BasicUserInfo.propTypes = {
+    user: PropTypes.object.isRequired,
+    localUser: PropTypes.object.isRequired,
+    updateUserDetails: PropTypes.func.isRequired,
+    updateUserDetailsLoading: PropTypes.bool.isRequired,
+    updateProfilePicture: PropTypes.func.isRequired
+}
 
 export default BasicUserInfo;

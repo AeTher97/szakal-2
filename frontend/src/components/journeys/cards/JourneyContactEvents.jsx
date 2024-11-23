@@ -12,6 +12,7 @@ import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
 import {contactStatusOptions} from "../JourneyDetails";
 import {useSelector} from "react-redux";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
+import PropTypes from "prop-types";
 
 const JourneyContactEvents = ({addContactEvent, journey}) => {
 
@@ -23,7 +24,7 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
     const {hasRight} = useAccessRightsHelper()
 
 
-    const isUser = journey && journey.user && (userId === journey.user.id);
+    const isUser = journey?.user && (userId === journey.user.id);
 
 
     return (
@@ -133,5 +134,10 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
         </div>
     );
 };
+
+JourneyContactEvents.propTypes = {
+    addContactEvent: PropTypes.func.isRequired,
+    journey: PropTypes.object.isRequired
+}
 
 export default JourneyContactEvents;

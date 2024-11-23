@@ -5,6 +5,7 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import SzakalLogo from "../misc/SzakalLogo";
 import {useLocation, useNavigate} from "react-router-dom";
 import {menuItems} from "./NavigationBar";
+import PropTypes from "prop-types";
 
 
 const MenuItem = ({children, to, close}) => {
@@ -33,6 +34,11 @@ const MenuItem = ({children, to, close}) => {
     );
 };
 
+MenuItem.propTypes = {
+    children: PropTypes.node.isRequired,
+    to: PropTypes.string.isRequired,
+    close: PropTypes.func.isRequired
+}
 
 const SideDrawer = () => {
 

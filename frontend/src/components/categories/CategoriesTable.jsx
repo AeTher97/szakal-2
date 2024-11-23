@@ -3,6 +3,7 @@ import {Link, Sheet, Table, Typography} from "@mui/joy";
 import CategoryDialog from "./CategoryDialog";
 import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
+import PropTypes from "prop-types";
 
 const CategoriesTable = ({categories, modifyCategory}) => {
 
@@ -67,5 +68,10 @@ const CategoriesTable = ({categories, modifyCategory}) => {
         </Sheet>
     );
 };
+
+CategoriesTable.propTypes = {
+    categories: PropTypes.array,
+    modifyCategory: PropTypes.func.isRequired
+}
 
 export default CategoriesTable;

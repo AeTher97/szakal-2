@@ -58,10 +58,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                         new RefreshTokenHolder(
                                 TokenFactory.generateAuthToken(user.getId(),
                                         authorities.stream().map(GrantedAuthority::getAuthority).toList(),
-                                        user.getEmail(),
-                                        user.getName(),
-                                        user.getSurname(),
-                                        user.isAccepted(),
+                                        user,
                                         userFingerprint,
                                         jwtConfiguration),
                                 TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration),

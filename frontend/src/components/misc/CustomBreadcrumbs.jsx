@@ -37,14 +37,18 @@ const CustomBreadcrumbs = () => {
             }
         }
         if (matched && !last) {
-            return <LinkWithRouter color={"neutral"} to={matched.pathOverride ? matched.pathOverride : path}
-                                   sx={{display: "flex"}}>
-                {matched.component}
-            </LinkWithRouter>;
+            return <div>
+                <LinkWithRouter color={"neutral"} to={matched.pathOverride ? matched.pathOverride : path}
+                                sx={{display: "flex"}}>
+                    {matched.component}
+                </LinkWithRouter>
+            </div>;
         } else if (matched && last) {
-            return <Typography color={"primary"}>{matched.component}</Typography>
+            return <div>
+                <Typography color={"primary"}>{matched.component}</Typography>
+            </div>
         } else {
-            return "";
+            return <div/>;
         }
     }
 

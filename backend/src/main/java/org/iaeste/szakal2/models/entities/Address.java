@@ -1,9 +1,7 @@
 package org.iaeste.szakal2.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -26,7 +24,4 @@ public class Address {
     private String postalCode;
     @Setter
     private String streetNumber;
-//    @OneToOne(mappedBy = "address")
-//    @JsonIgnore
-//    private Company company;
 }

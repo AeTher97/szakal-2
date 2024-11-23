@@ -15,6 +15,12 @@ import java.util.Map;
 
 public class LoginIntegrationTest extends IntegrationTestWithTools {
 
+    public static final String EMAIL_TEST_LOGIN = "test-login@gmail.com";
+    public static final String PASSWORD_123 = "Password123!";
+    private static final String URL = "/api/login";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
     @AfterEach
     public void truncateUserService() {
         integrationTestDatabase.getUsersRepository().deleteAll();
@@ -22,16 +28,16 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
 
     @Test
     public void loginsCorrectly() {
-        integrationTestDatabase.createUser("test-login@gmail.com",
+        integrationTestDatabase.createUser(EMAIL_TEST_LOGIN,
                 "testLogin",
-                "Password123!",
+                PASSWORD_123,
                 List.of());
         RestAssured.given()
                 .contentType(ContentType.MULTIPART)
-                .multiPart("username", "test-login@gmail.com")
-                .multiPart("password", "Password123!")
+                .multiPart(USERNAME, EMAIL_TEST_LOGIN)
+                .multiPart(PASSWORD, PASSWORD_123)
                 .when()
-                .post("/api/login")
+                .post(URL)
                 .then()
                 .statusCode(200)
                 .body("authToken", Matchers.not(Matchers.emptyString()))
@@ -42,30 +48,30 @@ public class LoginIntegrationTest extends IntegrationTestWithTools {
     public void failsToLoginWithWrongPassword() {
         integrationTestDatabase.createUser("test-failed-login@gmail.com",
                 "testFailedLogin",
-                "Password123!",
+                PASSWORD_123,
                 List.of());
         RestAssured.given()
                 .contentType(ContentType.MULTIPART)
-                .multiPart("username", "test-failed-login@gmail.com")
-                .multiPart("password", "Password1")
+                .multiPart(USERNAME, "test-failed-login@gmail.com")
+                .multiPart(PASSWORD, "Password1")
                 .when()
-                .post("/api/login")
+                .post(URL)
                 .then()
                 .statusCode(401);
     }
 
     @Test
     public void refreshesCorrectly() {
-        integrationTestDatabase.createUser("test-login@gmail.com",
+        integrationTestDatabase.createUser(EMAIL_TEST_LOGIN,
                 "testLogin",
-                "Password123!",
+                PASSWORD_123,
                 List.of());
         ValidatableResponse response = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
-                .multiPart("username", "test-login@gmail.com")
-                .multiPart("password", "Password123!")
+                .multiPart(USERNAME, EMAIL_TEST_LOGIN)
+                .multiPart(PASSWORD, PASSWORD_123)
                 .when()
-                .post("/api/login")
+                .post(URL)
                 .then()
                 .statusCode(200);
 

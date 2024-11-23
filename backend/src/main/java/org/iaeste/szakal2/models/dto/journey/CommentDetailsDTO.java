@@ -19,7 +19,7 @@ public class CommentDetailsDTO {
 
     public static CommentDetailsDTO fromComment(Comment comment) {
         return CommentDetailsDTO.builder()
-                .comment(comment.getComment())
+                .comment(comment.getCommentValue())
                 .date(comment.getDate())
                 .user(UserDTO.fromUser(comment.getUser()))
                 .id(comment.getId())

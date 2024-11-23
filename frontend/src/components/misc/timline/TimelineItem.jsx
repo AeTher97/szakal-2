@@ -2,6 +2,7 @@ import React from 'react';
 import TimelineDot from "./TimelineDot";
 import {Card} from "@mui/joy";
 import TimelineConnector from "./TimelineConnector";
+import PropTypes from "prop-types";
 
 const TimelineItem = ({children}) => {
     return (
@@ -17,5 +18,9 @@ const TimelineItem = ({children}) => {
         </div>
     );
 };
+
+TimelineItem.propTypes = {
+    children: PropTypes.node.isRequired
+}
 
 export default TimelineItem;

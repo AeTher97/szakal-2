@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
+import PropTypes from "prop-types";
 
 const JourneyInfo = ({journey}) => {
 
@@ -32,5 +33,9 @@ const JourneyInfo = ({journey}) => {
         </Card>
     );
 };
+
+JourneyInfo.propTypes = {
+    journey: PropTypes.object.isRequired
+}
 
 export default JourneyInfo;

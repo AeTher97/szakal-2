@@ -14,12 +14,16 @@ export const useScheduledContactList = () => {
         setReload(reload + 1)
     }
 
+    const removeFromArray = (id) => {
+        setScheduledContacts(state => {
+            return [...state.filter(contact => contact.id !== id)]
+        })
+    }
+
     const removeScheduledContact = (id) => {
         return deleteReq({}, `/scheduled-contact/${id}`)
             .then(() => {
-                setScheduledContacts(state => {
-                    return [...state.filter(contact => contact.id !== id)]
-                })
+                removeFromArray(id);
             });
     }
 
@@ -72,6 +76,14 @@ export const useNotificationList = () => {
         };
     }, [])
 
+    const markNotificationsInArray = () => {
+        setNotifications(old => {
+            return [...old].map(notification => {
+                notification.seen = true;
+                return notification;
+            })
+        })
+    }
 
     const markNotificationAsSeen = (ids) => {
         if (ids.length === 0) {
@@ -81,12 +93,7 @@ export const useNotificationList = () => {
             notifications: ids
         }).then(() => {
             setNewNotifications(false);
-            setNotifications(old => {
-                return [...old].map(notification => {
-                    notification.seen = true;
-                    return notification;
-                })
-            })
+            markNotificationsInArray();
         })
     }
 

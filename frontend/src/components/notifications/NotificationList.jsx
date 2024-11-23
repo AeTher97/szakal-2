@@ -2,6 +2,7 @@ import React from 'react';
 import {MenuItem, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import {useNavigate} from "react-router-dom";
+import PropTypes from "prop-types";
 
 
 const NotificationList = ({notifications}) => {
@@ -31,8 +32,10 @@ const NotificationList = ({notifications}) => {
             <Typography level={"body-lg"}>Brak powiadomień</Typography>
         </MenuItem>
     }
-
-
 };
+
+NotificationList.propTypes = {
+    notifications: PropTypes.array.isRequired
+}
 
 export default NotificationList;
