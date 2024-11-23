@@ -16,6 +16,7 @@ WORKDIR /src
 RUN dos2unix gradlew \
 && dos2unix build-and-copy.sh \
 && ./build-and-copy.sh \
+&& chmod +x ./gradlew \
 && ./gradlew build
 
 FROM openjdk:21
