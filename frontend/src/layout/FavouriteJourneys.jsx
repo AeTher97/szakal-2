@@ -37,7 +37,7 @@ const FavouriteJourneys = () => {
                             key={favouriteJourney.id}
                             style={{width: "100%"}}
                             to={`/secure/journeys/${favouriteJourney.contactJourney.id}`}
-                            overlay>
+                            underline={"none"}>
                             <div style={{
                                 display: "flex",
                                 flex: 1,
