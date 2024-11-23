@@ -41,8 +41,104 @@ Companies and their contact people. Most of the time these relations will have t
 in the background. For example for Company and the ContactPerson. ContactPerson might have a companyId foreign key column
 that identifies what company it exists under. With join table we can tell hibernate how to join these two entities using 
 this column.
+* **NamedEntityGraph** - one of the most complex annotations out there allows us to customize the query plan when asking
+  database for complex entities. Taking an example
+  of [Company.java](../src/main/java/org/iaeste/szakal2/models/entities/Company.java)
+  class which is a very complex entity with many sub entities we can customize a couple different query plan for
+  different
+  views we support in the application:
 
-### Lombok's annotations
+```java
+@NamedEntityGraph(name = "Company.listing",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+                @NamedAttributeNode("categories"),
+                @NamedAttributeNode(value = "contactJourneys", subgraph = "journey-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "journey-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("campaign")
+                        })
+        })
+@NamedEntityGraph(name = "Company.address",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+        })
+@NamedEntityGraph(name = "Company.detail",
+        attributeNodes = {
+                @NamedAttributeNode("address"),
+                @NamedAttributeNode("categories"),
+                @NamedAttributeNode("updatedBy"),
+                @NamedAttributeNode(value = "contactJourneys", subgraph = "journey-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "journey-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("campaign")
+                        })
+        })
+```
+
+Here we have three query graphs: listing, address and details, fields that we specify as attribute nodes will be joined
+in one query allowing us to minimize amount of queries to fetch this large structure and avoid lazy initialization
+exception.
+To use the entity graph its enough to give its name to the repository fetching method:
+
+```java
+
+@EntityGraph(value = "Company.listing", type = EntityGraph.EntityGraphType.LOAD)
+List<Company> findAllById(Iterable<UUID> ids);
+```
+
+## Serializing entities
+
+Serializing entities to JSON is easy in principle cause Spring does it for us when we return a value from a controller,
+there is a catch though, any fields that were just lazy loaded by Hibernate from the database will fail to convert to
+JSON
+because serializer is already out of Hibernate context. To avoid these issue its nice to pass smaller object with only
+required fields to the serializer. This is mostly the purpose of `models.dto` package. For example for the company class
+there are a couple of different DTO classes with only selected fields specified, this is to avoid serialization errors.
+Also all of these DTO classes support creation directly from the company using the static `fromCompany` method.
+
+```java
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CompanyListingDTO {
+
+    private UUID id;
+    private String name;
+    private Address address;
+    private String phone;
+    private String www;
+    private String email;
+    private LocalDateTime insertDate;
+    private Set<CompanyCategory> categories;
+    private Set<ContactJourneyMinimalDTO> contactJourneys;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    // Even more field ignored from serialization
+    @JsonIgnoreProperties(value = {"company", "campaign", "contactEvents"})
+    private ContactJourneyMinimalDTO currentJourney;
+
+    public static CompanyListingDTO fromCompany(Company company) {
+        return fromCompany(company, null);
+    }
+
+    public static CompanyListingDTO fromCompany(Company company, UUID currentCampaign) {
+        return builder()
+                // Omitted for brevity
+                .build();
+    }
+}
+
+```
+
+## Lombok's annotations
 These generate Java code in the background that is indexed by idea so we can use all the constructors, setters, getters,
 builders etc. that are defined using annotations.
 

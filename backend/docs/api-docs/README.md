@@ -9,10 +9,10 @@ will be visible in the collection divided into directories corresponding to feat
 To populate values of variables used in request on can set them in the
 environment in the top right corner. 
 
-Access token can be automatically set
-by running refresh request, a little bit of postman magic inserts the 
+Access token and the fingerprint cookie can be automatically set
+by running login or refresh request, a little bit of postman magic inserts the
 response correctly into the environment so all subsequent requests will be
-authenticated as long as the token hasn't expired.
+authenticated as long as the token or fingerprint hasn't expired.
 
 A lot of good docs can be found on postman in the Web so in case of questions
 I suggest going there.
