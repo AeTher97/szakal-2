@@ -5,7 +5,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/frontend" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "gradle" # See documentation for possible values
+    directory: "/gradle" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker" # See documentation for possible values
+    directory: "/cicd" # Location of package manifests
+    schedule:
+      interval: "weekly"
+
+
