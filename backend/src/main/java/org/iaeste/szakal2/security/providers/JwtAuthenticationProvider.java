@@ -1,7 +1,8 @@
 package org.iaeste.szakal2.security.providers;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.repositories.RolesRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.HashSet;
 import java.util.List;
@@ -21,14 +23,15 @@ import java.util.UUID;
 @Log4j2
 public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider implements AuthenticationProvider {
 
+    private static final String ALGORITHM = "HmacSHA512";
     private final JwtConfiguration jwtConfiguration;
     private final RolesRepository rolesRepository;
-    private final transient SecretKeySpec key;
+    private final SecretKey key;
 
     public JwtAuthenticationProvider(JwtConfiguration jwtConfiguration, RolesRepository rolesRepository) {
         this.jwtConfiguration = jwtConfiguration;
         this.rolesRepository = rolesRepository;
-        key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), SignatureAlgorithm.HS512.getJcaName());
+        key = new SecretKeySpec(jwtConfiguration.getSecret().getBytes(), ALGORITHM);
     }
 
     @Override
@@ -52,11 +55,12 @@ public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider
     private Authentication validateToken(String jwtToken) {
 
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
                     .requireIssuer(jwtConfiguration.getIssuer())
                     .build()
-                    .parseClaimsJws(jwtToken).getBody();
+                    .parseSignedClaims(jwtToken)
+                    .getPayload();
 
             List<UUID> roles = ((List<String>) claims.get("roles", List.class))
                     .stream().map(UUID::fromString).toList();
@@ -68,8 +72,7 @@ public class JwtAuthenticationProvider extends FingerprintAuthenticationProvider
 
             return new JwtTokenAuthentication(claims.getSubject(), jwtToken, null, grantedAuthorities);
 
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
-                 IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             log.info(e.getMessage());
             throw new BadCredentialsException(e.getMessage(), e);
         }
