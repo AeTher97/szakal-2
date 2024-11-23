@@ -6,10 +6,11 @@ This article will cover some of the most important parts of working with gradle 
 Gradlew script is the entry point of all the operations that we can invoke in the gradle build system.
 It works closely with the gradle wrapper that is explained in more detail below but is basically a script that 
 configures the gradle in place on any system from a fresh state and executes the passed command. It has two version
-**gradlew** for unix based systems and **gradlew.bat** for Windows. In practice, I would recommend using bash on Windows 
-as well and sticking to plain **gradlew** script.
+**gradlew** for unix based systems and **gradlew.bat** for Windows. In practice, I would recommend using bash on Windows
+as well and sticking to plain **gradlew** script. In the kind of multilayer project like we have here tu run tasks from
+subprojects we use `:subproject` syntax.
 
-For example to execute tests using gradlew run `./gradlew test` in the backend directory.
+For example to execute tests using gradlew run `./gradlew :backend:test` in the backend directory.
 
 ## Gradle wrapper
 This project uses gradle wrapper to provide gradle support. What it means is that gradle doesn't have to be installed 
