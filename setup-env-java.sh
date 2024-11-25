@@ -3,8 +3,12 @@
 sudo apt-get install net-tools -y
 
 java -version
+if $1 -eq true; then {
+  bash build-and-copy.sh true
+} else {
+  bash build-and-copy.sh false
+} fi;
 
-bash build-and-copy.sh
 JAVA_HOME="${JAVA_HOME_21_X64:-$JAVA_HOME_21_arm64}" bash gradlew :backend:build
 sudo chmod 777 ./backend/build/libs/backend-1.0.0.jar
 
