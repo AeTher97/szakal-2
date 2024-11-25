@@ -5,7 +5,7 @@ import {useMobileSize} from "../../utils/MediaQuery";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRightsList";
 import {useConfirmationDialog} from "../misc/ConfirmationDialog";
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 import PropTypes from "prop-types";
 
 const UserManagement = ({

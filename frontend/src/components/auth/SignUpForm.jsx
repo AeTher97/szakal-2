@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 import {FormControl, FormHelperText, FormLabel, Input, LinearProgress, Sheet, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useRegister} from "../../data/AuthenticationData";

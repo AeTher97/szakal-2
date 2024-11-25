@@ -1,4 +1,4 @@
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router";
 import LoginScreen from "../../screens/LoginScreen";
 import SignUpScreen from "../../screens/SignUpScreen";
 import * as React from "react";

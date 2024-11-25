@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useRole} from "../../../data/RolesData";
-import {useLocation} from "react-router-dom";
+import {useLocation} from "react-router";
 import {addKnownItem, removeKnownItem} from "../../../redux/MiscActions";
 import {useDispatch} from "react-redux";
 import RoleAuthorities from "./RoleAuthorities";

@@ -1,7 +1,7 @@
 import React from 'react';
 import {MenuItem, Typography} from "@mui/joy";
 import {formatLocalDateTime} from "../../utils/DateUtils";
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 import PropTypes from "prop-types";
 
 

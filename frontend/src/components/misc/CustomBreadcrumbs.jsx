@@ -2,7 +2,7 @@ import React from 'react';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowRight';
 import HomeIcon from '@mui/icons-material/Home';
 import {Box, Breadcrumbs, Typography} from "@mui/joy";
-import {useLocation} from "react-router-dom";
+import {useLocation} from "react-router";
 import LinkWithRouter from "./LinkWithRouter";
 import {useSelector} from "react-redux";
 

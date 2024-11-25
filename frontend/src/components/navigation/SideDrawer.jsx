@@ -3,7 +3,7 @@ import {Divider, Drawer, IconButton, List, ListItem, ListItemButton, Sheet} from
 import MenuIcon from '@mui/icons-material/Menu';
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import SzakalLogo from "../misc/SzakalLogo";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router";
 import {menuItems} from "./NavigationBar";
 import PropTypes from "prop-types";
 

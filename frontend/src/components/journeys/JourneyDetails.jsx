@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {addFavouriteJourney, addKnownItem, removeFavouriteJourney, removeKnownItem} from "../../redux/MiscActions";
-import {useLocation} from "react-router-dom";
+import {useLocation} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {useJourney} from "../../data/JourneyData";
 import TabHeader from "../misc/TabHeader";

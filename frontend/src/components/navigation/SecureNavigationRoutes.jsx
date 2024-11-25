@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import UsersTab from "../tabs/UsersTab";
 import SummaryTab from "../tabs/SummaryTab";
 import CompaniesTab from "../tabs/CompaniesTab";

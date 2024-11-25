@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginForm from "../components/auth/LoginForm";
 import {useMobileSize} from "../utils/MediaQuery";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutAction} from "../redux/AuthActions";
 

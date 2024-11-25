@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {removeNullFields} from "./ObjectUtils";
-import {useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router";
 
 export const sanitizeFilters = (value) => {
     return value.replace(/[^a-z0-9,\s]/gi, '');

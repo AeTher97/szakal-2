@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import JourneyDetails from "../journeys/JourneyDetails";
 import JourneyFilters from "../journeys/JourneyFilters";

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../redux/MiscActions";
 import {useCompany} from "../../data/CompaniesData";

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import {Typography} from "@mui/joy";
 import UsersList from "../users/UsersList";
 import RolesList from "../users/RolesList";

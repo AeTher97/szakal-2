@@ -1,19 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Tab, tabClasses, TabList, Tabs} from "@mui/joy";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {CAMPAIGN_MODIFICATION, JOURNEY_CREATION, USER_VIEWING} from "../../utils/AccessRightsList";
 
 export const menuItems = [
-    {path: "home", name: "Start"},
-    {path: "companies", name: "Wszystkie Firmy"},
-    {path: "journeys", name: "Kontakty w tej akcji"},
-    {path: "user-journeys", name: "Twoje Kontakty", right: JOURNEY_CREATION},
-    {path: "categories", name: "Kategorie"},
-    {path: "campaigns", name: "Akcje", right: CAMPAIGN_MODIFICATION},
-    {path: "users", name: "Użytkownicy", right: USER_VIEWING},
-    {path: "profile", name: "Profil"},
-    {path: "app-settings", name: "Ustawienia aplikacji"}
+    {path: "/secure/home", name: "Start"},
+    {path: "/secure/companies", name: "Wszystkie Firmy"},
+    {path: "/secure/journeys", name: "Kontakty w tej akcji"},
+    {path: "/secure/user-journeys", name: "Twoje Kontakty", right: JOURNEY_CREATION},
+    {path: "/secure/categories", name: "Kategorie"},
+    {path: "/secure/campaigns", name: "Akcje", right: CAMPAIGN_MODIFICATION},
+    {path: "/secure/users", name: "Użytkownicy", right: USER_VIEWING},
+    {path: "/secure/profile", name: "Profil"},
+    {path: "/secure/app-settings", name: "Ustawienia aplikacji"}
 ]
 
 const NavigationBar = () => {
@@ -46,7 +46,8 @@ const NavigationBar = () => {
             onChange={(e, value) => {
                 navigate(value);
                 window.removeEventListener("wheel", horizontalScrollListener)
-            }} value={path}
+            }}
+            value={path}
             onMouseEnter={() => {
                 window.addEventListener("wheel", horizontalScrollListener, {passive: false})
             }}
@@ -89,7 +90,8 @@ const NavigationBar = () => {
                                     sx={{
                                         flex: 'none',
                                         scrollSnapAlign: 'start'
-                                    }}>{item.name}</Tab>;
+                                    }}>{item.name}
+                        </Tab>;
                     }
                 })}
             </TabList>

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import TabHeader from "../misc/TabHeader";
 import {
     Accordion,

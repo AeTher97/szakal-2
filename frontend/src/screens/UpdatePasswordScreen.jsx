@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Card, FormControl, FormHelperText, Input, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router";
 import {showSuccess} from "../redux/AlertActions";
 import {useDispatch} from "react-redux";
 import {usePasswordReset} from "../data/AuthenticationData";

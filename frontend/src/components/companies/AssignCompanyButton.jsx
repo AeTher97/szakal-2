@@ -9,7 +9,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import {useAddContactJourney} from "../../data/JourneyData";
 import AssignToSomeoneElseDialog from "./AssignToSomeoneElseDialog";
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 import PropTypes from "prop-types";
 
 const AssignCompanyButton = ({company, fromJourneyPage = false}) => {

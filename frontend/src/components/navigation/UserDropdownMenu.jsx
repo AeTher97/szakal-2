@@ -3,7 +3,7 @@ import UserAvatar from "../misc/UserAvatar";
 import {Dropdown, Menu, MenuButton, MenuItem, Switch} from "@mui/joy";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeAction} from "../../redux/MiscActions";
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 import {logoutAction} from "../../redux/AuthActions";
 import PropTypes from "prop-types";
 

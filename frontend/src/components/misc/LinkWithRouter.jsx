@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from '@mui/joy/Link';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router';
 import PropTypes from "prop-types";
 
 const LinkWithRouter = ({to, children, overlay, underline, sx, style, color}) => {

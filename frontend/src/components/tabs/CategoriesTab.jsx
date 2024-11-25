@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import {LinearProgress, Typography} from "@mui/joy";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import CategoriesTable from "../categories/CategoriesTable";

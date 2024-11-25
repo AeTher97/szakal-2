@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import {useLocation} from "react-router";
 import {useDispatch} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../../redux/MiscActions";
 import TabHeader from "../../misc/TabHeader";
