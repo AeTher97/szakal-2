@@ -19,7 +19,7 @@ RUN dos2unix gradlew \
 && chmod +x ./gradlew \
 && ./gradlew build
 
-FROM openjdk:21
+FROM openjdk:24
 COPY --from=codebuilder /src/backend/build/libs/backend-1.0.0.jar  szakal.jar
 
 EXPOSE 8080
