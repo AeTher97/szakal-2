@@ -60,7 +60,7 @@ export const useData = (baseUrl,
 }
 
 
-export const usePut = (url, updateFunction = () => {
+export const usePut = (url = undefined, updateFunction = () => {
 }) => {
 
     const [loading, setLoading] = useState(false)

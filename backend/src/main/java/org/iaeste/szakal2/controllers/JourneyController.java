@@ -65,6 +65,11 @@ public class JourneyController {
         return journeyService.finishJourney(id);
     }
 
+    @PutMapping("/{id}/reopen")
+    public ContactJourneyDetailsDTO reopenJourney(@PathVariable("id") UUID id) {
+        return journeyService.reopenJourney(id);
+    }
+
     @PutMapping("/{id}/removeUser")
     public ContactJourneyDetailsDTO removeUserFromJourney(@PathVariable("id") UUID id) {
         return journeyService.removeUserFromJourney(id);

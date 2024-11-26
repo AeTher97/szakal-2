@@ -130,7 +130,20 @@ public class JourneyService {
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(true);
-            notifyOnJourneyModification(contactJourney);
+            notifyOnJourneyFinished(contactJourney);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
+    }
+
+    @Transactional
+    public ContactJourneyDetailsDTO reopenJourney(UUID id) {
+        ContactJourney contactJourney = getJourneyById(id);
+        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
+                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
+            contactJourney.setFinished(false);
+            notifyOnJourneyReopened(contactJourney);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -218,6 +231,22 @@ public class JourneyService {
         if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
                     STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany kliknij by przejść do kontaktu",
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyOnJourneyFinished(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony kliknij by przejść do kontaktu",
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyOnJourneyReopened(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty kliknij by przejść do kontaktu",
                     contactJourney.getId());
         }
     }

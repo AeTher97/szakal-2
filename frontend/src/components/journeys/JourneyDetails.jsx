@@ -39,10 +39,16 @@ const JourneyDetails = () => {
         const dispatch = useDispatch();
         const {userId} = useSelector(state => state.auth)
     const {favouriteJourneys} = useSelector(state => state.favouriteJourneys)
-        const {journey, addContactEvent, addComment, closeJourney, removeUser}
+    const {journey, addContactEvent, addComment, closeJourney, reopenJourney, removeUser}
             = useJourney(location.pathname.split("/")[3]);
         const {hasRight} = useAccessRightsHelper()
     const mobile = useMobileSize();
+
+    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
+    const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
+        = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
+    const {openDialog: openReopenJourneyDialog, render: renderReopenJourneyDialog}
+        = useConfirmationDialog("Czy na pewno chcesz otworzyć kontakt ponownie?");
 
         useEffect(() => {
             if (journey) {
@@ -55,10 +61,6 @@ const JourneyDetails = () => {
             }
         }, [location, journey]);
 
-
-        const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
-        const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
-            = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
 
     const isUser = journey?.user && (userId === journey.user.id);
     const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {
@@ -87,6 +89,10 @@ const JourneyDetails = () => {
                     {favouriteJourneyObject && <Star color={"warning"}/>}
                 </IconButton>
             </Tooltip>
+            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && journey.finished &&
+                <Button style={{flex: 1}} onClick={() => {
+                    openReopenJourneyDialog(() => reopenJourney())
+                }}>Otwórz ponownie</Button>}
             {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
                 <Button style={{flex: mobile ? 1 : 0}} onClick={() => {
                     openDialog(() => closeJourney())
@@ -131,6 +137,7 @@ const JourneyDetails = () => {
                     </div>
                     {render()}
                     {renderRemoveUserFromJourneyDialog()}
+                {renderReopenJourneyDialog()}
                 </div>}
             </>);
     }
