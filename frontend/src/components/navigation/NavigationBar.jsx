@@ -31,7 +31,7 @@ const NavigationBar = () => {
 
     useEffect(() => {
         if (location.pathname && location.pathname.split("/").length > 2) {
-            setPath(location.pathname.split("/")[2]);
+            setPath(location.pathname);
         } else {
             setPath("/")
         }
