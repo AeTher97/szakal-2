@@ -101,9 +101,4 @@ public class JourneyController {
                         .szakalSort(sort == null ? null : SzakalSort.fromString(sort))
                         .build());
     }
-
-    @GetMapping("/top10")
-    public Top10DTO getTop10(@RequestParam UUID campaignId) {
-        return journeyService.getTop10(campaignId);
-    }
 }

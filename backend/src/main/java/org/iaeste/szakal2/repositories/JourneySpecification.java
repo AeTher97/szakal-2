@@ -83,6 +83,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
         }
 
         addSort(root, query, criteriaBuilder);
+        predicateList.add(criteriaBuilder.not(root.get("company").get("deleted")));
 
 
         return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
