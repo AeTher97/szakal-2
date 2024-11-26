@@ -7,6 +7,7 @@ import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.CampaignHomeDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
+import org.iaeste.szakal2.models.dto.journey.Top10DTO;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.services.CampaignService;
 import org.springframework.data.domain.Page;
@@ -74,4 +75,8 @@ public class CampaignController {
                         .build());
     }
 
+    @GetMapping("/top10")
+    public Top10DTO getTop10(@RequestParam UUID campaignId) {
+        return campaignService.getTop10(campaignId);
+    }
 }

@@ -65,7 +65,7 @@ export const useTop10 = () => {
     const {currentCampaign} = useSelector(state => state.campaigns)
     const [top10, setTop10] = useState([]);
 
-    useData(`/journeys/top10`,
+    useData(`/campaigns/top10`,
         (data) => {
             setTop10(data.usersWithCount)
         }, [currentCampaign],

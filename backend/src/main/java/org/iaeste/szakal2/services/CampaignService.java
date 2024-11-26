@@ -6,6 +6,7 @@ import org.iaeste.szakal2.models.dto.campaign.CampaignCreationDTO;
 import org.iaeste.szakal2.models.dto.campaign.CampaignHomeDTO;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.ContactJourneyListingDTO;
+import org.iaeste.szakal2.models.dto.journey.Top10DTO;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.UserGroup;
@@ -13,6 +14,7 @@ import org.iaeste.szakal2.repositories.CampaignRepository;
 import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.repositories.JourneySpecification;
 import org.iaeste.szakal2.repositories.UserGroupRepository;
+import org.iaeste.szakal2.utils.MapUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -21,9 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CampaignService {
@@ -80,6 +80,34 @@ public class CampaignService {
 
     public Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, ContactJourneySearch contactJourneySearch) {
         return getJourneysForCampaign(pageable, new JourneySpecification(contactJourneySearch));
+    }
+
+    public Top10DTO getTop10(UUID campaignId) {
+        Campaign campaign = getCampaignById(campaignId);
+        Map<String, Integer> top10 = new LinkedHashMap<>();
+
+        List<ContactJourney> journeys = contactJourneyRepository.findAllByCampaign(campaign);
+        journeys.forEach(journey -> {
+            if (journey.getUser() == null || journey.getCompany().isDeleted()) {
+                return;
+            }
+            top10.computeIfAbsent(journey.getUser().getFullName(), _ -> 0);
+            top10.computeIfPresent(journey.getUser().getFullName(), (_, count) -> count + 1);
+        });
+
+        Map<String, Integer> sortedTop10 = MapUtils.sortByValue(top10);
+
+        Top10DTO top10DTO = new Top10DTO();
+        for (int i = 0; i < 10; i++) {
+            if (i >= top10.size()) {
+                continue;
+            }
+            String fullName = sortedTop10.keySet().stream().toList().get(i);
+            int count = sortedTop10.get(fullName);
+            top10DTO.addUser(fullName, count);
+        }
+
+        return top10DTO;
     }
 
     private Page<ContactJourneyListingDTO> getJourneysForCampaign(Pageable pageable, Specification<ContactJourney> specification) {
