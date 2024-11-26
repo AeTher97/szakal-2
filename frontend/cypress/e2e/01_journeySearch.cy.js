@@ -34,6 +34,10 @@ it('Search journeys', function () {
     checkJourneysLength(1)
     cy.clickSelectField(detailedStatusFieldName, "NOT_INTERESTED", searchButtonId);
     checkJourneysLength(1)
+    cy.clickSelectField(detailedStatusFieldName, "NOT_PICKING_UP", searchButtonId);
+    checkJourneysLength(1)
+    cy.clickSelectField(detailedStatusFieldName, "UNABLE_TO_CONNECT", searchButtonId);
+    checkJourneysLength(1)
     cy.clickSelectField(detailedStatusFieldName, "BARTER", searchButtonId);
     checkJourneysLength(1)
     cy.clickSelectField(detailedStatusFieldName, "SPONSOR", searchButtonId);
