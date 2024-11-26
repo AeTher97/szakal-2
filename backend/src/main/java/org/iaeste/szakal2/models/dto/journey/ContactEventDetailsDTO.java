@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.models.dto.journey;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import org.iaeste.szakal2.models.dto.user.UserDTO;
@@ -16,6 +17,7 @@ public class ContactEventDetailsDTO {
 
     private UUID id;
     private ContactPerson contactPerson;
+    @JsonIgnoreProperties(value = {"campaigns", "roles"})
     private UserDTO user;
     private String description;
     private ContactStatus eventType;
