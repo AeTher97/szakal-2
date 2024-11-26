@@ -35,6 +35,4 @@ public interface ContactJourneyRepository extends JpaRepository<ContactJourney, 
     Optional<ContactJourney> findContactJourneyByCampaignAndCompany(Campaign campaign, Company company);
 
     List<ContactJourney> findAllByCampaign(Campaign campaign);
-
-    int countAllByCampaign(Campaign campaign);
 }

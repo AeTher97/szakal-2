@@ -57,7 +57,9 @@ public class CampaignService {
 
     public CampaignHomeDTO getCampaignHomeDTOById(UUID id) {
         Campaign campaign = getCampaignById(id);
-        int count = contactJourneyRepository.countAllByCampaign(campaign);
+        long count = contactJourneyRepository.count(new JourneySpecification(ContactJourneySearch.builder()
+                .campaignId(id)
+                .build()));
         return CampaignHomeDTO.fromCampaign(campaign, count);
     }
 

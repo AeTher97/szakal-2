@@ -15,9 +15,9 @@ public class CampaignHomeDTO {
     private String name;
     private String description;
     private LocalDate startDate;
-    private int journeyCount;
+    private long journeyCount;
 
-    public static CampaignHomeDTO fromCampaign(Campaign campaign, int journeyCount) {
+    public static CampaignHomeDTO fromCampaign(Campaign campaign, long journeyCount) {
         return builder()
                 .id(campaign.getId())
                 .journeyCount(journeyCount)
