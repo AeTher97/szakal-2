@@ -3,6 +3,8 @@ it('Sort journeys', function () {
     cy.viewport(1500, 900)
     cy.visit(`http://${Cypress.env("baseUrl")}/secure/journeys`)
 
+    cy.getByTestId("items-per-page-50")
+        .click();
 
     cy.getByTestId("journey-table")
         .children("tr")
@@ -72,7 +74,7 @@ it('Sort journeys', function () {
         .first()
         .children('td')
         .eq(3)
-        .contains("9.11.2024")
+        .contains("26.11.2024")
 
     cy.getByTestId("journeys-sort-by-status").click()
 
@@ -104,23 +106,35 @@ it('Sort journeys', function () {
         .children("tr")
         .eq(4)
         .children('td')
-        .children().eq(4).contains("Niezainteresowana");
+        .children().eq(4).contains("Nie można się połączyć");
 
     cy.getByTestId("journey-table")
         .children("tr")
         .eq(5)
         .children('td')
-        .children().eq(4).contains("Oczekiwanie na odpowiedź");
+        .children().eq(4).contains("Nieodebrany");
 
     cy.getByTestId("journey-table")
         .children("tr")
         .eq(6)
         .children('td')
-        .children().eq(4).contains("Praktyka");
+        .children().eq(4).contains("Niezainteresowana");
 
     cy.getByTestId("journey-table")
         .children("tr")
         .eq(7)
+        .children('td')
+        .children().eq(4).contains("Oczekiwanie na odpowiedź");
+
+    cy.getByTestId("journey-table")
+        .children("tr")
+        .eq(8)
+        .children('td')
+        .children().eq(4).contains("Praktyka");
+
+    cy.getByTestId("journey-table")
+        .children("tr")
+        .eq(9)
         .children('td')
         .children().eq(4).contains("Przypisana");
 

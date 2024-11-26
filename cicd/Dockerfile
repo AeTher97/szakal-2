@@ -1,7 +1,11 @@
 FROM ubuntu:24.04 AS basebuilder
 
 RUN apt-get update \
-&& apt-get -y install dos2unix nodejs npm openjdk-21-jdk && apt-get clean
+&& apt-get -y install dos2unix nodejs npm openjdk-21-jdk \
+&& npm install -g n \
+&& n stable \
+&& n 22 \
+&& apt-get clean
 
 FROM basebuilder AS codebuilder
 COPY ./backend /src/backend

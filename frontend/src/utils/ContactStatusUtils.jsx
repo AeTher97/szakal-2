@@ -24,6 +24,10 @@ export const contactStatusUtils = (status) => {
             return "Mam się skontaktować z firmą"
         case "COMPANY_WILL_REACH_OUT":
             return "Firma ma się skontaktować"
+        case "UNABLE_TO_CONNECT":
+            return "Nie można się połączyć"
+        case "NOT_PICKING_UP":
+            return "Nieodebrany"
         default:
             return "Nieznany status"
     }

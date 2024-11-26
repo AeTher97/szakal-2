@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.0 (Debian 17.0-1.pgdg120+1)
+-- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
 -- Dumped by pg_dump version 17.0
 
 SET statement_timeout = 0;
@@ -133,7 +133,7 @@ ALTER TABLE public.categories_companies
 CREATE TABLE public.comments
 (
     id                 uuid                           NOT NULL,
-    comment            character varying(255)         NOT NULL,
+    comment            character varying(1000)        NOT NULL,
     date               timestamp(6) without time zone NOT NULL,
     contact_journey_id uuid                           NOT NULL,
     user_id            uuid                           NOT NULL
@@ -173,15 +173,15 @@ ALTER TABLE public.companies
 
 CREATE TABLE public.contact_events
 (
-    id                 uuid                   NOT NULL,
+    id                 uuid                    NOT NULL,
     date               timestamp(6) without time zone,
-    description        character varying(255) NOT NULL,
+    description        character varying(2000) NOT NULL,
     event_type         character varying(255),
-    contact_journey_id uuid                   NOT NULL,
+    contact_journey_id uuid                    NOT NULL,
     contact_person_id  uuid,
-    user_id            uuid                   NOT NULL,
+    user_id            uuid                    NOT NULL,
     CONSTRAINT contact_events_event_type_check CHECK (((event_type)::text = ANY
-                                                       (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text])))
+                                                       (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text, ('NOT_PICKING_UP'::character varying)::text, ('UNABLE_TO_CONNECT'::character varying)::text])))
 );
 
 
@@ -203,7 +203,7 @@ CREATE TABLE public.contact_journeys
     company_id       uuid                           NOT NULL,
     user_id          uuid,
     CONSTRAINT contact_journeys_contact_status_check CHECK (((contact_status)::text = ANY
-                                                             (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text])))
+                                                             (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text, ('UNABLE_TO_CONNECT'::character varying)::text, ('NOT_PICKING_UP'::character varying)::text])))
 );
 
 
@@ -217,7 +217,7 @@ ALTER TABLE public.contact_journeys
 CREATE TABLE public.contact_persons
 (
     id         uuid                   NOT NULL,
-    comment    character varying(255),
+    comment    character varying(4000),
     committee  character varying(255),
     email      character varying(255),
     is_alumni  boolean                NOT NULL,
@@ -238,7 +238,7 @@ ALTER TABLE public.contact_persons
 CREATE TABLE public.failed_emails
 (
     id        uuid NOT NULL,
-    content   character varying(255),
+    content   character varying(5000),
     date      timestamp(6) without time zone,
     recipient character varying(255),
     subject   character varying(255)
@@ -695,6 +695,8 @@ d7331956-cbf0-4809-b9c5-45530828e30c	2024-11-09 16:29:26.235581	Call next year	C
 9c35a59f-41c9-4a4a-b451-6effeb685a3b	2024-11-09 16:29:35.596666	Internship	INTERNSHIP	dbc52605-0f60-40e1-9e48-938c5be4011a	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 22cfa954-51bf-4099-9332-bb7b0d8fc6de	2024-11-09 16:29:48.915784	I have to contact the company	I_HAVE_TO_CONTACT_COMPANY	bb2bfb63-d5aa-4c0a-9bfd-3032ae99cf37	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 076668d5-3775-4033-91a8-9f0474fb65b2	2024-11-09 16:30:01.482745	Company has to contact me	COMPANY_WILL_REACH_OUT	5ac2cea8-9780-4861-a1ee-f38b3eb57e86	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+24cb3c4f-f894-4661-a1d2-68b46aa0eccc	2024-11-26 18:00:44.636308	Cannot connect	UNABLE_TO_CONNECT	d4060b2d-86f4-4aec-b439-ae3d0f621f05	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+d5d1da86-a06a-4e6a-a13f-5c5e11dbece1	2024-11-26 18:00:58.168385	Not picking up	NOT_PICKING_UP	2515bee8-2fce-48b3-be38-5398fe6e8022	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 \.
 
 
@@ -704,8 +706,6 @@ d7331956-cbf0-4809-b9c5-45530828e30c	2024-11-09 16:29:26.235581	Call next year	C
 
 COPY public.contact_journeys (id, campaign_id, contact_status, finished, journey_start, last_interaction, company_id,
                               user_id) FROM stdin;
-d4060b2d-86f4-4aec-b439-ae3d0f621f05	3646865f-dbfd-4823-9641-5b5c1d74f85b	ASSIGNED	f	2024-11-09 15:37:08.96209	\N	965a4e8c-080d-4f8f-ba07-9221185d3dbe	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-2515bee8-2fce-48b3-be38-5398fe6e8022	3646865f-dbfd-4823-9641-5b5c1d74f85b	ASSIGNED	f	2024-11-09 15:37:11.909638	\N	f0996c37-e362-4dd6-978e-1efb93a5220c	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 34afbaa7-b07c-4229-937f-5217ffb6163d	3646865f-dbfd-4823-9641-5b5c1d74f85b	ASSIGNED	f	2024-11-09 15:37:15.340129	\N	39f427e2-c899-422f-add7-1351efdcdb9b	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 0159aaa8-18a6-40c1-ad2f-f365c07ceb9d	3646865f-dbfd-4823-9641-5b5c1d74f85b	ASSIGNED	f	2024-11-09 15:37:18.72575	\N	9e6e31fe-427c-453f-a87f-50c8b40a7f51	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 cbe245c1-f4f3-47e0-acdf-d1382ebc4d54	3646865f-dbfd-4823-9641-5b5c1d74f85b	ASSIGNED	f	2024-11-09 15:37:21.867894	\N	e50b2142-c472-4417-a2dd-f9b8a8b9a95f	c13f6b7a-af82-409d-8910-c71f82ee8aa7
@@ -746,6 +746,8 @@ bb2bfb63-d5aa-4c0a-9bfd-3032ae99cf37	3646865f-dbfd-4823-9641-5b5c1d74f85b	I_HAVE
 04ef0a68-51dc-45d8-8e69-9df65b8e01b6	3646865f-dbfd-4823-9641-5b5c1d74f85b	WAITING_FOR_RESPONSE	f	2024-11-07 22:15:33.350028	2024-11-07 16:27:29.81	19327774-cc15-4fa4-9456-d26ea6809dd3	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 94e0da4b-bb81-4ee8-abf3-836463f9175c	3646865f-dbfd-4823-9641-5b5c1d74f85b	DIFFERENT_FORM_PARTNERSHIP	t	2024-11-09 15:36:49.980319	2024-11-09 16:29:16.869713	c4aa27d9-63b1-4e94-aa2f-08b6f14bc82c	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 dbc52605-0f60-40e1-9e48-938c5be4011a	3646865f-dbfd-4823-9641-5b5c1d74f85b	INTERNSHIP	t	2024-11-09 15:36:57.020524	2024-11-09 16:29:35.597699	a0e676dd-ae2b-4ed9-9c8a-6c8ff4aba86e	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+d4060b2d-86f4-4aec-b439-ae3d0f621f05	3646865f-dbfd-4823-9641-5b5c1d74f85b	UNABLE_TO_CONNECT	f	2024-11-09 15:37:08.96209	2024-11-26 18:00:44.636822	965a4e8c-080d-4f8f-ba07-9221185d3dbe	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+2515bee8-2fce-48b3-be38-5398fe6e8022	3646865f-dbfd-4823-9641-5b5c1d74f85b	NOT_PICKING_UP	f	2024-11-09 15:37:11.909638	2024-11-26 18:00:58.168896	f0996c37-e362-4dd6-978e-1efb93a5220c	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 \.
 
 

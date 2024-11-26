@@ -24,6 +24,8 @@ export const contactStatusOptions
     = [{name: "WAITING_FOR_RESPONSE", text: "Oczekiwanie na odpowiedź"},
     {name: "CALL_LATER", text: "Zadzwonić później"},
     {name: "NOT_INTERESTED", text: "Niezainteresowana"},
+    {name: "UNABLE_TO_CONNECT", text: "Nie można się połączyć"},
+    {name: "NOT_PICKING_UP", text: "Nieodebrany"},
     {name: "BARTER", text: "Barter"},
     {name: "SPONSOR", text: "Sponsor"},
     {name: "TRAINING", text: "Szkolenie"},
