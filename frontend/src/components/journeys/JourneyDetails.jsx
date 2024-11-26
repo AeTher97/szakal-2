@@ -40,17 +40,17 @@ const JourneyDetails = () => {
         const location = useLocation();
         const dispatch = useDispatch();
         const {userId} = useSelector(state => state.auth)
-    const {favouriteJourneys} = useSelector(state => state.favouriteJourneys)
-    const {journey, addContactEvent, addComment, closeJourney, reopenJourney, removeUser}
+        const {favouriteJourneys} = useSelector(state => state.favouriteJourneys)
+        const {journey, addContactEvent, addComment, closeJourney, reopenJourney, removeUser}
             = useJourney(location.pathname.split("/")[3]);
         const {hasRight} = useAccessRightsHelper()
-    const mobile = useMobileSize();
+        const mobile = useMobileSize();
 
-    const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
-    const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
-        = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
-    const {openDialog: openReopenJourneyDialog, render: renderReopenJourneyDialog}
-        = useConfirmationDialog("Czy na pewno chcesz otworzyć kontakt ponownie?");
+        const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz zakończyć kontakt?");
+        const {openDialog: openRemoveUserFromJourneyDialog, render: renderRemoveUserFromJourneyDialog}
+            = useConfirmationDialog("Czy na pewno chcesz usunąć osobnę z IAESTE z tego kontaktu?");
+        const {openDialog: openReopenJourneyDialog, render: renderReopenJourneyDialog}
+            = useConfirmationDialog("Czy na pewno chcesz otworzyć kontakt ponownie?");
 
         useEffect(() => {
             if (journey) {
@@ -64,60 +64,60 @@ const JourneyDetails = () => {
         }, [location, journey]);
 
 
-    const isUser = journey?.user && (userId === journey.user.id);
-    const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {
-        if (!journey) {
-            return false;
-        }
-        return favouriteJourney.contactJourney.id === journey.id;
-    })
+        const isUser = journey?.user && (userId === journey.user.id);
+        const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {
+            if (!journey) {
+                return false;
+            }
+            return favouriteJourney.contactJourney.id === journey.id;
+        })
 
 
-    const renderActions = () => {
-        return <div
-            style={{
-                display: "flex", gap: 5, flexWrap: "wrap", justifyContent: mobile ? "stretch" : "flex-end",
-                paddingBottom: mobile ? 5 : 0
-            }}>
-            <Tooltip title={"Dodaj do ulubionych"}>
-                <IconButton variant={"outlined"} onClick={() => {
-                    if (favouriteJourneyObject) {
-                        dispatch(removeFavouriteJourney(favouriteJourneyObject.id));
-                    } else {
-                        dispatch(addFavouriteJourney(journey.id));
-                    }
+        const renderActions = () => {
+            return <div
+                style={{
+                    display: "flex", gap: 5, flexWrap: "wrap", justifyContent: mobile ? "stretch" : "flex-end",
+                    paddingBottom: mobile ? 5 : 0
                 }}>
-                    {!favouriteJourneyObject && <StarOutline color={"warning"}/>}
-                    {favouriteJourneyObject && <Star color={"warning"}/>}
-                </IconButton>
-            </Tooltip>
-            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && journey.finished &&
-                <Button style={{flex: 1}} onClick={() => {
-                    openReopenJourneyDialog(() => reopenJourney())
-                }}>Otwórz ponownie</Button>}
-            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
-                <Button style={{flex: mobile ? 1 : 0}} onClick={() => {
-                    openDialog(() => closeJourney())
-                }}>Zakończ</Button>}
-            {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
-                <Button variant={"outlined"} onClick={() => {
-                    openRemoveUserFromJourneyDialog(() => removeUser())
-                }}>Odepnij osobę z IAESTE</Button>}
-            {!journey.user && !journey.finished &&
-                <AssignCompanyButton company={journey.company} fromJourneyPage={true}/>}
-        </div>
-    }
+                <Tooltip title={"Dodaj do ulubionych"}>
+                    <IconButton variant={"outlined"} onClick={() => {
+                        if (favouriteJourneyObject) {
+                            dispatch(removeFavouriteJourney(favouriteJourneyObject.id));
+                        } else {
+                            dispatch(addFavouriteJourney(journey.id));
+                        }
+                    }}>
+                        {!favouriteJourneyObject && <StarOutline color={"warning"}/>}
+                        {favouriteJourneyObject && <Star color={"warning"}/>}
+                    </IconButton>
+                </Tooltip>
+                {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && journey.finished &&
+                    <Button style={{flex: 1}} onClick={() => {
+                        openReopenJourneyDialog(() => reopenJourney())
+                    }}>Otwórz ponownie</Button>}
+                {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                    <Button style={{flex: mobile ? 1 : 0}} onClick={() => {
+                        openDialog(() => closeJourney())
+                    }}>Zakończ</Button>}
+                {journey.user && (hasRight(JOURNEY_MODIFICATION_FOR_OTHERS) || isUser) && !journey.finished &&
+                    <Button variant={"outlined"} onClick={() => {
+                        openRemoveUserFromJourneyDialog(() => removeUser())
+                    }}>Odepnij osobę z IAESTE</Button>}
+                {!journey.user && !journey.finished &&
+                    <AssignCompanyButton company={journey.company} fromJourneyPage={true}/>}
+            </div>
+        }
 
-    return (
-        <>
-            {journey && <div style={{paddingBottom: 10}}>
-                <TabHeader>
-                    <Typography level={"h2"}>
-                        Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
-                    </Typography>
-                    {!mobile && renderActions()}
+        return (
+            <>
+                {journey && <div style={{paddingBottom: 10}}>
+                    <TabHeader>
+                        <Typography level={"h2"}>
+                            Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
+                        </Typography>
+                        {!mobile && renderActions()}
                     </TabHeader>
-                {mobile && renderActions()}
+                    {mobile && renderActions()}
                     <div style={{
                         display: "flex",
                         justifyContent: "flex-start",
@@ -139,7 +139,7 @@ const JourneyDetails = () => {
                     </div>
                     {render()}
                     {renderRemoveUserFromJourneyDialog()}
-                {renderReopenJourneyDialog()}
+                    {renderReopenJourneyDialog()}
                 </div>}
             </>);
     }
