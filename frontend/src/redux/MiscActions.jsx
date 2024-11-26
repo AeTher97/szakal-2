@@ -2,7 +2,7 @@ import {ADD_FAVOURITE_JOURNEY, LOAD_FAVOURITE_JOURNEYS, REMOVE_FAVOURITE_JOURNEY
 import axios from "axios";
 import {showError} from "./AlertActions";
 import {SWITCH_THEME} from "./ThemeStore";
-import {SWITCH_CAMPAIGN} from "./CampaignReducer";
+import {SWITCH_CAMPAIGN} from "./CampaignStore";
 import {ADD_ITEM, REMOVE_ITEM} from "./KnownEntitiesStore";
 import {REFRESH} from "./AuthStore";
 
