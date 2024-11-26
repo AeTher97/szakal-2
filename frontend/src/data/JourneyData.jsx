@@ -105,6 +105,10 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const {put: putReopenJourney} = usePut(`/journeys/${id}/reopen`, (data) => {
+        setJourney(data);
+    })
+
     const {put: putRemoveUser} = usePut(`/journeys/${id}/removeUser`, (data) => {
         setJourney(data);
     })
@@ -131,9 +135,13 @@ export const useJourney = (id) => {
         put();
     }
 
+    const reopenJourney = () => {
+        putReopenJourney();
+    }
+
     const removeUser = () => {
         putRemoveUser();
     }
 
-    return {journey, loading, closeJourney, addContactEvent, addComment, removeUser}
+    return {journey, loading, closeJourney, reopenJourney, addContactEvent, addComment, removeUser}
 }

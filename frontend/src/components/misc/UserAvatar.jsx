@@ -36,7 +36,7 @@ UserAvatar.propTypes = {
     name: PropTypes.string,
     surname: PropTypes.string,
     image: PropTypes.string,
-    text: PropTypes.string,
+    text: PropTypes.bool,
     size: PropTypes.string,
     overrideMobile: PropTypes.bool,
     hideName: PropTypes.bool,
