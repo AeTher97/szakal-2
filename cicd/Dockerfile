@@ -1,7 +1,7 @@
 FROM ubuntu:24.04 AS basebuilder
 
 RUN apt-get update \
-&& apt-get -y install dos2unix nodejs npm openjdk-21-jdk \
+&& apt-get -y install dos2unix nodejs npm openjdk-21-jdk wget \
 && npm install -g n \
 && n stable \
 && n 22 \
@@ -19,7 +19,7 @@ WORKDIR /src
 
 RUN dos2unix gradlew \
 && dos2unix build-and-copy.sh \
-&& ./build-and-copy.sh \
+&& ./build-and-copy.sh false \
 && chmod +x ./gradlew \
 && ./gradlew build
 
