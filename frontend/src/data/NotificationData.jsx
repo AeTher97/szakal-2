@@ -57,6 +57,7 @@ export const useNotificationList = () => {
 
     useData("/notifications", (data) => {
         console.debug("Loaded notifications")
+        data.splice(30)
         setNotifications(data)
         for (let notification of data) {
             if (!notification.seen) {
