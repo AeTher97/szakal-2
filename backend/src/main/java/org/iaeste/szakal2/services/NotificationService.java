@@ -18,7 +18,7 @@ import java.util.UUID;
 @Log4j2
 public class NotificationService {
 
-    private static final int MAX_NOTIFICATIONS = 50;
+    private static final int MAX_NOTIFICATIONS = 30;
     private final NotificationRepository notificationRepository;
     private final UserService userService;
 
