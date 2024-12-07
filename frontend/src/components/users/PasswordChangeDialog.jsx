@@ -58,6 +58,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                             <Input autoFocus
                                    value={oldPassword}
                                    type={"password"}
+                                   autoComplete={"current-password"}
                                    onChange={(e) => {
                                        setOldPassword(e.target.value)
                                    }} placeholder={"Obecne hasło"}/>
@@ -69,6 +70,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                             <Input autoFocus
                                    value={password}
                                    type={"password"}
+                                   autoComplete={"new-password"}
                                    onChange={(e) => {
                                        setPassword(e.target.value)
                                    }} placeholder={"Nowe hasło"}/>
@@ -100,6 +102,7 @@ const PasswordChangeDialog = ({open, close, userId}) => {
                             <Input
                                 type={"password"}
                                 value={repeatPassword}
+                                autoComplete={"new-password"}
                                 onChange={(e) => {
                                     setRepeatPassword(e.target.value)
                                 }} placeholder={"Powtórz nowe hasło"}/>
