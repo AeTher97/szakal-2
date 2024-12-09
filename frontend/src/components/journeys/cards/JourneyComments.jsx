@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Divider, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import UserAvatar from "../../misc/UserAvatar";
@@ -6,32 +6,34 @@ import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {useSelector} from "react-redux";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
 import PropTypes from "prop-types";
+import {FieldValidation} from "../../../utils/FieldValidation";
 
 const JourneyComments = ({addComment, journey}) => {
 
     const {userId} = useSelector(state => state.auth)
-    const [comment, setComment] = useState("");
+    const comment = FieldValidation();
+
+    const isFormValid = comment.isValid;
 
     return (
         <div style={{flex: 1}}>
             <Typography level={"h3"}>Komentarze</Typography>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                if (comment.length > 1000) {
+                if (!isFormValid) {
                     return;
                 }
-                if (comment !== "") {
-                    addComment(userId, comment);
+                if (comment.value !== "") {
+                    addComment(userId, comment.value);
                 }
-                setComment("")
+                comment.reset();
             }}>
                 <div style={{display: "flex"}}>
                     <Stack spacing={1} style={{flex: 1}}>
                         <Typography level={"title-lg"}>Dodaj komentarz</Typography>
-                        <TextAreaWithLimit limit={1000} minRows={2} value={comment} onChange={(e) => {
-                            setComment(e.target.value)
-                        }} placeholder={"Komentarz"} required/>
-                        <Button type={"submit"}>Dodaj</Button>
+                        <TextAreaWithLimit limit={comment.limit} minRows={2} value={comment.value}
+                                           onChange={comment.handleChange} isValid={comment.isValid} placeholder={"Komentarz"} required/>
+                        <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
                     </Stack>
                 </div>
             </form>

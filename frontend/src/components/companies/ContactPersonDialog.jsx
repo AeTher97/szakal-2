@@ -3,6 +3,8 @@ import {Checkbox, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack
 import Button from "@mui/joy/Button";
 import {InputWithLimit, TextAreaWithLimit} from "../misc/InputWithLimit";
 import PropTypes from "prop-types";
+import {FieldValidation} from "../../utils/FieldValidation";
+import {FormValidation} from "../../utils/FormValidation";
 
 const ContactPersonDialog = ({
                                  open,
@@ -12,67 +14,70 @@ const ContactPersonDialog = ({
                                  contactPerson
                              }) => {
 
-    const [name, setName] = useState("");
-    const [position, setPosition] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [comment, setComment] = useState("");
+    const name = FieldValidation();
+    const position = FieldValidation();
+    const phone = FieldValidation();
+    const email = FieldValidation();
+    const comment = FieldValidation();
+    const committee = FieldValidation();
     const [isAlumni, setIsAlumni] = useState(false);
-    const [committee, setCommittee] = useState("");
 
     useEffect(() => {
         if (contactPerson) {
-            setName(contactPerson.name);
-            setPosition(contactPerson.position);
-            setPhone(contactPerson.phone);
-            setEmail(contactPerson.email);
-            setComment(contactPerson.comment);
-            setIsAlumni(contactPerson.alumni)
-            setCommittee(contactPerson.committee)
+            name.setValue(contactPerson.name);
+            position.setValue(contactPerson.position);
+            phone.setValue(contactPerson.phone);
+            email.setValue(contactPerson.email);
+            comment.setValue(contactPerson.comment);
+            setIsAlumni(contactPerson.alumni);
+            committee.setValue(contactPerson.committee);
         }
     }, [contactPerson]);
 
     const clear = () => {
-        setName("")
-        setPosition("")
-        setPhone("")
-        setEmail("")
-        setComment("")
-        setIsAlumni(false)
-        setCommittee("")
+        name.reset();
+        position.reset();
+        phone.reset();
+        email.reset();
+        comment.reset();
+        setIsAlumni(false);
+        committee.reset();
     }
 
+    const isFormValid = FormValidation([name, position, phone, email, comment, committee]);
 
     return (
         <Modal open={open}>
             <ModalDialog sx={{overflow: 'auto'}}>
                 <DialogTitle>{contactPerson ? "Edytuj osobę kontaktową" : "Dodaj osobę kontaktową"}</DialogTitle>
-                <form onSubmit={(event, value) => {
+                <form onSubmit={(event) => {
                     event.preventDefault();
+                    if (!isFormValid) return;
                     if (contactPerson) {
                         modifyContactPerson(
                             {
                                 id: contactPerson.id,
-                                name,
-                                position,
+                                name: name.value,
+                                position: position.value,
                                 alumni: isAlumni,
-                                phone,
-                                email,
-                                comment,
-                                committee
+                                phone: phone.value,
+                                email: email.value,
+                                comment: comment.value,
+                                committee: committee.value
                             })
                             .then(() => {
                                 close();
                                 clear();
                             })
                     } else {
-                        addContactPerson(name,
-                            position,
+                        addContactPerson(
+                            name.value,
+                            position.value,
                             isAlumni,
-                            phone,
-                            email,
-                            comment,
-                            committee
+                            phone.value,
+                            email.value,
+                            comment.value,
+                            committee.value
                         ).then(() => {
                             close();
                             clear();
@@ -83,16 +88,18 @@ const ContactPersonDialog = ({
                         <InputWithLimit
                             label={"Imię i Nazwisko"}
                             required
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.target.value)
-                            }} placeholder={"Jan Kowalski"}/>
+                            value={name.value}
+                            limit={name.limit}
+                            isValid={name.isValid}
+                            onChange={name.handleChange}
+                            placeholder={"Jan Kowalski"}/>
                         <InputWithLimit
                             label={"Stanowisko"}
-                            value={position}
-                            onChange={(e) => {
-                                setPosition(e.target.value)
-                            }} placeholder={"CEO"}/>
+                            value={position.value}
+                            limit={position.limit}
+                            isValid={position.isValid}
+                            onChange={position.handleChange}
+                            placeholder={"CEO"}/>
                         <FormControl style={{display: "flex", flexDirection: "row", gap: 10}}>
                             <FormLabel>Alumn:</FormLabel>
                             <Checkbox
@@ -103,30 +110,33 @@ const ContactPersonDialog = ({
                         </FormControl>
                         <InputWithLimit
                             label={"Telefon"}
-                            value={phone}
-                            onChange={(e) => {
-                                setPhone(e.target.value)
-                            }} placeholder={"+4800000000"}/>
+                            value={phone.value}
+                            limit={phone.limit}
+                            isValid={phone.isValid}
+                            onChange={phone.handleChange}
+                            placeholder={"+4800000000"}/>
                         <InputWithLimit
                             label={"Email"}
-                            value={email}
+                            value={email.value}
                             type={"email"}
-                            onChange={(e) => {
-                                setEmail(e.target.value)
-                            }} placeholder={"jan.kowalski@gmail.com"}/>
+                            limit={email.limit}
+                            isValid={email.isValid}
+                            onChange={email.handleChange}
+                            placeholder={"jan.kowalski@gmail.com"}/>
                         <TextAreaWithLimit
                             label={"Komentarz"}
-                            value={comment}
-                            onChange={(e) => {
-                                setComment(e.target.value)
-                            }} placeholder={"Człowiek z HRów"}/>
+                            value={comment.value}
+                            limit={comment.limit}
+                            isValid={comment.isValid}
+                            onChange={comment.handleChange}
+                            placeholder={"Człowiek z HRów"}/>
                         <Textarea
                             label={"Komitet"}
-                            value={committee}
+                            value={committee.value}
                             onChange={(e) => {
-                                setCommittee(e.target.value)
+                                committee.setValue(e.target.value)
                             }} placeholder={"AGH"}/>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {
                             clear();
                             close();

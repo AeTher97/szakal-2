@@ -7,6 +7,8 @@ import ProfilePictureDialog from "./ProfilePictureDialog";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import PropTypes from "prop-types";
 import {InputWithLimit} from "../misc/InputWithLimit";
+import {FieldValidation} from "../../utils/FieldValidation";
+import {FormValidation} from "../../utils/FormValidation";
 
 const BasicUserInfo = ({
                            user,
@@ -18,19 +20,20 @@ const BasicUserInfo = ({
 
     const mobile = useMobileSize();
 
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
+    const name = FieldValidation();
+    const surname = FieldValidation();
+    const email = FieldValidation();
     const [profilePictureDialogOpen, setProfilePictureDialogOpen] = useState(false);
     const {userId} = useSelector(state => state.auth);
 
     const isUser = userId === user.id;
+    const isFormValid = FormValidation([name, surname, email]);
 
     useEffect(() => {
         if (localUser) {
-            setName(localUser.name);
-            setSurname(localUser.surname);
-            setEmail(localUser.email);
+            name.setValue(localUser.name);
+            surname.setValue(localUser.surname);
+            email.setValue(localUser.email);
         }
     }, [localUser]);
 
@@ -46,7 +49,7 @@ const BasicUserInfo = ({
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
-                updateUserDetails(name, surname, email)
+                updateUserDetails(name.value, surname.value, email.value)
             }}>
                 <CardContent orientation={mobile ? "vertical" : "horizontal"}
                              style={{justifyContent: mobile ? "center" : "flex-start"}}>
@@ -73,25 +76,28 @@ const BasicUserInfo = ({
                         </FormLabel>
                         <Stack spacing={1}>
                             <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                                <InputWithLimit disabled={!isUser} placeholder={"Imię"}
-                                                value={name}
+                                <InputWithLimit disabled={!isUser}
+                                                placeholder={"Imię"}
+                                                value={name.value}
+                                                limit={name.limit}
+                                                isValid={name.isValid}
                                                 formControlProps={{style: {flex: 1}}}
-                                                onChange={(e) => {
-                                                    setName(e.target.value)
-                                                }}/>
+                                                onChange={name.handleChange}/>
                                 <InputWithLimit disabled={!isUser}
                                                 placeholder={"Nazwisko"}
-                                                value={surname}
+                                                value={surname.value}
+                                                limit={surname.limit}
+                                                isValid={surname.isValid}
                                                 formControlProps={{style: {flex: 1}}}
-                                                onChange={(e) => {
-                                                    setSurname(e.target.value)
-                                                }}/>
+                                                onChange={surname.handleChange}/>
                             </div>
                             <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
-                                <InputWithLimit label={"Email"} disabled={!isUser} placeholder={"Email"}
-                                                value={email} onChange={(e) => {
-                                    setEmail(e.target.value)
-                                }}
+                                <InputWithLimit label={"Email"} disabled={!isUser}
+                                                placeholder={"Email"}
+                                                value={email.value}
+                                                limit={email.limit}
+                                                isValid={email.isValid}
+                                                onChange={email.handleChange}
                                                 formControlProps={{style: {flex: 1}}}/>
                             </div>
                         </Stack>
@@ -99,7 +105,7 @@ const BasicUserInfo = ({
 
                 </CardContent>
                 {isUser && <CardActions>
-                    <Button type={"submit"} loading={updateUserDetailsLoading}>Zapisz</Button>
+                    <Button type={"submit"} loading={updateUserDetailsLoading} disabled={!isFormValid}>Zapisz</Button>
                 </CardActions>}
                 <ProfilePictureDialog
                     open={profilePictureDialogOpen}

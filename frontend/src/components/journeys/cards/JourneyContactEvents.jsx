@@ -13,6 +13,7 @@ import {contactStatusOptions} from "../JourneyDetails";
 import {useSelector} from "react-redux";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import PropTypes from "prop-types";
+import {FieldValidation} from "../../../utils/FieldValidation";
 
 const JourneyContactEvents = ({addContactEvent, journey}) => {
 
@@ -20,12 +21,12 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
     const [contactEventError, setContactEventError] = useState(false);
     const [contactStatus, setContactStatus] = useState("CHOOSE");
     const [contactPerson, setContactPerson] = useState("CHOOSE");
-    const [eventDescription, setEventDescription] = useState("");
+    const eventDescription = FieldValidation("", 2000);
     const {hasRight} = useAccessRightsHelper()
 
 
     const isUser = journey?.user && (userId === journey.user.id);
-
+    const isFormValid = eventDescription.isValid;
 
     return (
         <div style={{flex: 1}}>
@@ -39,15 +40,15 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                         setContactEventError(true);
                         return;
                     }
-                    if (eventDescription.length > 2000) {
+                    if (!isFormValid) {
                         return;
                     }
                     if (contactPerson !== "CHOOSE") {
-                        addContactEvent(journey.id, userId, eventDescription, contactStatus, contactPerson)
+                        addContactEvent(journey.id, userId, eventDescription.value, contactStatus, contactPerson)
                     } else {
-                        addContactEvent(journey.id, userId, eventDescription, contactStatus)
+                        addContactEvent(journey.id, userId, eventDescription.value, contactStatus)
                     }
-                    setEventDescription("")
+                    eventDescription.setValue("");
                     setContactEventError(false);
                     setContactStatus("CHOOSE")
                 }
@@ -79,13 +80,13 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
 
                                 </Select>
                             </FormControl>
-                            <TextAreaWithLimit limit={2000}
+                            <TextAreaWithLimit limit={eventDescription.limit}
                                                minRows={2}
-                                               value={eventDescription}
-                                               onChange={(e) => {
-                                                   setEventDescription(e.target.value)
-                                               }} placeholder={"Opis"} required/>
-                            <Button type={"submit"}>Dodaj</Button>
+                                               value={eventDescription.value}
+                                               isValid={eventDescription.isValid}
+                                               onChange={eventDescription.handleChange}
+                                               placeholder={"Opis"} required/>
+                            <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
                         </Stack>
                     </div>
                 </form>}

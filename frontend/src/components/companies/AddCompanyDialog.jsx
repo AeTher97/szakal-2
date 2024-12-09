@@ -6,33 +6,36 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
 import {InputWithLimit} from "../misc/InputWithLimit";
 import PropTypes from "prop-types";
+import { FormValidation } from '../../utils/FormValidation';
+import {FieldValidation} from "../../utils/FieldValidation";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
-
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [www, setWww] = useState("");
-    const [street, setStreet] = useState("");
-    const [streetNumber, setStreetNumber] = useState("");
-    const [city, setCity] = useState("");
-    const [postalCode, setPostalCode] = useState("");
+    const name = FieldValidation();
+    const phone = FieldValidation();
+    const email = FieldValidation();
+    const www = FieldValidation();
+    const street = FieldValidation();
+    const streetNumber = FieldValidation();
+    const city = FieldValidation();
+    const postalCode = FieldValidation();
     const [categories, setCategories] = useState([]);
 
     const {hasRight} = useAccessRightsHelper()
 
     const onClose = () => {
-        setName("");
-        setPhone("");
-        setEmail("");
-        setWww("");
-        setStreet("");
-        setCity("");
-        setStreetNumber("");
-        setPostalCode("");
+        name.reset();
+        phone.reset();
+        email.reset();
+        www.reset();
+        street.reset();
+        streetNumber.reset();
+        city.reset();
+        postalCode.reset();
         setCategories([]);
         close();
     }
+
+    const isFormValid = FormValidation([ name, phone, email, www, street, streetNumber, city, postalCode ]);
 
     return (
         <Modal open={open}>
@@ -40,16 +43,17 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                 <form
                     onSubmit={(event) => {
                         event.preventDefault();
+                        if (!isFormValid) return;
                         addCompany({
-                            name,
-                            phone,
-                            email,
-                            www,
+                            name: name.value,
+                            phone: phone.value,
+                            email: email.value,
+                            www: www.value,
                             address: {
-                                street,
-                                streetNumber,
-                                city,
-                                postalCode
+                                street: street.value,
+                                streetNumber: streetNumber.value,
+                                city: city.value,
+                                postalCode: postalCode.value
                             },
                             categories: categories.map(category => category.id)
                         })
@@ -61,64 +65,74 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                     <Stack spacing={2}>
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                             <Stack spacing={2}>
-                                <InputWithLimit required={true} label={"Nazwa"}
-                                                autoFocus={true}
-                                                value={name}
-                                                onChange={(e) => {
-                                                    setName(e.target.value)
-                                                }} placeholder={"Nazwa firmy"}/>
+                                <InputWithLimit
+                                    required={true}
+                                    label={"Nazwa"}
+                                    autoFocus={true}
+                                    value={name.value}
+                                    limit={name.limit}
+                                    isValid={name.isValid}
+                                    onChange={name.handleChange}
+                                    placeholder={"Nazwa firmy"}/>
                                 <InputWithLimit
                                     label={"Telefon"}
-                                    value={phone}
-                                    onChange={(e) => {
-                                        setPhone(e.target.value)
-                                    }} placeholder={"Telefon"}/>
+                                    value={phone.value}
+                                    limit={phone.limit}
+                                    isValid={phone.isValid}
+                                    onChange={phone.handleChange}
+                                    placeholder={"Telefon"}/>
                                 <InputWithLimit
                                     label={"Email"}
-                                    value={email}
+                                    value={email.value}
                                     type={"email"}
-                                    onChange={(e) => {
-                                        setEmail(e.target.value)
-                                    }} placeholder={"Email"}/>
+                                    limit={email.limit}
+                                    isValid={email.isValid}
+                                    onChange={email.handleChange}
+                                    placeholder={"Email"}/>
                                 <InputWithLimit
-                                    value={www}
                                     label={"Strona internetowa"}
-                                    onChange={(e) => {
-                                        setWww(e.target.value)
-                                    }} placeholder={"Strona"}/>
+                                    value={www.value}
+                                    limit={www.limit}
+                                    isValid={www.isValid}
+                                    onChange={www.handleChange}
+                                    placeholder={"Strona"}/>
                             </Stack>
                             <Stack spacing={2}>
                                 <InputWithLimit
                                     label={"Ulica"}
-                                    value={street}
-                                    onChange={(e) => {
-                                        setStreet(e.target.value)
-                                    }} placeholder={"Ulica"}/>
+                                    value={street.value}
+                                    limit={street.limit}
+                                    isValid={street.isValid}
+                                    onChange={street.handleChange}
+                                    placeholder={"Ulica"}/>
                                 <InputWithLimit
                                     label={"Miasto"}
-                                    value={city}
-                                    onChange={(e) => {
-                                        setCity(e.target.value)
-                                    }} placeholder={"Miasto"}/>
+                                    value={city.value}
+                                    limit={city.limit}
+                                    isValid={city.isValid}
+                                    onChange={city.handleChange}
+                                    placeholder={"Miasto"}/>
                                 <InputWithLimit
                                     label={"Number ulicy"}
-                                    value={streetNumber}
-                                    onChange={(e) => {
-                                        setStreetNumber(e.target.value)
-                                    }} placeholder={"Number ulicy"}/>
+                                    value={streetNumber.value}
+                                    limit={streetNumber.limit}
+                                    isValid={streetNumber.isValid}
+                                    onChange={streetNumber.handleChange}
+                                    placeholder={"Number ulicy"}/>
                                 <InputWithLimit
                                     label={"Kod pocztowy"}
-                                    value={postalCode}
-                                    onChange={(e) => {
-                                        setPostalCode(e.target.value)
-                                    }} placeholder={"Kod pocztowy"}/>
+                                    value={postalCode.value}
+                                    limit={postalCode.limit}
+                                    isValid={postalCode.isValid}
+                                    onChange={postalCode.handleChange}
+                                    placeholder={"Kod pocztowy"}/>
                             </Stack>
                             {hasRight(CATEGORY_MODIFICATION) && <CompanyCategories categoriesList={categories}
                                                                                    setCategories={setCategories}
                                                                                    allowAdding dialog/>}
                         </div>
                         <Stack spacing={2}>
-                            <Button type="submit">Zapisz</Button>
+                            <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                             <Button color={"neutral"} onClick={onClose}>Anuluj</Button>
                         </Stack>
                     </Stack>
