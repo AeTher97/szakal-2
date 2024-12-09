@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Routes} from "react-router";
-import {Typography} from "@mui/joy";
+import {LinearProgress, Typography} from "@mui/joy";
 import UsersList from "../users/UsersList";
 import RolesList from "../users/RolesList";
 import TabHeader from "../misc/TabHeader";
@@ -10,9 +10,13 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {ROLE_VIEWING, USER_GROUP_MODIFICATION, USER_VIEWING} from "../../utils/AccessRightsList";
 import GroupDetails from "../users/groups/GroupDetails";
 import GroupList from "../users/GroupList";
+import {useMobileSize} from "../../utils/MediaQuery";
+import {useCategories} from "../../data/CategoriesData";
 
 const UsersTab = () => {
-
+    const [currentPage] = useState(1);
+    const {loading}
+        = useCategories(true, currentPage - 1);
     const {hasRight} = useAccessRightsHelper();
 
     return (
@@ -22,6 +26,7 @@ const UsersTab = () => {
                     <TabHeader>
                         <Typography level="h2">Użytkownicy</Typography>
                     </TabHeader>
+                    <LinearProgress style={{visibility: loading ? "visible" : "hidden"}}/>
                     <div style={{display: "flex", flexWrap: "wrap", gap: 10}}>
                         {hasRight(USER_VIEWING) && <UsersList/>}
                         {hasRight(USER_GROUP_MODIFICATION) && <GroupList/>}
