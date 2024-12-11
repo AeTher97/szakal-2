@@ -22,14 +22,16 @@ const FavouriteJourneys = () => {
     }, [isAuthenticated])
 
     return (
-        <Card style={{overflowY: "auto", minHeight: 300, maxHeight: 400}}
+        <Card style={{overflowY: "auto", minHeight: 300, maxHeight: 500, padding: 0}}
               variant={"soft"}>
-            <div style={{display: "flex", justifyContent: "flex-start", alignItems: "center", gap: 10}}>
-                <Star color={"warning"}/>
-                <Typography level={"h4"}>Ulubione kontakty</Typography>
+            <div style={{position: "sticky", top: 0, zIndex: 1, backgroundColor: "inherit"}}>
+                <div style={{display: "flex", justifyContent: "flex-start", alignItems: "center", gap: 10, margin: 16}}>
+                    <Star color={"warning"}/>
+                    <Typography level={"h4"}>Ulubione kontakty</Typography>
+                </div>
+                <Divider/>
             </div>
-            <Divider/>
-            <div>
+            <div style={{paddingLeft: 16, paddingRight: 16}}>
                 {favouriteJourneys.map((favouriteJourney, i) => {
                     const finished = favouriteJourney.contactJourney.finished;
                     return <div key={favouriteJourney.id}>
