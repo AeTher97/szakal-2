@@ -61,6 +61,7 @@ public class UserService {
         this.usernamePasswordProvider = new UsernamePasswordProvider(usersRepository, passwordEncoder, jwtConfiguration);
     }
 
+    @Transactional
     public UserDTO getUserDTOById(UUID id) {
         Optional<User> userOptional = usersRepository.findUserById(id);
         if (userOptional.isEmpty()) {

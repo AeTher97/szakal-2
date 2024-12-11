@@ -3,8 +3,6 @@ package org.iaeste.szakal2.models.dto.journey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
-import org.iaeste.szakal2.models.dto.company.CompanyDetailsDTO;
-import org.iaeste.szakal2.models.dto.user.UserDTO;
 import org.iaeste.szakal2.models.entities.Campaign;
 import org.iaeste.szakal2.models.entities.ContactJourney;
 import org.iaeste.szakal2.models.entities.ContactStatus;
@@ -19,10 +17,10 @@ import java.util.stream.Collectors;
 public class ContactJourneyDetailsDTO {
 
     private UUID id;
-    private CompanyDetailsDTO company;
+    private ContactJourneyCompanyDTO company;
     private CampaignDTO campaign;
     @JsonIgnoreProperties(value = {"accessRights", "campaigns", "roles"})
-    private UserDTO user;
+    private ContactJourneyUserDTO user;
     private Set<ContactEventDetailsDTO> contactEvents;
     private Set<CommentDetailsDTO> comments;
     private LocalDateTime journeyStart;
@@ -34,11 +32,11 @@ public class ContactJourneyDetailsDTO {
                 .id(contactJourney.getId())
                 .contactStatus(contactJourney.getContactStatus())
                 .journeyStart(contactJourney.getJourneyStart())
-                .company(CompanyDetailsDTO.fromCompany(contactJourney.getCompany()))
+                .company(ContactJourneyCompanyDTO.fromCompany(contactJourney.getCompany()))
                 .campaign(CampaignDTO.fromCampaign(contactJourney.getCampaign()))
                 .contactEvents(contactJourney.getContactEvents().stream().map(ContactEventDetailsDTO::fromContactEvent)
                         .collect(Collectors.toSet()))
-                .user(contactJourney.getUser() != null ? UserDTO.fromUser(contactJourney.getUser()) : null)
+                .user(contactJourney.getUser() != null ? ContactJourneyUserDTO.fromUser(contactJourney.getUser()) : null)
                 .finished(contactJourney.isFinished())
                 .comments(contactJourney.getComments().stream().map(CommentDetailsDTO::fromComment).collect(Collectors.toSet()))
                 .build();
