@@ -32,6 +32,10 @@ import java.util.UUID;
                         @NamedAttributeNode("categories")
                 }),
                 @NamedSubgraph(name = "user-subgraph", attributeNodes = {
+                        @NamedAttributeNode("id"),
+                        @NamedAttributeNode("email"),
+                        @NamedAttributeNode("name"),
+                        @NamedAttributeNode("surname")
                 })
         }
 )
@@ -43,7 +47,7 @@ public class ContactJourney {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id")
     @JsonIgnoreProperties(value = {"roles", "active", "accepted"})
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)

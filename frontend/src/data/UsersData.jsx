@@ -33,7 +33,10 @@ export const useUserData = (id, refresh) => {
 
     const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`, (content) => setUser(content))
     const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`, (content) => setUser(content))
-    const {put: putPicture, loading: updatePictureLoading} = usePut(`/users/${id}/picture`, (content) => setUser(content))
+    const {
+        put: putPicture,
+        loading: updatePictureLoading
+    } = usePut(`/users/${id}/picture`)
     const {
         put: putUserStatus,
         loading: changeUserStatusLoading
@@ -56,7 +59,7 @@ export const useUserData = (id, refresh) => {
         formData.append("id", id);
         formData.append("file", picture);
 
-        putPicture(formData)
+        return putPicture(formData)
     }
 
     const acceptUser = () => {

@@ -39,7 +39,8 @@ const UserDetails = ({userId}) => {
         updateUserDetails,
         updateUserDetailsLoading,
         updateProfilePicture,
-        deleteNotAcceptedUser
+        deleteNotAcceptedUser,
+        updatePictureLoading
     } = useUserData(validIdFromPath ? idFromPath : userId);
 
     const isCurrentUser = useIsUser(user ? user.id : "")
@@ -95,6 +96,7 @@ const UserDetails = ({userId}) => {
                 }}>
                     <BasicUserInfo user={user} localUser={localUser} updateUserDetails={updateUserDetails}
                                    updateUserDetailsLoading={updateUserDetailsLoading}
+                                   updatePictureLoading={updatePictureLoading}
                                    updateProfilePicture={updateProfilePicture}/>
                     {hasRight(USER_ROLE_GRANTING) &&
                         <UserRoles user={user} localUser={localUser} setLocalUser={setLocalUser}

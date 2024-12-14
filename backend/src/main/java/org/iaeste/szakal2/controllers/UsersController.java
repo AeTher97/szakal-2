@@ -5,10 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.models.dto.user.*;
+import org.iaeste.szakal2.models.entities.ProfilePicture;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,6 +57,12 @@ public class UsersController {
         return userService.getUserDTOById(id);
     }
 
+    @GetMapping("/{id}/picture")
+    public ResponseEntity<byte[]> getProfilePicture(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.IMAGE_JPEG_VALUE))
+                .body(userService.getProfilePicture(id));
+    }
+
     @PutMapping("/{id}/roles")
     @PreAuthorize("hasAuthority(@authorityBean.userRoleGranting())")
     public UserDTO updateUserRoles(@PathVariable("id") UUID id,
@@ -64,7 +72,8 @@ public class UsersController {
 
     @PutMapping(value = "/{id}/picture")
     @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
-    public UserDTO updateUserProfilePicture(@PathVariable("id") UUID id, @ModelAttribute PictureUploadDTO pictureUploadDTO) throws IOException {
+    public ProfilePicture updateUserProfilePicture(@PathVariable("id") UUID id,
+                                                   @ModelAttribute PictureUploadDTO pictureUploadDTO) throws IOException {
         return userService.updatePicture(pictureUploadDTO);
     }
 

@@ -22,7 +22,6 @@ public class UserDTO {
     private String surname;
     private LocalDateTime createdAt;
     private Set<Role> roles;
-    private byte[] profilePicture;
     private Map<UUID, String> campaigns;
 
     public static UserDTO fromUser(User user) {
@@ -35,7 +34,6 @@ public class UserDTO {
                 .surname(user.getSurname())
                 .createdAt(user.getCreatedAt())
                 .roles(user.getRoles())
-                .profilePicture(user.getProfilePicture())
                 .campaigns(user.availableCampaigns())
                 .build();
     }

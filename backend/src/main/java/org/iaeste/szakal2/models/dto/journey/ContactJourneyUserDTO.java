@@ -14,7 +14,6 @@ public class ContactJourneyUserDTO {
     private String email;
     private String name;
     private String surname;
-    private byte[] profilePicture;
 
     public static ContactJourneyUserDTO fromUser(User user) {
         return ContactJourneyUserDTO.builder()
@@ -22,7 +21,6 @@ public class ContactJourneyUserDTO {
                 .email(user.getEmail())
                 .name(user.getName())
                 .surname(user.getSurname())
-                .profilePicture(user.getProfilePicture())
                 .build();
     }
 

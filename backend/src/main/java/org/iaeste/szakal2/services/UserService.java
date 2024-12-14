@@ -10,8 +10,10 @@ import org.iaeste.szakal2.exceptions.UserNotFoundException;
 import org.iaeste.szakal2.exceptions.UsernameTakenException;
 import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.models.entities.PasswordResetToken;
+import org.iaeste.szakal2.models.entities.ProfilePicture;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.PasswordTokenRepository;
+import org.iaeste.szakal2.repositories.ProfilePictureRepository;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
 import org.iaeste.szakal2.utils.EmailLoader;
@@ -44,17 +46,20 @@ public class UserService {
 
     private final EmailService emailService;
     private final UsersRepository usersRepository;
+    private final ProfilePictureRepository profilePictureRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final UsernamePasswordProvider usernamePasswordProvider;
     private final PasswordTokenRepository passwordTokenRepository;
 
     public UserService(EmailService emailService, UsersRepository usersRepository,
+                       ProfilePictureRepository profilePictureRepository,
                        PasswordEncoder passwordEncoder,
                        RoleService roleService,
                        JwtConfiguration jwtConfiguration, PasswordTokenRepository passwordTokenRepository) {
         this.emailService = emailService;
         this.usersRepository = usersRepository;
+        this.profilePictureRepository = profilePictureRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.passwordTokenRepository = passwordTokenRepository;
@@ -65,7 +70,7 @@ public class UserService {
     public UserDTO getUserDTOById(UUID id) {
         Optional<User> userOptional = usersRepository.findUserById(id);
         if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("User with id " + id + " not found");
+            throw new UserNotFoundException(STR."User with id \{id} not found");
         }
         return UserDTO.fromUser(userOptional.get());
     }
@@ -85,6 +90,11 @@ public class UserService {
             throw new UserNotFoundException("User with email " + email + " not found");
         }
         return userOptional.get();
+    }
+
+    public byte[] getProfilePicture(UUID id) {
+        Optional<ProfilePicture> profilePictureOptional = profilePictureRepository.findProfilePictureByUserId(id);
+        return profilePictureOptional.map(ProfilePicture::getData).orElse(null);
     }
 
     public UserDTO registerUser(UserCreationDTO userCreationDTO) {
@@ -216,8 +226,10 @@ public class UserService {
         passwordTokenRepository.save(passwordResetToken);
     }
 
-    public UserDTO updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
+    public ProfilePicture updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
         User user = getUserById(pictureUploadDTO.getId());
+        ProfilePicture picture = profilePictureRepository.findProfilePictureByUserId(pictureUploadDTO.getId())
+                .orElse(new ProfilePicture(user));
         BufferedImage inputImage = ImageIO.read(pictureUploadDTO.getFile().getInputStream());
         inputImage = removeAlphaChannel(inputImage);
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
@@ -233,8 +245,8 @@ public class UserService {
 
         writer.write(null, new IIOImage(inputImage,null, null), imageWriteParam);
 
-        user.setProfilePicture(byteArrayOutputStream.toByteArray());
-        return UserDTO.fromUser(usersRepository.save(user));
+        picture.setData(pictureUploadDTO.getFile().getBytes());
+        return profilePictureRepository.save(picture);
     }
 
     public void deleteUserIfNotAccepted(UUID id) {
@@ -264,5 +276,4 @@ public class UserService {
     private static BufferedImage createImage(int width, int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
-
 }
