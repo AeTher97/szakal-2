@@ -5,19 +5,21 @@ import Button from "@mui/joy/Button";
 import {useRegister} from "../../data/AuthenticationData";
 import {Key} from "@mui/icons-material";
 import LinkWithRouter from "../misc/LinkWithRouter";
+import {showError} from "../../redux/AlertActions";
+import {useDispatch} from "react-redux";
 
 
 const SignUpForm = () => {
 
     const {registerUser} = useRegister();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
-
 
     const minLength = 8;
 
@@ -35,7 +37,6 @@ const SignUpForm = () => {
                       return
                   }
 
-
                   registerUser({
                       email,
                       name,
@@ -45,6 +46,7 @@ const SignUpForm = () => {
                   }).then(() => {
                       navigate("/login")
                   }).catch(e => {
+                      dispatch(showError("Nie udało się zarejestrować użytkownika, ten email może być w użyciu"))
                       console.error(e)
                   });
 
@@ -111,7 +113,6 @@ const SignUpForm = () => {
                     <FormLabel>Hasło</FormLabel>
                     <Input
                         startDecorator={<Key/>}
-
                         required
                         name="password"
                         type="password"
@@ -124,6 +125,11 @@ const SignUpForm = () => {
                                 return;
                             }
                             setPasswordTooShort(false)
+                            if (repeatPassword.length > 0 && repeatPassword !== e.target.value) {
+                                setPasswordsDontMatch(true);
+                            } else {
+                                setPasswordsDontMatch(false);
+                            }
                         }}
                     />
                     <LinearProgress
