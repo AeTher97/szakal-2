@@ -14,7 +14,7 @@ const RoleDetails = () => {
     const dispatch = useDispatch();
     const {role, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
     const [localRole, setLocalRole] = useState(null);
-    const [setUpdateRoleDetailsLoading] = useState(false);
+    const [updateRoleDetailsLoading, setUpdateRoleDetailsLoading] = useState(false);
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const RoleDetails = () => {
                     updateRole(name, description).then(() => {
                         setUpdateRoleDetailsLoading(false);
                     })
-                }} updateRoleDetailsLoading={setUpdateRoleDetailsLoading}
+                }} updateRoleDetailsLoading={updateRoleDetailsLoading}
                 />
                 <RoleAuthorities
                     role={role}
