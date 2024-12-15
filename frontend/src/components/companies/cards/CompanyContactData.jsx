@@ -6,8 +6,8 @@ import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import PropTypes from "prop-types";
 import {InputWithLimit} from "../../misc/InputWithLimit";
-import {FieldValidation} from "../../../utils/FieldValidation";
-import {FormValidation} from "../../../utils/FormValidation";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../../utils/UseFormValidation";
 
 const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
 
@@ -15,12 +15,12 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
     const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const mobile = useMobileSize();
-    const name = FieldValidation(localCompany.name || "");
-    const email = FieldValidation(localCompany.email || "");
-    const phone = FieldValidation(localCompany.phone || "");
-    const www = FieldValidation(localCompany.www || "");
+    const name = UseFieldValidation(localCompany.name || "");
+    const email = UseFieldValidation(localCompany.email || "");
+    const phone = UseFieldValidation(localCompany.phone || "");
+    const www = UseFieldValidation(localCompany.www || "");
 
-    const isFormValid = FormValidation([name, email, phone, www]);
+    const isFormValid = UseFormValidation([name, email, phone, www]);
 
     return (
         <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 350, flex: 1, display: "flex"}} color={"primary"}

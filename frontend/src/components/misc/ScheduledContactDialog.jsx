@@ -6,6 +6,8 @@ import {useSelector} from "react-redux";
 import {useCompanyListWithCampaign} from "../../data/CompaniesData";
 import Option from "@mui/joy/Option";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "./InputWithLimit";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
 
 const contactReminderOptions = [
     {label: "2 dni przed", value: 48},
@@ -41,7 +43,9 @@ const ScheduledContactDialog = ({open, close}) => {
     const [company, setCompany] = useState("");
     const [contactDate, setContactDate] = useState("");
     const [reminderDate, setReminderDate] = useState("");
-    const [note, setNote] = useState("");
+    const note = UseFieldValidation();
+
+    const isFormValid = note.isValid;
 
     useEffect(() => {
         if (companySearch !== "") {
@@ -60,12 +64,12 @@ const ScheduledContactDialog = ({open, close}) => {
                     if (beforeSelect !== 0) {
                         const tempDate = new Date()
                         tempDate.setTime(new Date(contactDate).getTime() - hour * beforeSelect);
-                        addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note)
+                        addScheduledContact(company.id, userId, contactDate, dateToLocalISO(tempDate), note.value)
                             .then(() => {
                                 close();
                             });
                     } else {
-                        addScheduledContact(company.id, userId, contactDate, reminderDate, note).then(() => {
+                        addScheduledContact(company.id, userId, contactDate, reminderDate, note.value).then(() => {
                             close();
                         });
                     }
@@ -120,12 +124,14 @@ const ScheduledContactDialog = ({open, close}) => {
                         </FormControl>}
                         <FormControl>
                             <FormLabel>Notatka</FormLabel>
-                            <Input placeholder={"Notatka"}
-                                   value={note} onChange={(e) => {
-                                setNote(e.target.value)
-                            }}/>
+                            <InputWithLimit
+                                placeholder={"Notatka"}
+                                value={note.value}
+                                limit={note.limit}
+                                isValid={note.isValid}
+                                onChange={note.handleChange}/>
                         </FormControl>
-                        <Button type={"submit"}>
+                        <Button type={"submit"} disabled={!isFormValid}>
                             Zapisz
                         </Button>
                         <Button onClick={close} variant={"outlined"} color={"neutral"}>

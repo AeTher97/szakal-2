@@ -15,9 +15,9 @@ export const InputWithLimit = ({
                                }) => {
 
     return (
-        <FormControl {...formControlProps} required={required} error={!isValid}>
+        <FormControl {...formControlProps} error={!isValid}>
             <FormLabel>{label}</FormLabel>
-            <Input {...props} onChange={onChange}/>
+            <Input {...props} onChange={onChange} required={required}/>
             {!isValid && <FormHelperText>
                 <InfoOutlined/>
                 Maksymalna liczba znaków to {limit}
@@ -46,8 +46,8 @@ export const TextAreaWithLimit = ({
                                   }) => {
 
     return (
-        <FormControl {...formControlProps} error={!isValid} required={required}>
-            <Textarea {...props} onChange={onChange}/>
+        <FormControl {...formControlProps} error={!isValid}>
+            <Textarea {...props} onChange={onChange} required={required}/>
             {!isValid && <FormHelperText>
                 <InfoOutlined/>
                 Maksymalna liczba znaków to {limit}

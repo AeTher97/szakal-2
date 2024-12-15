@@ -3,8 +3,8 @@ import {Checkbox, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack
 import Button from "@mui/joy/Button";
 import {InputWithLimit, TextAreaWithLimit} from "../misc/InputWithLimit";
 import PropTypes from "prop-types";
-import {FieldValidation} from "../../utils/FieldValidation";
-import {FormValidation} from "../../utils/FormValidation";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../utils/UseFormValidation";
 
 const ContactPersonDialog = ({
                                  open,
@@ -14,12 +14,12 @@ const ContactPersonDialog = ({
                                  contactPerson
                              }) => {
 
-    const name = FieldValidation();
-    const position = FieldValidation();
-    const phone = FieldValidation();
-    const email = FieldValidation();
-    const comment = FieldValidation();
-    const committee = FieldValidation();
+    const name = UseFieldValidation();
+    const position = UseFieldValidation();
+    const phone = UseFieldValidation();
+    const email = UseFieldValidation();
+    const comment = UseFieldValidation();
+    const committee = UseFieldValidation();
     const [isAlumni, setIsAlumni] = useState(false);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const ContactPersonDialog = ({
         committee.reset();
     }
 
-    const isFormValid = FormValidation([name, position, phone, email, comment, committee]);
+    const isFormValid = UseFormValidation([name, position, phone, email, comment, committee]);
 
     return (
         <Modal open={open}>

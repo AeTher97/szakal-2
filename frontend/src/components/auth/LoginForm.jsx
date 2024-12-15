@@ -5,10 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import LinkWithRouter from "../misc/LinkWithRouter";
 import {loginAction} from "../../redux/AuthActions";
 import PropTypes from "prop-types";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
+import {InputWithLimit} from "../misc/InputWithLimit";
 
 const LoginForm = ({redirectBack}) => {
 
-    const [email, setEmail] = useState("");
+    const email = UseFieldValidation()
     const [password, setPassword] = useState("");
     const {error} = useSelector(state => state.auth)
     const dispatch = useDispatch();
@@ -17,7 +19,7 @@ const LoginForm = ({redirectBack}) => {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginAction({
-            username: email,
+            username: email.value,
             password: password
         }, (response) => {
             redirectBack(response.accepted);
@@ -56,14 +58,16 @@ const LoginForm = ({redirectBack}) => {
                 </div>
                 <FormControl>
                     <FormLabel>Email</FormLabel>
-                    <Input
+                    <InputWithLimit
                         data-testid="cypress-login-email"
                         color={error ? "danger" : "neutral"}
                         name="email"
                         type="email"
                         placeholder="johndoe@email.com"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={email.value}
+                        limit={email.limit}
+                        isValid={email.isValid}
+                        onChange={email.handleChange}
                     />
                 </FormControl>
                 <FormControl>

@@ -5,6 +5,9 @@ import Button from "@mui/joy/Button";
 import {useRegister} from "../../data/AuthenticationData";
 import {Key} from "@mui/icons-material";
 import LinkWithRouter from "../misc/LinkWithRouter";
+import {InputWithLimit} from "../misc/InputWithLimit";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../utils/UseFormValidation";
 
 
 const SignUpForm = () => {
@@ -12,17 +15,18 @@ const SignUpForm = () => {
     const {registerUser} = useRegister();
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
+    const email = UseFieldValidation();
+    const name = UseFieldValidation();
+    const surname = UseFieldValidation();
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-
 
     const minLength = 8;
 
     const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
     const [passwordTooShort, setPasswordTooShort] = useState(false);
+
+    const isFormValid = UseFormValidation([email, name, surname]) && !passwordsDontMatch && !passwordTooShort;
 
     return (
         <form style={{
@@ -31,15 +35,15 @@ const SignUpForm = () => {
         }}
               onSubmit={(e) => {
                   e.preventDefault();
-                  if (passwordTooShort || passwordsDontMatch) {
+                  if (!isFormValid) {
                       return
                   }
 
 
                   registerUser({
-                      email,
-                      name,
-                      surname,
+                      email: email.value,
+                      name: name.value,
+                      surname: surname.value,
                       password,
                       repeatPassword
                   }).then(() => {
@@ -73,36 +77,42 @@ const SignUpForm = () => {
                 </div>
                 <FormControl required>
                     <FormLabel>E-mail</FormLabel>
-                    <Input
+                    <InputWithLimit
                         autoFocus
                         required
                         name="email"
                         type="email"
                         placeholder="jankowalski@email.com"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={email.value}
+                        limit={email.limit}
+                        isValid={email.isValid}
+                        onChange={email.handleChange}
                     />
                 </FormControl>
                 <FormControl required>
                     <FormLabel>Imię</FormLabel>
-                    <Input
+                    <InputWithLimit
                         required
                         name="name"
                         type="text"
                         placeholder="Jan"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        value={name.value}
+                        limit={name.limit}
+                        isValid={name.isValid}
+                        onChange={name.handleChange}
                     />
                 </FormControl>
                 <FormControl required>
                     <FormLabel>Nazwisko</FormLabel>
-                    <Input
+                    <InputWithLimit
                         required
                         name="surname"
                         type="text"
                         placeholder="Kowalski"
-                        value={surname}
-                        onChange={e => setSurname(e.target.value)}
+                        value={surname.value}
+                        limit={surname.limit}
+                        isValid={surname.isValid}
+                        onChange={surname.handleChange}
                     />
                 </FormControl>
                 <FormControl error={passwordsDontMatch || passwordTooShort} sx={{
@@ -173,7 +183,7 @@ const SignUpForm = () => {
                 </FormControl>
 
 
-                <Button sx={{mt: 1 /* margin top */}} type={"submit"}>Zarejestruj się</Button>
+                <Button sx={{mt: 1 /* margin top */}} type={"submit"} disabled={!isFormValid}>Zarejestruj się</Button>
                 <Typography
                     endDecorator={<LinkWithRouter to="/login">Zaloguj się</LinkWithRouter>}
                     fontSize="sm"

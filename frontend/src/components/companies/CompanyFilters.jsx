@@ -192,7 +192,7 @@ const CompanyFilters = () => {
                 <div>
                     {hasRight(COMPANY_MODIFICATION) && <Button onClick={() => {
                         setAddCompanyOpen(true)
-                    }}><AddIcon/>Dodaj</Button>}
+                    }} data-testid="add-company-button"><AddIcon/>Dodaj</Button>}
                 </div>
             </TabHeader>
 

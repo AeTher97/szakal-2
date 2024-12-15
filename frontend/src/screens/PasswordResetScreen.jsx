@@ -3,11 +3,11 @@ import {Card, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {usePasswordReset} from "../data/AuthenticationData";
 import {InputWithLimit} from "../components/misc/InputWithLimit";
-import {FieldValidation} from "../utils/FieldValidation";
+import {UseFieldValidation} from "../utils/UseFieldValidation";
 
 const PasswordResetScreen = () => {
 
-    const email = FieldValidation();
+    const email = UseFieldValidation();
     const [resetSent, setResetSent] = useState(false);
     const {resetPassword} = usePasswordReset();
 

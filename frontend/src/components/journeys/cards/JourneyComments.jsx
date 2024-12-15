@@ -6,12 +6,12 @@ import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {useSelector} from "react-redux";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
 import PropTypes from "prop-types";
-import {FieldValidation} from "../../../utils/FieldValidation";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
 
 const JourneyComments = ({addComment, journey}) => {
 
     const {userId} = useSelector(state => state.auth)
-    const comment = FieldValidation();
+    const comment = UseFieldValidation();
 
     const isFormValid = comment.isValid;
 
@@ -31,8 +31,13 @@ const JourneyComments = ({addComment, journey}) => {
                 <div style={{display: "flex"}}>
                     <Stack spacing={1} style={{flex: 1}}>
                         <Typography level={"title-lg"}>Dodaj komentarz</Typography>
-                        <TextAreaWithLimit limit={comment.limit} minRows={2} value={comment.value}
-                                           onChange={comment.handleChange} isValid={comment.isValid} placeholder={"Komentarz"} required/>
+                        <TextAreaWithLimit minRows={2} required
+                                           value={comment.value}
+                                           limit={comment.limit}
+                                           isValid={comment.isValid}
+                                           onChange={comment.handleChange}
+                                           placeholder={"Komentarz"}
+                        />
                         <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
                     </Stack>
                 </div>

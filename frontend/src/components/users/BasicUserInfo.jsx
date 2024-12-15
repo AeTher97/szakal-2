@@ -7,8 +7,8 @@ import ProfilePictureDialog from "./ProfilePictureDialog";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import PropTypes from "prop-types";
 import {InputWithLimit} from "../misc/InputWithLimit";
-import {FieldValidation} from "../../utils/FieldValidation";
-import {FormValidation} from "../../utils/FormValidation";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../utils/UseFormValidation";
 
 const BasicUserInfo = ({
                            user,
@@ -20,14 +20,14 @@ const BasicUserInfo = ({
 
     const mobile = useMobileSize();
 
-    const name = FieldValidation();
-    const surname = FieldValidation();
-    const email = FieldValidation();
+    const name = UseFieldValidation();
+    const surname = UseFieldValidation();
+    const email = UseFieldValidation();
     const [profilePictureDialogOpen, setProfilePictureDialogOpen] = useState(false);
     const {userId} = useSelector(state => state.auth);
 
     const isUser = userId === user.id;
-    const isFormValid = FormValidation([name, surname, email]);
+    const isFormValid = UseFormValidation([name, surname, email]);
 
     useEffect(() => {
         if (localUser) {

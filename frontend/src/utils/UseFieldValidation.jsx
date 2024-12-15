@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export const FieldValidation = (initialValue = "", limit = 255, validation = () => true) => {
+export const UseFieldValidation = (initialValue = "", limit = 255, validation = () => true) => {
     const [value, setValue] = useState(initialValue);
     const [isValid, setIsValid] = useState(true);
 

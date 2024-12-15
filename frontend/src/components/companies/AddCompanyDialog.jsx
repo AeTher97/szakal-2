@@ -6,19 +6,20 @@ import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {CATEGORY_MODIFICATION} from "../../utils/AccessRightsList";
 import {InputWithLimit} from "../misc/InputWithLimit";
 import PropTypes from "prop-types";
-import { FormValidation } from '../../utils/FormValidation';
-import {FieldValidation} from "../../utils/FieldValidation";
+import {UseFormValidation} from '../../utils/UseFormValidation';
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
 
 const AddCampaignDialog = ({open, close, addCompany}) => {
-    const name = FieldValidation();
-    const phone = FieldValidation();
-    const email = FieldValidation();
-    const www = FieldValidation();
-    const street = FieldValidation();
-    const streetNumber = FieldValidation();
-    const city = FieldValidation();
-    const postalCode = FieldValidation();
+    const name = UseFieldValidation();
+    const phone = UseFieldValidation();
+    const email = UseFieldValidation();
+    const www = UseFieldValidation();
+    const street = UseFieldValidation();
+    const streetNumber = UseFieldValidation();
+    const city = UseFieldValidation();
+    const postalCode = UseFieldValidation();
     const [categories, setCategories] = useState([]);
+
 
     const {hasRight} = useAccessRightsHelper()
 
@@ -35,7 +36,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
         close();
     }
 
-    const isFormValid = FormValidation([ name, phone, email, www, street, streetNumber, city, postalCode ]);
+    const isFormValid = UseFormValidation([name, phone, email, www, street, streetNumber, city, postalCode]);
 
     return (
         <Modal open={open}>
@@ -66,6 +67,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                         <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                             <Stack spacing={2}>
                                 <InputWithLimit
+                                    data-testid={"name-input"}
                                     required={true}
                                     label={"Nazwa"}
                                     autoFocus={true}
@@ -74,9 +76,16 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                     isValid={name.isValid}
                                     onChange={name.handleChange}
                                     placeholder={"Nazwa firmy"}/>
+                                {name.value.length === 0 &&
+                                    <div data-testid="name-error" style={{display: 'none'}}>This field is
+                                        required</div>}
+                                {!name.isValid &&
+                                    <div data-testid="name-error" style={{display: 'none'}}>Maksymalna liczba znaków
+                                        to 255</div>}
                                 <InputWithLimit
                                     label={"Telefon"}
                                     value={phone.value}
+                                    type={"tel"}
                                     limit={phone.limit}
                                     isValid={phone.isValid}
                                     onChange={phone.handleChange}
@@ -92,6 +101,7 @@ const AddCampaignDialog = ({open, close, addCompany}) => {
                                 <InputWithLimit
                                     label={"Strona internetowa"}
                                     value={www.value}
+                                    type={"url"}
                                     limit={www.limit}
                                     isValid={www.isValid}
                                     onChange={www.handleChange}

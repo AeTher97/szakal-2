@@ -13,7 +13,7 @@ import {contactStatusOptions} from "../JourneyDetails";
 import {useSelector} from "react-redux";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import PropTypes from "prop-types";
-import {FieldValidation} from "../../../utils/FieldValidation";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
 
 const JourneyContactEvents = ({addContactEvent, journey}) => {
 
@@ -21,7 +21,7 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
     const [contactEventError, setContactEventError] = useState(false);
     const [contactStatus, setContactStatus] = useState("CHOOSE");
     const [contactPerson, setContactPerson] = useState("CHOOSE");
-    const eventDescription = FieldValidation("", 2000);
+    const eventDescription = UseFieldValidation("", 2000);
     const {hasRight} = useAccessRightsHelper()
 
 
