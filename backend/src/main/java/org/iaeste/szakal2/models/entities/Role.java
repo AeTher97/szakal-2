@@ -12,6 +12,11 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraph(name = "Role.details",
+        attributeNodes = {
+                @NamedAttributeNode("accessRights")
+        }
+)
 public class Role {
 
     @Id

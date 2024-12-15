@@ -22,6 +22,8 @@ import java.util.UUID;
 )
 @NamedEntityGraph(name = "Journey.detail", attributeNodes = {
         @NamedAttributeNode(value = "campaign"),
+        @NamedAttributeNode(value = "contactEvents"),
+        @NamedAttributeNode(value = "comments"),
         @NamedAttributeNode(value = "user", subgraph = "user-subgraph"),
         @NamedAttributeNode(value = "company", subgraph = "company-subgraph")},
         subgraphs = {
@@ -30,6 +32,10 @@ import java.util.UUID;
                         @NamedAttributeNode("categories")
                 }),
                 @NamedSubgraph(name = "user-subgraph", attributeNodes = {
+                        @NamedAttributeNode("id"),
+                        @NamedAttributeNode("email"),
+                        @NamedAttributeNode("name"),
+                        @NamedAttributeNode("surname")
                 })
         }
 )
@@ -41,7 +47,7 @@ public class ContactJourney {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id")
     @JsonIgnoreProperties(value = {"roles", "active", "accepted"})
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)

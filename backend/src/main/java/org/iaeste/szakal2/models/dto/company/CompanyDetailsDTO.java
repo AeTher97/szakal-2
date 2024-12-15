@@ -2,7 +2,6 @@ package org.iaeste.szakal2.models.dto.company;
 
 import lombok.Builder;
 import lombok.Data;
-import org.iaeste.szakal2.models.dto.journey.ContactJourneyCompanyDetailsDTO;
 import org.iaeste.szakal2.models.entities.Address;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
@@ -26,7 +25,7 @@ public class CompanyDetailsDTO {
     private String email;
     private Set<ContactPerson> contactPeople;
     private Set<CompanyCategory> categories;
-    private Set<ContactJourneyCompanyDetailsDTO> contactJourneys;
+    private Set<CompanyContactJourneyDetailsDTO> contactJourneys;
     private LocalDateTime insertDate;
     private boolean deleted;
 
@@ -41,7 +40,7 @@ public class CompanyDetailsDTO {
                 .email(company.getEmail())
                 .contactPeople(company.getContactPeople())
                 .categories(company.getCategories())
-                .contactJourneys(company.getContactJourneys().stream().map(ContactJourneyCompanyDetailsDTO::fromContactJourney)
+                .contactJourneys(company.getContactJourneys().stream().map(CompanyContactJourneyDetailsDTO::fromContactJourney)
                         .collect(Collectors.toSet()))
                 .insertDate(company.getInsertDate())
                 .deleted(company.isDeleted())

@@ -15,7 +15,8 @@ const BasicUserInfo = ({
                            localUser,
                            updateUserDetails,
                            updateUserDetailsLoading,
-                           updateProfilePicture
+                           updateProfilePicture,
+                           updatePictureLoading,
                        }) => {
 
     const mobile = useMobileSize();
@@ -60,9 +61,15 @@ const BasicUserInfo = ({
                         justifyContent: "flex-start",
                         gap: 20
                     }}>
-                        <Avatar size={"lg"} sx={{width: mobile ? 175 : 100, height: mobile ? 175 : 100}}
+                        <Avatar
+                            size={"lg"}
+                            sx={{
+                                width: mobile ? 175 : 100,
+                                height: mobile ? 175 : 100
+                            }}
                                 style={{backgroundColor: uuidToColor(user.id)}}
-                                src={user.profilePicture ? `data:image;base64,${user.profilePicture}` : ""}>
+                            src={updatePictureLoading ? null :
+                                `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${user.id}/picture`}>
                             <Typography level={mobile ? "h1" : null}>
                                 {user.name[0]} {user.surname[0]}
                             </Typography>
@@ -122,7 +129,8 @@ BasicUserInfo.propTypes = {
     localUser: PropTypes.object.isRequired,
     updateUserDetails: PropTypes.func.isRequired,
     updateUserDetailsLoading: PropTypes.bool.isRequired,
-    updateProfilePicture: PropTypes.func.isRequired
+    updateProfilePicture: PropTypes.func.isRequired,
+    updatePictureLoading: PropTypes.bool
 }
 
 export default BasicUserInfo;

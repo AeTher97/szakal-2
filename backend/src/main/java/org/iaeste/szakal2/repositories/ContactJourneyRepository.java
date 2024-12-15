@@ -26,7 +26,7 @@ public interface ContactJourneyRepository extends JpaRepository<ContactJourney, 
     @EntityGraph(value = "Journey.listing", type = EntityGraph.EntityGraphType.LOAD)
     List<ContactJourney> findAllById(Iterable<UUID> ids);
 
-    @EntityGraph(value = "Journey.detail", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "Journey.detail", type = EntityGraph.EntityGraphType.FETCH)
     Optional<ContactJourney> findContactJourneyById(UUID id);
 
     Optional<ContactJourney> findContactJourneyByCampaignAndUserAndCompany(Campaign campaign, User user, Company company);

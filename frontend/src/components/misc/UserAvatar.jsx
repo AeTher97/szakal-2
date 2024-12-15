@@ -5,15 +5,14 @@ import {uuidToColor} from "../../utils/ColorForUUID";
 import PropTypes from "prop-types";
 
 const UserAvatar = ({
+                        id,
                         name = "",
                         surname = "",
-                        image = "",
                         text = true,
                         size,
                         overrideMobile = false,
                         hideName = false,
                         bold = true,
-                        id
                     }) => {
 
     const mobile = useMobileSize();
@@ -21,8 +20,7 @@ const UserAvatar = ({
     return (
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 10}}>
             <Avatar style={{backgroundColor: id ? uuidToColor(id, 1) : "primary", color: "white"}}
-                    variant={"soft"} src={(!image || image.includes("null") || image.includes("undefined"))
-                ? null : `data:image;base64,${image}`}
+                    variant={"soft"} src={`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${id}/picture`}
                     size={size}>
                 {name[0]}{surname[0]}
             </Avatar>
@@ -35,7 +33,6 @@ const UserAvatar = ({
 UserAvatar.propTypes = {
     name: PropTypes.string,
     surname: PropTypes.string,
-    image: PropTypes.string,
     text: PropTypes.bool,
     size: PropTypes.string,
     overrideMobile: PropTypes.bool,

@@ -17,7 +17,14 @@ import java.util.*;
 @Table(name = "users")
 @NamedEntityGraph(name = "User.roles",
         attributeNodes = {
-                @NamedAttributeNode("roles")
+                @NamedAttributeNode(value = "roles", subgraph = "roles-subgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "roles-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("accessRights")
+                        })
         }
 )
 public class User {
@@ -60,8 +67,6 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<UserGroup> userGroups;
-    @Setter
-    private byte[] profilePicture;
 
     public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()
