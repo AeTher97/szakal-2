@@ -15,5 +15,5 @@ export const UseFieldValidation = (initialValue = "", limit = 255, validation = 
         setIsValid(true);
     };
 
-    return { value, isValid, limit, handleChange, reset, setValue };
+    return {value, isValid, limit, handleChange, reset, setValue};
 };
