@@ -3,12 +3,15 @@ import {Card, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {usePasswordReset} from "../data/AuthenticationData";
 import {InputWithLimit} from "../components/misc/InputWithLimit";
+import {UseFieldValidation} from "../utils/UseFieldValidation";
 
 const PasswordResetScreen = () => {
 
-    const [email, setEmail] = useState("");
+    const email = UseFieldValidation();
     const [resetSent, setResetSent] = useState(false);
     const {resetPassword} = usePasswordReset();
+
+    const isFormValid = email.isValid;
 
     return (
         <div style={{display: "flex", justifyContent: "center", padding: 20}}>
@@ -17,15 +20,17 @@ const PasswordResetScreen = () => {
                     <Typography>Resetuj hasło</Typography>
                     <form onSubmit={(e) => {
                         e.preventDefault();
-                        resetPassword(email).then(() => {
+                        resetPassword(email.value).then(() => {
                             setResetSent(true)
                         });
                     }}>
                         <Stack spacing={1}>
                             <InputWithLimit type={"email"} placeholder={"Email"}
-                                   onChange={(e) => setEmail(e.target.value)}
-                                   value={email}/>
-                            <Button type={"submit"} style={{flex: 1}}>
+                                            value={email.value}
+                                            limit={email.limit}
+                                            isValid={email.isValid}
+                                            onChange={email.handleChange}/>
+                            <Button type={"submit"} style={{flex: 1}} disabled={!isFormValid}>
                                 Reset
                             </Button>
                         </Stack>

@@ -1,42 +1,47 @@
-import React, {useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import React from 'react';
+import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "../../misc/InputWithLimit";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../../utils/UseFormValidation";
 
 const AddRoleDialog = ({open, addRole, close}) => {
+    const name = UseFieldValidation();
+    const description = UseFieldValidation();
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const isFormValid = UseFormValidation([name, description]);
 
     return (
         <Modal open={open}>
             <ModalDialog>
                 <DialogTitle>Dodaj rolę</DialogTitle>
                 <form
-                    onSubmit={(event, value) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
-                        addRole(name, description);
+                        addRole(name.value, description.value);
                         close();
                     }}>
                     <Stack spacing={2}>
                         <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
-                            <Input autoFocus required
-                                   value={name}
-                                   onChange={(e) => {
-                                       setName(e.target.value)
-                                   }} placeholder={"Nazwa roli"}/>
+                            <InputWithLimit autoFocus required
+                                            value={name.value}
+                                            limit={name.limit}
+                                            isValid={name.isValid}
+                                            onChange={name.handleChange}
+                                            placeholder={"Nazwa roli"}/>
                         </FormControl>
                         <FormControl required>
                             <FormLabel>Opis</FormLabel>
-                            <Input required
-                                   value={description}
-                                   placeholder={"Opis"}
-                                   onChange={(e) => {
-                                       setDescription(e.target.value)
-                                   }}/>
+                            <InputWithLimit required
+                                            value={description.value}
+                                            limit={description.limit}
+                                            isValid={description.isValid}
+                                            onChange={description.handleChange}
+                                            placeholder={"Opis"}/>
                         </FormControl>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>
                     </Stack>
                 </form>

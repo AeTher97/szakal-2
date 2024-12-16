@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useMobileSize} from "../../../utils/MediaQuery";
 import {Card, CardActions, CardContent, Divider, FormLabel, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
@@ -6,6 +6,8 @@ import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import PropTypes from "prop-types";
 import {InputWithLimit} from "../../misc/InputWithLimit";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../../utils/UseFormValidation";
 
 const CompanyContactData = ({localCompany, updateContactData, updateContactDataLoading}) => {
 
@@ -13,17 +15,12 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
     const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const mobile = useMobileSize();
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [www, setWWW] = useState("")
+    const name = UseFieldValidation(localCompany.name || "");
+    const email = UseFieldValidation(localCompany.email || "");
+    const phone = UseFieldValidation(localCompany.phone || "");
+    const www = UseFieldValidation(localCompany.www || "");
 
-    useEffect(() => {
-        setName(localCompany.name || "")
-        setEmail(localCompany.email || "")
-        setPhone(localCompany.phone || "")
-        setWWW(localCompany.www || "")
-    }, [localCompany]);
+    const isFormValid = UseFormValidation([name, email, phone, www]);
 
     return (
         <Card sx={{maxWidth: 640, minWidth: mobile ? 200 : 350, flex: 1, display: "flex"}} color={"primary"}
@@ -40,34 +37,50 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                         <FormLabel>
                             <Typography level={"title-sm"}>Nazwa</Typography>
                         </FormLabel>
-                        <InputWithLimit disabled={!canModify} placeholder={"Nazwa"} value={name} onChange={(e) => {
-                            setName(e.target.value)
-                        }}/>
+                        <InputWithLimit
+                            disabled={!canModify}
+                            placeholder={"Nazwa"}
+                            value={name.value}
+                            limit={name.limit}
+                            isValid={name.isValid}
+                            onChange={name.handleChange}/>
                         <FormLabel>
                             <Typography level={"title-sm"}>Email</Typography>
                         </FormLabel>
-                        <InputWithLimit disabled={!canModify} placeholder={"Email"} value={email} onChange={(e) => {
-                            setEmail(e.target.value)
-                        }}/>
+                        <InputWithLimit
+                            disabled={!canModify}
+                            placeholder={"Email"}
+                            value={email.value}
+                            limit={email.limit}
+                            isValid={email.isValid}
+                            onChange={email.handleChange}/>
                         <FormLabel>
                             <Typography level={"title-sm"}>Telefon</Typography>
                         </FormLabel>
-                        <InputWithLimit disabled={!canModify} placeholder={"Telefon"} value={phone} onChange={(e) => {
-                            setPhone(e.target.value)
-                        }}/>
+                        <InputWithLimit
+                            disabled={!canModify}
+                            placeholder={"Telefon"}
+                            value={phone.value}
+                            limit={phone.limit}
+                            isValid={phone.isValid}
+                            onChange={phone.handleChange}/>
                         <FormLabel>
                             <Typography level={"title-sm"}>Strona</Typography>
                         </FormLabel>
-                        <InputWithLimit disabled={!canModify} placeholder={"WWW"} value={www} onChange={(e) => {
-                            setWWW(e.target.value)
-                        }}/>
+                        <InputWithLimit
+                            disabled={!canModify}
+                            placeholder={"WWW"}
+                            value={www.value}
+                            limit={www.limit}
+                            isValid={www.isValid}
+                            onChange={www.handleChange}/>
                     </Stack>
 
                 </CardContent>
                 <CardActions>
                     {canModify && <Button loading={updateContactDataLoading} type="submit" onClick={() => {
-                        updateContactData(name, email, phone, www)
-                    }}>Zapisz</Button>}
+                        updateContactData(name.value, email.value, phone.value, www.value)
+                    }} disabled={!isFormValid}>Zapisz</Button>}
                 </CardActions>
             </form>
         </Card>

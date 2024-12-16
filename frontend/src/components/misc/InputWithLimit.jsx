@@ -1,28 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FormControl, FormHelperText, FormLabel, Input, Textarea} from "@mui/joy";
 import {InfoOutlined} from "@mui/icons-material";
 import PropTypes from "prop-types";
 
 export const InputWithLimit = ({
-                                   limit = 255,
+                                   limit,
                                    onChange = () => {
                                    },
                                    required,
                                    label,
                                    formControlProps,
+                                   isValid = true,
                                    ...props
                                }) => {
 
-    const [length, setLength] = useState(0);
-
     return (
-        <FormControl {...formControlProps} required={required} error={length > limit}>
+        <FormControl {...formControlProps} error={!isValid}>
             <FormLabel>{label}</FormLabel>
-            <Input {...props} onChange={(e) => {
-                setLength(e.target.value.length);
-                onChange(e);
-            }}/>
-            {length > limit && <FormHelperText>
+            <Input {...props} onChange={onChange} required={required}/>
+            {!isValid && <FormHelperText>
                 <InfoOutlined/>
                 Maksymalna liczba znaków to {limit}
             </FormHelperText>}
@@ -35,27 +31,24 @@ InputWithLimit.propTypes = {
     onChange: PropTypes.func,
     required: PropTypes.bool,
     label: PropTypes.string,
-    formControlProps: PropTypes.object
+    formControlProps: PropTypes.object,
+    isValid: PropTypes.bool
 }
 
 export const TextAreaWithLimit = ({
-                                      limit = 255,
+                                      limit,
                                       onChange = () => {
                                       },
                                       formControlProps,
                                       required,
+                                      isValid = true,
                                       ...props
                                   }) => {
 
-    const [length, setLength] = useState(0);
-
     return (
-        <FormControl {...formControlProps} error={length > limit} required={required}>
-            <Textarea {...props} onChange={(e) => {
-                setLength(e.target.value.length);
-                onChange(e);
-            }}/>
-            {length > limit && <FormHelperText>
+        <FormControl {...formControlProps} error={!isValid}>
+            <Textarea {...props} onChange={onChange} required={required}/>
+            {!isValid && <FormHelperText>
                 <InfoOutlined/>
                 Maksymalna liczba znaków to {limit}
             </FormHelperText>}
@@ -67,5 +60,6 @@ TextAreaWithLimit.propTypes = {
     limit: PropTypes.number,
     onChange: PropTypes.func,
     required: PropTypes.bool,
-    formControlProps: PropTypes.object
+    formControlProps: PropTypes.object,
+    isValid: PropTypes.bool
 }

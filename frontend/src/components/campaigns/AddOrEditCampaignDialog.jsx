@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Textarea} from "@mui/joy";
+import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useSelector} from "react-redux";
 import UserGroupAutocomplete from "./UserGroupAutocomplete";
 import PropTypes from "prop-types";
+import {InputWithLimit, TextAreaWithLimit} from "../misc/InputWithLimit";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../utils/UseFormValidation";
 
 const AddOrEditCampaignDialog = ({
                                      open,
@@ -14,24 +17,26 @@ const AddOrEditCampaignDialog = ({
                                      addToUserGroup = false
                                  }) => {
 
-    const [name, setName] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [description, setDescription] = useState("");
+    const name = UseFieldValidation();
+    const description = UseFieldValidation();
+    const startDate = UseFieldValidation();
     const [userGroupId, setUserGroupId] = useState("");
     const {theme} = useSelector(state => state.theme);
 
+    const isFormValid = UseFormValidation([name, startDate, description]);
+
     const clear = () => {
-        setName("")
-        setStartDate("")
-        setDescription("")
-        setUserGroupId("")
+        name.reset();
+        startDate.reset();
+        description.reset();
+        setUserGroupId("");
     }
 
     useEffect(() => {
         if (editedCampaign) {
-            setName(editedCampaign.name)
-            setStartDate(editedCampaign.startDate)
-            setDescription(editedCampaign.description)
+            name.setValue(editedCampaign.name)
+            startDate.setValue(editedCampaign.startDate)
+            description.setValue(editedCampaign.description)
         }
     }, [editedCampaign]);
 
@@ -43,30 +48,31 @@ const AddOrEditCampaignDialog = ({
                     onSubmit={(event) => {
                         event.preventDefault();
                         if (editedCampaign) {
-                            modifyCampaign(editedCampaign.id, name, startDate, description)
+                            modifyCampaign(editedCampaign.id, name.value, startDate.value, description.value)
                         } else {
-                            addCampaign(name, startDate, userGroupId, description);
+                            addCampaign(name.value, startDate.value, userGroupId, description.value);
                         }
                         close();
                     }}>
                     <Stack spacing={2}>
                         <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
-                            <Input autoFocus required
-                                   value={name}
-                                   onChange={(e) => {
-                                       setName(e.target.value)
-                                   }} placeholder={"Nazwa akcji"}/>
+                            <InputWithLimit autoFocus required
+                                            value={name.value}
+                                            limit={name.limit}
+                                            isValid={name.isValid}
+                                            onChange={name.handleChange}
+                                            placeholder={"Nazwa akcji"}/>
                         </FormControl>
                         <FormControl required>
                             <FormLabel>Data rozpoczęcia</FormLabel>
-                            <Input required
-                                   type={"date"}
-                                   style={{colorScheme: theme}}
-                                   value={startDate}
-                                   onChange={(e) => {
-                                       setStartDate(e.target.value)
-                                   }}/>
+                            <InputWithLimit required
+                                            type={"date"}
+                                            style={{colorScheme: theme}}
+                                            value={startDate.value}
+                                            limit={startDate.limit}
+                                            isValid={startDate.isValid}
+                                            onChange={startDate.handleChange}/>
                         </FormControl>
                         {addToUserGroup && <FormControl>
                             <FormLabel>Grupa użytkowników</FormLabel>
@@ -76,15 +82,15 @@ const AddOrEditCampaignDialog = ({
                         </FormControl>}
                         <FormControl>
                             <FormLabel>Opis</FormLabel>
-                            <Textarea
+                            <TextAreaWithLimit
                                 style={{colorScheme: theme}}
-                                value={description}
+                                value={description.value}
+                                limit={description.limit}
+                                isValid={description.isValid}
                                 placeholder={"Opis"}
-                                onChange={(e) => {
-                                    setDescription(e.target.value)
-                                }}/>
+                                onChange={description.handleChange}/>
                         </FormControl>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {
                             clear();
                             close()

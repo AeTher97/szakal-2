@@ -1,23 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useMobileSize} from "../../../utils/MediaQuery";
-import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
+import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {ROLE_MODIFICATION} from "../../../utils/AccessRightsList";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "../../misc/InputWithLimit";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../../utils/UseFormValidation";
 
 const RoleBasicInfo = ({localRole, updateRoleInfo}) => {
 
     const mobile = useMobileSize();
 
     const {hasRight} = useAccessRightsHelper();
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
+    const name = UseFieldValidation("", 6);
+    const description = UseFieldValidation();
+
+    const isFormValid = UseFormValidation([name, description]);
 
     useEffect(() => {
         if (localRole) {
-            setName(localRole.name);
-            setDescription(localRole.description)
+            name.setValue(localRole.name);
+            description.setValue(localRole.description);
         }
     }, [localRole]);
 
@@ -33,7 +38,7 @@ const RoleBasicInfo = ({localRole, updateRoleInfo}) => {
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
-                updateRoleInfo(name, description);
+                updateRoleInfo(name.value, description.value);
             }}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
                     <div>
@@ -43,26 +48,30 @@ const RoleBasicInfo = ({localRole, updateRoleInfo}) => {
                                 <Typography level={"title-sm"}>Nazwa</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input disabled={!hasRight(ROLE_MODIFICATION)} placeholder={"Nazwa"} value={name}
-                                       onChange={(e) => {
-                                    setName(e.target.value)
-                                }}/>
+                                <InputWithLimit disabled={!hasRight(ROLE_MODIFICATION)}
+                                                placeholder={"Nazwa"}
+                                                value={name.value}
+                                                limit={name.limit}
+                                                isValid={name.isValid}
+                                                onChange={name.handleChange}/>
                             </FormControl>
                             <FormLabel>
                                 <Typography level={"title-sm"}>Opis</Typography>
                             </FormLabel>
                             <FormControl>
-                                <Input disabled={!hasRight(ROLE_MODIFICATION)} placeholder={"Opis"} value={description}
-                                       onChange={(e) => {
-                                    setDescription(e.target.value)
-                                }}/>
+                                <InputWithLimit disabled={!hasRight(ROLE_MODIFICATION)}
+                                                placeholder={"Opis"}
+                                                value={description.value}
+                                                limit={description.limit}
+                                                isValid={description.isValid}
+                                                onChange={description.handleChange}/>
                             </FormControl>
                         </Stack>
                     </div>
 
                 </CardContent>
                 <CardActions>
-                    <Button type={"submit"}>Zapisz</Button>
+                    <Button type={"submit"} disabled={!isFormValid}>Zapisz</Button>
                 </CardActions>
             </form>
         </Card>)

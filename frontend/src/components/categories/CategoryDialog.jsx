@@ -1,15 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import React, {useEffect} from 'react';
+import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "../misc/InputWithLimit";
+import {UseFieldValidation} from "../../utils/UseFieldValidation";
 
 const CategoryDialog = ({open, addCategory, close, localCategory}) => {
 
-    const [name, setName] = useState("");
+    const name = UseFieldValidation();
+
+    const isFormValid = name.isValid;
 
     useEffect(() => {
         if (localCategory) {
-            setName(localCategory.name);
+            name.setValue(localCategory.name);
         }
     }, [localCategory]);
 
@@ -20,18 +24,19 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
                 <Stack spacing={2}>
                     <FormControl required>
                         <FormLabel>Nazwa</FormLabel>
-                        <Input autoFocus required
-                               value={name}
-                               onChange={(e) => {
-                                   setName(e.target.value)
-                               }} placeholder={"Nazwa branży"}/>
+                        <InputWithLimit autoFocus required
+                                        value={name.value}
+                                        limit={name.limit}
+                                        isValid={name.isValid}
+                                        onChange={name.handleChange}
+                                        placeholder={"Nazwa branży"}/>
                     </FormControl>
                     <Button type="submit" onClick={(event) => {
                         event.preventDefault();
                         addCategory(name).then(() => {
                             close();
                         });
-                    }}>Zapisz</Button>
+                    }} disabled={!isFormValid}>Zapisz</Button>
                     <Button color={"neutral"} onClick={close}>Anuluj</Button>
                 </Stack>
             </ModalDialog>

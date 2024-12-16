@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useMobileSize} from "../../../utils/MediaQuery";
-import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Input, Stack, Typography} from "@mui/joy";
+import {Card, CardActions, CardContent, Divider, FormControl, FormLabel, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import {useAccessRightsHelper} from "../../../utils/AccessRightsHelper";
 import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "../../misc/InputWithLimit";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import {UseFormValidation} from "../../../utils/UseFormValidation";
 
 const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => {
     const mobile = useMobileSize();
@@ -13,17 +16,19 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
     const {hasRight} = useAccessRightsHelper();
     const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
-    const [city, setCity] = useState("");
-    const [street, setStreet] = useState("");
-    const [postalCode, setPostalCode] = useState("");
-    const [streetNumber, setStreetNumber] = useState("");
+    const city = UseFieldValidation();
+    const street = UseFieldValidation();
+    const postalCode = UseFieldValidation();
+    const streetNumber = UseFieldValidation();
+
+    const isFormValid = UseFormValidation([city, street, postalCode, streetNumber]);
 
     useEffect(() => {
         if (localCompany) {
-            setCity(localCompany.address.city || "")
-            setStreet(localCompany.address.street || "")
-            setPostalCode(localCompany.address.postalCode || "")
-            setStreetNumber(localCompany.address.streetNumber || "")
+            city.setValue(localCompany.city)
+            street.setValue(localCompany.street)
+            postalCode.setValue(localCompany.postalCode)
+            streetNumber.setValue(localCompany.streetNumber)
         }
     }, [localCompany])
 
@@ -36,7 +41,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
-                updateAddress(city, street, streetNumber, postalCode)
+                updateAddress(city.value, street.value, streetNumber.value, postalCode.value)
             }}>
                 <CardContent orientation={"horizontal"} style={{flex: 1}}>
                     <Stack spacing={1} sx={{flex: 1}}>
@@ -44,43 +49,53 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Miasto</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input disabled={!canModify} placeholder={"Miasto"} value={city} onChange={(e) => {
-                                setCity(e.target.value)
-                            }}/>
+                            <InputWithLimit disabled={!canModify}
+                                            placeholder={"Miasto"}
+                                            value={city.value}
+                                            limit={city.limit}
+                                            isValid={city.isValid}
+                                            onChange={city.handleChange}/>
                         </FormControl>
                         <FormLabel>
                             <Typography level={"title-sm"}>Ulica</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input disabled={!canModify} placeholder={"Ulica"} value={street} onChange={(e) => {
-                                setStreet(e.target.value)
-                            }}/>
+                            <InputWithLimit disabled={!canModify}
+                                            placeholder={"Ulica"}
+                                            value={street.value}
+                                            limit={street.limit}
+                                            isValid={street.isValid}
+                                            onChange={street.handleChange}/>
                         </FormControl>
                         <FormLabel>
                             <Typography level={"title-sm"}>Numer budynku</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input disabled={!canModify} placeholder={"Numer"} value={streetNumber}
-                                   onChange={(e) => {
-                                       setStreetNumber(e.target.value)
-                                   }}/>
+                            <InputWithLimit disabled={!canModify}
+                                            placeholder={"Numer"}
+                                            value={streetNumber.value}
+                                            limit={streetNumber.limit}
+                                            isValid={streetNumber.isValid}
+                                            onChange={streetNumber.handleChange}/>
                         </FormControl>
                         <FormLabel>
                             <Typography level={"title-sm"}>Kod pocztowy</Typography>
                         </FormLabel>
                         <FormControl>
-                            <Input disabled={!canModify} placeholder={"Kod pocztowy"} value={postalCode}
-                                   onChange={(e) => {
-                                       setPostalCode(e.target.value)
-                                   }}/>
+                            <InputWithLimit disabled={!canModify}
+                                            placeholder={"Kod pocztowy"}
+                                            value={postalCode.value}
+                                            limit={postalCode.limit}
+                                            isValid={postalCode.isValid}
+                                            onChange={postalCode.handleChange}/>
                         </FormControl>
                     </Stack>
 
                 </CardContent>
                 {canModify &&
                     <CardActions>
-                    <Button loading={updateAddressLoading} type={"submit"}>Zapisz</Button>
-                </CardActions>}
+                        <Button loading={updateAddressLoading} type={"submit"} disabled={!isFormValid}>Zapisz</Button>
+                    </CardActions>}
             </form>
         </Card>
     )

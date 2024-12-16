@@ -1,31 +1,36 @@
-import React, {useState} from 'react';
-import {DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
+import React from 'react';
+import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import PropTypes from "prop-types";
+import {InputWithLimit} from "../../misc/InputWithLimit";
+import {UseFieldValidation} from "../../../utils/UseFieldValidation";
 
 const AddGroupDialog = ({open, addRole, close}) => {
-    const [name, setName] = useState("");
+    const name = UseFieldValidation();
+
+    const isFormValid = name.isValid;
 
     return (
         <Modal open={open}>
             <ModalDialog>
                 <DialogTitle>Dodaj grupę użytkowników</DialogTitle>
                 <form
-                    onSubmit={(event, value) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
-                        addRole(name);
+                        addRole(name.value);
                         close();
                     }}>
                     <Stack spacing={2}>
                         <FormControl required>
                             <FormLabel>Nazwa</FormLabel>
-                            <Input autoFocus required
-                                   value={name}
-                                   onChange={(e) => {
-                                       setName(e.target.value)
-                                   }} placeholder={"Nazwa roli"}/>
+                            <InputWithLimit autoFocus required
+                                            value={name.value}
+                                            limit={name.limit}
+                                            isValid={name.isValid}
+                                            onChange={name.handleChange}
+                                            placeholder={"Nazwa roli"}/>
                         </FormControl>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>
                     </Stack>
                 </form>
