@@ -70,10 +70,10 @@ const AppContent = props => {
                         </Modal>
                     </>}
             </div>
-            {mediumSize ?
+            {mediumSize &&
             <div style={{margin: 10, paddingBottom: 85}}>
                 <FavouriteJourneys/>
-            </div> : null}
+            </div>}
             <Footer/>
         </div>
     );
