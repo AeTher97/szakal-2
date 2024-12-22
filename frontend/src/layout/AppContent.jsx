@@ -59,7 +59,7 @@ const AppContent = props => {
                             <NotificationsIcon/>
                         </IconButton>
                         <Modal open={notificationDrawerOpen}>
-                            <ModalDialog sx={{padding: 0, border: "none", backgroundColor: "transparent"}}>
+                            <ModalDialog sx={{padding: 0, border: "none", backgroundColor: "transparent", boxShadow: "none"}}>
                                 <ScheduledContacts/>
                                 <Button color={"neutral"} onClick={() => {
                                     setNotificationDrawerOpen(false)
