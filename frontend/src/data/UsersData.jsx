@@ -6,7 +6,10 @@ export const useUsersList = (page = 0) => {
     const [pageNumber, setPageNumber] = useState();
     const [users, setUsers] = useState();
     const {loading} = useData(`/users`, (data) => {
-            setUsers(data.content)
+            const sortedUsers = data.content.sort((a, b) =>
+                `${a.surname} ${a.name}`.localeCompare(`${b.surname} ${b.name}`)
+            );
+            setUsers(sortedUsers)
             setPageNumber(data.page.totalPages)
         },
         [page], [{name: "pageNumber", value: page}])
