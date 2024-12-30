@@ -19,6 +19,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UserAutocomplete from "../../misc/UserAutocomplete";
 import UserAvatar from "../../misc/UserAvatar";
 import PropTypes from "prop-types";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
 const PAGE_SIZE = 10;
 
@@ -27,15 +29,32 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageNumber, setPageNumber] = useState(0);
     const [users, setUsers] = useState([])
+    const [directionAscending, setDirectionAscending] = useState(true);
+
+    const sorting = (localGroupUsers, direction) => {
+        return localGroupUsers.sort((a, b) => {
+            if (`${a.surname} ${a.name} ` < `${b.surname} ${b.name}`) {
+                return direction ? -1 : 1;
+            } else if (`${a.surname} ${a.name} ` > `${b.surname} ${b.name}`) {
+                return direction ? 1 : -1
+            } else {
+                return 0;
+            }
+        })
+    }
+
+    const changeSorting = () => {
+        setDirectionAscending(prevDirectionAscending => !prevDirectionAscending);
+    }
 
     useEffect(() => {
         if (!localGroup) {
             return;
         }
         const localGroupUsers = localGroup.userList;
-        setUsers(localGroupUsers)
+        setUsers(sorting(localGroupUsers, directionAscending))
         setPageNumber(Math.ceil(localGroupUsers.length / PAGE_SIZE));
-    }, [localGroup]);
+    }, [localGroup, directionAscending]);
 
     const usersToDisplay = users.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
@@ -49,7 +68,10 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
                 {users.length > 0 && <List variant={"plain"} sx={{paddingBottom: 0, paddingTop: 0}}>
                     <ListItem>
                         <ListItemContent>
-                            <Button variant={"plain"} size={"sm"}>Imię i Nazwisko</Button>
+                            <Button variant={"plain"} size={"sm"}
+                                    onClick={() => changeSorting()}>
+                                Imię i Nazwisko {directionAscending && <KeyboardArrowUp/>}
+                                {!directionAscending && <KeyboardArrowDown/>}</Button>
                         </ListItemContent>
                     </ListItem>
                     <ListDivider/>
