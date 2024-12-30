@@ -31,7 +31,7 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
     const [users, setUsers] = useState([])
     const [directionAscending, setDirectionAscending] = useState(true);
 
-    const sorting = (localGroupUsers, direction) => {
+    const sortUsersByFullName = (localGroupUsers, direction) => {
         return localGroupUsers.sort((a, b) => {
             if (`${a.surname} ${a.name} ` < `${b.surname} ${b.name}`) {
                 return direction ? -1 : 1;
@@ -52,7 +52,7 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
             return;
         }
         const localGroupUsers = localGroup.userList;
-        setUsers(sorting(localGroupUsers, directionAscending))
+        setUsers(sortUsersByFullName(localGroupUsers, directionAscending))
         setPageNumber(Math.ceil(localGroupUsers.length / PAGE_SIZE));
     }, [localGroup, directionAscending]);
 

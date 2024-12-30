@@ -2,7 +2,7 @@ import {useData, useDelete, usePut} from "./UseData";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
-const sortUsers = (users, directionAscending) => {
+const sortUsersByFullName = (users, directionAscending) => {
     return users.sort((a, b) => {
         if (`${a.surname} ${a.name}` < `${b.surname} ${b.name}`) {
             return directionAscending ? -1 : 1;
@@ -18,7 +18,7 @@ export const useUsersList = (page = 0, directionAscending = true) => {
     const [pageNumber, setPageNumber] = useState();
     const [users, setUsers] = useState();
     const {loading} = useData(`/users`, (data) => {
-            const sortedUsers = sortUsers(data.content, directionAscending);
+            const sortedUsers = sortUsersByFullName(data.content, directionAscending);
             setUsers(sortedUsers)
             setPageNumber(data.page.totalPages)
 
