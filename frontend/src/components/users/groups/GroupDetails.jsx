@@ -7,6 +7,7 @@ import {LinearProgress, Typography} from "@mui/joy";
 import {useGroup} from "../../../data/GroupsData";
 import GroupUsers from "./GroupUsers";
 import GroupCampaigns from "./GroupCampaigns";
+import {useMobileSize} from "../../../utils/MediaQuery";
 
 const GroupDetails = () => {
 
@@ -15,7 +16,7 @@ const GroupDetails = () => {
     const { group, loading, updateUsers, updateCampaigns, updateUsersLoading, updateCampaignsLoading }
         = useGroup(location.pathname.split("/")[4]);
     const [localGroup, setLocalGroup] = useState(null);
-
+    const mobile = useMobileSize();
 
     useEffect(() => {
         if (group) {
@@ -89,7 +90,7 @@ const GroupDetails = () => {
                 flexWrap: "wrap",
                 alignItems: "stretch",
                 gap: 10,
-                paddingBottom: 100,
+                paddingBottom: mobile ? 0 : 100,
                 overflow: "hidden"
             }}>
                 {localGroup && <GroupUsers localGroup={localGroup}

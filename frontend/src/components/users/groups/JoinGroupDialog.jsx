@@ -104,7 +104,6 @@ const JoinGroupDialog = ({open, close}) => {
                                     padding: 5,
                                     backgroundColor: theme === "dark" ? "#191919" : "#ececec",
                                     boxShadow: "none",
-                                    // border: "none",
                                     textAlign: "center"
                                 }}
                                 onChange={e => {
@@ -115,7 +114,7 @@ const JoinGroupDialog = ({open, close}) => {
                                     const value = e.target.value;
                                     if (value.length === 7) {
                                         setText(value);
-                                        refs[CODE_LENGTH - 1].current.focus({fromCode: true});
+                                        refs[CODE_LENGTH - 1].current.focus();
                                         return;
                                     }
                                     const character = value.substring(value.length - 1, value.length);
@@ -124,14 +123,13 @@ const JoinGroupDialog = ({open, close}) => {
                                     }
                                     setCodeCharacter(index, character);
                                     if (index !== CODE_LENGTH - 1 && value.length !== 0) {
-                                        const localRef = refs[index + 1].current;
-                                        localRef.focus({fromCode: true});
+                                        setTimeout(() => refs[index + 1]
+                                            .current.focus(), 10);
+                                        return;
                                     }
                                     if (value.length === 0 && index !== 0) {
-                                        const localRef = refs[index - 1].current;
-                                        localRef.focus({fromCode: true});
                                         setTimeout(() => {
-                                            localRef.selectionStart = 10000;
+                                            refs[index - 1].current.selectionStart = 10000;
                                         }, 1)
                                     }
                                 }}
@@ -147,12 +145,15 @@ const JoinGroupDialog = ({open, close}) => {
                                     const localRef = refs[index].current;
                                     const value = localRef.value;
                                     if (value.length === 0 && index !== 0) {
-                                        const previusRef = refs[index - 1].current;
-                                        previusRef.focus({fromCode: true});
+                                        setTimeout(() => refs[index - 1].current.focus({fromCode: true}),
+                                            10);
                                         setTimeout(() => {
-                                            previusRef.selectionStart = 10000;
+                                            refs[index - 1].current.selectionStart = 10000;
                                         }, 2)
 
+                                    } else if (!index - 1 < 0) {
+                                        setTimeout(() => refs[index - 1].current.focus({fromCode: true}),
+                                            10);
                                     }
                                 }
                                 }

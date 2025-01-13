@@ -91,7 +91,7 @@ const UserDetails = ({userId}) => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
-                    paddingBottom: 100,
+                    paddingBottom: mobile ? 0 : 100,
                     overflow: "hidden"
                 }}>
                     <BasicUserInfo user={user} localUser={localUser} updateUserDetails={updateUserDetails}

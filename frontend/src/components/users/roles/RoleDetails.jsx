@@ -43,7 +43,7 @@ const RoleDetails = () => {
                 flexWrap: "wrap",
                 alignItems: "stretch",
                 gap: 10,
-                paddingBottom: 100,
+                paddingBottom: mobile ? 0 : 100,
                 overflow: "hidden"
             }}>
                 <RoleBasicInfo
