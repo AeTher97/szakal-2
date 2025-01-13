@@ -32,6 +32,7 @@ const UserAutocomplete = ({
     });
 
     const ignoredIdsList = ignoreIds;
+
     if (ignoreSelf) {
         ignoredIdsList.push(userId);
     }
@@ -63,7 +64,8 @@ const UserAutocomplete = ({
                 .filter(user => !ignoredIdsList.includes(user.id))
                 .map(user => {
                     return {
-                        label: `${user.name} ${user.surname}`,
+                        label: `${user.name} ${user.surname} ${user.email}`,
+                        visibleLabel: `${user.name} ${user.surname}`,
                         name: user.name,
                         surname: user.surname,
                         id: user.id,
@@ -79,7 +81,7 @@ const UserAutocomplete = ({
                             text={false} />
                     </ListItemDecorator>
                     <ListItemContent sx={{ fontSize: 'sm' }}>
-                        {option.label}
+                        {option.visibleLabel}
                         <Typography level="body-xs">
                             {option.email}
                         </Typography>
