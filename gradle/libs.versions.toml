@@ -17,7 +17,7 @@ org-testcontainers-postgresql = "1.20.4"
 org-testcontainers-testcontainers = "1.20.4"
 
 org-projectlombok-lombok = "1.18.36"
-freefair = "8.11"
+freefair = "8.12"
 
 
 
