@@ -155,34 +155,48 @@ const JourneyContactEvents = ({addContactEvent, editContactEvent, journey}) => {
                                         placeholder={"Opis"}
                                         required
                                     />
-                                    <Button type={"submit"}>Zapisz</Button>
-                                    <Button onClick={() => setEditingEventId(null)}>Anuluj</Button>
+                                    <div style={{ display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 5 }}>
+                                        <Button type={"submit"}>Zapisz</Button>
+                                        <Button onClick={() => setEditingEventId(null)}>Anuluj</Button>
+                                    </div>
                                 </form>
                             ) : (
                                 <>
-                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                        <div style={{ display: "flex", gap: 5, flex: 2 }}>
-                                            <UserAvatar name={event.user.name} id={event.user.id} surname={event.user.surname} image={event.user.profilePicture} text={false} size={"sm"} />
+                                    <div style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between"
+                                    }}>
+                                        <div style={{display: "flex", gap: 5, flex: 2}}>
+                                            <UserAvatar name={event.user.name} id={event.user.id}
+                                                        surname={event.user.surname} image={event.user.profilePicture}
+                                                        text={false} size={"sm"}/>
                                             <div>
-                                                <Typography level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
-                                                <Typography level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
+                                                <Typography
+                                                    level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
+                                                <Typography
+                                                    level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
                                             </div>
                                         </div>
-                                        <div style={{ flex: 1 }}>
-                                            <Typography level={"body-sm"} style={{ textAlign: "right" }}>
+                                        <div style={{flex: 1}}>
+                                            <Typography level={"body-sm"} style={{textAlign: "right"}}>
                                                 {contactStatusUtils(event.eventType)}
                                             </Typography>
                                         </div>
                                     </div>
-                                    <Typography level={"body-md"}>{event.description}</Typography>
+                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                        <Typography level={"body-md"}>{event.description}</Typography>
+                                        <Button
+                                            onClick={() => handleEdit(event.id, event.description, event.eventType, event.contactPerson?.id)}>Edytuj</Button>
+                                    </div>
                                     {event.contactPerson && (
                                         <div>
                                             <Typography level={"body-sm"}>
-                                                Osoba kontaktowa: {event.contactPerson.name}{event.contactPerson.phone && `, ${event.contactPerson.phone}`}
+                                                Osoba
+                                                kontaktowa: {event.contactPerson.name}{event.contactPerson.phone && `, ${event.contactPerson.phone}`}
                                             </Typography>
                                         </div>
                                     )}
-                                    <Button onClick={() => handleEdit(event.id, event.description, event.eventType, event.contactPerson?.id)}>Edytuj</Button>
                                 </>
                             )}
                         </TimelineItem>

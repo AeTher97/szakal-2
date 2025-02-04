@@ -65,9 +65,8 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                 return <div key={comment.id} style={{
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    margin: 5
+                    margin: 5,
+                    marginTop: 10
                 }}>
                     <div style={{display: "flex", gap: 5, alignItems: "center"}}>
                         <UserAvatar name={comment.user.name}
@@ -79,7 +78,7 @@ const JourneyComments = ({addComment, editComment, journey}) => {
 
                     </div>
                     {editingCommentId === comment.id ? (
-                        <form onSubmit={handleEditSubmit}>
+                        <form onSubmit={handleEditSubmit} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                             <TextAreaWithLimit minRows={2} required
                                                   value={editingCommentValue}
                                                   limit={comment.limit}
@@ -87,13 +86,17 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                                                   onChange={(e) => setEditingCommentValue(e.target.value)}
                                                   placeholder={"Komentarz"}
                             />
-                            <Button type={"submit"}>Zapisz</Button>
-                            <Button onClick={() => setEditingCommentId(null)}>Anuluj</Button>
+                            <div style={{ display: "flex", justifyContent: "flex-end", gap: 5 }}>
+                                <Button type={"submit"}>Zapisz</Button>
+                                <Button onClick={() => setEditingCommentId(null)}>Anuluj</Button>
+                            </div>
                         </form>
                         ) : (
                             <>
-                                <Typography level={"body-md"}>{comment.comment}</Typography>
-                                <Button onClick={() => handleEdit(comment.id, comment.comment)}>Edytuj</Button>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                    <Typography level={"body-md"}>{comment.comment}</Typography>
+                                    <Button onClick={() => handleEdit(comment.id, comment.comment)}>Edytuj</Button>
+                                </div>
                             </>
                     )}
                     <Typography
