@@ -41,7 +41,7 @@ const JourneyDetails = () => {
         const dispatch = useDispatch();
         const {userId} = useSelector(state => state.auth)
         const {favouriteJourneys} = useSelector(state => state.favouriteJourneys)
-        const {journey, addContactEvent, addComment, editComment, closeJourney, reopenJourney, removeUser}
+        const {journey, addContactEvent, editContactEvent, addComment, editComment, closeJourney, reopenJourney, removeUser}
             = useJourney(location.pathname.split("/")[3]);
         const {hasRight} = useAccessRightsHelper()
         const mobile = useMobileSize();
@@ -134,7 +134,7 @@ const JourneyDetails = () => {
                         <JourneyUser user={journey.user}/>
                     </div>
                     <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                        <JourneyContactEvents addContactEvent={addContactEvent} journey={journey}/>
+                        <JourneyContactEvents addContactEvent={addContactEvent} editContactEvent={editContactEvent} journey={journey}/>
                         <JourneyComments addComment={addComment} editComment={editComment} journey={journey}/>
                     </div>
                     {render()}

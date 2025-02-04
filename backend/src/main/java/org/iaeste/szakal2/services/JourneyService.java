@@ -101,6 +101,30 @@ public class JourneyService {
     }
 
     @Transactional
+    public ContactJourneyDetailsDTO editContactEvent(UUID journeyId, ContactEventEditDTO contactEventEditDTO) {
+        ContactJourney contactJourney = getJourneyById(journeyId);
+        ContactEvent contactEvent = contactJourney.getContactEvents().stream()
+                .filter(e -> e.getId().equals(contactEventEditDTO.getEventId()))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono wydarzenia o podanym id"));
+
+        if (contactEvent.getUser().getId().equals(SecurityUtils.getUserId())) {
+            contactEvent.setDescription(contactEventEditDTO.getDescription());
+            contactEvent.setEventType(ContactStatus.valueOf(contactEventEditDTO.getContactStatus()));
+            if (contactEventEditDTO.getContactPerson() != null) {
+                ContactPerson contactPerson = contactPersonRepository.findById(contactEventEditDTO.getContactPerson())
+                        .orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono osoby kontaktowej o podanym id"));
+                contactEvent.setContactPerson(contactPerson);
+            } else {
+                contactEvent.setContactPerson(null);
+            }
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Niewystarczające uprawnienia do edycji wydarzenia");
+        }
+    }
+
+    @Transactional
     public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));

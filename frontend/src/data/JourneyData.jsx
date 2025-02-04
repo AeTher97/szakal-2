@@ -97,6 +97,10 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const { put: putEditContactEvent } = usePut(`/journeys/${id}/events`, (data) => {
+        setJourney(data);
+    });
+
     const {post: commentPost} = usePost(`/journeys/${id}/comments`, (data) => {
         setJourney(data);
     })
@@ -128,6 +132,16 @@ export const useJourney = (id) => {
         })
     }
 
+    const editContactEvent = (eventId, newDescription, newContactStatus, contactPerson, userId) => {
+        return putEditContactEvent({
+            eventId,
+            description: newDescription,
+            contactStatus: newContactStatus,
+            contactPerson,
+            user: userId
+        });
+    };
+
     const addComment = (user, comment) => {
         commentPost({
             user,
@@ -155,5 +169,5 @@ export const useJourney = (id) => {
         putRemoveUser();
     }
 
-    return {journey, loading, closeJourney, reopenJourney, addContactEvent, addComment, editComment, removeUser}
+    return {journey, loading, closeJourney, reopenJourney, addContactEvent, editContactEvent, addComment, editComment, removeUser}
 }
