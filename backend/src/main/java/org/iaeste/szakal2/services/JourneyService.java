@@ -160,6 +160,22 @@ public class JourneyService {
     }
 
     @Transactional
+    public ContactJourneyDetailsDTO editComment(UUID journeyId, CommentEditDTO commentEditDTO) {
+        ContactJourney contactJourney = getJourneyById(journeyId);
+        Comment comment = contactJourney.getComments().stream()
+                .filter(c -> c.getId().equals(commentEditDTO.getCommentId()))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono komentarza o podanym id"));
+
+        if (comment.getUser().getId().equals(SecurityUtils.getUserId())) {
+            comment.setCommentValue(commentEditDTO.getComment());
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Niewystarczające uprawnienia do edycji komentarza");
+        }
+    }
+
+    @Transactional
     public ContactJourneyDetailsDTO finishJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
         if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
