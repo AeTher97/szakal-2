@@ -53,6 +53,13 @@ public class JourneyController {
         return journeyService.addContactEvent(id, contactEventCreationDTO);
     }
 
+    @PutMapping("/{id}/events")
+    @PreAuthorize("@accessVerificationBean.isUser(#contactEventEditDTO.user.toString())")
+    public ContactJourneyDetailsDTO editContactEvent(@PathVariable("id") UUID id,
+                                                     @RequestBody @Valid ContactEventEditDTO contactEventEditDTO) {
+        return journeyService.editContactEvent(id, contactEventEditDTO);
+    }
+
     @PostMapping("/{id}/comments")
     @PreAuthorize("@accessVerificationBean.isUser(#commentCreationDTO.user.toString())")
     public ContactJourneyDetailsDTO addComment(@PathVariable("id") UUID id,

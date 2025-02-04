@@ -40,4 +40,16 @@ public class ContactEvent {
     @Enumerated(EnumType.STRING)
     private ContactStatus eventType;
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEventType(ContactStatus eventType) {
+        this.eventType = eventType;
+    }
+
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
 }
