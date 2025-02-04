@@ -60,6 +60,13 @@ public class JourneyController {
         return journeyService.addComment(id, commentCreationDTO);
     }
 
+    @PutMapping("/{id}/comments")
+    @PreAuthorize("@accessVerificationBean.isUser(#commentEditDTO.user.toString())")
+    public ContactJourneyDetailsDTO editComment(@PathVariable("id") UUID id,
+                                                @RequestBody @Valid CommentEditDTO commentEditDTO) {
+        return journeyService.editComment(id, commentEditDTO);
+    }
+
     @PutMapping("/{id}/finish")
     public ContactJourneyDetailsDTO finishJourney(@PathVariable("id") UUID id) {
         return journeyService.finishJourney(id);

@@ -38,4 +38,8 @@ public class Comment {
     @JsonIgnore
     private ContactJourney contactJourney;
 
+    public void setCommentValue(String commentValue) {
+        this.commentValue = commentValue;
+    }
+
 }

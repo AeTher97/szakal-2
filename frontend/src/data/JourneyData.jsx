@@ -101,6 +101,10 @@ export const useJourney = (id) => {
         setJourney(data);
     })
 
+    const { put: putEditComment } = usePut(`/journeys/${id}/comments`, (data) => {
+        setJourney(data);
+    });
+
     const {put} = usePut(`/journeys/${id}/finish`, (data) => {
         setJourney(data);
     })
@@ -131,6 +135,14 @@ export const useJourney = (id) => {
         })
     }
 
+    const editComment = (commentId, newCommentValue, userId) => {
+        putEditComment({
+            commentId,
+            comment: newCommentValue,
+            user: userId
+        });
+    }
+
     const closeJourney = () => {
         put();
     }
@@ -143,5 +155,5 @@ export const useJourney = (id) => {
         putRemoveUser();
     }
 
-    return {journey, loading, closeJourney, reopenJourney, addContactEvent, addComment, removeUser}
+    return {journey, loading, closeJourney, reopenJourney, addContactEvent, addComment, editComment, removeUser}
 }
