@@ -68,6 +68,20 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
+    @Transactional
+    public Company deleteContactPerson(UUID companyId, UUID contactPersonId) {
+        Company company = getCompanyById(companyId);
+        Optional<ContactPerson> contactPersonOptional = company.getContactPeople().stream()
+                .filter(contactPerson -> contactPerson.getId().equals(contactPersonId)).findAny();
+
+        if (contactPersonOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Contact person not found");
+        }
+
+        company.getContactPeople().remove(contactPersonOptional.get());
+        return companyRepository.save(company);
+    }
+
     public Company updateCompany(UUID id, CompanyModificationDTO companyModificationDTO) {
         Company company = getCompanyById(id);
         if (companyModificationDTO.getCategories() != null) {
