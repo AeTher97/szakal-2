@@ -11,6 +11,7 @@ import org.iaeste.szakal2.models.entities.ContactPerson;
 import org.iaeste.szakal2.repositories.CategoryRepository;
 import org.iaeste.szakal2.repositories.CompanyRepository;
 import org.iaeste.szakal2.repositories.CompanySpecification;
+import org.iaeste.szakal2.repositories.ContactJourneyRepository;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +28,7 @@ public class CompanyService {
 
     @PersistenceContext
     private EntityManager entityManager;
+    private final ContactJourneyRepository contactJourneyRepository;
     private final UserService userService;
     private final WsNotifyingService wsNotifyingService;
     private final CompanyRepository companyRepository;
@@ -35,11 +37,13 @@ public class CompanyService {
     public CompanyService(UserService userService,
                           WsNotifyingService wsNotifyingService,
                           CompanyRepository companyRepository,
-                          CategoryRepository categoryRepository) {
+                          CategoryRepository categoryRepository,
+                          ContactJourneyRepository contactJourneyRepository) {
         this.userService = userService;
         this.wsNotifyingService = wsNotifyingService;
         this.companyRepository = companyRepository;
         this.categoryRepository = categoryRepository;
+        this.contactJourneyRepository = contactJourneyRepository;
     }
 
     public Company createCompany(CompanyCreationDTO companyCreationDTO) {
@@ -109,6 +113,11 @@ public class CompanyService {
         if (contactPersonOptional.isEmpty()) {
             throw new ResourceNotFoundException("Contact person not found");
         }
+
+        contactJourneyRepository.findAll().stream()
+                .flatMap(journey -> journey.getContactEvents().stream())
+                .filter(event -> event.getContactPerson() != null && event.getContactPerson().getId().equals(contactPersonId))
+                .forEach(event -> event.setContactPerson(null));
 
         company.getContactPeople().remove(contactPersonOptional.get());
         companyRepository.save(company);
