@@ -58,6 +58,10 @@ jobs:
         working-directory: ./
         run: sudo bash ./setup-env-docker.sh
 
+      - name: Install node modules
+        working-directory: ./frontend
+        run: npm install
+
       - name: Run cypress tests
         working-directory: ./frontend
         run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
