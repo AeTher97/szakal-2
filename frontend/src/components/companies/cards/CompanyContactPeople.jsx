@@ -6,20 +6,35 @@ import {COMPANY_MODIFICATION} from "../../../utils/AccessRightsList";
 import {useMobileSize} from "../../../utils/MediaQuery";
 import ContactPersonDialog from "../ContactPersonDialog";
 import PropTypes from "prop-types";
+import {useConfirmationDialog} from "../../misc/ConfirmationDialog";
 
 const CompanyContactPeople = ({
                                   contactPeople,
                                   addContactPerson,
                                   addingContactPerson,
                                   modifyContactPerson,
+                                  deleteContactPerson,
                                   deleted
                               }) => {
 
     const [addContactPersonOpen, setAddContactPersonOpen] = useState(false);
     const [editedPerson, setEditedPerson] = useState(null);
+    const [deletedPerson, setDeletedPerson] = useState(null);
     const {hasRight} = useAccessRightsHelper();
     const canModify = hasRight(COMPANY_MODIFICATION) && !deleted;
     const mobile = useMobileSize();
+    const {
+        openDialog,
+        render
+    } = useConfirmationDialog(`Czy na pewno chcesz usunąć osobę kontaktową ${deletedPerson ? deletedPerson.name : ""}?`);
+
+    const handleDelete = (person) => {
+        openDialog(() => {
+            deleteContactPerson(person).then(() => {
+                setDeletedPerson(null)
+            });
+        });
+    };
 
     return (
         <Card sx={{minWidth: mobile ? 300 : 450, flex: 1, display: "flex"}} color={"neutral"}>
@@ -57,11 +72,15 @@ const CompanyContactPeople = ({
                                         <Typography>{person.email}</Typography>
                                         <Typography>{person.comment}</Typography>
                                     </div>
-                                    {canModify && <div>
+                                    {canModify && <div style={{display: "flex", flexDirection: "column"}}>
                                         <Link onClick={() => {
                                             setEditedPerson(person)
                                             setAddContactPersonOpen(true)
                                         }}>Edytuj</Link>
+                                        <Link onClick={() => {
+                                            setDeletedPerson(person)
+                                            handleDelete(person)
+                                        }} style={{color: 'red', marginTop: "1rem"}}>Usuń</Link>
                                     </div>}
                                 </div>
                             </ListItem>
@@ -91,6 +110,7 @@ const CompanyContactPeople = ({
                                      addingContactPerson={addingContactPerson}
                                      modifyContactPerson={modifyContactPerson}/>
             </form>
+            {render()}
         </Card>)
 };
 
@@ -99,6 +119,7 @@ CompanyContactPeople.propTypes = {
     addContactPerson: PropTypes.func.isRequired,
     addingContactPerson: PropTypes.bool.isRequired,
     modifyContactPerson: PropTypes.func.isRequired,
+    deleteContactPerson: PropTypes.func.isRequired,
     deleted: PropTypes.bool.isRequired
 }
 

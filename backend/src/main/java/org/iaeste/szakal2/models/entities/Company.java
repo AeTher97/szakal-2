@@ -93,7 +93,7 @@ public class Company {
     )
     private Set<CompanyCategory> categories;
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
     private Set<ContactPerson> contactPeople;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")

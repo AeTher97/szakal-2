@@ -61,6 +61,13 @@ public class CompanyController {
         return companyService.modifyContactPerson(companyId, contactPersonId, contactPersonCreationDTO);
     }
 
+    @DeleteMapping("/{companyId}/contactPerson/{contactPersonId}")
+    @PreAuthorize("hasAuthority(@authorityBean.companyModification())")
+    public CompanyDetailsDTO deleteContactPerson(@PathVariable("companyId") UUID companyId,
+                                                 @PathVariable("contactPersonId") UUID contactPersonId) {
+        return CompanyDetailsDTO.fromCompany(companyService.deleteContactPerson(companyId, contactPersonId));
+    }
+
     @GetMapping("/{id}")
     public CompanyDetailsDTO getCompany(@PathVariable("id") UUID id) {
         return companyService.getCompanyDTOById(id);

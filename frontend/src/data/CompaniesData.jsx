@@ -50,6 +50,11 @@ export const useCompany = (id) => {
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`, (data) => setCompany(data));
+    const {
+        loading: deletingContactPerson,
+        deleteReq: deleteContactPersonReq
+    } = useDelete(`/companies/${id}/contactPerson`, () => {
+    });
     const {loading: deletingCompany, deleteReq} = useDelete(`/companies/${id}`, () => {
     });
 
@@ -86,6 +91,15 @@ export const useCompany = (id) => {
         return putContactPerson(contactPerson, `/companies/${id}/contactPerson/${contactPerson.id}`)
     }
 
+    const deleteContactPerson = (contactPerson) => {
+        return deleteContactPersonReq(contactPerson, `/companies/${id}/contactPerson/${contactPerson.id}`).then(() => {
+            setCompany(current => ({
+                ...current,
+                contactPeople: current.contactPeople.filter(person => person.id !== contactPerson.id)
+            }))
+        })
+    }
+
     const deleteCompany = () => {
         return deleteReq();
     }
@@ -93,7 +107,7 @@ export const useCompany = (id) => {
     return {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress, updatingAddress,
         updateCategories, updatingCategories, addContactPerson, addingContactPerson, modifyContactPerson,
-        deleteCompany, deletingCompany
+        deleteCompany, deletingCompany, deleteContactPerson, deletingContactPerson,
     }
 
 }
