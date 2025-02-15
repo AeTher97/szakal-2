@@ -50,10 +50,6 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
-      - name: Remove wrong java versions
-        working-directory: ./
-        run: sudo apt remove temurin-8-jdk temurin-11-jdk
-
       - name: Set up env
         working-directory: ./
         run: sudo bash ./setup-env-docker.sh
