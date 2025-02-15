@@ -33,6 +33,7 @@ public class CompanyService {
     private final WsNotifyingService wsNotifyingService;
     private final CompanyRepository companyRepository;
     private final CategoryRepository categoryRepository;
+    private final ContactJourneyRepository contactJourneyRepository;
 
     public CompanyService(UserService userService,
                           WsNotifyingService wsNotifyingService,
