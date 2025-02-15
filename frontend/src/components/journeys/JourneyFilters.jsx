@@ -82,7 +82,7 @@ const JourneyFilters = () => {
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
                 <FormLabel>
-                    Statusz
+                    Status
                 </FormLabel>
                 <Select data-testid="journey-search-status"
                         value={searchNotSubmittedValue.status || ""}
