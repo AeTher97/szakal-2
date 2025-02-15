@@ -38,7 +38,7 @@ const CompanyDetails = () => {
     const {
         company, loading, updateContactDetails, updatingContactDetails, updateAddress,
         updatingAddress, updateCategories, updatingCategories,
-        addContactPerson, addingContactPerson, modifyContactPerson, deleteCompany
+        addContactPerson, addingContactPerson, modifyContactPerson, deleteCompany, deleteContactPerson
     } = useCompany(location.pathname.split("/")[3])
 
     useEffect(() => {
@@ -152,6 +152,7 @@ const CompanyDetails = () => {
                                           modifyContactPerson={modifyContactPerson}
                                           contactPeople={company.contactPeople || []}
                                           addingContactPerson={addingContactPerson}
+                                          deleteContactPerson={deleteContactPerson}
                                           deleted={localCompany.deleted}/>
 
                 </div>
