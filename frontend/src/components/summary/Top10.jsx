@@ -51,7 +51,7 @@ const Top10 = () => {
                             key={entry.name}>{displayPlacement ? `${currentPlacement}. ` : ""}{entry.name} - {entry.count}</Typography>
                     })}
                 </CardContent>}
-                {top10.length === 0 && <Typography>Brak kontatków w akcji</Typography>}
+                {top10List.length === 0 && <Typography>Brak kontatków w akcji</Typography>}
             </>}
             {loading && <div style={{display: "flex", justifyContent: "center"}}>
                 <CircularProgress/>
