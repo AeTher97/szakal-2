@@ -49,7 +49,7 @@ const CompanyContactPeople = ({
                 <List sx={{paddingTop: 0}}>
                     {contactPeople?.map((person, i) => {
                         return <div key={person.id}>
-                            <ListItem sx={{paddingBottom: 1}}>
+                            <ListItem sx={{paddingBottom: 1}} data-testid="contact-person-list">
                                 <div style={{
                                     display: "flex", flexDirection: mobile ? "column" : "row",
                                     justifyContent: "space-between", flex: 1
@@ -76,11 +76,12 @@ const CompanyContactPeople = ({
                                         <Link onClick={() => {
                                             setEditedPerson(person)
                                             setAddContactPersonOpen(true)
-                                        }}>Edytuj</Link>
+                                        }} data-testid="edit-contact-person-button">Edytuj</Link>
                                         <Link onClick={() => {
                                             setDeletedPerson(person)
                                             handleDelete(person)
-                                        }} style={{color: 'red', marginTop: "1rem"}}>Usuń</Link>
+                                        }} style={{color: 'red', marginTop: "1rem"}}
+                                              data-testid="delete-contact-person-button">Usuń</Link>
                                     </div>}
                                 </div>
                             </ListItem>
@@ -99,7 +100,7 @@ const CompanyContactPeople = ({
                 {canModify && <CardActions buttonFlex={"1"}>
                     <Button variant={"outlined"} color={"neutral"} onClick={() => {
                         setAddContactPersonOpen(true);
-                    }}>Dodaj</Button>
+                    }} data-testid="add-contact-person-button">Dodaj</Button>
                 </CardActions>}
                 <ContactPersonDialog open={addContactPersonOpen} close={() => {
                     setEditedPerson(null)

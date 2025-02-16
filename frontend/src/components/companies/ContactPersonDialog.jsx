@@ -92,7 +92,9 @@ const ContactPersonDialog = ({
                             limit={name.limit}
                             isValid={name.isValid}
                             onChange={name.handleChange}
-                            placeholder={"Jan Kowalski"}/>
+                            placeholder={"Jan Kowalski"}
+                            data-testid={"contact-person-name-input"}
+                        />
                         <InputWithLimit
                             label={"Stanowisko"}
                             value={position.value}
