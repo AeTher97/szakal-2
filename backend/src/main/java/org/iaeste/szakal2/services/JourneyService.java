@@ -32,18 +32,22 @@ public class JourneyService {
     private final CampaignService campaignService;
     private final ContactPersonRepository contactPersonRepository;
     private final NotificationService notificationService;
+    private final WsNotifyingService wsNotifyingService;
 
     public JourneyService(ContactJourneyRepository contactJourneyRepository,
                           UserService userService,
                           CompanyService companyService,
-                          CampaignService campaignService, ContactPersonRepository contactPersonRepository,
-                          NotificationService notificationService) {
+                          CampaignService campaignService,
+                          ContactPersonRepository contactPersonRepository,
+                          NotificationService notificationService,
+                          WsNotifyingService wsNotifyingService) {
         this.contactJourneyRepository = contactJourneyRepository;
         this.userService = userService;
         this.companyService = companyService;
         this.campaignService = campaignService;
         this.contactPersonRepository = contactPersonRepository;
         this.notificationService = notificationService;
+        this.wsNotifyingService = wsNotifyingService;
     }
 
     @Transactional
@@ -68,6 +72,8 @@ public class JourneyService {
                     STR."Zostałeś przypisany do firmy \{company.getName()} w akcji \{campaign.getName()} kliknij by przejść do kontaktu",
                     savedJourney.getId());
         }
+        wsNotifyingService.sendUpdateAboutJourneys(contactJourneyCreationDTO.getCampaign());
+        wsNotifyingService.sendUpdateAboutSummary(contactJourneyCreationDTO.getCampaign());
         return ContactJourneyDetailsDTO
                 .fromContactJourney(savedJourney);
     }
@@ -79,6 +85,8 @@ public class JourneyService {
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
             notifyOnJourneyModification(contactJourney);
+            wsNotifyingService.sendUpdateAboutJourney(id);
+            wsNotifyingService.sendUpdateAboutJourneys(contactJourney.getCampaignId());
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -94,6 +102,8 @@ public class JourneyService {
             contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
             contactJourney.setLastInteraction(LocalDateTime.now());
             notifyOnJourneyModification(contactJourney);
+            wsNotifyingService.sendUpdateAboutJourney(id);
+            wsNotifyingService.sendUpdateAboutJourneys(contactJourney.getCampaignId());
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -121,6 +131,7 @@ public class JourneyService {
                     STR."Nowy komentarz w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}, kliknij by przejśc do kontaktu",
                     contactJourney.getId());
         });
+        wsNotifyingService.sendUpdateAboutJourney(id);
         return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
 
@@ -131,6 +142,7 @@ public class JourneyService {
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(true);
             notifyOnJourneyFinished(contactJourney);
+            wsNotifyingService.sendUpdateAboutJourney(id);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -144,6 +156,7 @@ public class JourneyService {
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
             contactJourney.setFinished(false);
             notifyOnJourneyReopened(contactJourney);
+            wsNotifyingService.sendUpdateAboutJourney(id);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
@@ -156,6 +169,7 @@ public class JourneyService {
         if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
                 AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())) {
             contactJourney.setUser(null);
+            wsNotifyingService.sendUpdateAboutJourney(id);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");

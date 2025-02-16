@@ -1,12 +1,15 @@
 import {useState} from "react";
 import {useData, useDelete, usePost, usePut} from "./UseData";
+import useWsTopic from "./WsHook";
 
 export const useCompanyListWithCampaign = (campaignId, search, locks, currentPage = 0) => {
+
+    const wsState = useWsTopic(`companies`);
     const [companies, setCompanies] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
 
-    if(campaignId === "none"){
+    if (campaignId === "none") {
         campaignId = null;
     }
 
@@ -15,7 +18,7 @@ export const useCompanyListWithCampaign = (campaignId, search, locks, currentPag
             setCompanies(data.content)
             setPageNumber(data.page.totalPages)
             setTotalCount(data.page.totalElements)
-        }, [campaignId, search, currentPage],
+        }, [campaignId, search, currentPage, wsState],
         [{name: "campaign", value: campaignId},
             {name: "pageNumber", value: currentPage},
             {name: "name", value: search.name},
@@ -42,14 +45,18 @@ export const useCompanyListWithCampaign = (campaignId, search, locks, currentPag
 
 export const useCompany = (id) => {
 
-    const [company, setCompany] = useState(null)
+    const wsState = useWsTopic(`company/${id}`);
+    const [company, setCompany] = useState(null);
     const {loading} = useData(`/companies/${id}`, (data) => setCompany(data),
-        [id]);
+        [id, wsState]);
 
     const {loading: updatingContactDetails, put} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingAddress, put: putAddress} = usePut(`/companies/${id}`, (data) => setCompany(data))
     const {loading: updatingCategories, put: putCategories} = usePut(`/companies/${id}`, (data) => setCompany(data))
-    const {loading: addingContactPerson, put: putContactPerson} = usePut(`/companies/${id}/contactPerson`, (data) => setCompany(data));
+    const {
+        loading: addingContactPerson,
+        put: putContactPerson
+    } = usePut(`/companies/${id}/contactPerson`, (data) => setCompany(data));
     const {
         loading: deletingContactPerson,
         deleteReq: deleteContactPersonReq

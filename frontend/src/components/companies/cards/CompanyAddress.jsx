@@ -24,11 +24,12 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
     const isFormValid = UseFormValidation([city, street, postalCode, streetNumber]);
 
     useEffect(() => {
-        if (localCompany) {
-            city.setValue(localCompany.city)
-            street.setValue(localCompany.street)
-            postalCode.setValue(localCompany.postalCode)
-            streetNumber.setValue(localCompany.streetNumber)
+        console.log("hmm", localCompany)
+        if (localCompany?.address) {
+            city.setValue(localCompany.address.city)
+            street.setValue(localCompany.address.street)
+            postalCode.setValue(localCompany.address.postalCode)
+            streetNumber.setValue(localCompany.address.streetNumber)
         }
     }, [localCompany])
 

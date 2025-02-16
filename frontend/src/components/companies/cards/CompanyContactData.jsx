@@ -15,10 +15,10 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
     const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const mobile = useMobileSize();
-    const name = UseFieldValidation(localCompany.name || "");
-    const email = UseFieldValidation(localCompany.email || "");
-    const phone = UseFieldValidation(localCompany.phone || "");
-    const www = UseFieldValidation(localCompany.www || "");
+    const name = UseFieldValidation(localCompany.name);
+    const email = UseFieldValidation(localCompany.email);
+    const phone = UseFieldValidation(localCompany.phone);
+    const www = UseFieldValidation(localCompany.www);
 
     const isFormValid = UseFormValidation([name, email, phone, www]);
 
