@@ -42,32 +42,34 @@ const JourneyComments = ({addComment, journey}) => {
                     </Stack>
                 </div>
             </form>
-            {journey.comments.sort((a, b) => {
-                return new Date(a.date) > new Date(b.date) ? -1 : 1;
-            }).map(comment => {
-                return <div key={comment.id} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    margin: 5
-                }}>
-                    <div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                        <UserAvatar name={comment.user.name}
-                                    id={comment.user.id}
-                                    surname={comment.user.surname}
-                                    image={comment.user.profilePicture}
-                                    overrideMobile={true}
-                                    size={"sm"}/>
+            <div data-testid="cypress-journey-comments">
+                {journey.comments.sort((a, b) => {
+                    return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                }).map(comment => {
+                    return <div key={comment.id} style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        margin: 5
+                    }}>
+                        <div style={{display: "flex", gap: 5, alignItems: "center"}}>
+                            <UserAvatar name={comment.user.name}
+                                        id={comment.user.id}
+                                        surname={comment.user.surname}
+                                        image={comment.user.profilePicture}
+                                        overrideMobile={true}
+                                        size={"sm"}/>
+
+                        </div>
+                        <Typography level={"body-md"}>{comment.comment}</Typography>
+                        <Typography
+                            level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
+                        <Divider/>
 
                     </div>
-                    <Typography level={"body-md"}>{comment.comment}</Typography>
-                    <Typography
-                        level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
-                    <Divider/>
-
-                </div>
-            })}
+                })}
+            </div>
             {journey.comments.length === 0 &&
                 <div style={{padding: 10, display: "flex", justifyContent: "center"}}>
                     <Typography>Brak komentarzy</Typography>

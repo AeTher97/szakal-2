@@ -11,13 +11,14 @@ export const InputWithLimit = ({
                                    label,
                                    formControlProps,
                                    isValid = true,
+                                   testId = "",
                                    ...props
                                }) => {
 
     return (
         <FormControl {...formControlProps} error={!isValid}>
             <FormLabel>{label}</FormLabel>
-            <Input {...props} onChange={onChange} required={required}/>
+            <Input {...props} slotProps={{input: {"data-testid": testId}}} onChange={onChange} required={required}/>
             {!isValid && <FormHelperText>
                 <InfoOutlined/>
                 Maksymalna liczba znaków to {limit}
@@ -32,7 +33,8 @@ InputWithLimit.propTypes = {
     required: PropTypes.bool,
     label: PropTypes.string,
     formControlProps: PropTypes.object,
-    isValid: PropTypes.bool
+    isValid: PropTypes.bool,
+    testId: PropTypes.string,
 }
 
 export const TextAreaWithLimit = ({

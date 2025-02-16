@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-const Timeline = ({children}) => {
+const Timeline = ({children, testId}) => {
     return (
-        <div style={{paddingTop: 10, paddingBottom: 10}}>
+        <div data-testid={testId} style={{paddingTop: 10, paddingBottom: 10}}>
             {children}
         </div>
     );
 };
 
 Timeline.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    testId: PropTypes.string,
 }
 
 export default Timeline;

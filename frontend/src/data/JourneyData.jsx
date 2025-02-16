@@ -65,7 +65,6 @@ export const useUserJourneyList = (search, searchLoaded, page = 0) => {
 export const useTop10 = () => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
-    console.log(currentCampaign)
     const wsState = useWsTopic(`summary/${currentCampaign}`);
     const [top10, setTop10] = useState([]);
 
