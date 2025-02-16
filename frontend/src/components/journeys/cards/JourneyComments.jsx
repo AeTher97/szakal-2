@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {Divider, Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
 import UserAvatar from "../../misc/UserAvatar";
@@ -8,29 +8,12 @@ import {TextAreaWithLimit} from "../../misc/InputWithLimit";
 import PropTypes from "prop-types";
 import {UseFieldValidation} from "../../../utils/UseFieldValidation";
 
-const JourneyComments = ({addComment, editComment, journey}) => {
+const JourneyComments = ({addComment, journey}) => {
 
     const {userId} = useSelector(state => state.auth)
     const comment = UseFieldValidation();
 
-    const [editingCommentId, setEditingCommentId] = useState(null);
-    const [editingCommentValue, setEditingCommentValue] = useState("");
-
     const isFormValid = comment.isValid;
-
-    const handleEdit = (commentId, commentValue) => {
-        setEditingCommentId(commentId);
-        setEditingCommentValue(commentValue);
-    }
-
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        if (editingCommentValue !== "") {
-            editComment(editingCommentId, editingCommentValue, userId);
-            setEditingCommentId(null);
-            setEditingCommentValue("");
-        }
-    }
 
     return (
         <div style={{flex: 1}}>
@@ -59,52 +42,34 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                     </Stack>
                 </div>
             </form>
-            {journey.comments.sort((a, b) => {
-                return new Date(a.date) > new Date(b.date) ? -1 : 1;
-            }).map(comment => {
-                return <div key={comment.id} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    margin: 5,
-                    marginTop: 10
-                }}>
-                    <div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                        <UserAvatar name={comment.user.name}
-                                    id={comment.user.id}
-                                    surname={comment.user.surname}
-                                    image={comment.user.profilePicture}
-                                    overrideMobile={true}
-                                    size={"sm"}/>
+            <div data-testid="cypress-journey-comments">
+                {journey.comments.sort((a, b) => {
+                    return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                }).map(comment => {
+                    return <div key={comment.id} style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        margin: 5
+                    }}>
+                        <div style={{display: "flex", gap: 5, alignItems: "center"}}>
+                            <UserAvatar name={comment.user.name}
+                                        id={comment.user.id}
+                                        surname={comment.user.surname}
+                                        image={comment.user.profilePicture}
+                                        overrideMobile={true}
+                                        size={"sm"}/>
+
+                        </div>
+                        <Typography level={"body-md"}>{comment.comment}</Typography>
+                        <Typography
+                            level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
+                        <Divider/>
 
                     </div>
-                    {editingCommentId === comment.id ? (
-                        <form onSubmit={handleEditSubmit} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                            <TextAreaWithLimit minRows={2} required
-                                                  value={editingCommentValue}
-                                                  limit={comment.limit}
-                                                  isValid={true}
-                                                  onChange={(e) => setEditingCommentValue(e.target.value)}
-                                                  placeholder={"Komentarz"}
-                            />
-                            <div style={{ display: "flex", justifyContent: "flex-end", gap: 5 }}>
-                                <Button type={"submit"}>Zapisz</Button>
-                                <Button onClick={() => setEditingCommentId(null)}>Anuluj</Button>
-                            </div>
-                        </form>
-                        ) : (
-                            <>
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                    <Typography level={"body-md"}>{comment.comment}</Typography>
-                                    <Button onClick={() => handleEdit(comment.id, comment.comment)}>Edytuj</Button>
-                                </div>
-                            </>
-                    )}
-                    <Typography
-                        level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
-                    <Divider/>
-
-                </div>
-            })}
+                })}
+            </div>
             {journey.comments.length === 0 &&
                 <div style={{padding: 10, display: "flex", justifyContent: "center"}}>
                     <Typography>Brak komentarzy</Typography>
@@ -115,7 +80,6 @@ const JourneyComments = ({addComment, editComment, journey}) => {
 
 JourneyComments.propTypes = {
     addComment: PropTypes.func.isRequired,
-    editComment: PropTypes.func.isRequired,
     journey: PropTypes.object.isRequired
 }
 

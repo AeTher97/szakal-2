@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped from database version 17.3 (Debian 17.3-1.pgdg120+1)
 -- Dumped by pg_dump version 17.0
 
 SET statement_timeout = 0;
@@ -17,6 +17,17 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+
+
+ALTER SCHEMA public OWNER TO pg_database_owner;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -27,8 +38,8 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.access_rights
 (
-    id          uuid NOT NULL,
-    code        character varying(255),
+    id   uuid NOT NULL,
+    code character varying(255),
     description character varying(255)
 );
 
@@ -42,7 +53,7 @@ ALTER TABLE public.access_rights
 
 CREATE TABLE public.access_rights_roles
 (
-    role_id          uuid NOT NULL,
+    role_id uuid NOT NULL,
     access_rights_id uuid NOT NULL
 );
 
@@ -56,10 +67,10 @@ ALTER TABLE public.access_rights_roles
 
 CREATE TABLE public.addresses
 (
-    id            uuid NOT NULL,
-    city          character varying(255),
-    postal_code   character varying(255),
-    street        character varying(255),
+    id          uuid NOT NULL,
+    city        character varying(255),
+    postal_code character varying(255),
+    street      character varying(255),
     street_number character varying(255)
 );
 
@@ -73,8 +84,8 @@ ALTER TABLE public.addresses
 
 CREATE TABLE public.application_settings
 (
-    id    uuid NOT NULL,
-    name  character varying(255),
+    id   uuid NOT NULL,
+    name character varying(255),
     value character varying(255)
 );
 
@@ -88,10 +99,10 @@ ALTER TABLE public.application_settings
 
 CREATE TABLE public.campaigns
 (
-    id          uuid                   NOT NULL,
+    id         uuid                   NOT NULL,
     description character varying(255),
-    name        character varying(255) NOT NULL,
-    start_date  date                   NOT NULL
+    name       character varying(255) NOT NULL,
+    start_date date                   NOT NULL
 );
 
 
@@ -104,7 +115,7 @@ ALTER TABLE public.campaigns
 
 CREATE TABLE public.categories
 (
-    id   uuid                   NOT NULL,
+    id uuid NOT NULL,
     name character varying(255) NOT NULL
 );
 
@@ -118,7 +129,7 @@ ALTER TABLE public.categories
 
 CREATE TABLE public.categories_companies
 (
-    company_id  uuid NOT NULL,
+    company_id uuid NOT NULL,
     category_id uuid NOT NULL
 );
 
@@ -194,14 +205,14 @@ ALTER TABLE public.contact_events
 
 CREATE TABLE public.contact_journeys
 (
-    id               uuid                           NOT NULL,
-    campaign_id      uuid                           NOT NULL,
-    contact_status   character varying(255)         NOT NULL,
-    finished         boolean                        NOT NULL,
-    journey_start    timestamp(6) without time zone NOT NULL,
+    id             uuid                           NOT NULL,
+    campaign_id    uuid                           NOT NULL,
+    contact_status character varying(255)         NOT NULL,
+    finished       boolean                        NOT NULL,
+    journey_start  timestamp(6) without time zone NOT NULL,
     last_interaction timestamp(6) without time zone,
-    company_id       uuid                           NOT NULL,
-    user_id          uuid,
+    company_id     uuid                           NOT NULL,
+    user_id        uuid,
     CONSTRAINT contact_journeys_contact_status_check CHECK (((contact_status)::text = ANY
                                                              (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text, ('UNABLE_TO_CONNECT'::character varying)::text, ('NOT_PICKING_UP'::character varying)::text])))
 );
@@ -237,11 +248,11 @@ ALTER TABLE public.contact_persons
 
 CREATE TABLE public.failed_emails
 (
-    id        uuid NOT NULL,
-    content   character varying(5000),
-    date      timestamp(6) without time zone,
+    id      uuid NOT NULL,
+    content character varying(5000),
+    date    timestamp(6) without time zone,
     recipient character varying(255),
-    subject   character varying(255)
+    subject character varying(255)
 );
 
 
@@ -254,8 +265,8 @@ ALTER TABLE public.failed_emails
 
 CREATE TABLE public.favourite_journey
 (
-    id                 uuid NOT NULL,
-    user_id            uuid,
+    id      uuid NOT NULL,
+    user_id uuid,
     contact_journey_id uuid
 );
 
@@ -269,12 +280,12 @@ ALTER TABLE public.favourite_journey
 
 CREATE TABLE public.notifications
 (
-    id         uuid    NOT NULL,
-    date       timestamp(6) without time zone,
+    id      uuid    NOT NULL,
+    date    timestamp(6) without time zone,
     journey_id uuid,
-    seen       boolean NOT NULL,
-    text       character varying(255),
-    user_id    uuid
+    seen    boolean NOT NULL,
+    text    character varying(255),
+    user_id uuid
 );
 
 
@@ -287,14 +298,29 @@ ALTER TABLE public.notifications
 
 CREATE TABLE public.password_reset_tokens
 (
-    id          uuid NOT NULL,
+    id      uuid NOT NULL,
     expiry_date timestamp(6) without time zone,
-    token       character varying(255),
-    user_id     uuid NOT NULL
+    token   character varying(255),
+    user_id uuid NOT NULL
 );
 
 
 ALTER TABLE public.password_reset_tokens
+    OWNER TO postgres;
+
+--
+-- Name: profile_pictures; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.profile_pictures
+(
+    id      uuid NOT NULL,
+    data    bytea,
+    user_id uuid
+);
+
+
+ALTER TABLE public.profile_pictures
     OWNER TO postgres;
 
 --
@@ -303,11 +329,11 @@ ALTER TABLE public.password_reset_tokens
 
 CREATE TABLE public.roles
 (
-    id          uuid NOT NULL,
+    id         uuid NOT NULL,
     description character varying(255),
-    is_local    character varying(255),
-    name        character varying(255),
-    sort_order  character varying(255)
+    is_local   character varying(255),
+    name       character varying(255),
+    sort_order character varying(255)
 );
 
 
@@ -320,12 +346,12 @@ ALTER TABLE public.roles
 
 CREATE TABLE public.scheduled_contacts
 (
-    id            uuid NOT NULL,
-    contact_date  timestamp(6) without time zone,
-    note          character varying(255),
+    id           uuid NOT NULL,
+    contact_date timestamp(6) without time zone,
+    note         character varying(255),
     reminder_date timestamp(6) without time zone,
-    company_id    uuid,
-    user_id       uuid
+    company_id   uuid,
+    user_id      uuid
 );
 
 
@@ -338,9 +364,9 @@ ALTER TABLE public.scheduled_contacts
 
 CREATE TABLE public.students
 (
-    id   integer NOT NULL,
+    id  integer NOT NULL,
     name character varying(100),
-    age  integer
+    age integer
 );
 
 
@@ -375,9 +401,9 @@ ALTER SEQUENCE public.students_id_seq OWNED BY public.students.id;
 
 CREATE TABLE public.user_groups
 (
-    id         uuid                   NOT NULL,
+    id   uuid                   NOT NULL,
     entry_code character varying(255),
-    name       character varying(255) NOT NULL
+    name character varying(255) NOT NULL
 );
 
 
@@ -390,7 +416,7 @@ ALTER TABLE public.user_groups
 
 CREATE TABLE public.user_groups_campaign_list
 (
-    user_group_id    uuid NOT NULL,
+    user_group_id uuid NOT NULL,
     campaign_list_id uuid NOT NULL
 );
 
@@ -405,7 +431,7 @@ ALTER TABLE public.user_groups_campaign_list
 CREATE TABLE public.user_groups_user_list
 (
     user_group_id uuid NOT NULL,
-    user_list_id  uuid NOT NULL
+    user_list_id uuid NOT NULL
 );
 
 
@@ -418,15 +444,15 @@ ALTER TABLE public.user_groups_user_list
 
 CREATE TABLE public.users
 (
-    id              uuid                           NOT NULL,
-    accepted        boolean                        NOT NULL,
-    active          boolean                        NOT NULL,
-    created_at      timestamp(6) without time zone NOT NULL,
-    email           character varying(255)         NOT NULL,
-    name            character varying(255)         NOT NULL,
-    password        character varying(255)         NOT NULL,
+    id         uuid                           NOT NULL,
+    accepted   boolean                        NOT NULL,
+    active     boolean                        NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    email      character varying(255)         NOT NULL,
+    name       character varying(255)         NOT NULL,
+    password   character varying(255)         NOT NULL,
     profile_picture bytea,
-    surname         character varying(255)         NOT NULL
+    surname    character varying(255)         NOT NULL
 );
 
 
@@ -439,7 +465,7 @@ ALTER TABLE public.users
 
 CREATE TABLE public.users_roles
 (
-    user_id  uuid NOT NULL,
+    user_id uuid NOT NULL,
     roles_id uuid NOT NULL
 );
 
@@ -453,7 +479,7 @@ ALTER TABLE public.users_roles
 
 CREATE TABLE public.users_user_groups
 (
-    user_id        uuid NOT NULL,
+    user_id uuid NOT NULL,
     user_groups_id uuid NOT NULL
 );
 
@@ -796,6 +822,14 @@ COPY public.password_reset_tokens (id, expiry_date, token, user_id) FROM stdin;
 
 
 --
+-- Data for Name: profile_pictures; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.profile_pictures (id, data, user_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1010,6 +1044,14 @@ ALTER TABLE ONLY public.password_reset_tokens
 
 
 --
+-- Name: profile_pictures profile_pictures_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_pictures
+    ADD CONSTRAINT profile_pictures_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1031,6 +1073,14 @@ ALTER TABLE ONLY public.scheduled_contacts
 
 ALTER TABLE ONLY public.students
     ADD CONSTRAINT students_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profile_pictures uk37t6vihvt17a66blglf4nh6pb; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_pictures
+    ADD CONSTRAINT uk37t6vihvt17a66blglf4nh6pb UNIQUE (user_id);
 
 
 --
@@ -1119,6 +1169,14 @@ ALTER TABLE ONLY public.contact_events
 
 ALTER TABLE ONLY public.users_user_groups
     ADD CONSTRAINT fk6hs27b967srgdv38gf0jjejuj FOREIGN KEY (user_groups_id) REFERENCES public.user_groups (id);
+
+
+--
+-- Name: profile_pictures fk6jju2b9l2tfcam660onl6ecxn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_pictures
+    ADD CONSTRAINT fk6jju2b9l2tfcam660onl6ecxn FOREIGN KEY (user_id) REFERENCES public.users (id);
 
 
 --

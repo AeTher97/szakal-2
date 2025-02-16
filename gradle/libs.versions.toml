@@ -38,6 +38,7 @@ org-springframework-boot-spring-boot-starter-security = { module = "org.springfr
 org-springframework-boot-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springframework-boot-version" }
 org-springframework-boot-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springframework-boot-version" }
 org-springframework-boot-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springframework-boot-version" }
+org-springframework-boot-spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket", version.ref = "springframework-boot-version" }
 org-springframework-boot-spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers", version.ref = "springframework-boot-version" }
 org-springframework-security-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "org-springframework-security-spring-security-test" }
 org-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers-junit-jupiter" }

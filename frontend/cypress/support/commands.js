@@ -47,7 +47,7 @@ Cypress.Commands.add("login", (username = "administrator@szakal.org",
 })
 
 Cypress.Commands.add("getByTestId", (id) => {
-    return cy.get(`[data-testid="${id}"]`);
+    return cy.get(`[data-testid="${id}"]`, {timeout: 10000});
 })
 
 Cypress.Commands.add("clickSelectField", (fieldId, optionSuffix, searchButtonId) => {
@@ -61,4 +61,8 @@ Cypress.Commands.add("clickSelectField", (fieldId, optionSuffix, searchButtonId)
         const searchButton = cy.getByTestId(searchButtonId);
         searchButton.click();
     }
+})
+
+Cypress.Commands.add("refreshDb", () => {
+    cy.exec('cd .. && bash reload-database.sh')
 })

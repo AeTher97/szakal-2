@@ -15,10 +15,10 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
     const canModify = hasRight(COMPANY_MODIFICATION) && !localCompany.deleted;
 
     const mobile = useMobileSize();
-    const name = UseFieldValidation(localCompany.name || "");
-    const email = UseFieldValidation(localCompany.email || "");
-    const phone = UseFieldValidation(localCompany.phone || "");
-    const www = UseFieldValidation(localCompany.www || "");
+    const name = UseFieldValidation(localCompany.name);
+    const email = UseFieldValidation(localCompany.email);
+    const phone = UseFieldValidation(localCompany.phone);
+    const www = UseFieldValidation(localCompany.www);
 
     const isFormValid = UseFormValidation([name, email, phone, www]);
 
@@ -38,6 +38,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                             <Typography level={"title-sm"}>Nazwa</Typography>
                         </FormLabel>
                         <InputWithLimit
+                            testId={"cypress-company-name"}
                             disabled={!canModify}
                             placeholder={"Nazwa"}
                             value={name.value}
@@ -48,6 +49,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                             <Typography level={"title-sm"}>Email</Typography>
                         </FormLabel>
                         <InputWithLimit
+                            testId={"cypress-company-email"}
                             disabled={!canModify}
                             placeholder={"Email"}
                             value={email.value}
@@ -58,6 +60,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                             <Typography level={"title-sm"}>Telefon</Typography>
                         </FormLabel>
                         <InputWithLimit
+                            testId={"cypress-company-phone"}
                             disabled={!canModify}
                             placeholder={"Telefon"}
                             value={phone.value}
@@ -68,6 +71,7 @@ const CompanyContactData = ({localCompany, updateContactData, updateContactDataL
                             <Typography level={"title-sm"}>Strona</Typography>
                         </FormLabel>
                         <InputWithLimit
+                            testId={"cypress-company-website"}
                             disabled={!canModify}
                             placeholder={"WWW"}
                             value={www.value}

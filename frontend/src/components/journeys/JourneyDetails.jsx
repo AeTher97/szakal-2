@@ -112,7 +112,7 @@ const JourneyDetails = () => {
             <>
                 {journey && <div style={{paddingBottom: 10}}>
                     <TabHeader>
-                        <Typography level={"h2"}>
+                        <Typography level={"h2"} data-testid="cypress-journey-tab-header">
                             Kontakt z {journey.company.name} {journey.finished ? "(Zakończony)" : ""}
                         </Typography>
                         {!mobile && renderActions()}
