@@ -24,11 +24,11 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
     const isFormValid = UseFormValidation([city, street, postalCode, streetNumber]);
 
     useEffect(() => {
-        if (localCompany) {
-            city.setValue(localCompany.city)
-            street.setValue(localCompany.street)
-            postalCode.setValue(localCompany.postalCode)
-            streetNumber.setValue(localCompany.streetNumber)
+        if (localCompany?.address) {
+            city.setValue(localCompany.address.city)
+            street.setValue(localCompany.address.street)
+            postalCode.setValue(localCompany.address.postalCode)
+            streetNumber.setValue(localCompany.address.streetNumber)
         }
     }, [localCompany])
 
@@ -49,18 +49,21 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Miasto</Typography>
                         </FormLabel>
                         <FormControl>
-                            <InputWithLimit disabled={!canModify}
-                                            placeholder={"Miasto"}
-                                            value={city.value}
-                                            limit={city.limit}
-                                            isValid={city.isValid}
-                                            onChange={city.handleChange}/>
+                            <InputWithLimit
+                                testId={"cypress-company-city"}
+                                disabled={!canModify}
+                                placeholder={"Miasto"}
+                                value={city.value}
+                                limit={city.limit}
+                                isValid={city.isValid}
+                                onChange={city.handleChange}/>
                         </FormControl>
                         <FormLabel>
                             <Typography level={"title-sm"}>Ulica</Typography>
                         </FormLabel>
                         <FormControl>
-                            <InputWithLimit disabled={!canModify}
+                            <InputWithLimit testId={"cypress-company-street"}
+                                            disabled={!canModify}
                                             placeholder={"Ulica"}
                                             value={street.value}
                                             limit={street.limit}
@@ -71,7 +74,8 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Numer budynku</Typography>
                         </FormLabel>
                         <FormControl>
-                            <InputWithLimit disabled={!canModify}
+                            <InputWithLimit testId={"cypress-company-street-number"}
+                                            disabled={!canModify}
                                             placeholder={"Numer"}
                                             value={streetNumber.value}
                                             limit={streetNumber.limit}
@@ -82,7 +86,8 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
                             <Typography level={"title-sm"}>Kod pocztowy</Typography>
                         </FormLabel>
                         <FormControl>
-                            <InputWithLimit disabled={!canModify}
+                            <InputWithLimit testId={"cypress-company-postal-code"}
+                                            disabled={!canModify}
                                             placeholder={"Kod pocztowy"}
                                             value={postalCode.value}
                                             limit={postalCode.limit}

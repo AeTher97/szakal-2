@@ -28,18 +28,46 @@ public class CompanyService {
     @PersistenceContext
     private EntityManager entityManager;
     private final UserService userService;
+    private final WsNotifyingService wsNotifyingService;
     private final CompanyRepository companyRepository;
     private final CategoryRepository categoryRepository;
 
-    public CompanyService(UserService userService, CompanyRepository companyRepository, CategoryRepository categoryRepository) {
+    public CompanyService(UserService userService,
+                          WsNotifyingService wsNotifyingService,
+                          CompanyRepository companyRepository,
+                          CategoryRepository categoryRepository) {
         this.userService = userService;
+        this.wsNotifyingService = wsNotifyingService;
         this.companyRepository = companyRepository;
         this.categoryRepository = categoryRepository;
     }
 
     public Company createCompany(CompanyCreationDTO companyCreationDTO) {
         Company company = companyFromDTO(companyCreationDTO);
-        return companyRepository.save(company);
+        company = companyRepository.save(company);
+        wsNotifyingService.sendUpdateAboutCompanies();
+        return company;
+    }
+
+    public Company updateCompany(UUID id, CompanyModificationDTO companyModificationDTO) {
+        Company company = getCompanyById(id);
+        if (companyModificationDTO.getCategories() != null) {
+            company.getCategories().clear();
+            company.getCategories().addAll(categoryRepository.findAllById(companyModificationDTO.getCategories()));
+        }
+        company.setUpdatedBy(userService.getUserById(SecurityUtils.getUserId()));
+        BeanUtils.copyProperties(companyModificationDTO, company, Utils.getNullPropertyNames(companyModificationDTO));
+        companyRepository.save(company);
+        wsNotifyingService.sendUpdateAboutCompany(company.getId());
+        return company;
+    }
+
+    public void deleteCompany(UUID id) {
+        Company company = getCompanyById(id);
+        company.setDeleted(true);
+        company.setDeletedDate(LocalDateTime.now());
+        wsNotifyingService.sendUpdateAboutCompanies();
+        companyRepository.save(company);
     }
 
     @Transactional
@@ -48,7 +76,9 @@ public class CompanyService {
         ContactPerson contactPerson = contactPersonFromDTO(company.getId(), contactPersonCreationDTO);
         company.getContactPeople().add(contactPerson);
 
-        return companyRepository.save(company);
+        companyRepository.save(company);
+        wsNotifyingService.sendUpdateAboutCompany(id);
+        return company;
     }
 
     @Transactional
@@ -65,7 +95,9 @@ public class CompanyService {
         BeanUtils.copyProperties(contactPersonCreationDTO, contactPerson,
                 Utils.getNullPropertyNames(contactPersonCreationDTO));
 
-        return companyRepository.save(company);
+        companyRepository.save(company);
+        wsNotifyingService.sendUpdateAboutCompany(id);
+        return company;
     }
 
     @Transactional
@@ -79,25 +111,9 @@ public class CompanyService {
         }
 
         company.getContactPeople().remove(contactPersonOptional.get());
-        return companyRepository.save(company);
-    }
-
-    public Company updateCompany(UUID id, CompanyModificationDTO companyModificationDTO) {
-        Company company = getCompanyById(id);
-        if (companyModificationDTO.getCategories() != null) {
-            company.getCategories().clear();
-            company.getCategories().addAll(categoryRepository.findAllById(companyModificationDTO.getCategories()));
-        }
-        company.setUpdatedBy(userService.getUserById(SecurityUtils.getUserId()));
-        BeanUtils.copyProperties(companyModificationDTO, company, Utils.getNullPropertyNames(companyModificationDTO));
-        return companyRepository.save(company);
-    }
-
-    public void deleteCompany(UUID id) {
-        Company company = getCompanyById(id);
-        company.setDeleted(true);
-        company.setDeletedDate(LocalDateTime.now());
         companyRepository.save(company);
+        wsNotifyingService.sendUpdateAboutCompany(companyId);
+        return company;
     }
 
     public Company getCompanyById(UUID id) {

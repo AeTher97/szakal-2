@@ -1,10 +1,12 @@
 import {useData, usePost, usePut} from "./UseData";
 import {useSelector} from "react-redux";
 import {useState} from "react";
+import useWsTopic from "./WsHook";
 
 export const useCurrentCampaignJourneyList = (search, searchLoaded, page = 0,) => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
+    const wsState = useWsTopic(`journeys/${currentCampaign}`);
     const [journeys, setJourneys] = useState([]);
     const [pagesNumber, setPagesNumber] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
@@ -16,7 +18,7 @@ export const useCurrentCampaignJourneyList = (search, searchLoaded, page = 0,) =
             setPagesNumber(data.page.totalPages);
             setTotalCount(data.page.totalElements)
             setLoaded(true);
-        }, [currentCampaign, page, search],
+        }, [currentCampaign, page, search, wsState],
         [{name: "pageNumber", value: page},
             {name: "companyName", value: search.companyName},
             {name: "status", value: search.status},
@@ -63,12 +65,13 @@ export const useUserJourneyList = (search, searchLoaded, page = 0) => {
 export const useTop10 = () => {
 
     const {currentCampaign} = useSelector(state => state.campaigns)
+    const wsState = useWsTopic(`summary/${currentCampaign}`);
     const [top10, setTop10] = useState([]);
 
     useData(`/campaigns/top10`,
         (data) => {
             setTop10(data.usersWithCount)
-        }, [currentCampaign],
+        }, [currentCampaign, wsState],
         [{name: "campaignId", value: currentCampaign}],
         [currentCampaign === "none" || currentCampaign.length === 0 ? null : true])
 
@@ -90,8 +93,10 @@ export const useAddContactJourney = () => {
 
 export const useJourney = (id) => {
     const [journey, setJourney] = useState(null);
+    const wsState = useWsTopic(`journey/${journey?.id}`);
+
     const {loading} = useData(`/journeys/${id}`, (data) => setJourney(data),
-        [id])
+        [id, wsState])
 
     const {post} = usePost(`/journeys/${id}/events`, (data) => {
         setJourney(data);

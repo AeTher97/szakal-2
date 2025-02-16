@@ -1,8 +1,12 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export const UseFieldValidation = (initialValue = "", limit = 255, validation = () => true) => {
-    const [value, setValue] = useState(initialValue);
+    const [value, setValue] = useState(initialValue || "");
     const [isValid, setIsValid] = useState(true);
+
+    useEffect(() => {
+        setValue(initialValue || "");
+    }, [initialValue]);
 
     const handleChange = (e) => {
         const newValue = e.target.value;

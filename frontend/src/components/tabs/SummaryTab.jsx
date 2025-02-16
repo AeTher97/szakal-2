@@ -6,6 +6,7 @@ import CurrentCampaign from "../summary/CurrentCampaign";
 import LogoCard from "../summary/LogoCard";
 import {useMobileSize} from "../../utils/MediaQuery";
 
+
 const SummaryTab = () => {
 
     const mobile = useMobileSize();
