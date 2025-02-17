@@ -52,7 +52,7 @@ jobs:
 
       - name: Run cypress tests
         working-directory: ./frontend
-        run: DEBUG=cypress:* CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
+        run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && DEBUG=cypress:* sudo npx cypress run --browser chrome
 
       - name: Build frontend
         working-directory: ./
