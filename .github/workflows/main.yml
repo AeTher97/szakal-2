@@ -46,6 +46,10 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
+      - name: Setup tmate session
+        if: success() || failure()
+        uses: mxschmitt/action-tmate@v3
+
       - name: Run cypress tests
         working-directory: ./frontend
         run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
