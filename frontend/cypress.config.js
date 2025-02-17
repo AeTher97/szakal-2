@@ -7,6 +7,6 @@ module.exports = defineConfig({
         },
     },
     env: {
-        baseUrl: "localhost:3000"
+        baseUrl: "localhost:8080"
     }
 });
