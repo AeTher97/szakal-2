@@ -18,4 +18,5 @@ done;
 
 if  [ "$(docker inspect -f '{{.State.Running}}' postgres-end-to-end)" == "true" ] || [ $postgresUp != true ]; then
   docker logs postgres-end-to-end
+  exit 1
 fi;
