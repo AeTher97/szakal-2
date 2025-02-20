@@ -70,7 +70,8 @@ const UserAutocomplete = ({
                         surname: user.surname,
                         id: user.id,
                         email: user.email,
-                        profilePicture: user.profilePicture
+                        profilePicture: user.profilePicture,
+                        committee: user.committee
                     }
                 }) : []}
             renderOption={(props, option) => (
@@ -84,6 +85,9 @@ const UserAutocomplete = ({
                         {option.visibleLabel}
                         <Typography level="body-xs">
                             {option.email}
+                        </Typography>
+                        <Typography level="body-xs">
+                            {option.committee}
                         </Typography>
                     </ListItemContent>
                 </AutocompleteOption>

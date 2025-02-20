@@ -3,6 +3,7 @@ import {Card, CardContent, CardOverflow, Divider, Typography} from "@mui/joy";
 import LinkWithRouter from "../../misc/LinkWithRouter";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
 import PropTypes from "prop-types";
+import UserAvatar from "../../misc/UserAvatar";
 
 const CompanyJourneys = ({localCompany}) => {
 
@@ -16,10 +17,15 @@ const CompanyJourneys = ({localCompany}) => {
                 <Divider inset={"context"}/>
                 <CardContent>
                     {localCompany.contactJourneys.map((journey, i) => <div key={journey.id}
-                        style={{display: "flex", flexDirection: "column"}}>
+                                                                           style={{
+                                                                               display: "flex",
+                                                                               flexDirection: "column"
+                                                                           }}>
                         <LinkWithRouter
                             to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {contactStatusUtils(journey.contactStatus)}</LinkWithRouter>
-                        <Typography>{journey.user ? journey.user.name : "Brak przypisanego użytkownika"} {journey.user ? journey.user.surname : ""}</Typography>
+                        {journey.user ? <UserAvatar id={journey.user.id} name={journey.user.name}
+                                                    surname={journey.user.surname} committee={journey.user.committee}/>
+                            : "Brak przypisanego użytkownika"}
                         {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}
                     </div>)}
                 </CardContent>

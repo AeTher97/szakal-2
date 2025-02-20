@@ -20,6 +20,7 @@ public class UserDTO {
     private boolean active;
     private String name;
     private String surname;
+    private String committee;
     private LocalDateTime createdAt;
     private Set<Role> roles;
     private Map<UUID, String> campaigns;
@@ -32,6 +33,7 @@ public class UserDTO {
                 .active(user.isActive())
                 .name(user.getName())
                 .surname(user.getSurname())
+                .committee(user.getCommittee())
                 .createdAt(user.getCreatedAt())
                 .roles(user.getRoles())
                 .campaigns(user.availableCampaigns())

@@ -25,7 +25,7 @@ const UserRoles = ({
 
     return (
         <Card sx={{maxWidth: 640, flex: 1, minWidth: mobile ? 200 : 400}}>
-            <CardContent>
+            <CardContent sx={{flexGrow: 0}}>
                 <Typography level={"title-md"}>Role</Typography>
                 <Typography level={"body-sm"}>Role które posiada użytkownik</Typography>
             </CardContent>

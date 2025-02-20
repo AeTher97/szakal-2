@@ -8,6 +8,7 @@ const UserAvatar = ({
                         id,
                         name = "",
                         surname = "",
+                        committee = "",
                         text = true,
                         size,
                         overrideMobile = false,
@@ -25,7 +26,11 @@ const UserAvatar = ({
                 {name[0]}{surname[0]}
             </Avatar>
             {(!mobile || overrideMobile) && text && !hideName &&
-                <Typography level={bold ? "title-lg" : "title-md"}>{name} {surname}</Typography>}
+                <>
+                    <Typography level={bold ? "title-lg" : "title-md"}>{name} {surname}</Typography>
+                    {committee && <Typography level={"body-sm"}>- {committee}</Typography>}
+                </>
+            }
         </div>
     );
 };
