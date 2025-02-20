@@ -50,6 +50,10 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
+      - name: Install psql
+        working-directory: ./
+        run: sudo apt install postgresql-client-common && sudo apt install postgresql-client-14
+
       - name: Set up env
         working-directory: ./
         run: sudo bash ./setup-env-docker.sh
