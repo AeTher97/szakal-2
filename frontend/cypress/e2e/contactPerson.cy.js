@@ -1,5 +1,6 @@
 describe('Add, Edit and Remove Contact Person also check for this Person events', () => {
     beforeEach(() => {
+        cy.refreshDb();
         cy.login();
         cy.visit(`http://${Cypress.env("baseUrl")}/secure/companies`);
     });
