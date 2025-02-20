@@ -40,14 +40,14 @@ public class UsersController {
 
     @GetMapping
     @PreAuthorize("hasAuthority(@authorityBean.userViewing())")
-    public Page<UserDTO> getUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
+    public Page<UserDTO> searchUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
         return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
     @GetMapping("/search")
     @PreAuthorize("hasAuthority(@authorityBean.journeyCreationForOthers()) " +
             "or hasAuthority(@authorityBean.userGroupModification())")
-    public List<UserDTO> getUsers(@RequestParam String phrase) {
+    public List<UserMinimalDTO> searchUsers(@RequestParam String phrase) {
         return userService.searchUsers(phrase);
     }
 

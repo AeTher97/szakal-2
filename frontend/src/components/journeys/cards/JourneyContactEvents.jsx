@@ -94,6 +94,7 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                 {journey.contactEvents.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(event => {
+                    console.log(event.user)
                     return <TimelineItem key={event.id}>
                         <div style={{
                             display: "flex",
@@ -101,15 +102,15 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                             justifyContent: "space-between",
                         }}>
                             <div style={{display: "flex", gap: 5, flex: 2}}>
-                                <UserAvatar name={event.user.name}
-                                            id={event.user.id}
+                                <UserAvatar id={event.user.id}
+                                            name={event.user.name}
                                             surname={event.user.surname}
                                             image={event.user.profilePicture}
                                             text={false}
                                             size={"sm"}/>
                                 <div>
                                     <Typography
-                                        level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
+                                        level={"title-sm"}>{event.user.name} {event.user.surname} {event.user.committee ? ` - ${event.user.committee}` : ""}</Typography>
                                     <Typography
                                         level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
                                 </div>

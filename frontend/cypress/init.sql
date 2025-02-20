@@ -451,6 +451,7 @@ CREATE TABLE public.users
     email      character varying(255)         NOT NULL,
     name       character varying(255)         NOT NULL,
     password   character varying(255)         NOT NULL,
+    committee character varying(255),
     profile_picture bytea,
     surname    character varying(255)         NOT NULL
 );

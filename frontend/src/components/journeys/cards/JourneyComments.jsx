@@ -46,6 +46,8 @@ const JourneyComments = ({addComment, journey}) => {
                 {journey.comments.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(comment => {
+                    console.log(comment.user)
+
                     return <div key={comment.id} style={{
                         display: "flex",
                         flexDirection: "column",
@@ -54,12 +56,14 @@ const JourneyComments = ({addComment, journey}) => {
                         margin: 5
                     }}>
                         <div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                            <UserAvatar name={comment.user.name}
-                                        id={comment.user.id}
-                                        surname={comment.user.surname}
-                                        image={comment.user.profilePicture}
-                                        overrideMobile={true}
-                                        size={"sm"}/>
+                            <UserAvatar
+                                id={comment.user.id}
+                                name={comment.user.name}
+                                surname={comment.user.surname}
+                                committee={comment.user.committee}
+                                image={comment.user.profilePicture}
+                                overrideMobile={true}
+                                size={"sm"}/>
 
                         </div>
                         <Typography level={"body-md"}>{comment.comment}</Typography>

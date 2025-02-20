@@ -201,16 +201,16 @@ public class UserService {
         usersRepository.saveAll(users);
     }
 
-    public List<UserDTO> searchUsers(String phrase) {
+    public List<UserMinimalDTO> searchUsers(String phrase) {
         String [] parts = phrase.split(" ");
         if(parts.length == 1) {
             return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
                     parts[0], parts[0], parts[0])
-                    .stream().map(UserDTO::fromUser).toList();
+                    .stream().map(UserMinimalDTO::fromUser).toList();
         } else if(parts.length > 1){
             return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
                     parts[0], parts[0], parts[1])
-                    .stream().map(UserDTO::fromUser).toList();
+                    .stream().map(UserMinimalDTO::fromUser).toList();
         } else {
             return new ArrayList<>();
         }
