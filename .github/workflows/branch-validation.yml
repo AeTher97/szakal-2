@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '23'
           cache: gradle
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
@@ -45,10 +45,14 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '23'
           cache: gradle
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
+
+      - name: Install psql
+        working-directory: ./
+        run: sudo apt install postgresql-client-common && sudo apt install postgresql-client-14
 
       - name: Set up env
         working-directory: ./
