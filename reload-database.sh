@@ -1,21 +1,6 @@
 #!/bin/bash
 
-if [ "$(docker inspect -f '{{.State.Running}}' postgres-end-to-end)" == "true" ]; then
-  docker stop postgres-end-to-end
-  docker rm postgres-end-to-end
-fi;
-
-
-docker run --name postgres-end-to-end -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=szakal -v "/$PWD/frontend/cypress/init.sql:/docker-entrypoint-initdb.d/init.sql" -d --network=szakal-network postgres
-
-counter=0
-until [ "$(docker inspect -f '{{.State.Running}}' postgres-end-to-end)" == "true" ] || [ $counter -gt 60 ]; do
-  echo "Waiting for postgres to come online"
-  ((counter++))
-  sleep 1;
-done;
-
-if [ "$(docker inspect -f '{{.State.Running}}' postgres-end-to-end)" != "true" ]; then
-  docker logs postgres-end-to-end
-  exit 1
-fi;
+export PGPASSWORD=postgres
+psql -h localhost -p 5432 -U postgres -d szakal -c "drop schema public cascade;"
+psql -h localhost -p 5432 -U postgres -d szakal -c "create schema public;"
+psql -h localhost -p 5432 -U postgres -d szakal -f frontend/cypress/init.sql
