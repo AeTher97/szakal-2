@@ -46,6 +46,10 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
+      - name: Install psql
+        working-directory: ./
+        run: sudo apt install postgresql-client-common && sudo apt install postgresql-client-14
+
       #      - name: Setup tmate session
       #        if: success() || failure()
       #        uses: mxschmitt/action-tmate@v3
