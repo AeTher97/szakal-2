@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '23'
+          java-version: '21'
           cache: gradle
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '23'
+          java-version: '21'
           cache: gradle
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
