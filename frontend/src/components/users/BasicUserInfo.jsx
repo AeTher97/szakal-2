@@ -24,17 +24,20 @@ const BasicUserInfo = ({
     const name = UseFieldValidation();
     const surname = UseFieldValidation();
     const email = UseFieldValidation();
+    const committee = UseFieldValidation();
     const [profilePictureDialogOpen, setProfilePictureDialogOpen] = useState(false);
     const {userId} = useSelector(state => state.auth);
 
     const isUser = userId === user.id;
     const isFormValid = UseFormValidation([name, surname, email]);
 
+    console.log(localUser)
     useEffect(() => {
         if (localUser) {
             name.setValue(localUser.name);
             surname.setValue(localUser.surname);
             email.setValue(localUser.email);
+            committee.setValue(localUser.committee);
         }
     }, [localUser]);
 
@@ -50,7 +53,7 @@ const BasicUserInfo = ({
             <Divider/>
             <form style={{display: "flex", flexDirection: "column", flex: 1}} onSubmit={(e) => {
                 e.preventDefault()
-                updateUserDetails(name.value, surname.value, email.value)
+                updateUserDetails(name.value, surname.value, email.value, committee.value)
             }}>
                 <CardContent orientation={mobile ? "vertical" : "horizontal"}
                              style={{justifyContent: mobile ? "center" : "flex-start"}}>
@@ -105,6 +108,15 @@ const BasicUserInfo = ({
                                                 limit={email.limit}
                                                 isValid={email.isValid}
                                                 onChange={email.handleChange}
+                                                formControlProps={{style: {flex: 1}}}/>
+                            </div>
+                            <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
+                                <InputWithLimit label={"Komitet"} disabled={!isUser}
+                                                placeholder={"AGH"}
+                                                value={committee.value}
+                                                limit={committee.limit}
+                                                isValid={committee.isValid}
+                                                onChange={committee.handleChange}
                                                 formControlProps={{style: {flex: 1}}}/>
                             </div>
                         </Stack>

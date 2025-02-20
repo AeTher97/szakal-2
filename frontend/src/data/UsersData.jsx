@@ -90,9 +90,9 @@ export const useUserData = (id, refresh) => {
         })
     }
 
-    const updateUserDetails = (name, surname, email) => {
+    const updateUserDetails = (name, surname, email, committee) => {
         return putUserDetails({
-            name, surname, email
+            name, surname, email, committee
         })
     }
 

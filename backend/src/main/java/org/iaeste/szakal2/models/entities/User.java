@@ -47,6 +47,8 @@ public class User {
     @NotNull
     private String surname;
     @Setter
+    private String committee;
+    @Setter
     @NotNull
     private LocalDateTime createdAt;
     @Setter
