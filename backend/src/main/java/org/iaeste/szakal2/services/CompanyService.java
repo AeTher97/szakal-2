@@ -7,10 +7,9 @@ import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.company.*;
 import org.iaeste.szakal2.models.entities.Company;
 import org.iaeste.szakal2.models.entities.CompanyCategory;
+import org.iaeste.szakal2.models.entities.ContactEvent;
 import org.iaeste.szakal2.models.entities.ContactPerson;
-import org.iaeste.szakal2.repositories.CategoryRepository;
-import org.iaeste.szakal2.repositories.CompanyRepository;
-import org.iaeste.szakal2.repositories.CompanySpecification;
+import org.iaeste.szakal2.repositories.*;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
 import org.iaeste.szakal2.utils.Utils;
 import org.springframework.beans.BeanUtils;
@@ -31,15 +30,19 @@ public class CompanyService {
     private final WsNotifyingService wsNotifyingService;
     private final CompanyRepository companyRepository;
     private final CategoryRepository categoryRepository;
+    private final ContactEventRepository contactEventRepository;
 
     public CompanyService(UserService userService,
                           WsNotifyingService wsNotifyingService,
                           CompanyRepository companyRepository,
-                          CategoryRepository categoryRepository) {
+                          CategoryRepository categoryRepository,
+                          ContactJourneyRepository contactJourneyRepository,
+                          ContactEventRepository contactEventRepository) {
         this.userService = userService;
         this.wsNotifyingService = wsNotifyingService;
         this.companyRepository = companyRepository;
         this.categoryRepository = categoryRepository;
+        this.contactEventRepository = contactEventRepository;
     }
 
     public Company createCompany(CompanyCreationDTO companyCreationDTO) {
@@ -109,6 +112,10 @@ public class CompanyService {
         if (contactPersonOptional.isEmpty()) {
             throw new ResourceNotFoundException("Contact person not found");
         }
+
+        List<ContactEvent> contactEvents = contactEventRepository.findByContactPersonId(contactPersonId);
+        contactEvents.forEach(event -> event.setContactPerson(null));
+        contactEventRepository.saveAll(contactEvents);
 
         company.getContactPeople().remove(contactPersonOptional.get());
         companyRepository.save(company);

@@ -60,7 +60,7 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                                 <Select value={contactStatus} onChange={(e, newValue) => {
                                     setContactStatus(newValue);
                                     setContactEventError(false);
-                                }}>
+                                }} data-testid="event-type">
                                     <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
                                     {contactStatusOptions.map(option => {
                                         return <Option key={option.name}
@@ -71,7 +71,7 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                             <FormControl>
                                 <Select value={contactPerson} onChange={(e, newValue) => {
                                     setContactPerson(newValue)
-                                }}>
+                                }} data-testid="event-contact-person">
                                     <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
                                     {journey.company.contactPeople.map(person => {
                                         return <Option value={person.id}
@@ -85,8 +85,10 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                                                value={eventDescription.value}
                                                isValid={eventDescription.isValid}
                                                onChange={eventDescription.handleChange}
-                                               placeholder={"Opis"} required/>
-                            <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
+                                               placeholder={"Opis"} required
+                                               data-testid="event-description"/>
+                            <Button type={"submit"} disabled={!isFormValid}
+                                    data-testid="event-add-button">Dodaj</Button>
                         </Stack>
                     </div>
                 </form>}
