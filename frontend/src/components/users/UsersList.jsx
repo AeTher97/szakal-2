@@ -46,6 +46,7 @@ const UsersList = () => {
                             onChange={(e) => setSearchName(e.target.value)}
                             startDecorator={<SearchIcon/>}
                             size="sm"
+                            data-testid={"search-name"}
                         />
                     </Box>
                     <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
@@ -56,24 +57,29 @@ const UsersList = () => {
                             onChange={(e) => setSearchCommittee(e.target.value)}
                             startDecorator={<SearchIcon/>}
                             size="sm"
+                            data-testid={"search-committee"}
                         />
                     </Box>
                     <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
                         <FormLabel>Rola</FormLabel>
                         <Select
+                            native
                             placeholder="Wszystkie"
                             value={searchRole}
                             onChange={(e, newValue) => setSearchRole(newValue)}
                             size="sm"
+                            data-testid={"search-role"}
                         >
                             <Option value="">Wszystkie</Option>
                             {roles.map(role => (
-                                <Option key={role.id} value={role.name}>{role.name}</Option>
+                                <Option key={role.id} value={role.name} data-testid={`role-option-${role.name}`}>
+                                    {role.name}
+                                </Option>
                             ))}
                         </Select>
                     </Box>
                 </Box>
-                <List variant={"plain"} sx={{paddingBottom: 0}}>
+                <List variant={"plain"} sx={{paddingBottom: 0}} data-testid={"users-table"}>
                     <ListItem>
                         <ListItemContent>
                             <Button variant={"plain"} size={"sm"}>Imię i Nazwisko</Button>
