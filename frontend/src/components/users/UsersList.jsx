@@ -1,31 +1,78 @@
 import React, {useState} from 'react';
 import {useUsersList} from "../../data/UsersData";
 import {
+    Box,
     Card,
     CardContent,
     Chip,
     CircularProgress,
+    FormLabel,
+    Input,
     List,
     ListDivider,
     ListItem,
     ListItemButton,
     ListItemContent,
-    ListItemDecorator
+    ListItemDecorator,
+    Option,
+    Select
 } from "@mui/joy";
 import Button from "@mui/joy/Button";
 import LinkWithRouter from "../misc/LinkWithRouter";
 import {uuidToColor} from "../../utils/ColorForUUID";
 import Pagination from "../misc/Pagination";
 import UserAvatar from "../misc/UserAvatar";
+import {useRolesList} from "../../data/RolesData";
+import SearchIcon from "@mui/icons-material/Search";
 
 const UsersList = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const {users, loading, pageNumber} = useUsersList(currentPage - 1);
+    const [searchName, setSearchName] = useState("");
+    const [searchCommittee, setSearchCommittee] = useState("");
+    const [searchRole, setSearchRole] = useState([]);
+    const {roles} = useRolesList();
+    const {users, loading, pageNumber} = useUsersList(currentPage - 1, searchName, searchCommittee, searchRole);
 
     return (
         <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: 300}}>
-            <CardContent>
+            <CardContent sx={{padding: 1}}>
+                <Box sx={{display: "flex", flexDirection: "row", gap: 1, maxWidth: "100%"}}>
+                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+                        <FormLabel>Użytkownik</FormLabel>
+                        <Input
+                            placeholder="Szukaj"
+                            value={searchName}
+                            onChange={(e) => setSearchName(e.target.value)}
+                            startDecorator={<SearchIcon/>}
+                            size="sm"
+                        />
+                    </Box>
+                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+                        <FormLabel>Komitet</FormLabel>
+                        <Input
+                            placeholder="Szukaj"
+                            value={searchCommittee}
+                            onChange={(e) => setSearchCommittee(e.target.value)}
+                            startDecorator={<SearchIcon/>}
+                            size="sm"
+                        />
+                    </Box>
+                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+                        <FormLabel>Rola</FormLabel>
+                        <Select
+                            placeholder="Wszystkie"
+                            value={searchRole}
+                            onChange={(e, newValue) => setSearchRole(newValue)}
+                            size="sm"
+                        >
+                            <Option value="">Wszystkie</Option>
+                            {roles.map(role => (
+                                <Option key={role.id} value={role.name}>{role.name}</Option>
+                            ))}
+                        </Select>
+                    </Box>
+                </Box>
                 <List variant={"plain"} sx={{paddingBottom: 0}}>
                     <ListItem>
                         <ListItemContent>
