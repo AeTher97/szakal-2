@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {useUsersList} from "../../data/UsersData";
 import {
-    Box,
     Card,
     CardContent,
     Chip,
@@ -36,9 +35,15 @@ const UsersList = () => {
 
     return (
         <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: 300}}>
-            <CardContent sx={{padding: 1}}>
-                <Box sx={{display: "flex", flexDirection: "row", gap: 1, maxWidth: "100%"}}>
-                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+            <CardContent sx={{padding: 0}}>
+                <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: "1rem",
+                    margin: "0.5rem",
+                    marginBottom: "-0.5rem"
+                }}>
+                    <div style={{minWidth: 100}}>
                         <FormLabel>Użytkownik</FormLabel>
                         <Input
                             placeholder="Szukaj"
@@ -48,8 +53,8 @@ const UsersList = () => {
                             size="sm"
                             data-testid={"search-name"}
                         />
-                    </Box>
-                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+                    </div>
+                    <div style={{minWidth: 100}}>
                         <FormLabel>Komitet</FormLabel>
                         <Input
                             placeholder="Szukaj"
@@ -59,11 +64,10 @@ const UsersList = () => {
                             size="sm"
                             data-testid={"search-committee"}
                         />
-                    </Box>
-                    <Box sx={{display: "flex", flexDirection: "column", flex: 1, minWidth: 100}}>
+                    </div>
+                    <div style={{minWidth: 100}}>
                         <FormLabel>Rola</FormLabel>
                         <Select
-                            native
                             placeholder="Wszystkie"
                             value={searchRole}
                             onChange={(e, newValue) => setSearchRole(newValue)}
@@ -77,8 +81,8 @@ const UsersList = () => {
                                 </Option>
                             ))}
                         </Select>
-                    </Box>
-                </Box>
+                    </div>
+                </div>
                 <List variant={"plain"} sx={{paddingBottom: 0}} data-testid={"users-table"}>
                     <ListItem>
                         <ListItemContent>
