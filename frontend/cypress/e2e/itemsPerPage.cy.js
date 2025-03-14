@@ -38,7 +38,6 @@ describe("Should change number of items in company and journey list", () => {
 
     it('should change number of items in journey list', () => {
         cy.login();
-        cy.login();
         cy.visit(`http://${Cypress.env("baseUrl")}/secure/journeys`)
 
         cy.getByTestId("journey-table")
