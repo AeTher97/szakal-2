@@ -1,7 +1,4 @@
 describe("Auto refresh on adding and modifying companies and contact journeys", () => {
-    afterEach(() => {
-        cy.refreshDb();
-    })
 
     it("should auto refresh after starting new contact journey with Company 43", () => {
         cy.login();
