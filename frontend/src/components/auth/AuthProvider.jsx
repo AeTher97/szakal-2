@@ -35,7 +35,7 @@ const AuthProvider = () => {
         const controller = new AbortController();
         controller.abort("Nastąpiło wylogowanie");
         dispatch({type: REFRESH_FAILED, error: "Nastąpiło wylogowanie"});
-        console.log("cacelling", ogRequest)
+        console.log("Cancelling", ogRequest)
 
         return {
             ...ogRequest,
@@ -72,7 +72,10 @@ const AuthProvider = () => {
     axios.interceptors.request.use(async request => {
         const {tokenExpired, refreshPresent, currentToken} = checkIfAnotherTabRefreshedToken();
 
-        if ((tokenExpired && !refreshPresent) || !localStorage.getItem("accessToken")) {
+        const tokenMissingInLocalStorage = !localStorage.getItem("accessToken");
+        if ((tokenExpired && !refreshPresent) || tokenMissingInLocalStorage) {
+            console.log("Cancelled with token expired", tokenExpired,
+                "refreshPresent", refreshPresent, "token missing in local storage", tokenMissingInLocalStorage);
             return abortSignal(request);
         }
 

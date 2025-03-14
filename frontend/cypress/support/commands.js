@@ -64,6 +64,7 @@ Cypress.Commands.add("clickSelectField", (fieldId, optionSuffix, searchButtonId)
 })
 
 Cypress.Commands.add("refreshDb", () => {
+    cy.log("Refreshing database")
     cy.exec('cd .. && bash reload-database.sh', {failOnNonZeroExit: false})
         .then(result => {
             if (result.code) {
