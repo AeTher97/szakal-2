@@ -13,9 +13,8 @@ const ApplicationScreen = () => {
     console.log(localStorage.getItem("releaseNotesVersion"))
     const [releaseNotesShown, setReleaseNotesShown] = useState(
         import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("releaseNotesVersion")
-        && import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("disabled"));
+        && "disabled" !== localStorage.getItem("releaseNotesVersion"));
 
-    console.debug(import.meta.env.VITE_SZAKAL_VERSION)
     return (
         <SecureRoute>
             <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
