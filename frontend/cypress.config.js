@@ -7,6 +7,6 @@ module.exports = defineConfig({
         },
     },
     env: {
-        baseUrl: "5758-172-183-218-18.ngrok-free.app"
+        baseUrl: "localhost:8080"
     }
 });
