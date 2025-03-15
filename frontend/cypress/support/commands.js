@@ -24,7 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", (username = "administrator@szakal.org",
+Cypress.Commands.add("login", (searchForAvatar = true,
+                               username = "administrator@szakal.org",
                                password = "administrator",
                                name = "Admin Admin") => {
 
@@ -38,6 +39,14 @@ Cypress.Commands.add("login", (username = "administrator@szakal.org",
     cy.getByTestId("cypress-login-button")
         .should("exist")
         .click();
+    if (searchForAvatar) {
+        cy.getByTestId("user-avatar")
+            .should("exist")
+        cy.getByTestId("user-avatar")
+            .children("div")
+            .children("p")
+            .contains(name)
+    }
 })
 
 Cypress.Commands.add("getByTestId", (id) => {
