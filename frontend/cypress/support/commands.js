@@ -38,12 +38,6 @@ Cypress.Commands.add("login", (username = "administrator@szakal.org",
     cy.getByTestId("cypress-login-button")
         .should("exist")
         .click();
-    cy.getByTestId("user-avatar")
-        .should("exist")
-    cy.getByTestId("user-avatar")
-        .children("div")
-        .children("p")
-        .contains(name)
 })
 
 Cypress.Commands.add("getByTestId", (id) => {

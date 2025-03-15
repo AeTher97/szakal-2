@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 const ReleaseNotesDialog = ({open, close}) => {
     return (
         <Modal open={open} onClose={close}>
-            <ModalDialog sx={(theme) => ({
+            <ModalDialog data-testid="release-notes-dialog"
+                         sx={(theme) => ({
                 [theme.breakpoints.only('xs')]: {
                     top: 'unset',
                     bottom: 0,

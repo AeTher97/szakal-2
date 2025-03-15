@@ -10,10 +10,11 @@ import ReleaseNotesDialog from "../utils/ReleaseNotesDialog";
 const ApplicationScreen = () => {
 
     const mediumSize = useMediumSize();
-    const [releaseNotesShown, setReleaseNotesShown] = useState(import.meta.env.VITE_SZAKAL_VERSION !==
-        localStorage.getItem("releaseNotesVersion"));
+    const [releaseNotesShown, setReleaseNotesShown] = useState(
+        import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("releaseNotesVersion")
+        && import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("disabled"));
 
-    console.log(import.meta.env.VITE_SZAKAL_VERSION)
+    console.debug(import.meta.env.VITE_SZAKAL_VERSION)
     return (
         <SecureRoute>
             <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
