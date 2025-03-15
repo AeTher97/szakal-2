@@ -21,7 +21,6 @@ const AuthProvider = () => {
 
     async function getAuthToken() {
         if (!authTokenRequest) {
-            console.debug("Refreshing token")
             authTokenRequest = dispatch(refreshAction());
             authTokenRequest.then(resp => {
                 resetAuthTokenRequest();
@@ -48,33 +47,33 @@ const AuthProvider = () => {
     }
 
     const checkIfAnotherTabRefreshedToken = () => {
-        const tokenRefreshedByDifferentTab = !localStorage.getItem("accessToken") ? false :
+        const tokenIsPresentInStorage = localStorage.getItem("accessToken");
+        const tokenRefreshedByDifferentTab = !tokenIsPresentInStorage ? false :
             accessToken !== localStorage.getItem("accessToken");
-        let switchedTokenExpiration = null;
+
         let newToken = null;
 
-        if (tokenRefreshedByDifferentTab) {
-            newToken = localStorage.getItem("accessToken");
-            const {expirationTime: exp} = decodeToken(newToken);
-            switchedTokenExpiration = exp;
-            dispatch(tokenSwitchedByAnotherTabAction(newToken, exp));
-        }
-
-        const tokenExpired = tokenRefreshedByDifferentTab ? isTokenOutdated(switchedTokenExpiration)
-            : isTokenOutdated(expirationTime);
         const refreshPresent = cookieExists("AUTHENTICATED");
 
-        const currentToken = tokenRefreshedByDifferentTab ? newToken : accessToken;
+        if (tokenRefreshedByDifferentTab) {
+            console.debug("Token was refreshed in a different tab");
+            newToken = localStorage.getItem("accessToken");
+            const {expirationTime: switchedTokenExpiration} = decodeToken(newToken);
+            dispatch(tokenSwitchedByAnotherTabAction(newToken, switchedTokenExpiration));
 
-        return {tokenExpired, refreshPresent, currentToken};
+            const tokenExpired = isTokenOutdated(switchedTokenExpiration);
+            return {tokenExpired, refreshPresent, currentToken: newToken};
+        } else {
+            const tokenExpired = isTokenOutdated(expirationTime);
+            return {tokenExpired, refreshPresent, currentToken: accessToken};
+        }
     }
 
     axios.interceptors.request.use(async request => {
         const {tokenExpired, refreshPresent, currentToken} = checkIfAnotherTabRefreshedToken();
 
-        const tokenMissingInLocalStorage = !localStorage.getItem("accessToken");
-        if ((tokenExpired && !refreshPresent) || tokenMissingInLocalStorage) {
-            console.log("Cancelled with token expired", tokenExpired,
+        if (tokenExpired && !refreshPresent) {
+            console.debug("Cancelled with token expired", tokenExpired,
                 "refreshPresent", refreshPresent, "token missing in local storage", tokenMissingInLocalStorage);
             return abortSignal(request);
         }

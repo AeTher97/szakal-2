@@ -46,7 +46,6 @@ const JourneyList = ({
             return journey.journeyStart;
         } else if (sortedByLastInteractionDate) {
             const directionAscendingProperty = directionAscending ? "4000" : "0"
-            console.log(journey.lastInteraction || directionAscendingProperty)
             return journey.lastInteraction || directionAscendingProperty;
         }
     }

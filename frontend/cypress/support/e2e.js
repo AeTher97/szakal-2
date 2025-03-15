@@ -19,6 +19,8 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+
 beforeEach(() => {
+    window.localStorage.setItem("releaseNotesVersion", "disabled");
     cy.refreshDb();
 })

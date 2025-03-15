@@ -31,7 +31,6 @@ const BasicUserInfo = ({
     const isUser = userId === user.id;
     const isFormValid = UseFormValidation([name, surname, email]);
 
-    console.log(localUser)
     useEffect(() => {
         if (localUser) {
             name.setValue(localUser.name);
