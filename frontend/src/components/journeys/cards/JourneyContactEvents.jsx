@@ -96,7 +96,6 @@ const JourneyContactEvents = ({addContactEvent, journey}) => {
                 {journey.contactEvents.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(event => {
-                    console.log(event.user)
                     return <TimelineItem key={event.id}>
                         <div style={{
                             display: "flex",

@@ -13,6 +13,13 @@ on:
     branches:
       - '**'
       - '!master'
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging"
+        required: false
+        default: false
 
 jobs:
   integrationTests:
@@ -65,3 +72,7 @@ jobs:
       - name: Run cypress tests
         working-directory: ./frontend
         run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
