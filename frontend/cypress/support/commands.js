@@ -39,7 +39,7 @@ Cypress.Commands.add("login", (searchForAvatar = true,
     cy.getByTestId("cypress-login-button")
         .should("exist")
         .click()
-    cy.should("contain", "/secure");
+    cy.url().should("contain", "/secure");
     if (searchForAvatar) {
         cy.getByTestId("user-avatar")
             .should("exist")
