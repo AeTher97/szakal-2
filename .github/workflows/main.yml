@@ -8,6 +8,12 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging"
+        required: false
+        default: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -57,6 +63,10 @@ jobs:
       - name: Run cypress tests
         working-directory: ./frontend
         run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && DEBUG=cypress:* sudo npx cypress run --browser chrome
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Build frontend
         working-directory: ./
