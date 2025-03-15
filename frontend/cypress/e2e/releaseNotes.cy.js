@@ -7,7 +7,5 @@ describe("Validate that release notes are displayed on Szakal open", () => {
         cy.visit(`http://${Cypress.env("baseUrl")}/secure/home`);
 
         cy.getByTestId("release-notes-dialog").contains("Szakal")
-
-        localStorage.setItem("releaseNotesVersion", "disabled");
     })
 })
