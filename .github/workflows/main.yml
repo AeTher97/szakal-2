@@ -56,17 +56,15 @@ jobs:
         working-directory: ./
         run: sudo apt install postgresql-client-common && sudo apt install postgresql-client-14
 
-      #      - name: Setup tmate session
-      #        if: success() || failure()
-      #        uses: mxschmitt/action-tmate@v3
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with:
+          detached: true
 
       - name: Run cypress tests
         working-directory: ./frontend
         run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && DEBUG=cypress:* sudo npx cypress run --browser chrome
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Build frontend
         working-directory: ./
