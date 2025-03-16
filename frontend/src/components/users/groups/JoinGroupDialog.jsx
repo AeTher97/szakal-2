@@ -47,28 +47,38 @@ const JoinGroupDialog = ({open, close}) => {
         }
     }, [open]);
 
-
-    const setCodeCharacter = (index, character) => {
-        const tempCode = [...code];
-        tempCode[index] = character;
-        setCode(tempCode);
-    }
-
     const setText = (text) => {
-        if (!isNumeric(text)) {
-            return;
-        }
         const chars = text.split('');
-        if (chars.length < CODE_LENGTH) {
-            return;
-        }
         setCode(chars.slice(0, CODE_LENGTH));
         refs[CODE_LENGTH - 1].current.focus();
     }
 
     const onPaste = (event) => {
         const copiedTest = event.clipboardData.getData('Text');
+        if (!isNumeric(copiedTest)) {
+            return;
+        }
+        const chars = copiedTest.split('');
+        if (chars.length < CODE_LENGTH) {
+            return;
+        }
         setText(copiedTest);
+        setTimeout(() => {
+            copiedTest.split("").forEach((char, i) => {
+                    refs[i].current.value = char;
+                }
+            )
+        }, 15)
+    }
+
+    const checkCode = (codeToCheck) => {
+        let emptyCount = 0;
+        for (let i in codeToCheck) {
+            if (codeToCheck[i] === "") {
+                emptyCount++;
+            }
+        }
+        return emptyCount === 0;
     }
 
     return (
@@ -78,6 +88,32 @@ const JoinGroupDialog = ({open, close}) => {
                 <form
                     onSubmit={(event) => {
                         event.preventDefault();
+                        let codeToUse;
+                        const codeFromFields = [
+                            ref1.current.value,
+                            ref2.current.value,
+                            ref3.current.value,
+                            ref4.current.value,
+                            ref5.current.value,
+                            ref6.current.value,
+                            ref7.current.value,
+                        ]
+
+                        if (checkCode(codeFromFields)) {
+                            codeToUse = codeFromFields;
+                        } else if (checkCode(code)) {
+                            codeToUse = code;
+                        } else {
+                            return;
+                        }
+
+                        joinGroup(codeToUse.join("")).then((res) => {
+                            dispatch(showSuccess("Dołączono do grupy " + res.name));
+                            dispatch(reloadAction())
+                            setCode(INITIAL_STATE);
+                            close();
+                        }).catch(() => {
+                        })
                     }}>
                     <FormLabel>Podaj kod grupy</FormLabel>
                     <div style={{
@@ -90,6 +126,8 @@ const JoinGroupDialog = ({open, close}) => {
                         {fieldArray.map((o, index) => {
                             const ref = refs[index];
                             return <Input
+                                type={"text"}
+                                maxLength={1}
                                 slotProps={{input: {ref}}}
                                 key={uuidv4()}
                                 sx={{
@@ -108,29 +146,29 @@ const JoinGroupDialog = ({open, close}) => {
                                 }}
                                 onChange={e => {
                                     e.preventDefault();
-                                    if (e.nativeEvent.inputType === "insertFromPaste") {
-                                        return;
-                                    }
                                     const value = e.target.value;
-                                    if (value.length === 7) {
-                                        setText(value);
-                                        refs[CODE_LENGTH - 1].current.focus();
+                                    if (e.nativeEvent.inputType === "insertFromPaste") {
+                                        if (value.length === 7) {
+                                            onPaste(value);
+                                        }
                                         return;
                                     }
                                     const character = value.substring(value.length - 1, value.length);
-                                    if (!isNumeric(character) && character.length !== 0) {
+                                    if (!isNumeric(character)) {
+                                        refs[index].current.value = "";
                                         return;
                                     }
-                                    setCodeCharacter(index, character);
+                                    if (index === CODE_LENGTH - 1 && value.length !== 0) {
+                                        refs[index].current.value = character;
+                                        return;
+                                    }
                                     if (index !== CODE_LENGTH - 1 && value.length !== 0) {
-                                        setTimeout(() => refs[index + 1]
-                                            .current.focus(), 10);
+                                        refs[index].current.value = character;
+                                        refs[index + 1].current.focus({fromCode: true});
                                         return;
                                     }
                                     if (value.length === 0 && index !== 0) {
-                                        setTimeout(() => {
-                                            refs[index - 1].current.selectionStart = 10000;
-                                        }, 1)
+                                        refs[index - 1].current.selectionStart = 10000;
                                     }
                                 }}
                                 onFocus={() => {
@@ -155,32 +193,12 @@ const JoinGroupDialog = ({open, close}) => {
                                         setTimeout(() => refs[index - 1].current.focus({fromCode: true}),
                                             10);
                                     }
-                                }
-                                }
-                                value={code[index]}/>
+                                }}/>
                         })
                         }
                     </div>
                     <div style={{display: "flex", gap: 5}}>
-                        <Button onClick={() => {
-                            let emptyCount = 0;
-                            for (let i in code) {
-                                if (code[i] === "") {
-                                    emptyCount++;
-                                }
-                            }
-                            if (emptyCount > 0) {
-                                return;
-                            }
-
-                            joinGroup(code.join("")).then((res) => {
-                                dispatch(showSuccess("Dołączono do grupy " + res.name));
-                                dispatch(reloadAction())
-                                setCode(INITIAL_STATE);
-                                close();
-                            }).catch(() => {
-                            })
-                        }}>Dołącz</Button>
+                        <Button type={"submit"}>Dołącz</Button>
                         <Button color={"neutral"} onClick={() => {
                             setCode(INITIAL_STATE)
                             close();

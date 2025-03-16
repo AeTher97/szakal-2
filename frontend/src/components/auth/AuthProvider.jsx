@@ -74,7 +74,7 @@ const AuthProvider = () => {
 
         if (tokenExpired && !refreshPresent) {
             console.debug("Cancelled with token expired", tokenExpired,
-                "refreshPresent", refreshPresent, "token missing in local storage", tokenMissingInLocalStorage);
+                "refreshPresent", refreshPresent);
             return abortSignal(request);
         }
 
