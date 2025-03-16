@@ -10,7 +10,6 @@ import ReleaseNotesDialog from "../utils/ReleaseNotesDialog";
 const ApplicationScreen = () => {
 
     const mediumSize = useMediumSize();
-    console.log(localStorage.getItem("releaseNotesVersion"))
     const [releaseNotesShown, setReleaseNotesShown] = useState(
         import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("releaseNotesVersion")
         && "disabled" !== localStorage.getItem("releaseNotesVersion"));
