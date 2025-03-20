@@ -38,7 +38,6 @@ const AppContent = props => {
                             marginBottom: 10,
                             flex: 1,
                             maxWidth: 300,
-                            paddingTop: 54,
                             display: "flex",
                             flexDirection: "column",
                             gap: 10
