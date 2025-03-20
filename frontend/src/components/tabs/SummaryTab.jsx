@@ -10,7 +10,7 @@ import {useMobileSize} from "../../utils/MediaQuery";
 const SummaryTab = () => {
 
     const mobile = useMobileSize();
-
+``
     return (
         <div>
             <TabHeader>
