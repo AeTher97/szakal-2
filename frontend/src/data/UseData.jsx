@@ -37,7 +37,6 @@ export const useData = (baseUrl,
         }).catch(e => {
             console.error(e);
             if (e.code === "ERR_CANCELED") {
-                dispatch(showError(e.config.signal.reason));
                 return;
             }
             if (e.response?.data?.error) {
