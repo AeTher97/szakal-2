@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
+import org.iaeste.szakal2.models.dto.SzakalSort;
 import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.models.entities.ProfilePicture;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
@@ -40,8 +41,20 @@ public class UsersController {
 
     @GetMapping
     @PreAuthorize("hasAuthority(@authorityBean.userViewing())")
-    public Page<UserDTO> searchUsers(@RequestParam(defaultValue = "10") int pageSize, @RequestParam int pageNumber) {
-        return userService.getAllUsers(Pageable.ofSize(pageSize).withPage(pageNumber));
+    public Page<UserDTO> searchAllUsers(@RequestParam(defaultValue = "10") int pageSize,
+                                        @RequestParam int pageNumber,
+                                        @RequestParam(required = false) String searchName,
+                                        @RequestParam(required = false) String searchCommittee,
+                                        @RequestParam(required = false) String searchRole,
+                                        @RequestParam(required = false) String sort) {
+        return userService.getUsersWithSearch(Pageable.ofSize(pageSize).withPage(pageNumber),
+                UserSearchDTO.builder()
+                        .name(searchName)
+                        .surname(searchName)
+                        .committee(searchCommittee)
+                        .role(searchRole)
+                        .szakalSort(sort == null ? null : SzakalSort.fromString(sort))
+                        .build());
     }
 
     @GetMapping("/search")
