@@ -14,16 +14,24 @@ const sortUsersByFullName = (users, directionAscending) => {
     });
 };
 
-export const useUsersList = (page = 0, directionAscending = true) => {
+const sortBySurnameAscending = "surname,ASC";
+const sortBySurnameDescending = "surname,DESC";
+
+export const useUsersList = (page = 0, searchName = "", searchCommittee = "", searchRole = [], sortAsc = true) => {
     const [pageNumber, setPageNumber] = useState();
     const [users, setUsers] = useState();
     const {loading} = useData(`/users`, (data) => {
-            const sortedUsers = sortUsersByFullName(data.content, directionAscending);
+            const sortedUsers = sortUsersByFullName(data.content, sortAsc);
             setUsers(sortedUsers)
             setPageNumber(data.page.totalPages)
-
         },
-        [page], [{name: "pageNumber", value: page}])
+        [page, searchName, searchCommittee, searchRole, sortAsc],
+        [{name: "pageNumber", value: page},
+            {name: "searchName", value: searchName},
+            {name: "searchCommittee", value: searchCommittee},
+            {name: "searchRole", value: searchRole},
+            {name: "sort", value: sortAsc ? sortBySurnameAscending : sortBySurnameDescending}
+        ])
 
     return {users, loading, pageNumber}
 }

@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.services;
 
-
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
@@ -14,6 +13,7 @@ import org.iaeste.szakal2.models.entities.ProfilePicture;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.repositories.PasswordTokenRepository;
 import org.iaeste.szakal2.repositories.ProfilePictureRepository;
+import org.iaeste.szakal2.repositories.UserSpecification;
 import org.iaeste.szakal2.repositories.UsersRepository;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
 import org.iaeste.szakal2.utils.EmailLoader;
@@ -186,8 +186,8 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public Page<UserDTO> getAllUsers(Pageable pageable) {
-        Page<User> userPage = usersRepository.findAllByOrderBySurnameAsc(pageable);
+    public Page<UserDTO> getUsersWithSearch(Pageable pageable, UserSearchDTO userSearchDTO) {
+        Page<User> userPage = usersRepository.findAll(new UserSpecification(userSearchDTO), pageable);
         List<UserDTO> userList = usersRepository.findAllById(userPage.map(User::getId).stream().toList())
                 .stream().map(UserDTO::fromUser).toList();
         return new PageImpl<>(userList, userPage.getPageable(), userPage.getTotalElements());
