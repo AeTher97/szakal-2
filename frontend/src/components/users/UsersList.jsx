@@ -34,7 +34,7 @@ const UsersList = () => {
     const {users, loading, pageNumber} = useUsersList(currentPage - 1, searchName, searchCommittee, searchRole);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: {xs: 300, sm: 350, lg: 500}}}>
+        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: {xs: 300, sm: 350, lg: 450}}}>
             <CardContent sx={{padding: 0}}>
                 <div style={{
                     display: "grid",
