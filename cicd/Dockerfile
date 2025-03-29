@@ -19,7 +19,7 @@ WORKDIR /src
 
 RUN dos2unix gradlew \
 && dos2unix build-and-copy.sh \
-&& ./build-and-copy.sh false \
+&& ./build-and-copy.sh false true \
 && chmod +x ./gradlew \
 && ./gradlew build
 
