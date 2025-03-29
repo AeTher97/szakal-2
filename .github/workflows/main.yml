@@ -39,7 +39,8 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
-      # Runs a single command using the runners shell
+      - name: Run semver
+
       - name: Run integration test
         working-directory: ./
         run: chmod +x gradlew && ./gradlew :backend:integrationTest
