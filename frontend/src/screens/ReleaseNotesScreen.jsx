@@ -17,7 +17,7 @@ export const releaseNotes = [
                                     description={"Możliwa jest anonimizacja wydarzeń kontaktowych przez " +
                                         "usunięcie osoby kontaktowej z poziomu firmy."}/>
             </ReleaseNotesSection>
-            <ReleaseNotesSection title={"Naprawione błedy"}>
+            <ReleaseNotesSection title={"Naprawione błędy"}>
                 <ReleaseNotesBullet title={"Brak"}/>
             </ReleaseNotesSection>
         </div>

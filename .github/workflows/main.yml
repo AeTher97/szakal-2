@@ -2,10 +2,6 @@ name: Heroku deploy
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -14,6 +10,14 @@ on:
         description: "Run the build with tmate debugging"
         required: false
         default: false
+      release_level:
+        type: choice
+        description: "Level of deployment"
+        options:
+          - major
+          - minor
+          - patch
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,6 +25,9 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
     env:
       EMAIL: ${{secrets.EMAIL}} 
       PASSWORD: ${{secrets.PASSWORD}}  
@@ -40,6 +47,8 @@ jobs:
         timeout-minutes: 12
 
       - name: Run semver
+        working-directory: ./
+        run: ./gradlew "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" updateVersionInFiles
 
       - name: Run integration test
         working-directory: ./
@@ -77,3 +86,11 @@ jobs:
           sudo chmod +x "${GITHUB_WORKSPACE}/cicd/deploy.sh"
           sudo "${GITHUB_WORKSPACE}/cicd/deploy.sh" ${HEROKU_API_TOKEN} ${LAST_COMMIT_MESSAGE} false
         shell: bash
+
+      - name: Push new tag
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: false
+          tags: true
