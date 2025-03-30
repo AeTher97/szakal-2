@@ -37,7 +37,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -45,10 +47,6 @@ jobs:
           cache: gradle
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
-
-      - name: Get tags
-        working-directory: ./
-        run: git fetch --tags origin
 
       - name: Run semver
         working-directory: ./
