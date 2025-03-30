@@ -8,6 +8,7 @@ if $3 -eq true; then {
   CI='' sudo npm run build
   cd ..
 } fi;
+
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir ../temp
 cp -r backend/. ../temp/
@@ -34,6 +35,6 @@ else
 fi
 
 cd ..
-rm -r -f temp
+rm -r -f ../temp
 
 echo "Deploy successful"

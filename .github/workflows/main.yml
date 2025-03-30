@@ -48,7 +48,7 @@ jobs:
 
       - name: Run semver
         working-directory: ./
-        run: ./gradlew "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" updateVersionInFiles
+        run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles
 
       - name: Run integration test
         working-directory: ./
