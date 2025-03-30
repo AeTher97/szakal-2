@@ -28,6 +28,9 @@ const Footer = () => {
                 </p>
                 <Typography level={"body-xs"}>
                     {new Date().getFullYear()}
+                    <Link style={{marginLeft: 5}} variant={"plain"} color={"neutral"} href={"/release-notes"}>
+                        V{import.meta.env.VITE_SZAKAL_VERSION}
+                    </Link>
                 </Typography>
             </div>
             <Typography level={"body-xs"}>
@@ -35,11 +38,6 @@ const Footer = () => {
                 <Link style={{marginLeft: 5}}
                       href={"https://docs.google.com/forms/d/e/1FAIpQLSeQt6DTLyoIZO0ZJAvipBO7FtXZMqeNMMIzU7MT02NOza9MCg/viewform?usp=sf_link"}>
                     Kliknij tutaj
-                </Link>
-            </Typography>
-            <Typography level={"body-xs"}>
-                <Link variant={"plain"} color={"neutral"} href={"/release-notes"}>
-                    V{import.meta.env.VITE_SZAKAL_VERSION}
                 </Link>
             </Typography>
         </div>
