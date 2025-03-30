@@ -14,9 +14,9 @@ on:
         type: choice
         description: "Level of deployment"
         options:
-          - major
-          - minor
           - patch
+          - minor
+          - major
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
