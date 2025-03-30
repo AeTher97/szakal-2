@@ -46,6 +46,9 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
+      - name: Get tags
+        run: git fetch --tags origin
+
       - name: Run semver
         working-directory: ./
         run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles
