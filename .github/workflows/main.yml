@@ -55,7 +55,7 @@ jobs:
 
       - name: Run semver
         working-directory: ./
-        run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles
+        run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles && git add frontend/.env.development && git add frontend/.env.production
 
       - name: Run integration test
         working-directory: ./

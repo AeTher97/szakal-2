@@ -2,6 +2,7 @@ import React from 'react';
 import {Modal, ModalClose, ModalDialog} from "@mui/joy";
 import PropTypes from "prop-types";
 import {releaseNotes} from "../screens/ReleaseNotesScreen";
+import Link from "@mui/joy/Link";
 
 const ReleaseNotesDialog = ({open, close}) => {
     return (
@@ -20,6 +21,7 @@ const ReleaseNotesDialog = ({open, close}) => {
                          })}>
                 <ModalClose/>
                 {releaseNotes[0]}
+                <Link href={"/release-notes"}>Zobacz cała historie zmian</Link>
             </ModalDialog>
         </Modal>
     );
