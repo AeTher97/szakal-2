@@ -3,8 +3,12 @@ import {Typography} from "@mui/joy";
 
 const NotFoundScreen = () => {
     return (
-        <div>
-            <Typography level={"h1"}>Not found</Typography>
+        <div style={{
+            height: "100vh", display: "flex", justifyContent: "center", alignItems: "center",
+            flexDirection: "column"
+        }}>
+            <Typography level={"h1"} style={{rotate: "90deg"}}>:(</Typography>
+            <Typography level={"h1"}>Nie mamy takiej strony</Typography>
         </div>
     );
 };

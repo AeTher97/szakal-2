@@ -9,10 +9,36 @@ import ReleaseNotesDialog from "../utils/ReleaseNotesDialog";
 
 const ApplicationScreen = () => {
 
+    const parseReleaseNotes = (semverString) => {
+        if (!semverString || semverString === "disabled") {
+            return null;
+        }
+        const splitParts = semverString.split(".");
+        if (splitParts.length < 3) {
+            return null;
+        }
+        return {
+            major: splitParts[0],
+            minor: splitParts[1],
+            patch: splitParts[2]
+        }
+    }
+
+    const shouldDisplayReleaseNotes = () => {
+        if (localStorage.getItem("releaseNotesVersion") === "disabled") {
+            return false;
+        }
+        const shownVersion = parseReleaseNotes(localStorage.getItem("releaseNotesVersion"));
+        if (shownVersion) {
+                const currentVersion = parseReleaseNotes(import.meta.env.VITE_SZAKAL_VERSION);
+                return currentVersion.major > shownVersion.major || currentVersion.minor > shownVersion.minor;
+        } else {
+            return true;
+        }
+    }
+
     const mediumSize = useMediumSize();
-    const [releaseNotesShown, setReleaseNotesShown] = useState(
-        import.meta.env.VITE_SZAKAL_VERSION !== localStorage.getItem("releaseNotesVersion")
-        && "disabled" !== localStorage.getItem("releaseNotesVersion"));
+    const [releaseNotesShown, setReleaseNotesShown] = useState(shouldDisplayReleaseNotes());
 
     return (
         <SecureRoute>
