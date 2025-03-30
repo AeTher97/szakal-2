@@ -47,6 +47,7 @@ jobs:
         timeout-minutes: 12
 
       - name: Get tags
+        working-directory: ./
         run: git fetch --tags origin
 
       - name: Run semver
