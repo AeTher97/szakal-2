@@ -9,19 +9,8 @@
 name: Scheduled Branch Validation
 
 on:
-  push:
-    branches:
-      - '**'
-      - '!master'
   schedule:
     - cron: "0 12 * * 0"             
-  workflow_dispatch:
-    inputs:
-      debug_enabled:
-        type: boolean
-        description: "Run the build with tmate debugging"
-        required: false
-        default: false  
 
 jobs:
   integrationTests:
