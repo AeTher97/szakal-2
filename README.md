@@ -30,12 +30,10 @@ This is not required for the docker option as everything is set up in multi-stag
 
 #### Docker method (the easiest, but worse for development since we don't get react development server)
 
-Run the `setup-env-docker.sh` script, you might have to make it executable by running
-`chmod +x {file}`. ~~Due to line endings on windows, testing
-data will only be loaded on linux system (some magic can be done with `dos2unix` though)
-For developing on Windows machines I recommend to use [wsl2](https://learn.microsoft.com/en-us/windows/wsl/install)
-as an easy option to get a linux VM.~~  This was fixed and should
-work on Windows now.
+Run the startup script.
+```
+setup-env-docker.sh
+```
 
 Docker option should generally be the easiest to get up.
 This pulls a lot of data and can quite some time the first time is run. This option is not recommended
@@ -67,8 +65,11 @@ Don't use this method for running in production, put properties in actual enviro
 2. Go into backend directory
 3. Make sure postgres is running on your machine with created database and you know: **port, username and password**
 4. Make sure JAVA_HOME is set correctly, you can run `java -version` to make sure, java 21 or higher is required
-5. Run backend using this command in the backend directory: `./gradlew bootRun --args='--spring.profiles.active=development' -PdatabaseUrl={url=host:port/database_name} -PdatabaseUsername={postgres_username} -PdatabasePassword={postgres_password} -PjwtSecret={jwt_secret}"`
-, alternatively arguments can be set in `gradle.properties` file (more info [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties)), or set in the system environmental variables, where arguments are following (gradle name, ENV variable name):
+5. Run backend using this command in the backend directory:
+   ``` 
+   ./gradlew bootRun --args='--spring.profiles.active=development' -PdatabaseUrl={url=host:port/database_name} -PdatabaseUsername={postgres_username} -PdatabasePassword={postgres_password} -PjwtSecret={jwt_secret}"
+   ```
+Alternatively arguments can be set in `gradle.properties` file (more info [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties)), or set in the system environmental variables, where arguments are following (gradle name, ENV variable name):
    * **databaseUrl, DATABASE_URL** - url to the database, has to contain host, port and database name without protocol 
    * **databaseUsername, DATABASE_USERNAME** - username of the database user
    * **databasePassword, DATABASE_PASSWORD** - password of the database user
@@ -76,13 +77,22 @@ Don't use this method for running in production, put properties in actual enviro
    * **emailUsername, EMAIL_USERNAME**(Optional) - email address to send emails from(password reset, notifications), is not necessary for development installations
    * **emailPassword, EMAIL_PASSWORD**(Optional) - email authorization code, has to be generated on google pages, email password for web won't work, is not necessary for development installations
    * **herokuAppDefaultDomainName, HEROKU_APP_DEFAULT_DOMAIN_NAME**(Optional) - name of the domain frontend is on so links in emails can point to right web addresses,  is not necessary for development installations
-6. Spring boot application should start without errors (gradle task stops at 83%)
-7. Open new terminal window
-8. Go to frontend directory
-9. Run `npm install`
-10. Run `npm start`
-11. Go to `localhost:3000`
-12. Use the app
+7. Spring boot application should start without errors (gradle task stops at 83%)
+8. Open new terminal window
+9. Go to frontend directory
+10. Run
+```
+npm install
+```
+11. Run
+```
+npm start
+```
+13. Go to
+```
+localhost:3000
+```
+15. Use the app
 
 #### Alternative way of running development stack
 
