@@ -1,0 +1,82 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Scheduled Branch Validation
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!master'
+  schedule:
+    - cron: "0 12 * * 0"             
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging"
+        required: false
+        default: false  
+
+jobs:
+  integrationTests:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: gradle
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
+
+      # Runs a single command using the runners shell
+      - name: Run integration test
+        working-directory: ./
+        run: chmod +x gradlew && ./gradlew :backend:integrationTest
+
+  cypressTests:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: gradle
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
+
+      - name: Install psql
+        working-directory: ./
+        run: sudo apt install postgresql-client-common && sudo apt install postgresql-client-14
+
+      - name: Set up env
+        working-directory: ./
+        run: sudo bash ./setup-env-docker.sh
+
+      - name: Install node modules
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with:
+          detached: true
+
+      - name: Run cypress tests
+        working-directory: ./frontend
+        run: CYPRESS_CACHE_FOLDER=./tmp/Cypress sudo npx cypress install --force && sudo npx cypress run --browser chrome
