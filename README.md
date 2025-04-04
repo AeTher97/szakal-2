@@ -88,17 +88,12 @@ npm install
 ```
 npm start
 ```
-13. Go to
-```
-localhost:3000
-```
+13. Go to [localhost:3000](localhost:3000)
 15. Use the app
 
-#### Alternative way of running development stack
+### Alternative way of running development stack
 
-
-
-### Hosting frontend from spring
+#### Hosting frontend from spring
 It is possible to build production frontend version and host it directly from spring server.
 To do that run `./build-and-copy.sh` script in the project root to create sources in spring public directory. After that, launch the server as above skipping all the steps after step 6.
 Frontend will be hosted on the backend url: `localhost:8080`.
