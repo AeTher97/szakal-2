@@ -116,21 +116,21 @@ public class JourneyService {
         ContactEvent contactEvent = contactJourney.getContactEvents().stream()
                 .filter(e -> e.getId().equals(contactEventEditDTO.getEventId()))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono wydarzenia o podanym id"));
+                .orElseThrow(() -> new ResourceNotFoundException(" The event with the specified id was not found"));
 
         if (contactEvent.getUser().getId().equals(SecurityUtils.getUserId())) {
             contactEvent.setDescription(contactEventEditDTO.getDescription());
             contactEvent.setEventType(ContactStatus.valueOf(contactEventEditDTO.getContactStatus()));
             if (contactEventEditDTO.getContactPerson() != null) {
                 ContactPerson contactPerson = contactPersonRepository.findById(contactEventEditDTO.getContactPerson())
-                        .orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono osoby kontaktowej o podanym id"));
+                        .orElseThrow(() -> new ResourceNotFoundException(" The contact person with the given id was not found"));
                 contactEvent.setContactPerson(contactPerson);
             } else {
                 contactEvent.setContactPerson(null);
             }
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
-            throw new BadCredentialsException("Niewystarczające uprawnienia do edycji wydarzenia");
+            throw new BadCredentialsException(" Insufficient permissions to edit the event");
         }
     }
 
