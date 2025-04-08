@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,6 +20,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Setter
     @NotNull
     @Column(length = 1000, name = "comment")
     private String commentValue;
@@ -37,9 +35,4 @@ public class Comment {
     @JoinColumn(name = "contact_journey_id", nullable = false)
     @JsonIgnore
     private ContactJourney contactJourney;
-
-    public void setCommentValue(String commentValue) {
-        this.commentValue = commentValue;
-    }
-
 }
