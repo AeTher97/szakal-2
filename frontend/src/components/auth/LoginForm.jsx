@@ -108,7 +108,6 @@ const LoginForm = ({redirectBack}) => {
                         fontSize: "smaller",
                         margin: 0,
                         position: "relative",
-                        top: 1
                     }}>
                         GRAFIKA AGH
                     </p>

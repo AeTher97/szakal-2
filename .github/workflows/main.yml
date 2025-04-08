@@ -2,10 +2,6 @@ name: Heroku deploy
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -15,12 +11,23 @@ on:
         required: false
         default: false
 
+      release_level:
+        type: choice
+        description: "Level of deployment"
+        options:
+          - patch
+          - minor
+          - major
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
     env:
       EMAIL: ${{secrets.EMAIL}} 
       PASSWORD: ${{secrets.PASSWORD}}  
@@ -30,7 +37,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -39,12 +49,23 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
-      # Runs a single command using the runners shell
+      - name: Show tags
+        working-directory: ./
+        run: git tag
+
+      - name: Run semver
+        working-directory: ./
+        run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles && git add frontend/.env.development && git add frontend/.env.production
+
       - name: Run integration test
         working-directory: ./
-        run: chmod +x gradlew && ./gradlew :backend:integrationTest
+        run: ./gradlew :backend:integrationTest
 
-      - name: Set up env
+      - name: Install node modules
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Install psql
         working-directory: ./
         run: sudo bash ./setup-env-docker.sh
 
@@ -76,3 +97,11 @@ jobs:
           sudo chmod +x "${GITHUB_WORKSPACE}/cicd/deploy.sh"
           sudo "${GITHUB_WORKSPACE}/cicd/deploy.sh" ${HEROKU_API_TOKEN} ${LAST_COMMIT_MESSAGE} false
         shell: bash
+
+      - name: Push new tag
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: false
+          tags: true

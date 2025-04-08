@@ -25,6 +25,7 @@ public class ContactEvent {
     @ManyToOne
     @JoinColumn(name = "contact_person_id")
     @JsonIgnoreProperties(value = {"company"})
+    @Setter
     private ContactPerson contactPerson;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

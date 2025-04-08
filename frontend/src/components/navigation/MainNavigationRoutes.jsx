@@ -9,6 +9,7 @@ import SecureRoute from "../../utils/SecureRoute";
 import PasswordResetScreen from "../../screens/PasswordResetScreen";
 import UpdatePasswordScreen from "../../screens/UpdatePasswordScreen";
 import GoogleAnalyticsTracker from "./GoogleAnalyticsTracker";
+import ReleaseNotesScreen from "../../screens/ReleaseNotesScreen";
 
 export const MainNavigationRoutes = () => {
 
@@ -19,6 +20,7 @@ export const MainNavigationRoutes = () => {
             <Route path={"/sign-up"} element={<SignUpScreen/>}/>
             <Route path={"/reset-password"} element={<PasswordResetScreen/>}/>
             <Route path={"/update-password"} element={<UpdatePasswordScreen/>}/>
+            <Route path={"/release-notes"} element={<ReleaseNotesScreen/>}/>
             <Route path={"/secure/*"} element={<ApplicationScreen/>}/>
             <Route path={"/not-accepted"} element={<SecureRoute>
                 <NotAcceptedScreen/>

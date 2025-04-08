@@ -45,9 +45,8 @@ export const useUserJourneyList = (search, searchLoaded, page = 0) => {
             setJourneys(data.content)
             setPagesNumber(data.page.totalPages)
             setTotalCount(data.page.totalElements)
-        }, [currentCampaign, page, userId, search], [{
-            name: "pageNumber", value: page,
-        },
+        }, [currentCampaign, page, userId, search], [
+            {name: "pageNumber", value: page},
             {name: "userId", value: userId},
             {name: "campaignId", value: currentCampaign},
             {name: "companyName", value: search.companyName},

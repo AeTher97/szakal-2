@@ -1,0 +1,8 @@
+plugins {
+    id("com.javiersc.semver") version "0.8.0"
+}
+
+tasks.register('updateVersionInFiles', Exec) {
+    commandLine 'bash', './cicd/updateVersionInFrontend.sh'
+}
+
