@@ -36,8 +36,10 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                                            isValid={comment.isValid}
                                            onChange={comment.handleChange}
                                            placeholder={"Komentarz"}
+                                           data-testid="add-comment-textarea"
                         />
-                        <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
+                        <Button type={"submit"} disabled={!isFormValid}
+                                data-testid={"add-comment-button"}>Dodaj</Button>
                     </Stack>
                 </div>
             </form>
@@ -45,8 +47,10 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                 {journey.comments.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(comment => {
+                    console.log(comment.id);
                     return (
                         <Comment
+                            data-testid={`comment-${comment.id}`}
                             key={comment.id}
                             editComment={editComment}
                             comment={comment}

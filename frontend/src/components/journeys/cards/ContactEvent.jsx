@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-import {FormControl, Select, Typography} from "@mui/joy";
-import Button from "@mui/joy/Button";
+import {Button, FormControl, Link, Option, Select, Typography} from "@mui/joy";
 import TimelineItem from "../../misc/timline/TimelineItem";
 import UserAvatar from "../../misc/UserAvatar";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
 import PropTypes from "prop-types";
 import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
-import Option from "@mui/joy/Option";
 
 const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) => {
     const [editing, setEditing] = useState(false);
@@ -29,7 +27,8 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                 <form onSubmit={handleEditSubmit}>
                     <FormControl>
                         <Select value={editingContactStatus}
-                                onChange={(e, newValue) => setEditingContactStatus(newValue)}>
+                                onChange={(e, newValue) => setEditingContactStatus(newValue)}
+                                data-testid="edit-event-type">
                             <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
                             {contactStatusOptions.map(option => (
                                 <Option key={option.name} value={option.name}>{option.text}</Option>
@@ -38,7 +37,8 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                     </FormControl>
                     <FormControl>
                         <Select value={editingContactPerson}
-                                onChange={(e, newValue) => setEditingContactPerson(newValue)}>
+                                onChange={(e, newValue) => setEditingContactPerson(newValue)}
+                                data-testid="edit-event-contact-person">
                             <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
                             {journey.company.contactPeople.map(person => (
                                 <Option key={person.id} value={person.id}>{person.name}</Option>
@@ -46,6 +46,7 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                         </Select>
                     </FormControl>
                     <TextAreaWithLimit
+                        data-testid="edit-contact-event-description"
                         limit={2000}
                         minRows={2}
                         value={editingDescription}
@@ -54,17 +55,24 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                         placeholder={"Opis"}
                         required
                     />
-                    <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 5}}>
-                        <Button type={"submit"}>Zapisz</Button>
-                        <Button onClick={() => setEditing(false)}>Anuluj</Button>
+                    <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 7}}>
+                        <Button type={"submit"} data-testid="save-contact-event-link">Zapisz</Button>
+                        <Button color={"neutral"} onClick={() => setEditing(false)}>
+                            Anuluj
+                        </Button>
                     </div>
                 </form>
             ) : (
                 <>
                     <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                         <div style={{display: "flex", gap: 5, flex: 2}}>
-                            <UserAvatar name={event.user.name} id={event.user.id} surname={event.user.surname}
-                                        image={event.user.profilePicture} text={false} size={"sm"}/>
+                            <UserAvatar
+                                id={event.user.id}
+                                name={event.user.name}
+                                surname={event.user.surname}
+                                image={event.user.profilePicture}
+                                text={false}
+                                size={"sm"}/>
                             <div>
                                 <Typography level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
                                 <Typography level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
@@ -76,10 +84,7 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                             </Typography>
                         </div>
                     </div>
-                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <Typography level={"body-md"}>{event.description}</Typography>
-                        <Button onClick={() => setEditing(true)}>Edytuj</Button>
-                    </div>
+                    <Typography level={"body-md"}>{event.description}</Typography>
                     {event.contactPerson && (
                         <div>
                             <Typography level={"body-sm"}>
@@ -88,6 +93,12 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                             </Typography>
                         </div>
                     )}
+                    <Link
+                        onClick={() => setEditing(true)}
+                        data-testid="edit-contact-event-link"
+                        style={{cursor: "pointer"}}>
+                        Edytuj
+                    </Link>
                 </>
             )}
         </TimelineItem>
