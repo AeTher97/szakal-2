@@ -3,7 +3,7 @@ import {ReleaseNotesBullet, ReleaseNotesSection, ReleaseNotesTitle} from "../uti
 
 export const releaseNotes = [
     <>
-    <ReleaseNotesTitle title={"Szakal 1.2.0"}/>
+    <ReleaseNotesTitle title={"Szakal 1.2"}/>
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>
                 <ReleaseNotesBullet title={"Edytowanie komentarzy i wydarzeń kontaktowych"}
@@ -15,7 +15,7 @@ export const releaseNotes = [
         </div>
     </>,
     <>
-        <ReleaseNotesTitle title={"Szakal 1.1.0"}/>
+        <ReleaseNotesTitle title={"Szakal 1.1"}/>
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>
                 <ReleaseNotesBullet title={"Auto odświeżanie firm i kontaktów"}
