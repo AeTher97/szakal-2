@@ -53,11 +53,25 @@ public class JourneyController {
         return journeyService.addContactEvent(id, contactEventCreationDTO);
     }
 
+    @PutMapping("/{id}/events")
+    @PreAuthorize("@accessVerificationBean.isUser(#contactEventEditDTO.user.toString())")
+    public ContactJourneyDetailsDTO editContactEvent(@PathVariable("id") UUID id,
+                                                     @RequestBody @Valid ContactEventEditDTO contactEventEditDTO) {
+        return journeyService.editContactEvent(id, contactEventEditDTO);
+    }
+
     @PostMapping("/{id}/comments")
     @PreAuthorize("@accessVerificationBean.isUser(#commentCreationDTO.user.toString())")
     public ContactJourneyDetailsDTO addComment(@PathVariable("id") UUID id,
                                                @RequestBody @Valid CommentCreationDTO commentCreationDTO) {
         return journeyService.addComment(id, commentCreationDTO);
+    }
+
+    @PutMapping("/{id}/comments")
+    @PreAuthorize("@accessVerificationBean.isUser(#commentEditDTO.user.toString())")
+    public ContactJourneyDetailsDTO editComment(@PathVariable("id") UUID id,
+                                                @RequestBody @Valid CommentEditDTO commentEditDTO) {
+        return journeyService.editComment(id, commentEditDTO);
     }
 
     @PutMapping("/{id}/finish")

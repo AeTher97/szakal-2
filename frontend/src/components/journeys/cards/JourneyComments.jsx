@@ -1,14 +1,13 @@
 import React from 'react';
-import {Divider, Stack, Typography} from "@mui/joy";
+import {Stack, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import UserAvatar from "../../misc/UserAvatar";
-import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {useSelector} from "react-redux";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
 import PropTypes from "prop-types";
 import {UseFieldValidation} from "../../../utils/UseFieldValidation";
+import Comment from "./Comment";
 
-const JourneyComments = ({addComment, journey}) => {
+const JourneyComments = ({addComment, editComment, journey}) => {
 
     const {userId} = useSelector(state => state.auth)
     const comment = UseFieldValidation();
@@ -37,8 +36,10 @@ const JourneyComments = ({addComment, journey}) => {
                                            isValid={comment.isValid}
                                            onChange={comment.handleChange}
                                            placeholder={"Komentarz"}
+                                           data-testid="add-comment-textarea"
                         />
-                        <Button type={"submit"} disabled={!isFormValid}>Dodaj</Button>
+                        <Button type={"submit"} disabled={!isFormValid}
+                                data-testid={"add-comment-button"}>Dodaj</Button>
                     </Stack>
                 </div>
             </form>
@@ -46,31 +47,16 @@ const JourneyComments = ({addComment, journey}) => {
                 {journey.comments.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(comment => {
-
-                    return <div key={comment.id} style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
-                        margin: 5
-                    }}>
-                        <div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                            <UserAvatar
-                                id={comment.user.id}
-                                name={comment.user.name}
-                                surname={comment.user.surname}
-                                committee={comment.user.committee}
-                                image={comment.user.profilePicture}
-                                overrideMobile={true}
-                                size={"sm"}/>
-
-                        </div>
-                        <Typography level={"body-md"}>{comment.comment}</Typography>
-                        <Typography
-                            level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
-                        <Divider/>
-
-                    </div>
+                    console.log(comment.id);
+                    return (
+                        <Comment
+                            data-testid={`comment-${comment.id}`}
+                            key={comment.id}
+                            editComment={editComment}
+                            comment={comment}
+                            userId={userId}
+                        />
+                    )
                 })}
             </div>
             {journey.comments.length === 0 &&
@@ -83,6 +69,7 @@ const JourneyComments = ({addComment, journey}) => {
 
 JourneyComments.propTypes = {
     addComment: PropTypes.func.isRequired,
+    editComment: PropTypes.func.isRequired,
     journey: PropTypes.object.isRequired
 }
 

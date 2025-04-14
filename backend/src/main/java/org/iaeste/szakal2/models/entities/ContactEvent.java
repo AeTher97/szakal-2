@@ -21,10 +21,10 @@ public class ContactEvent {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDateTime date;
+    @Setter
     @ManyToOne
     @JoinColumn(name = "contact_person_id")
     @JsonIgnoreProperties(value = {"company"})
-    @Setter
     private ContactPerson contactPerson;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -34,10 +34,11 @@ public class ContactEvent {
     @JoinColumn(name = "contact_journey_id", nullable = false)
     @JsonIgnore
     private ContactJourney contactJourney;
+    @Setter
     @NotNull
     @Column(length = 2000)
     private String description;
+    @Setter
     @Enumerated(EnumType.STRING)
     private ContactStatus eventType;
-
 }

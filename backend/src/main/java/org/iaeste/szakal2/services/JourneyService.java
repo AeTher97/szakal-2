@@ -7,9 +7,7 @@ import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.dto.campaign.ContactJourneySearch;
 import org.iaeste.szakal2.models.dto.journey.*;
 import org.iaeste.szakal2.models.entities.*;
-import org.iaeste.szakal2.repositories.ContactJourneyRepository;
-import org.iaeste.szakal2.repositories.ContactPersonRepository;
-import org.iaeste.szakal2.repositories.JourneySpecification;
+import org.iaeste.szakal2.repositories.*;
 import org.iaeste.szakal2.security.Authority;
 import org.iaeste.szakal2.security.utils.AccessVerificationBean;
 import org.iaeste.szakal2.security.utils.SecurityUtils;
@@ -33,6 +31,8 @@ public class JourneyService {
     private final ContactPersonRepository contactPersonRepository;
     private final NotificationService notificationService;
     private final WsNotifyingService wsNotifyingService;
+    private final ContactEventRepository contactEventRepository;
+    private final CommentRepository commentRepository;
 
     public JourneyService(ContactJourneyRepository contactJourneyRepository,
                           UserService userService,
@@ -40,7 +40,9 @@ public class JourneyService {
                           CampaignService campaignService,
                           ContactPersonRepository contactPersonRepository,
                           NotificationService notificationService,
-                          WsNotifyingService wsNotifyingService) {
+                          WsNotifyingService wsNotifyingService,
+                          ContactEventRepository contactEventRepository,
+                          CommentRepository commentRepository) {
         this.contactJourneyRepository = contactJourneyRepository;
         this.userService = userService;
         this.companyService = companyService;
@@ -48,6 +50,8 @@ public class JourneyService {
         this.contactPersonRepository = contactPersonRepository;
         this.notificationService = notificationService;
         this.wsNotifyingService = wsNotifyingService;
+        this.contactEventRepository = contactEventRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Transactional
@@ -111,6 +115,27 @@ public class JourneyService {
     }
 
     @Transactional
+    public ContactJourneyDetailsDTO editContactEvent(UUID journeyId, ContactEventEditDTO contactEventEditDTO) {
+        ContactJourney contactJourney = getJourneyById(journeyId);
+        ContactEvent contactEvent = getContactEventById(contactEventEditDTO.getEventId());
+
+        if (contactEvent.getUser().getId().equals(SecurityUtils.getUserId())) {
+            contactEvent.setDescription(contactEventEditDTO.getDescription());
+            contactEvent.setEventType(ContactStatus.valueOf(contactEventEditDTO.getContactStatus()));
+            if (contactEventEditDTO.getContactPerson() != null) {
+                ContactPerson contactPerson = contactPersonRepository.findById(contactEventEditDTO.getContactPerson())
+                        .orElseThrow(() -> new ResourceNotFoundException("The contact person with the given id was not found"));
+                contactEvent.setContactPerson(contactPerson);
+            } else {
+                contactEvent.setContactPerson(null);
+            }
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient permissions to edit the event");
+        }
+    }
+
+    @Transactional
     public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
@@ -133,6 +158,19 @@ public class JourneyService {
         });
         wsNotifyingService.sendUpdateAboutJourney(id);
         return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+    }
+
+    @Transactional
+    public ContactJourneyDetailsDTO editComment(UUID journeyId, CommentEditDTO commentEditDTO) {
+        ContactJourney contactJourney = getJourneyById(journeyId);
+        Comment comment = getCommentById(commentEditDTO.getCommentId());
+
+        if (comment.getUser().getId().equals(SecurityUtils.getUserId())) {
+            comment.setCommentValue(commentEditDTO.getComment());
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient permissions to edit a comment");
+        }
     }
 
     @Transactional
@@ -213,6 +251,15 @@ public class JourneyService {
                 .build();
     }
 
+    private Comment getCommentById(UUID commentId) {
+        Optional<Comment> commentOptional = commentRepository.findCommentById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new ResourceNotFoundException(STR."""
+                    Comment with id \{commentId} does not exist""");
+        }
+        return commentOptional.get();
+    }
+
     private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventCreationDTO contactEventCreationDTO) {
         User user = userService.getUserById(contactEventCreationDTO.getUser());
         Optional<ContactPerson> contactPersonOptional = contactPersonRepository.findContactPersonById(contactEventCreationDTO.getContactPerson());
@@ -225,6 +272,15 @@ public class JourneyService {
                 .eventType(contactEventCreationDTO.getContactStatus())
                 .description(contactEventCreationDTO.getDescription())
                 .build();
+    }
+
+    private ContactEvent getContactEventById(UUID eventId) {
+        Optional<ContactEvent> contactEventOptional = contactEventRepository.findContactEventById(eventId);
+        if (contactEventOptional.isEmpty()) {
+            throw new ResourceNotFoundException(STR."""
+                    ContactEvent with id \{eventId} does not exist""");
+        }
+        return contactEventOptional.get();
     }
 
     private ContactJourney contactJourneyFromDto(User user,
