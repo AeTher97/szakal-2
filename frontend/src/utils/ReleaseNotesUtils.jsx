@@ -1,6 +1,7 @@
 import {Typography} from "@mui/joy";
 import React from "react";
 import PropTypes from "prop-types";
+import { useTheme } from "@emotion/react";
 
 export const ReleaseNotesTitle = ({title}) => {
     return (
@@ -8,7 +9,6 @@ export const ReleaseNotesTitle = ({title}) => {
             component="h2"
             id="modal-title"
             level="h3"
-            textColor="inherit"
             sx={{fontWeight: 'lg', mb: 1}}
         >
             {title}
@@ -18,12 +18,15 @@ export const ReleaseNotesTitle = ({title}) => {
 
 
 export const ReleaseNotesSection = ({title, children}) => {
+
+    const theme = useTheme();
+        
     return (
         <div>
             <Typography level={"h3"}>
                 {title}
             </Typography>
-            <ul>
+            <ul style={{color: theme.vars.palette.text.primary}}>
                 {children}
             </ul>
         </div>

@@ -15,7 +15,7 @@
                 "DATABASE_URL": "localhost:5432/postgres",
                 "DATABASE_USERNAME": "postgres",
                 "DATABASE_PASSWORD": "postgres",
-                "JWT_SECRET": "devcontainers_preview_secret_do_not_use_in_productions",
+                "JWT_SECRET": "devcontainers_preview_secret_do_not_use_in_productionsfdsljfdlsj4l32jfldsjlj43l2jfkldjsfdsjflsdjflj4l32jl432",
                 "SPRING_PROFILES_ACTIVE" : "development"
             }
         },

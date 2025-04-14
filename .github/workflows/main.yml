@@ -49,10 +49,6 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
-      - name: Show tags
-        working-directory: ./
-        run: git tag
-
       - name: Run semver
         working-directory: ./
         run: ./gradlew createSemverTag "-Psemver.stage=final" "-Psemver.scope=${{inputs.release_level}}" && ./gradlew updateVersionInFiles && git add frontend/.env.development && git add frontend/.env.production
@@ -93,6 +89,9 @@ jobs:
           sudo chmod +x "${GITHUB_WORKSPACE}/cicd/deploy.sh"
           sudo "${GITHUB_WORKSPACE}/cicd/deploy.sh" ${HEROKU_API_TOKEN} ${LAST_COMMIT_MESSAGE} false
         shell: bash
+
+      - name: Commit changed env files
+        run: git add ./frontend/.env.development ./frontend/.env.production && git commit -m "GITHUB BOT, commit version bump"
 
       - name: Push new tag
         uses: ad-m/github-push-action@master
