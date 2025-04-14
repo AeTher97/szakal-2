@@ -10,7 +10,7 @@
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^6.4.8",
     "@reduxjs/toolkit": "^2.6.1",
-    "@stomp/stompjs": "^7.0.1",
+    "@stomp/stompjs": "^7.1.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
