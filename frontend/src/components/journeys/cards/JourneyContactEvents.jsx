@@ -99,6 +99,7 @@ const JourneyContactEvents = ({addContactEvent, editContactEvent, journey}) => {
                             journey={journey}
                             editContactEvent={editContactEvent}
                             contactStatusOptions={contactStatusOptions}
+                            userId={userId}
                         />
                     );
                 })}
@@ -111,6 +112,7 @@ const JourneyContactEvents = ({addContactEvent, editContactEvent, journey}) => {
 
 JourneyContactEvents.propTypes = {
     addContactEvent: PropTypes.func.isRequired,
+    editContactEvent: PropTypes.func.isRequired,
     journey: PropTypes.object.isRequired
 }
 

@@ -47,7 +47,7 @@ const Comment = ({comment, userId, editComment}) => {
                     />
                     <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 7, marginBottom: 10}}>
                         <Button type={"submit"} data-testid="save-comment-button">Zapisz</Button>
-                        <Button color={"neutral"} onClick={() => setEditing(false)}>
+                        <Button color="neutral" onClick={() => setEditing(false)}>
                             Anuluj
                         </Button>
                     </div>
@@ -55,12 +55,14 @@ const Comment = ({comment, userId, editComment}) => {
             ) : (
                 <>
                     <Typography level={"body-md"}>{comment.comment}</Typography>
-                    <Link
-                        onClick={() => setEditing(true)}
-                        data-testid="edit-comment-link"
-                        style={{cursor: "pointer", marginBottom: 10}}>
-                        Edytuj
-                    </Link>
+                    {userId === comment.user.id && (
+                        <Link
+                            onClick={() => setEditing(true)}
+                            data-testid="edit-comment-link"
+                            style={{cursor: "pointer", marginBottom: 10}}>
+                            Edytuj
+                        </Link>
+                    )}
                 </>
             )}
             <Divider/>

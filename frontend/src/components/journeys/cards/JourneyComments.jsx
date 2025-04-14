@@ -47,7 +47,6 @@ const JourneyComments = ({addComment, editComment, journey}) => {
                 {journey.comments.sort((a, b) => {
                     return new Date(a.date) > new Date(b.date) ? -1 : 1;
                 }).map(comment => {
-                    console.log(comment.id);
                     return (
                         <Comment
                             data-testid={`comment-${comment.id}`}
