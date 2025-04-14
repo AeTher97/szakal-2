@@ -15,7 +15,6 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions, u
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        console.log(event.user.id, "  ", journey.user.id)
         if (editingContactStatus !== "CHOOSE" && editingDescription !== "") {
             editContactEvent(event.id, editingDescription, editingContactStatus, editingContactPerson === "CHOOSE" ? null : editingContactPerson, userId)
                 .then(() => setEditing(false));
