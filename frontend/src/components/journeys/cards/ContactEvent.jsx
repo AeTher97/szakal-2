@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, FormControl, Link, Option, Select, Typography} from "@mui/joy";
+import {Button, FormControl, Link, Option, Select, Stack, Typography} from "@mui/joy";
 import TimelineItem from "../../misc/timline/TimelineItem";
 import UserAvatar from "../../misc/UserAvatar";
 import {TextAreaWithLimit} from "../../misc/InputWithLimit";
@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {formatLocalDateTime} from "../../../utils/DateUtils";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
 
-const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) => {
+const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions, userId}) => {
     const [editing, setEditing] = useState(false);
     const [editingDescription, setEditingDescription] = useState(event.description);
     const [editingContactStatus, setEditingContactStatus] = useState(event.eventType);
@@ -15,8 +15,9 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
+        console.log(event.user.id, "  ", journey.user.id)
         if (editingContactStatus !== "CHOOSE" && editingDescription !== "") {
-            editContactEvent(event.id, editingDescription, editingContactStatus, editingContactPerson === "CHOOSE" ? null : editingContactPerson, journey.user.id)
+            editContactEvent(event.id, editingDescription, editingContactStatus, editingContactPerson === "CHOOSE" ? null : editingContactPerson, userId)
                 .then(() => setEditing(false));
         }
     };
@@ -25,42 +26,44 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
         <TimelineItem>
             {editing ? (
                 <form onSubmit={handleEditSubmit}>
-                    <FormControl>
-                        <Select value={editingContactStatus}
-                                onChange={(e, newValue) => setEditingContactStatus(newValue)}
-                                data-testid="edit-event-type">
-                            <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
-                            {contactStatusOptions.map(option => (
-                                <Option key={option.name} value={option.name}>{option.text}</Option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl>
-                        <Select value={editingContactPerson}
-                                onChange={(e, newValue) => setEditingContactPerson(newValue)}
-                                data-testid="edit-event-contact-person">
-                            <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
-                            {journey.company.contactPeople.map(person => (
-                                <Option key={person.id} value={person.id}>{person.name}</Option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <TextAreaWithLimit
-                        data-testid="edit-contact-event-description"
-                        limit={2000}
-                        minRows={2}
-                        value={editingDescription}
-                        isValid={true}
-                        onChange={(e) => setEditingDescription(e.target.value)}
-                        placeholder={"Opis"}
-                        required
-                    />
-                    <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 7}}>
-                        <Button type={"submit"} data-testid="save-contact-event-link">Zapisz</Button>
-                        <Button color={"neutral"} onClick={() => setEditing(false)}>
-                            Anuluj
-                        </Button>
-                    </div>
+                    <Stack spacing={1} style={{flex: 1}}>
+                        <FormControl>
+                            <Select value={editingContactStatus}
+                                    onChange={(e, newValue) => setEditingContactStatus(newValue)}
+                                    data-testid="edit-event-type">
+                                <Option value={"CHOOSE"} disabled>Wybierz typ</Option>
+                                {contactStatusOptions.map(option => (
+                                    <Option key={option.name} value={option.name}>{option.text}</Option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <Select value={editingContactPerson}
+                                    onChange={(e, newValue) => setEditingContactPerson(newValue)}
+                                    data-testid="edit-event-contact-person">
+                                <Option value={"CHOOSE"}>Osoba kontaktowa (może być puste)</Option>
+                                {journey.company.contactPeople.map(person => (
+                                    <Option key={person.id} value={person.id}>{person.name}</Option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <TextAreaWithLimit
+                            data-testid="edit-contact-event-description"
+                            limit={2000}
+                            minRows={2}
+                            value={editingDescription}
+                            isValid={true}
+                            onChange={(e) => setEditingDescription(e.target.value)}
+                            placeholder={"Opis"}
+                            required
+                        />
+                        <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: 7}}>
+                            <Button type={"submit"} data-testid="save-contact-event-link">Zapisz</Button>
+                            <Button color={"neutral"} onClick={() => setEditing(false)}>
+                                Anuluj
+                            </Button>
+                        </div>
+                    </Stack>
                 </form>
             ) : (
                 <>
@@ -93,12 +96,14 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions}) 
                             </Typography>
                         </div>
                     )}
-                    <Link
-                        onClick={() => setEditing(true)}
-                        data-testid="edit-contact-event-link"
-                        style={{cursor: "pointer"}}>
-                        Edytuj
-                    </Link>
+                    {event.user.id === userId && (
+                        <Link
+                            onClick={() => setEditing(true)}
+                            data-testid="edit-contact-event-link"
+                            style={{cursor: "pointer"}}>
+                            Edytuj
+                        </Link>
+                    )}
                 </>
             )}
         </TimelineItem>
