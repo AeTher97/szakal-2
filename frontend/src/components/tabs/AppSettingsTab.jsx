@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import TabHeader from "../misc/TabHeader";
-import {Autocomplete, Card, CardActions, CardContent, FormControl, FormLabel, Typography} from "@mui/joy";
-import Button from "@mui/joy/Button";
+import {
+    Autocomplete,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CircularProgress,
+    FormControl,
+    FormLabel,
+    Typography
+} from "@mui/joy";
 import {useDispatch, useSelector} from "react-redux";
 import {useMobileSize} from "../../utils/MediaQuery";
 import {changeCampaignAction} from "../../redux/MiscActions";
@@ -83,32 +92,35 @@ const AppSettingsTab = () => {
                 </TabHeader>
                 <div style={{display: "flex", flexWrap: "wrap", gap: 10, alignItems: "flex-start"}}>
                     <Card variant={"outlined"} sx={{padding: 1, minWidth: 200, flex: mobile ? 1 : ""}}>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            setLocalStorageCampaign(campaignValue.id);
-                            dispatch(changeCampaignAction(campaignValue.id));
-                        }}>
-                            <CardContent>
-                                <FormControl>
-                                    <FormLabel>
-                                        Domyślna akcja
-                                    </FormLabel>
-                                    <Autocomplete loading={loading}
-                                                  disableClearable
-                                                  options={campaignsOptions}
-                                                  value={campaignValue}
-                                                  getOptionDisabled={getOptionDisabled}
-                                                  isOptionEqualToValue={isOptionEqualToValue}
-                                                  onChange={(e, inputValue) => {
-                                                      setCampaignValue(inputValue)
-                                                  }}
-                                    />
-                                </FormControl>
-                            </CardContent>
-                            <CardActions>
-                                <Button type={"submit"}>Zapisz</Button>
-                            </CardActions>
-                        </form>
+                        {loading && <CircularProgress/>}
+                        {!loading && (
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                setLocalStorageCampaign(campaignValue.id);
+                                dispatch(changeCampaignAction(campaignValue.id));
+                            }}>
+                                <CardContent>
+                                    <FormControl>
+                                        <FormLabel>
+                                            Domyślna akcja
+                                        </FormLabel>
+                                        <Autocomplete loading={loading}
+                                                      disableClearable
+                                                      options={campaignsOptions}
+                                                      value={campaignValue}
+                                                      getOptionDisabled={getOptionDisabled}
+                                                      isOptionEqualToValue={isOptionEqualToValue}
+                                                      onChange={(e, inputValue) => {
+                                                          setCampaignValue(inputValue)
+                                                      }}
+                                        />
+                                    </FormControl>
+                                </CardContent>
+                                <CardActions>
+                                    <Button type={"submit"}>Zapisz</Button>
+                                </CardActions>
+                            </form>
+                        )}
                     </Card>
                     <Card variant={"outlined"} sx={{padding: 1, minWidth: 200, flex: mobile ? 1 : ""}}>
                         <Typography>Dołącz do grupy</Typography>

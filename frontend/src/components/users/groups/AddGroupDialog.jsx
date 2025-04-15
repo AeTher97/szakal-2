@@ -1,6 +1,5 @@
 import React from 'react';
-import {DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
-import Button from "@mui/joy/Button";
+import {Button, DialogTitle, FormControl, FormLabel, Modal, ModalDialog, Stack} from "@mui/joy";
 import PropTypes from "prop-types";
 import {InputWithLimit} from "../../misc/InputWithLimit";
 import {UseFieldValidation} from "../../../utils/UseFieldValidation";
@@ -28,7 +27,7 @@ const AddGroupDialog = ({open, addRole, close}) => {
                                             limit={name.limit}
                                             isValid={name.isValid}
                                             onChange={name.handleChange}
-                                            placeholder={"Nazwa roli"}/>
+                                            placeholder={"Nazwa grupy"}/>
                         </FormControl>
                         <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>

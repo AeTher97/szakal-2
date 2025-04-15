@@ -5,14 +5,16 @@ import {addKnownItem, removeKnownItem} from "../../../redux/MiscActions";
 import {useDispatch} from "react-redux";
 import RoleAuthorities from "./RoleAuthorities";
 import TabHeader from "../../misc/TabHeader";
-import {Typography} from "@mui/joy";
+import {LinearProgress, Typography} from "@mui/joy";
 import RoleBasicInfo from "./RoleBasicInfo";
+import {useMobileSize} from "../../../utils/MediaQuery";
 
 const RoleDetails = () => {
 
+    const mobile = useMobileSize();
     const location = useLocation();
     const dispatch = useDispatch();
-    const {role, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
+    const {loading, role, updateRole, updateRoleLoading} = useRole(location.pathname.split("/")[4]);
     const [localRole, setLocalRole] = useState(null);
     const [updateRoleDetailsLoading, setUpdateRoleDetailsLoading] = useState(false);
 
@@ -32,7 +34,8 @@ const RoleDetails = () => {
 
     return (
         <div style={{overflow: "auto"}}>
-            {role && <TabHeader>
+            {loading && <LinearProgress/>}
+            {!loading && role && <TabHeader>
                 <div>
                     <Typography level={"h2"}>{role.name}</Typography>
                 </div>
