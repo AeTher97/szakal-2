@@ -91,7 +91,11 @@ jobs:
         shell: bash
 
       - name: Commit changed env files
-        run: git add ./frontend/.env.development ./frontend/.env.production && git commit -m "GITHUB BOT, commit version bump"
+        run: |
+          git add ./frontend/.env.development ./frontend/.env.production
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "GITHUB BOT, commit version bump"
 
       - name: Push new tag
         uses: ad-m/github-push-action@master
