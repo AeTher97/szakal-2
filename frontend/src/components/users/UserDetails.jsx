@@ -3,13 +3,12 @@ import {useLocation} from "react-router";
 import {useDispatch} from "react-redux";
 import {addKnownItem, removeKnownItem} from "../../redux/MiscActions";
 import {useIsUser, useUserData} from "../../data/UsersData";
-import {Typography} from "@mui/joy";
+import {Button, LinearProgress, Typography} from "@mui/joy";
 import TabHeader from "../misc/TabHeader";
 import {formatLocalDateTime} from "../../utils/DateUtils";
 import BasicUserInfo from "./BasicUserInfo";
 import UserRoles from "./UserRoles";
 import UserManagement from "./UserManagement";
-import Button from "@mui/joy/Button";
 import PasswordChangeDialog from "./PasswordChangeDialog";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRightsList";
@@ -29,6 +28,7 @@ const UserDetails = ({userId}) => {
     const validIdFromPath = uuidCheck.test(idFromPath);
 
     const {
+        loading,
         user,
         updateUserRoles,
         updateRolesLoading,
@@ -76,11 +76,13 @@ const UserDetails = ({userId}) => {
 
     return (
         <div style={{overflow: "auto"}}>
-            {user && localUser && <div>
+            {loading && <LinearProgress/>}
+            {!loading && user && localUser && <div>
                 <TabHeader>
                     <div>
                         <Typography overflow={"hidden"} noWrap level={"h2"}>{user.name} {user.surname}</Typography>
-                        <Typography level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
+                        <Typography
+                            level={"title-sm"}>Zarejestrowany {formatLocalDateTime(user.createdAt)}</Typography>
                     </div>
                     {!mobile && renderActions()}
                 </TabHeader>
