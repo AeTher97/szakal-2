@@ -41,11 +41,14 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: gradle
+
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
