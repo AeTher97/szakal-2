@@ -42,6 +42,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           ssh-key: ${{ secrets.DEPLOY_KEY }}
+          persist-credentials: true
 
       - uses: actions/setup-java@v3
         with:
@@ -100,10 +101,10 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git commit -m "GITHUB BOT, commit version bump"
 
-      - name: Push new tag
+      - name: Push to master
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           force: false
           tags: true
+          ssh: true
