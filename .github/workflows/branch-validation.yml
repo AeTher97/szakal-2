@@ -52,8 +52,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: gradle
-      - uses: docker-practice/actions-setup-docker@master
-        timeout-minutes: 12
 
       - name: Install psql
         working-directory: ./
