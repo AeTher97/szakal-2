@@ -14,7 +14,7 @@ spring-dependency-management-version = "1.1.7"
 
 org-testcontainers-junit-jupiter = "1.21.0"
 org-testcontainers-postgresql = "1.21.0"
-org-testcontainers-testcontainers = "1.21.0"
+org-testcontainers-testcontainers = "1.21.1"
 
 org-projectlombok-lombok = "1.18.38"
 freefair = "8.13.1"
