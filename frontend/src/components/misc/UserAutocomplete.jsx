@@ -75,7 +75,7 @@ const UserAutocomplete = ({
                     }
                 }) : []}
             renderOption={(props, option) => (
-                <AutocompleteOption {...props}>
+                <AutocompleteOption {...props} key={option.id}>
                     <ListItemDecorator style={{ marginInlineEnd: 5 }}>
                         <UserAvatar id={option.id} name={option.name} surname={option.surname}
                                     image={option.profilePicture}
@@ -92,6 +92,7 @@ const UserAutocomplete = ({
                     </ListItemContent>
                 </AutocompleteOption>
             )}
+            getOptionLabel={(option) => `${option.name} ${option.surname}`}
         />
     );
 };
