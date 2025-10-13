@@ -6,7 +6,7 @@ io-jsonwebtoken-jjwt = "0.12.7"
 
 io-rest-assured-rest-assured = "5.5.6"
 
-org-postgresql-postgresql = "42.7.7"
+org-postgresql-postgresql = "42.7.8"
 
 springframework-boot-version = "3.5.4"
 org-springframework-security-spring-security-test = "6.5.5"
