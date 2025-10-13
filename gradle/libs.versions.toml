@@ -8,7 +8,7 @@ io-rest-assured-rest-assured = "5.5.6"
 
 org-postgresql-postgresql = "42.7.7"
 
-springframework-boot-version = "3.5.4"
+springframework-boot-version = "3.5.6"
 org-springframework-security-spring-security-test = "6.5.5"
 spring-dependency-management-version = "1.1.7"
 
