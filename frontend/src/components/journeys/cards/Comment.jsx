@@ -30,7 +30,8 @@ const Comment = ({comment, userId, editComment}) => {
                 />
                 <div>
                     <Typography level={"title-sm"}>{comment.user.name} {comment.user.surname}</Typography>
-                    <Typography level={"body-xs"}>{formatLocalDateTime(comment.date)}</Typography>
+                    <Typography
+                        level={"body-xs"}>{formatLocalDateTime(comment.date)}{comment.edited ? ", (Edytowany)" : ""}</Typography>
                 </div>
             </div>
             {editing ? (
@@ -54,7 +55,7 @@ const Comment = ({comment, userId, editComment}) => {
                 </form>
             ) : (
                 <>
-                    <Typography level={"body-md"}>{comment.comment}</Typography>
+                    <Typography level={"body-md"} style={{marginBottom: 5}}>{comment.comment}</Typography>
                     {userId === comment.user.id && (
                         <Link
                             onClick={() => setEditing(true)}

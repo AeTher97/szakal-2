@@ -35,4 +35,6 @@ public class Comment {
     @JoinColumn(name = "contact_journey_id", nullable = false)
     @JsonIgnore
     private ContactJourney contactJourney;
+    @Setter
+    private boolean edited;
 }

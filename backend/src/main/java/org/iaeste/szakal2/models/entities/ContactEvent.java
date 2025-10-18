@@ -41,4 +41,6 @@ public class ContactEvent {
     @Setter
     @Enumerated(EnumType.STRING)
     private ContactStatus eventType;
+    @Setter
+    private boolean edited;
 }

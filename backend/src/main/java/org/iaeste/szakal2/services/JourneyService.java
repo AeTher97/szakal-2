@@ -122,6 +122,7 @@ public class JourneyService {
         if (contactEvent.getUser().getId().equals(SecurityUtils.getUserId())) {
             contactEvent.setDescription(contactEventEditDTO.getDescription());
             contactEvent.setEventType(ContactStatus.valueOf(contactEventEditDTO.getContactStatus()));
+            contactEvent.setEdited(true);
             if (contactEventEditDTO.getContactPerson() != null) {
                 ContactPerson contactPerson = contactPersonRepository.findById(contactEventEditDTO.getContactPerson())
                         .orElseThrow(() -> new ResourceNotFoundException("The contact person with the given id was not found"));
@@ -167,6 +168,7 @@ public class JourneyService {
 
         if (comment.getUser().getId().equals(SecurityUtils.getUserId())) {
             comment.setCommentValue(commentEditDTO.getComment());
+            comment.setEdited(true);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
             throw new BadCredentialsException("Insufficient permissions to edit a comment");

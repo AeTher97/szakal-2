@@ -15,6 +15,7 @@ public class CommentDetailsDTO {
     private LocalDateTime date;
     private ContactJourneyUserDTO user;
     private UUID id;
+    private boolean edited;
 
     public static CommentDetailsDTO fromComment(Comment comment) {
         return CommentDetailsDTO.builder()
@@ -22,6 +23,7 @@ public class CommentDetailsDTO {
                 .date(comment.getDate())
                 .user(ContactJourneyUserDTO.fromUser(comment.getUser()))
                 .id(comment.getId())
+                .edited(comment.isEdited())
                 .build();
     }
 }

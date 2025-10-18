@@ -21,6 +21,8 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions, u
         }
     };
 
+    console.log(event)
+
     return (
         <TimelineItem>
             {editing ? (
@@ -77,16 +79,20 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions, u
                                 size={"sm"}/>
                             <div>
                                 <Typography level={"title-sm"}>{event.user.name} {event.user.surname}</Typography>
-                                <Typography level={"body-xs"}>{formatLocalDateTime(event.date)}</Typography>
+                                <Typography
+                                    level={"body-xs"}>{formatLocalDateTime(event.date)}{event.edited ? ", (Edytowany)" : ""}</Typography>
+
                             </div>
                         </div>
                         <div style={{flex: 1}}>
-                            <Typography level={"body-sm"} style={{textAlign: "right"}}>
+                            <Typography level={"title-sm"} style={{textAlign: "right"}}>
                                 {contactStatusUtils(event.eventType)}
                             </Typography>
                         </div>
                     </div>
-                    <Typography level={"body-md"}>{event.description}</Typography>
+                    <Typography level={"body-md"}>
+                        {event.description}
+                    </Typography>
                     {event.contactPerson && (
                         <div>
                             <Typography level={"body-sm"}>

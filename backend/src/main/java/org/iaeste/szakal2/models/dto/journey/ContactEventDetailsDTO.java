@@ -21,6 +21,7 @@ public class ContactEventDetailsDTO {
     private String description;
     private ContactStatus eventType;
     private LocalDateTime date;
+    private boolean edited;
 
     public static ContactEventDetailsDTO fromContactEvent(ContactEvent contactEvent) {
         return ContactEventDetailsDTO.builder()
@@ -31,6 +32,7 @@ public class ContactEventDetailsDTO {
                 .description(contactEvent.getDescription())
                 .eventType(contactEvent.getEventType())
                 .date(contactEvent.getDate())
+                .edited(contactEvent.isEdited())
                 .build();
     }
 }
