@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useUsersList} from "../../data/UsersData";
 import {
     Card,
@@ -32,6 +32,10 @@ const UsersList = () => {
     const [searchRole, setSearchRole] = useState([]);
     const {roles} = useRolesList();
     const {users, loading, pageNumber} = useUsersList(currentPage - 1, searchName, searchCommittee, searchRole);
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchRole, searchCommittee, searchName]);
 
     return (
         <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: {xs: 300, sm: 350, lg: 450}}}>

@@ -3,7 +3,20 @@ import {ReleaseNotesBullet, ReleaseNotesSection, ReleaseNotesTitle} from "../uti
 
 export const releaseNotes = [
     <>
-    <ReleaseNotesTitle title={"Szakal 1.2"}/>
+        <ReleaseNotesTitle title={"Szakal 1.3"}/>
+        <div style={{overflowY: "auto"}}>
+            <ReleaseNotesSection title={"Nowe funkcjonalności"}>
+                <ReleaseNotesBullet title={"Ładniejsza formatka do wrzucania zdjęć profilowych"}
+                                    description={"Możliwe jest przciąganie zdjęcia profilowego do przeglądarki i wygląda to ładniej."}/>
+            </ReleaseNotesSection>
+            <ReleaseNotesSection title={"Naprawione błędy"}>
+                <ReleaseNotesBullet title={"Usuwanie niezaakceptowanych użytkowników, którzy próbowali resetować hasło"}
+                                    description={"Tokeny resetu hasła są usuwane dla tych użytkowników automatycznie, usuwanie nie rzuca już Internal Server Error."}/>
+            </ReleaseNotesSection>
+        </div>
+    </>,
+    <>
+        <ReleaseNotesTitle title={"Szakal 1.2"}/>
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>
                 <ReleaseNotesBullet title={"Edytowanie komentarzy i wydarzeń kontaktowych"}
@@ -23,7 +36,7 @@ export const releaseNotes = [
                                         " i firm są odświeżane automatycznie."}/>
                 <ReleaseNotesBullet title={"Dane na temat komitetu dodane do użytkowników"}
                                     description={"Komitet może zostać zmieniony w zakładce profil, " +
-                                        "informacje o nim są wyświetlane w kilku miejscach aplikacji, by" +
+                                        "informacje o nim są wyświetlane w kilku miejscach aplikacji, by " +
                                         "ułatwić identyfikację użytkowników."}/>
                 <ReleaseNotesBullet title={"Usuwanie osób kontaktowych"}
                                     description={"Możliwa jest anonimizacja wydarzeń kontaktowych przez " +
@@ -37,11 +50,13 @@ export const releaseNotes = [
 ]
 
 const ReleaseNotesScreen = () => {
-    return releaseNotes.map((notes, i) =>
-        <div style={{marginLeft: 5}} key={i}>
-            {notes}
-        </div>
-    );
+    return <div style={{padding: 5}}>
+        {releaseNotes.map((notes, i) =>
+            <div style={{marginLeft: 5}} key={i}>
+                {notes}
+            </div>
+        )}
+    </div>
 };
 
 export default ReleaseNotesScreen;

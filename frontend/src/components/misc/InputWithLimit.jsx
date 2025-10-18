@@ -44,11 +44,13 @@ export const TextAreaWithLimit = ({
                                       formControlProps,
                                       required,
                                       isValid = true,
+                                      label,
                                       ...props
                                   }) => {
 
     return (
         <FormControl {...formControlProps} error={!isValid}>
+            <FormLabel>{label}</FormLabel>
             <Textarea {...props} onChange={onChange} required={required}/>
             {!isValid && <FormHelperText>
                 <InfoOutlined/>

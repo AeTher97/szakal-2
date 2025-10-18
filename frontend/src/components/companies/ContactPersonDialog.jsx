@@ -110,6 +110,15 @@ const ContactPersonDialog = ({
                                     setIsAlumni(e.target.checked)
                                 }}/>
                         </FormControl>
+                        {isAlumni && <FormControl>
+                            <FormLabel>Komitet</FormLabel>
+                            <Textarea
+                                label={"Komitet"}
+                                value={committee.value}
+                                onChange={(e) => {
+                                    committee.setValue(e.target.value)
+                                }} placeholder={"AGH"}/>
+                        </FormControl>}
                         <InputWithLimit
                             label={"Telefon"}
                             value={phone.value}
@@ -132,12 +141,6 @@ const ContactPersonDialog = ({
                             isValid={comment.isValid}
                             onChange={comment.handleChange}
                             placeholder={"Człowiek z HRów"}/>
-                        <Textarea
-                            label={"Komitet"}
-                            value={committee.value}
-                            onChange={(e) => {
-                                committee.setValue(e.target.value)
-                            }} placeholder={"AGH"}/>
                         <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={() => {
                             clear();
