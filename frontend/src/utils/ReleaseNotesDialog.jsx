@@ -5,6 +5,7 @@ import {releaseNotes} from "../screens/ReleaseNotesScreen";
 import Link from "@mui/joy/Link";
 
 const ReleaseNotesDialog = ({open, close}) => {
+
     return (
         <Modal open={open} onClose={close}>
             <ModalDialog data-testid="release-notes-dialog"
@@ -17,6 +18,7 @@ const ReleaseNotesDialog = ({open, close}) => {
                                  borderRadius: 0,
                                  transform: 'none',
                                  maxWidth: 'unset',
+                                 border: 'none'
                              },
                          })}>
                 <ModalClose/>

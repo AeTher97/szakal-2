@@ -4,6 +4,7 @@ import Button from "@mui/joy/Button";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/AlertActions";
 import PropTypes from "prop-types";
+import {useMobileSize} from "../../utils/MediaQuery";
 
 const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
 
@@ -11,6 +12,7 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
     const inputRef = useRef();
     const labelRef = useRef();
     const dispatch = useDispatch();
+    const mobile = useMobileSize();
     const [imageString, setImageString] = useState(null);
 
     useEffect(() => {
@@ -72,7 +74,7 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
                     close();
                 }}>
                     <div style={{
-                        width: 300, height: 300, display: "flex",
+                        height: mobile ? 250 : 400, width: mobile ? 250 : 400, display: "flex",
                         justifyContent: "center", alignItems: "center",
                         position: "relative"
                     }}>
@@ -115,7 +117,8 @@ const ProfilePictureDialog = ({open, updateProfilePicture, close}) => {
                                    style={{display: "none"}}
                             />
                         </>}
-                        {imageString && <img alt={"User avatar"} style={{width: 300, height: 300, objectFit: "cover"}}
+                        {imageString && <img alt={"User avatar"}
+                                             style={{width: mobile ? 250 : 400, height: "100%", objectFit: "cover"}}
                                              src={imageString}/>}
                         <div></div>
                     </div>
