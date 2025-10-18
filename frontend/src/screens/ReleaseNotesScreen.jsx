@@ -14,6 +14,8 @@ export const releaseNotes = [
             <ReleaseNotesSection title={"Naprawione błędy"}>
                 <ReleaseNotesBullet title={"Usuwanie niezaakceptowanych użytkowników, którzy próbowali resetować hasło"}
                                     description={"Tokeny resetu hasła są usuwane dla tych użytkowników automatycznie, usuwanie nie rzuca już Internal Server Error."}/>
+                <ReleaseNotesBullet title={"Dodawanie i modyfikacja kategorii"}
+                                    description={"Dodawanie i modyfikacja kategori nie rzuca już błędu bad request."}/>
             </ReleaseNotesSection>
         </div>
     </>,
