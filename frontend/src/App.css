@@ -24,3 +24,13 @@
     -webkit-background-clip: text;
     color: transparent;
 }
+
+#myFileLabel {
+    border: 5px dashed #0B6BCB;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#myFileLabel:hover {
+    background-color: rgba(124, 124, 124, 0.08);
+}
