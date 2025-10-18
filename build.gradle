@@ -1,5 +1,5 @@
 plugins {
-    id("com.javiersc.semver") version "0.8.0"
+    id("com.javiersc.semver") version "0.9.0"
 }
 
 tasks.register('updateVersionInFiles', Exec) {
