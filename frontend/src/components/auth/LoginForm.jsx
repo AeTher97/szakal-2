@@ -7,6 +7,7 @@ import {loginAction} from "../../redux/AuthActions";
 import PropTypes from "prop-types";
 import {UseFieldValidation} from "../../utils/UseFieldValidation";
 import {InputWithLimit} from "../misc/InputWithLimit";
+import {useMobileSize} from "../../utils/MediaQuery";
 
 const LoginForm = ({redirectBack}) => {
 
@@ -14,7 +15,7 @@ const LoginForm = ({redirectBack}) => {
     const [password, setPassword] = useState("");
     const {error} = useSelector(state => state.auth)
     const dispatch = useDispatch();
-
+    const mobile = useMobileSize();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -48,7 +49,8 @@ const LoginForm = ({redirectBack}) => {
                 }}
                 variant="outlined">
                 <div style={{display: "flex", justifyContent: "center", marginBottom: 0, marginTop: 5}}>
-                    <img alt={"Szakal logo"} src={"/szakal_logo.svg"} style={{height: 250, width: 250}}/>
+                    <img alt={"Szakal logo"} src={"/szakal_logo.svg"}
+                         style={{height: mobile ? 150 : 250, width: mobile ? 150 : 250}}/>
                 </div>
                 <div>
                     <Typography level="h4" component="h1">
