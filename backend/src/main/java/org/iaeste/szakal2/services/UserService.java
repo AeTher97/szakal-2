@@ -35,8 +35,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -78,8 +78,8 @@ public class UserService {
     public User getUserById(UUID id) {
         Optional<User> userOptional = usersRepository.findUserById(id);
         if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(STR. """
-                    User with id:\{ id } not found""" );
+            throw new UserNotFoundException(STR."""
+                    User with id:\{id} not found""");
         }
         return userOptional.get();
     }
@@ -197,19 +197,19 @@ public class UserService {
         return usersRepository.findAllById(userList);
     }
 
-    public void saveUserList(List<User> users){
+    public void saveUserList(List<User> users) {
         usersRepository.saveAll(users);
     }
 
     public List<UserMinimalDTO> searchUsers(String phrase) {
-        String [] parts = phrase.split(" ");
-        if(parts.length == 1) {
+        String[] parts = phrase.split(" ");
+        if (parts.length == 1) {
             return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
-                    parts[0], parts[0], parts[0])
+                            parts[0], parts[0], parts[0])
                     .stream().map(UserMinimalDTO::fromUser).toList();
-        } else if(parts.length > 1){
+        } else if (parts.length > 1) {
             return usersRepository.findUsersByEmailContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
-                    parts[0], parts[0], parts[1])
+                            parts[0], parts[0], parts[1])
                     .stream().map(UserMinimalDTO::fromUser).toList();
         } else {
             return new ArrayList<>();
@@ -243,17 +243,20 @@ public class UserService {
         imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         imageWriteParam.setCompressionQuality(0.2f);
 
-        writer.write(null, new IIOImage(inputImage,null, null), imageWriteParam);
+        writer.write(null, new IIOImage(inputImage, null, null), imageWriteParam);
 
         picture.setData(pictureUploadDTO.getFile().getBytes());
         return profilePictureRepository.save(picture);
     }
 
+    @Transactional
     public void deleteUserIfNotAccepted(UUID id) {
         User user = getUserById(id);
-        if(user.isAccepted()){
+        if (user.isAccepted()) {
             throw new SzakalException("Cannot delete already accepted user");
         } else {
+            profilePictureRepository.deleteProfilePictureByUser(user);
+            passwordTokenRepository.deleteAllPasswordResetTokensByUser(user);
             usersRepository.delete(user);
         }
     }

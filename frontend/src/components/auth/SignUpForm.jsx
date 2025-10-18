@@ -24,7 +24,7 @@ const SignUpForm = () => {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
-    const minLength = 8;
+    const minLength = 15;
 
     const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
     const [passwordTooShort, setPasswordTooShort] = useState(false);
@@ -156,10 +156,10 @@ const SignUpForm = () => {
                         level="body-xs"
                         sx={{alignSelf: 'flex-end', color: 'hsl(var(--hue) 80% 30%)'}}
                     >
-                        {password.length < 3 && 'Bardzo słabe'}
-                        {password.length >= 3 && password.length < 6 && 'Słabe'}
-                        {password.length >= 6 && password.length < 10 && 'Silne'}
-                        {password.length >= 10 && 'Bardzo silne'}
+                        {password.length < 6 && 'Bardzo słabe'}
+                        {password.length >= 6 && password.length < 10 && 'Słabe'}
+                        {password.length >= 10 && password.length < 15 && 'Silne'}
+                        {password.length >= 15 && 'Bardzo silne'}
                     </Typography>
                     {passwordTooShort && <FormHelperText>
                         Hasło musi mieć przynajmniej 8 znaków
