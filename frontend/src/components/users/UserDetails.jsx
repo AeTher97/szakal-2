@@ -67,7 +67,7 @@ const UserDetails = ({userId}) => {
     }, [user])
 
     const renderActions = () => {
-        return <div style={{paddingBottom: mobile ? 5 : 0, display: "flex"}}>
+        return <div style={{display: "flex"}}>
             {isCurrentUser && <Button size={mobile ? "sm" : "md"} style={{flex: 1}} onClick={() => {
                 setChangePasswordOpen(true)
             }}>Zmień hasło</Button>}
@@ -93,7 +93,6 @@ const UserDetails = ({userId}) => {
                     flexWrap: "wrap",
                     alignItems: "stretch",
                     gap: 10,
-                    paddingBottom: mobile ? 0 : 100,
                     overflow: "hidden"
                 }}>
                     <BasicUserInfo user={user} localUser={localUser} updateUserDetails={updateUserDetails}

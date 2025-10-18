@@ -85,7 +85,6 @@ const AppSettingsTab = () => {
                 display: "flex",
                 overflow: "auto",
                 flexDirection: "column",
-                paddingBottom: 30
             }}>
                 <TabHeader>
                     <Typography level="h2">Ustawienia aplikacji</Typography>

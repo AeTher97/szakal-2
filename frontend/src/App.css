@@ -34,3 +34,13 @@
 #myFileLabel:hover {
     background-color: rgba(124, 124, 124, 0.08);
 }
+
+ul {
+    list-style-type: circle;
+    margin: 5px;
+}
+
+ul li::marker {
+    color: #0B6BCB;
+    font-size: 20px;
+}

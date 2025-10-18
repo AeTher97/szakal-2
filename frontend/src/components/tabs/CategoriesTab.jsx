@@ -25,7 +25,7 @@ const CategoriesTab = () => {
     return (
         <Routes>
             <Route path={"/"} element={
-                <div style={{display: "flex", overflow: "hidden", flexDirection: "column", paddingBottom: 30}}>
+                <div style={{display: "flex", overflow: "hidden", flexDirection: "column"}}>
                     <TabHeader>
                         <Typography level="h2">Kategorie</Typography>
                         {hasRight(CATEGORY_MODIFICATION) && <Button onClick={() => {

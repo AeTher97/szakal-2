@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardActions, CardContent, Divider, Switch, Typography} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import {useMobileSize} from "../../utils/MediaQuery";
+import {useMediumSize} from "../../utils/MediaQuery";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT} from "../../utils/AccessRightsList";
 import {useConfirmationDialog} from "../misc/ConfirmationDialog";
@@ -20,13 +20,13 @@ const UserManagement = ({
                         }) => {
 
     const {hasRight} = useAccessRightsHelper();
-    const mobile = useMobileSize();
+    const mediumSize = useMediumSize();
     const {openDialog, render} = useConfirmationDialog("Czy na pewno chcesz usunąć tego użytkownika?")
     const navigate = useNavigate();
 
 
     return (
-        <Card sx={{flexGrow: mobile ? 1 : 0, minWidth: 200}}>
+        <Card sx={{flexGrow: mediumSize ? 1 : 0, minWidth: 200}}>
             <CardContent>
                 <Typography level={"title-md"}>Zarządzanie użytkownikiem</Typography>
                 <Typography level={"body-sm"}>Opcje administracyjne</Typography>

@@ -23,7 +23,6 @@ const SummaryTab = () => {
                 flexDirection: mobile ? "column" : "row",
                 alignItems: "stretch",
                 gap: 10,
-                paddingBottom: mobile ? 0 : 100,
                 overflow: "hidden"
             }}>
                 <LogoCard/>

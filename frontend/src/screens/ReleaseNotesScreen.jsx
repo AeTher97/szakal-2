@@ -8,6 +8,8 @@ export const releaseNotes = [
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>
                 <ReleaseNotesBullet title={"Ładniejsza formatka do wrzucania zdjęć profilowych"}
                                     description={"Możliwe jest przciąganie zdjęcia profilowego do przeglądarki i wygląda to ładniej."}/>
+                <ReleaseNotesBullet title={"Edycja komentarzy i wydarzeń kontatkowych"}
+                                    description={"Komentarze i wydarzenia kontaktowe które były edytowane, sa teraz opatrzone dopiskiem - (Edytowane)."}/>
             </ReleaseNotesSection>
             <ReleaseNotesSection title={"Naprawione błędy"}>
                 <ReleaseNotesBullet title={"Usuwanie niezaakceptowanych użytkowników, którzy próbowali resetować hasło"}

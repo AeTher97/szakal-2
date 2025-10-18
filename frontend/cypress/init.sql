@@ -147,7 +147,8 @@ CREATE TABLE public.comments
     comment            character varying(1000)        NOT NULL,
     date               timestamp(6) without time zone NOT NULL,
     contact_journey_id uuid                           NOT NULL,
-    user_id            uuid                           NOT NULL
+    user_id uuid NOT NULL,
+    edited  bool NOT NULL
 );
 
 
@@ -191,6 +192,7 @@ CREATE TABLE public.contact_events
     contact_journey_id uuid                    NOT NULL,
     contact_person_id  uuid,
     user_id            uuid                    NOT NULL,
+    edited bool NOT NULL,
     CONSTRAINT contact_events_event_type_check CHECK (((event_type)::text = ANY
                                                        (ARRAY [('ASSIGNED'::character varying)::text, ('CALL_LATER'::character varying)::text, ('NOT_INTERESTED'::character varying)::text, ('INTERNSHIP'::character varying)::text, ('WAITING_FOR_RESPONSE'::character varying)::text, ('BARTER'::character varying)::text, ('SPONSOR'::character varying)::text, ('TRAINING'::character varying)::text, ('DIFFERENT_FORM_PARTNERSHIP'::character varying)::text, ('CALL_NEXT_YEAR'::character varying)::text, ('I_HAVE_TO_CONTACT_COMPANY'::character varying)::text, ('COMPANY_WILL_REACH_OUT'::character varying)::text, ('NOT_PICKING_UP'::character varying)::text, ('UNABLE_TO_CONNECT'::character varying)::text])))
 );
@@ -641,7 +643,7 @@ COPY public.categories_companies (company_id, category_id) FROM stdin;
 -- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.comments (id, comment, date, contact_journey_id, user_id) FROM stdin;
+COPY public.comments (id, comment, date, contact_journey_id, user_id, edited) FROM stdin;
 \.
 
 
@@ -710,20 +712,20 @@ b6380f34-b9d4-4f11-b327-439887e9d60e	f	\N		\N	2024-11-08 18:35:09.246032	Company
 --
 
 COPY public.contact_events (id, date, description, event_type, contact_journey_id, contact_person_id,
-                            user_id) FROM stdin;
-aa376003-428e-481b-a693-29ce8a1c702e	2024-11-09 16:27:29.810398	Waiting	WAITING_FOR_RESPONSE	04ef0a68-51dc-45d8-8e69-9df65b8e01b6	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-ce742e3b-3a0b-42aa-8991-3d5f916f35a0	2024-11-09 16:27:38.041639	Call later	CALL_LATER	6a3dab4d-d11f-4ec0-9b87-98dfa6e95a60	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-2f4f335b-1e1e-466d-8476-a1b5e1baad35	2024-11-09 16:27:47.0866	Not interested	NOT_INTERESTED	fc94ecce-ee88-4164-8b19-0d54f44423d9	50fbc0b6-0272-4462-8fbd-565cbf10e5ed	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-3e894c42-5fc5-43aa-b583-74620a3b64c0	2024-11-09 16:27:52.908497	Barter	BARTER	8809e693-f6d1-47bd-a96e-606e5435918f	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-d14ad2e8-13f8-4fc0-808b-f2d99790828d	2024-11-09 16:27:59.683433	Sponsor	SPONSOR	7037d5e5-ed91-42bc-be07-08910a272601	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-f7bdd525-e481-4507-bc91-e819fd41ddb3	2024-11-09 16:29:06.24917	Training	TRAINING	856eac81-4fdf-4326-b25a-944e7148b2f0	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-37f41d3f-2a7f-4e3a-8e3d-e2ef5992bc20	2024-11-09 16:29:16.868673	Other cooperation form	DIFFERENT_FORM_PARTNERSHIP	94e0da4b-bb81-4ee8-abf3-836463f9175c	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-d7331956-cbf0-4809-b9c5-45530828e30c	2024-11-09 16:29:26.235581	Call next year	CALL_NEXT_YEAR	de51457a-4c6b-4ca5-abd8-9f95c714397b	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-9c35a59f-41c9-4a4a-b451-6effeb685a3b	2024-11-09 16:29:35.596666	Internship	INTERNSHIP	dbc52605-0f60-40e1-9e48-938c5be4011a	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-22cfa954-51bf-4099-9332-bb7b0d8fc6de	2024-11-09 16:29:48.915784	I have to contact the company	I_HAVE_TO_CONTACT_COMPANY	bb2bfb63-d5aa-4c0a-9bfd-3032ae99cf37	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-076668d5-3775-4033-91a8-9f0474fb65b2	2024-11-09 16:30:01.482745	Company has to contact me	COMPANY_WILL_REACH_OUT	5ac2cea8-9780-4861-a1ee-f38b3eb57e86	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-24cb3c4f-f894-4661-a1d2-68b46aa0eccc	2024-11-26 18:00:44.636308	Cannot connect	UNABLE_TO_CONNECT	d4060b2d-86f4-4aec-b439-ae3d0f621f05	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
-d5d1da86-a06a-4e6a-a13f-5c5e11dbece1	2024-11-26 18:00:58.168385	Not picking up	NOT_PICKING_UP	2515bee8-2fce-48b3-be38-5398fe6e8022	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+                            user_id, edited) FROM stdin;
+aa376003-428e-481b-a693-29ce8a1c702e	2024-11-09 16:27:29.810398	Waiting	WAITING_FOR_RESPONSE	04ef0a68-51dc-45d8-8e69-9df65b8e01b6	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+ce742e3b-3a0b-42aa-8991-3d5f916f35a0	2024-11-09 16:27:38.041639	Call later	CALL_LATER	6a3dab4d-d11f-4ec0-9b87-98dfa6e95a60	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+2f4f335b-1e1e-466d-8476-a1b5e1baad35	2024-11-09 16:27:47.0866	Not interested	NOT_INTERESTED	fc94ecce-ee88-4164-8b19-0d54f44423d9	50fbc0b6-0272-4462-8fbd-565cbf10e5ed	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+3e894c42-5fc5-43aa-b583-74620a3b64c0	2024-11-09 16:27:52.908497	Barter	BARTER	8809e693-f6d1-47bd-a96e-606e5435918f	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+d14ad2e8-13f8-4fc0-808b-f2d99790828d	2024-11-09 16:27:59.683433	Sponsor	SPONSOR	7037d5e5-ed91-42bc-be07-08910a272601	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+f7bdd525-e481-4507-bc91-e819fd41ddb3	2024-11-09 16:29:06.24917	Training	TRAINING	856eac81-4fdf-4326-b25a-944e7148b2f0	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+37f41d3f-2a7f-4e3a-8e3d-e2ef5992bc20	2024-11-09 16:29:16.868673	Other cooperation form	DIFFERENT_FORM_PARTNERSHIP	94e0da4b-bb81-4ee8-abf3-836463f9175c	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+d7331956-cbf0-4809-b9c5-45530828e30c	2024-11-09 16:29:26.235581	Call next year	CALL_NEXT_YEAR	de51457a-4c6b-4ca5-abd8-9f95c714397b	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+9c35a59f-41c9-4a4a-b451-6effeb685a3b	2024-11-09 16:29:35.596666	Internship	INTERNSHIP	dbc52605-0f60-40e1-9e48-938c5be4011a	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+22cfa954-51bf-4099-9332-bb7b0d8fc6de	2024-11-09 16:29:48.915784	I have to contact the company	I_HAVE_TO_CONTACT_COMPANY	bb2bfb63-d5aa-4c0a-9bfd-3032ae99cf37	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+076668d5-3775-4033-91a8-9f0474fb65b2	2024-11-09 16:30:01.482745	Company has to contact me	COMPANY_WILL_REACH_OUT	5ac2cea8-9780-4861-a1ee-f38b3eb57e86	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+24cb3c4f-f894-4661-a1d2-68b46aa0eccc	2024-11-26 18:00:44.636308	Cannot connect	UNABLE_TO_CONNECT	d4060b2d-86f4-4aec-b439-ae3d0f621f05	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
+d5d1da86-a06a-4e6a-a13f-5c5e11dbece1	2024-11-26 18:00:58.168385	Not picking up	NOT_PICKING_UP	2515bee8-2fce-48b3-be38-5398fe6e8022	\N	c13f6b7a-af82-409d-8910-c71f82ee8aa7	f
 \.
 
 
