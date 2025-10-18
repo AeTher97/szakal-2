@@ -63,7 +63,7 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                 localCategory={localCategory}
                 close={() => setModifyOpen(false)}
                 addCategory={(name) => {
-                    modifyCategory(localCategory.id, name)
+                    return modifyCategory(localCategory.id, name)
                 }}/>
         </Sheet>
     );

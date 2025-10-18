@@ -21,24 +21,26 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
         <Modal open={open}>
             <ModalDialog>
                 <DialogTitle>{localCategory ? "Edytuj kategorię" : "Dodaj kategorię"}</DialogTitle>
-                <Stack spacing={2}>
-                    <FormControl required>
-                        <FormLabel>Nazwa</FormLabel>
-                        <InputWithLimit autoFocus required
-                                        value={name.value}
-                                        limit={name.limit}
-                                        isValid={name.isValid}
-                                        onChange={name.handleChange}
-                                        placeholder={"Nazwa branży"}/>
-                    </FormControl>
-                    <Button type="submit" onClick={(event) => {
-                        event.preventDefault();
-                        addCategory(name).then(() => {
-                            close();
-                        });
-                    }} disabled={!isFormValid}>Zapisz</Button>
-                    <Button color={"neutral"} onClick={close}>Anuluj</Button>
-                </Stack>
+                <form onSubmit={(event) => {
+                    event.preventDefault();
+                    addCategory(name.value).then(() => {
+                        close();
+                    })
+                }}>
+                    <Stack spacing={2}>
+                        <FormControl required>
+                            <FormLabel>Nazwa</FormLabel>
+                            <InputWithLimit autoFocus required
+                                            value={name.value}
+                                            limit={name.limit}
+                                            isValid={name.isValid}
+                                            onChange={name.handleChange}
+                                            placeholder={"Nazwa branży"}/>
+                        </FormControl>
+                        <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
+                        <Button color={"neutral"} onClick={close}>Anuluj</Button>
+                    </Stack>
+                </form>
             </ModalDialog>
         </Modal>
     );
