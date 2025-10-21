@@ -20,8 +20,8 @@ const ScheduledContact = () => {
               variant={"outlined"} color={"primary"}>
             <div style={{display: "flex", justifyContent: "space-between", justifyItems: "center"}}>
                 <Typography level={"h4"}>Zaplanowane kontakty</Typography>
-                <IconButton>
-                    <AddIcon onClick={() => setOpen(true)}/>
+                <IconButton onClick={() => setOpen(true)}>
+                    <AddIcon/>
                 </IconButton>
             </div>
             <Divider/>
