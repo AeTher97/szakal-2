@@ -59,14 +59,13 @@ export const useSearch = (fields = [], defaultValues = []) => {
     }
 
     const updateSort = (colum, direction) => {
-        setSearchParams(removeNullFields({
+        const newValue= removeNullFields({
             ...tempSearch,
             sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
-        }));
-        setSearch(removeNullFields({
-            ...tempSearch,
-            sort: `${colum},${direction}`.replace(/[^a-z0-9,\s]/gi, '')
-        }));
+        });
+        setSearchParams(newValue);
+        setSearch(newValue);
+        setTempSearch(newValue)
     }
 
     const clearSort = () => {

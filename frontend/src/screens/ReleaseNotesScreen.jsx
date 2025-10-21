@@ -16,6 +16,8 @@ export const releaseNotes = [
                                     description={"Tokeny resetu hasła są usuwane dla tych użytkowników automatycznie, usuwanie nie rzuca już Internal Server Error."}/>
                 <ReleaseNotesBullet title={"Dodawanie i modyfikacja kategorii"}
                                     description={"Dodawanie i modyfikacja kategori nie rzuca już błędu bad request."}/>
+                <ReleaseNotesBullet title={"Sortowanie"}
+                                    description={"Zmiana rozmiaru strony nie resetuje już sortowania kolumn"}/>
             </ReleaseNotesSection>
         </div>
     </>,
