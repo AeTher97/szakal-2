@@ -47,8 +47,10 @@ public class UserSpecification implements Specification<User> {
 
         if (criteria.getSzakalSort() != null) {
             boolean asc = criteria.getSzakalSort().getSortDirection().equals(SzakalSort.SortDirection.ASC);
-            query.orderBy(asc ? criteriaBuilder.asc(root.get("surname")) :
-                    criteriaBuilder.desc(root.get("surname")));
+            query.orderBy(asc ? criteriaBuilder.asc(criteriaBuilder.concat(root.get("name"),
+                    criteriaBuilder.concat(" ", root.get("surname")))) :
+                    criteriaBuilder.desc(criteriaBuilder.concat(root.get("name"),
+                            criteriaBuilder.concat(" ", root.get("surname")))));
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

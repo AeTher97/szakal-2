@@ -36,7 +36,15 @@ const GroupList = () => {
                             {loading && <CircularProgress/>}
                         </div>
                         <Divider inset={"context"}/>
-                        {groups.map((group, index) => {
+                        {groups.sort((a, b) => {
+                            if (a.name > b.name) {
+                                return 1;
+                            } else if (a.name === b.name) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        }).map((group, index) => {
                             return <div key={group.id}>
                                 <div style={{
                                     display: "flex",

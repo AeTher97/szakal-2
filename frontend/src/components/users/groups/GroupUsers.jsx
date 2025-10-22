@@ -33,9 +33,11 @@ const GroupUsers = ({localGroup, deleteUser, addUser, save, saveLoading}) => {
 
     const sortUsersByFullName = (localGroupUsers, direction) => {
         return localGroupUsers.sort((a, b) => {
-            if (`${a.surname} ${a.name} ` < `${b.surname} ${b.name}`) {
+            const aFullName = `${a.name} ${a.surname}`;
+            const bFullName = `${b.name} ${b.surname}`;
+            if (aFullName < bFullName) {
                 return direction ? -1 : 1;
-            } else if (`${a.surname} ${a.name} ` > `${b.surname} ${b.name}`) {
+            } else if (aFullName > bFullName) {
                 return direction ? 1 : -1
             } else {
                 return 0;

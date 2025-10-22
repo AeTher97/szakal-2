@@ -42,7 +42,15 @@ const CategoriesTable = ({categories, modifyCategory}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {categories?.map(category =>
+                {categories?.sort((a, b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name === b.name) {
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                }).map(category =>
                     <tr key={category.id}>
                         <td>{category.name}</td>
                         <td>{hasRight(CATEGORY_MODIFICATION) &&

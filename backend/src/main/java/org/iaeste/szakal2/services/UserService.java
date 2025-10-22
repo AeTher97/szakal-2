@@ -188,8 +188,7 @@ public class UserService {
 
     public Page<UserDTO> getUsersWithSearch(Pageable pageable, UserSearchDTO userSearchDTO) {
         Page<User> userPage = usersRepository.findAll(new UserSpecification(userSearchDTO), pageable);
-        List<UserDTO> userList = usersRepository.findAllById(userPage.map(User::getId).stream().toList())
-                .stream().map(UserDTO::fromUser).toList();
+        List<UserDTO> userList = userPage.map(UserDTO::fromUser).toList();
         return new PageImpl<>(userList, userPage.getPageable(), userPage.getTotalElements());
     }
 

@@ -4,9 +4,11 @@ import {useSelector} from "react-redux";
 
 const sortUsersByFullName = (users, directionAscending) => {
     return users.sort((a, b) => {
-        if (`${a.surname} ${a.name}` < `${b.surname} ${b.name}`) {
+        const aFullName = `${a.name} ${a.surname}`.toLowerCase();
+        const bFullName = `${b.name} ${b.surname}`.toLowerCase();
+        if (aFullName < bFullName) {
             return directionAscending ? -1 : 1;
-        } else if (`${a.surname} ${a.name}` > `${b.surname} ${b.name}`) {
+        } else if (aFullName > bFullName) {
             return directionAscending ? 1 : -1;
         } else {
             return 0;
