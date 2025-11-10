@@ -2,7 +2,7 @@ package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
+import org.iaeste.szakal2.models.dto.role.RoleCreationDTO;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.services.RoleService;
@@ -25,7 +25,7 @@ public class RoleController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(@authorityBean.roleModification())")
-    public Role createRole(@RequestBody @Valid RoleCreationDto roleCreationDto) {
+    public Role createRole(@RequestBody @Valid RoleCreationDTO roleCreationDto) {
         return roleService.createRole(roleCreationDto);
     }
 

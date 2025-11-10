@@ -1,6 +1,7 @@
 package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
@@ -34,9 +35,10 @@ public class UsersController {
 
 
     @PostMapping
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
         log.info("Registering user");
-        return ResponseEntity.ok(userService.registerUser(createUserDto));
+        userService.registerUser(createUserDto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -143,6 +145,17 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/confirm-email")
+    public ResponseEntity<Object> confirmEmail(@Valid @RequestBody RegisterConfirmDTO registerConfirmDTO) {
+        try {
+            userService.confirmEmail(registerConfirmDTO);
+        } catch (ResetTokenExpiredException | UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            log.info("Confirm registration ", e);
+        }
+        return ResponseEntity.ok().build();
+    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityBean.userAcceptance())")
@@ -151,5 +164,11 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping
+    @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
+    public void addPushNotificationToken(@PathVariable("id") UUID id,
+                                  @RequestBody @NotEmpty String token) {
+        userService.addPushNotificationToken(id, token);
+    }
 
 }

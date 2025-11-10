@@ -24,6 +24,10 @@ public class EmailLoader {
         return loadFile("email/contactPlanned.html");
     }
 
+    public static String loadConfirmEmailEmail() {
+        return loadFile("email/confirmEmail.html");
+    }
+
     private static String loadFile(String name) {
         StringBuilder email = new StringBuilder();
         InputStream inputStream = EmailLoader.class.getClassLoader().getResourceAsStream(name);

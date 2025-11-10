@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleCreationDto {
+public class RoleCreationDTO {
 
     @NotNull
     private String name;

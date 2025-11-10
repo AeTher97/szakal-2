@@ -39,6 +39,7 @@ public class NotificationService {
                 .text(text)
                 .journeyId(journeyId)
                 .build());
+
     }
 
     public void markSeen(List<UUID> notifications) throws ResourceNotFoundException {

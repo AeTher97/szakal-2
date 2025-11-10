@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.exceptions.ResourceNotFoundException;
 import org.iaeste.szakal2.models.entities.AccessRight;
-import org.iaeste.szakal2.models.dto.role.RoleCreationDto;
+import org.iaeste.szakal2.models.dto.role.RoleCreationDTO;
 import org.iaeste.szakal2.models.dto.role.RoleUpdateDTO;
 import org.iaeste.szakal2.models.entities.Role;
 import org.iaeste.szakal2.models.entities.User;
@@ -34,7 +34,7 @@ public class RoleService {
     }
 
     @Transactional
-    public Role createRole(RoleCreationDto roleCreationDto) {
+    public Role createRole(RoleCreationDTO roleCreationDto) {
         Optional<Role> roleOptional = rolesRepository.findRoleByNameIgnoreCase(roleCreationDto.getName());
         if (roleOptional.isPresent()) {
             throw new ResourceExistsException(STR. """
@@ -94,7 +94,7 @@ public class RoleService {
         return rolesRepository.findRoleByNameIgnoreCase(name);
     }
 
-    private Role fromRoleCreationDTO(RoleCreationDto roleCreationDto) {
+    private Role fromRoleCreationDTO(RoleCreationDTO roleCreationDto) {
         List<AccessRight> accessRights = roleCreationDto.getAccessRights()
                 .stream().map(accessRight -> {
                     if (accessRightRepository.findAccessRightById(accessRight).isPresent()) {

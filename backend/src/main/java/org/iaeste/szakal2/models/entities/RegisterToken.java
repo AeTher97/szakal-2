@@ -7,13 +7,13 @@ import lombok.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Table(name = "password_reset_tokens")
+@Table(name = "register_tokens")
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PasswordResetToken {
+public class RegisterToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

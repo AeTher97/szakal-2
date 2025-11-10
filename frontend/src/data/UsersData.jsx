@@ -2,6 +2,9 @@ import {useData, useDelete, usePut} from "./UseData";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 
+const sortBySurnameAscending = "surname,ASC";
+const sortBySurnameDescending = "surname,DESC";
+
 const sortUsersByFullName = (users, directionAscending) => {
     return users.sort((a, b) => {
         const aFullName = `${a.name} ${a.surname}`.toLowerCase();
@@ -16,10 +19,11 @@ const sortUsersByFullName = (users, directionAscending) => {
     });
 };
 
-const sortBySurnameAscending = "surname,ASC";
-const sortBySurnameDescending = "surname,DESC";
-
-export const useUsersList = (page = 0, searchName = "", searchCommittee = "", searchRole = [], sortAsc = true) => {
+export const useUsersList = (page = 0,
+                             searchName = "",
+                             searchCommittee = "",
+                             searchRole = [],
+                             sortAsc = true) => {
     const [pageNumber, setPageNumber] = useState();
     const [users, setUsers] = useState();
     const {loading} = useData(`/users`, (data) => {
@@ -55,20 +59,27 @@ export const useUserData = (id, refresh) => {
     const {loading} = useData(`/users/${id}`,
         (data) => setUser(data), [id, refresh])
 
-    const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`, (content) => setUser(content))
-    const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`, (content) => setUser(content))
+    const {put: putRoles, loading: updateRolesLoading} = usePut(`/users/${id}/roles`,
+        (content) => setUser(content))
+
+    const {put: putAccepted, loading: acceptUserLoading} = usePut(`/users/${id}/accept`,
+        (content) => setUser(content))
+
     const {
         put: putPicture,
         loading: updatePictureLoading
     } = usePut(`/users/${id}/picture`)
+
     const {
         put: putUserStatus,
         loading: changeUserStatusLoading
     } = usePut(`/users/${id}/status`, (content) => setUser(content))
+
     const {
         put: putUserDetails,
         loading: updateUserDetailsLoading
     } = usePut(`/users/${id}`, (content) => setUser(content))
+
     const {deleteReq} = useDelete(`/users/${id}`, () => setUser(null))
 
     const updateUserRoles = (ids) => {

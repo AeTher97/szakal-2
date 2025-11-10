@@ -7,7 +7,7 @@ import {useNavigate} from "react-router";
 import {logoutAction} from "../../redux/AuthActions";
 import PropTypes from "prop-types";
 
-const UserDropdownMenu = ({name, surname, image, id}) => {
+const UserDropdownMenu = ({name, surname, image, committee, id}) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const UserDropdownMenu = ({name, surname, image, id}) => {
                 <MenuButton
                     data-testid="user-avatar"
                     style={{border: "none", padding: "10px"}}>
-                    <UserAvatar name={name} surname={surname} image={image} id={id}/>
+                    <UserAvatar name={name} surname={surname} image={image} id={id} committee={committee}/>
                 </MenuButton>
                 <Menu>
                     <MenuItem onClick={() => {
@@ -44,6 +44,7 @@ const UserDropdownMenu = ({name, surname, image, id}) => {
 UserDropdownMenu.propTypes = {
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
+    committee: PropTypes.string,
     image: PropTypes.string,
     id: PropTypes.string.isRequired
 };

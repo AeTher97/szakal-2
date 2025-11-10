@@ -1,6 +1,7 @@
 package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.jsonwebtoken.lang.Strings;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -69,6 +70,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<UserGroup> userGroups;
+    @JsonIgnore
+    private String pushNotificationTokens;
 
     public static User fromCreationDTO(UserCreationDTO userCreationDTO) {
         return User.builder()
@@ -78,7 +81,7 @@ public class User {
                 .name(userCreationDTO.getName())
                 .surname(userCreationDTO.getSurname())
                 .accepted(false)
-                .active(true)
+                .active(false)
                 .roles(new HashSet<>())
                 .userGroups(new HashSet<>())
                 .build();
@@ -96,5 +99,21 @@ public class User {
             });
         });
         return availableCampaigns;
+    }
+
+    public List<String> getPushNotificationTokens() {
+        return processMergedTokenString(pushNotificationTokens != null ? pushNotificationTokens : Strings.EMPTY);
+    }
+
+    public void setPushNotificationTokens(List<String> pushNotificationTokens) {
+        this.pushNotificationTokens = getMergedTokenString(pushNotificationTokens);
+    }
+
+    private static List<String> processMergedTokenString(String mergedTokenString) {
+        return Arrays.stream(mergedTokenString.split(",")).toList();
+    }
+
+    private static String getMergedTokenString(List<String> tokens) {
+        return String.join(",", tokens);
     }
 }

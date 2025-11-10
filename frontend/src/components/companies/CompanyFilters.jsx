@@ -94,7 +94,7 @@ const CompanyFilters = () => {
                        onChange={(e) => {
                            updateSearch(NAME, e.target.value)
                        }}
-                       size="sm" placeholder="Szukaj"
+                       size="sm" placeholder="Nazwa Firmy"
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             {categories &&
@@ -152,7 +152,7 @@ const CompanyFilters = () => {
                        style={{minWidth: 80, maxWidth: 105}}
                        onChange={(e) => {
                            updateSearch(ALUMNI_DESCRIPTION, e.target.value);
-                       }} placeholder={"Szukaj"}
+                       }} placeholder={"Opis Alumna"}
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>

@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import io.jsonwebtoken.lang.Strings;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
@@ -10,11 +11,9 @@ import org.iaeste.szakal2.exceptions.UsernameTakenException;
 import org.iaeste.szakal2.models.dto.user.*;
 import org.iaeste.szakal2.models.entities.PasswordResetToken;
 import org.iaeste.szakal2.models.entities.ProfilePicture;
+import org.iaeste.szakal2.models.entities.RegisterToken;
 import org.iaeste.szakal2.models.entities.User;
-import org.iaeste.szakal2.repositories.PasswordTokenRepository;
-import org.iaeste.szakal2.repositories.ProfilePictureRepository;
-import org.iaeste.szakal2.repositories.UserSpecification;
-import org.iaeste.szakal2.repositories.UsersRepository;
+import org.iaeste.szakal2.repositories.*;
 import org.iaeste.szakal2.security.providers.UsernamePasswordProvider;
 import org.iaeste.szakal2.utils.EmailLoader;
 import org.iaeste.szakal2.utils.Utils;
@@ -35,14 +34,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
 public class UserService {
 
-    private static final int EXPIRATION = 60 * 60 * 1000; //An hour
+    private static final int PASSWORD_RESET_TOKEN_EXPIRATION = 60 * 60 * 1000; //An hour
+    private static final int REGISTER_TOKEN_EXPIRATION = 24 * 60 * 60 * 1000; //A day
+    public static final String JPG = "jpg";
 
     private final EmailService emailService;
     private final UsersRepository usersRepository;
@@ -51,18 +53,20 @@ public class UserService {
     private final RoleService roleService;
     private final UsernamePasswordProvider usernamePasswordProvider;
     private final PasswordTokenRepository passwordTokenRepository;
+    private final RegisterTokenRepository registerTokenRepository;
 
     public UserService(EmailService emailService, UsersRepository usersRepository,
                        ProfilePictureRepository profilePictureRepository,
                        PasswordEncoder passwordEncoder,
                        RoleService roleService,
-                       JwtConfiguration jwtConfiguration, PasswordTokenRepository passwordTokenRepository) {
+                       JwtConfiguration jwtConfiguration, PasswordTokenRepository passwordTokenRepository, RegisterTokenRepository registerTokenRepository) {
         this.emailService = emailService;
         this.usersRepository = usersRepository;
         this.profilePictureRepository = profilePictureRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.passwordTokenRepository = passwordTokenRepository;
+        this.registerTokenRepository = registerTokenRepository;
         this.usernamePasswordProvider = new UsernamePasswordProvider(usersRepository, passwordEncoder, jwtConfiguration);
     }
 
@@ -87,7 +91,7 @@ public class UserService {
     public User getUserByEmail(String email) {
         Optional<User> userOptional = usersRepository.findUserByEmailIgnoreCase(email);
         if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("User with email " + email + " not found");
+            throw new UserNotFoundException(STR."User with email \{email} not found");
         }
         return userOptional.get();
     }
@@ -97,14 +101,27 @@ public class UserService {
         return profilePictureOptional.map(ProfilePicture::getData).orElse(null);
     }
 
-    public UserDTO registerUser(UserCreationDTO userCreationDTO) {
+    @Transactional
+    public void registerUser(UserCreationDTO userCreationDTO) {
         if (usersRepository.findUserByEmailIgnoreCase(userCreationDTO.getEmail()).isPresent()) {
-            throw new UsernameTakenException("Email already taken");
+            return;
+            // Do not leak information about what emails are taken
         }
-
         User user = User.fromCreationDTO(userCreationDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return UserDTO.fromUser(usersRepository.save(user));
+        user = usersRepository.save(user);
+
+        String confirmationToken = createRegisterToken(user);
+
+        boolean successfulEmailSend = emailService.sendHtmlMessage(user.getEmail(), "Rejestracja w Szakal 2",
+                EmailLoader.loadConfirmEmailEmail().replace("${userName}",
+                                user.getName()).replace("${confirmationToken}", confirmationToken)
+                        .replaceAll("\\$\\{domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME")),
+                false);
+
+        if(!successfulEmailSend) {
+            throw new RuntimeException("Coś poszło nie tak");
+        }
     }
 
     public UserDTO modifyUserRoles(UUID userId, UserRoleModificationDTO userRoleModificationDTO) {
@@ -151,8 +168,7 @@ public class UserService {
     public void sendResetCode(StartPasswordResetDTO startPasswordResetDTO) throws UserNotFoundException {
         try {
             User user = getUserByEmail(startPasswordResetDTO.getEmail());
-            String token = UUID.randomUUID().toString();
-            createPasswordResetToken(user, token);
+            String token = createPasswordResetToken(user);
 
             try {
                 emailService.sendHtmlMessage(startPasswordResetDTO.getEmail(), "Resetowanie hasła Szakal",
@@ -172,17 +188,37 @@ public class UserService {
         Optional<PasswordResetToken> passwordResetTokenOptional = passwordTokenRepository
                 .findPasswordResetTokenByToken(passwordResetDTO.getCode());
         if (passwordResetTokenOptional.isEmpty()) {
-            throw new UserNotFoundException("Reset token invalid");
+            throw new UserNotFoundException("Niepoprawny token");
         }
         PasswordResetToken resetToken = passwordResetTokenOptional.get();
         if (resetToken.isExpired()) {
             passwordTokenRepository.delete(resetToken);
-            throw new ResetTokenExpiredException("Reset token expired");
+            throw new ResetTokenExpiredException("Token już wygasł");
         }
 
         User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(passwordResetDTO.getPassword()));
         passwordTokenRepository.delete(resetToken);
+        usersRepository.save(user);
+    }
+
+    @Transactional
+    public void confirmEmail(RegisterConfirmDTO registerConfirmDTO) throws UserNotFoundException, ResetTokenExpiredException {
+        Optional<RegisterToken> registerTokenOptional = registerTokenRepository
+                .findRegisterTokenByToken(registerConfirmDTO.getCode());
+
+        if (registerTokenOptional.isEmpty()) {
+            throw new UserNotFoundException("Niepoprawny token");
+        }
+
+        RegisterToken registerToken = registerTokenOptional.get();
+        if (registerToken.isExpired()) {
+            registerTokenRepository.delete(registerToken);
+            throw new ResetTokenExpiredException("Token już wygasł");
+        }
+
+        User user = registerToken.getUser();
+        user.setActive(true);
         usersRepository.save(user);
     }
 
@@ -215,14 +251,16 @@ public class UserService {
         }
     }
 
-
-    private void createPasswordResetToken(User user, String token) {
-        PasswordResetToken passwordResetToken = PasswordResetToken.builder()
-                .token(token)
-                .user(user)
-                .expiryDate(new Date(System.currentTimeMillis() + EXPIRATION))
-                .build();
-        passwordTokenRepository.save(passwordResetToken);
+    @Transactional
+    public void deleteUserIfNotAccepted(UUID id) {
+        User user = getUserById(id);
+        if (user.isAccepted()) {
+            throw new SzakalException("Cannot delete already accepted user");
+        } else {
+            profilePictureRepository.deleteProfilePictureByUser(user);
+            passwordTokenRepository.deleteAllPasswordResetTokensByUser(user);
+            usersRepository.delete(user);
+        }
     }
 
     public ProfilePicture updatePicture(PictureUploadDTO pictureUploadDTO) throws IOException {
@@ -231,7 +269,7 @@ public class UserService {
                 .orElse(new ProfilePicture(user));
         BufferedImage inputImage = ImageIO.read(pictureUploadDTO.getFile().getInputStream());
         inputImage = removeAlphaChannel(inputImage);
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+        ImageWriter writer = ImageIO.getImageWritersByFormatName(JPG).next();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageOutputStream outputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
@@ -248,16 +286,36 @@ public class UserService {
         return profilePictureRepository.save(picture);
     }
 
-    @Transactional
-    public void deleteUserIfNotAccepted(UUID id) {
+    public void addPushNotificationToken(UUID id, String token) {
         User user = getUserById(id);
-        if (user.isAccepted()) {
-            throw new SzakalException("Cannot delete already accepted user");
-        } else {
-            profilePictureRepository.deleteProfilePictureByUser(user);
-            passwordTokenRepository.deleteAllPasswordResetTokensByUser(user);
-            usersRepository.delete(user);
-        }
+        List<String> tokens = user.getPushNotificationTokens();
+
+        tokens.add(token);
+
+        user.setPushNotificationTokens(tokens);
+        usersRepository.save(user);
+    }
+
+    private String createRegisterToken(User user) {
+        String token = UUID.randomUUID().toString();
+        RegisterToken registerToken = RegisterToken.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(new Date(System.currentTimeMillis() + REGISTER_TOKEN_EXPIRATION))
+                .build();
+        registerTokenRepository.save(registerToken);
+        return token;
+    }
+
+    private String createPasswordResetToken(User user) {
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = PasswordResetToken.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(new Date(System.currentTimeMillis() + PASSWORD_RESET_TOKEN_EXPIRATION))
+                .build();
+        passwordTokenRepository.save(passwordResetToken);
+        return token;
     }
 
     private static BufferedImage removeAlphaChannel(BufferedImage img) {

@@ -49,9 +49,9 @@ const SignUpForm = () => {
                       password,
                       repeatPassword
                   }).then(() => {
-                      navigate("/login")
+                      navigate("/confirm-email-message")
                   }).catch(e => {
-                      dispatch(showError("Nie udało się zarejestrować użytkownika, ten email może być w użyciu"))
+                      dispatch(showError("Nie udało się zarejestrować użytkownika"))
                       console.error(e)
                   });
 

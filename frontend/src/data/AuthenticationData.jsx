@@ -52,3 +52,22 @@ export const usePasswordReset = () => {
 
     return {resetPassword, updatePassword, resetPasswordLoading: resetLoading, updatePasswordLoading: updateLoading}
 }
+
+export const useConfirmEmail = () => {
+
+    const dispatch = useDispatch();
+
+    const confirmEmail = (code) => {
+        return defaultAxiosInstance.post("/users/confirm-email", {
+            code
+        }).catch(e => {
+            if (e.response?.data?.error) {
+                console.error(e.response.data.error);
+                dispatch(showError(e.response.data.error))
+            }
+            throw e;
+        })
+    }
+
+    return {confirmEmail}
+}
