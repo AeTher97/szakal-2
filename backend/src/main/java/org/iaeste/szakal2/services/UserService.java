@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.services;
 
-import io.jsonwebtoken.lang.Strings;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
@@ -34,9 +33,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -119,7 +117,7 @@ public class UserService {
                         .replaceAll("\\$\\{domainName}", System.getenv("HEROKU_APP_DEFAULT_DOMAIN_NAME")),
                 false);
 
-        if(!successfulEmailSend) {
+        if (!successfulEmailSend) {
             throw new RuntimeException("Coś poszło nie tak");
         }
     }
@@ -190,6 +188,7 @@ public class UserService {
         if (passwordResetTokenOptional.isEmpty()) {
             throw new UserNotFoundException("Niepoprawny token");
         }
+
         PasswordResetToken resetToken = passwordResetTokenOptional.get();
         if (resetToken.isExpired()) {
             passwordTokenRepository.delete(resetToken);
@@ -259,6 +258,7 @@ public class UserService {
         } else {
             profilePictureRepository.deleteProfilePictureByUser(user);
             passwordTokenRepository.deleteAllPasswordResetTokensByUser(user);
+            registerTokenRepository.deleteAllRegisterTokensByUser(user);
             usersRepository.delete(user);
         }
     }
@@ -286,13 +286,21 @@ public class UserService {
         return profilePictureRepository.save(picture);
     }
 
-    public void addPushNotificationToken(UUID id, String token) {
+    @Transactional
+    public void addPushNotificationToken(UUID id, PushNotificationSubscriptionDTO pushNotificationSubscriptionDTO) {
         User user = getUserById(id);
-        List<String> tokens = user.getPushNotificationTokens();
+        List<PushNotificationSubscriptionDTO> tokens = user.getPushNotificationTokens();
 
-        tokens.add(token);
+        tokens.add(pushNotificationSubscriptionDTO);
 
         user.setPushNotificationTokens(tokens);
+        usersRepository.save(user);
+    }
+
+    @Transactional
+    public void removePushNotificationToken(UUID id, PushNotificationSubscriptionDTO pushNotificationSubscriptionDTO) {
+        User user = getUserById(id);
+        user.removeToken(pushNotificationSubscriptionDTO.getAuth());
         usersRepository.save(user);
     }
 

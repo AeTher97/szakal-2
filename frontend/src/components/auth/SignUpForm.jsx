@@ -24,6 +24,8 @@ const SignUpForm = () => {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
+    const [registering, setRegistering] = useState(false);
+
     const minLength = 15;
 
     const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
@@ -42,6 +44,8 @@ const SignUpForm = () => {
                       return
                   }
 
+                  setRegistering(true);
+
                   registerUser({
                       email: email.value,
                       name: name.value,
@@ -52,6 +56,7 @@ const SignUpForm = () => {
                       navigate("/confirm-email-message")
                   }).catch(e => {
                       dispatch(showError("Nie udało się zarejestrować użytkownika"))
+                      setRegistering(false);
                       console.error(e)
                   });
 
@@ -190,7 +195,8 @@ const SignUpForm = () => {
                 </FormControl>
 
 
-                <Button sx={{mt: 1 /* margin top */}} type={"submit"} disabled={!isFormValid}>Zarejestruj się</Button>
+                <Button sx={{mt: 1}} type={"submit"} disabled={!isFormValid} loading={registering}>Zarejestruj
+                    się</Button>
                 <Typography
                     endDecorator={<LinkWithRouter to="/login">Zaloguj się</LinkWithRouter>}
                     fontSize="sm"

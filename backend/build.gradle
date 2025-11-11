@@ -35,6 +35,10 @@ dependencies {
     implementation libs.io.jsonwebtoken.jjwt.api
     implementation libs.org.springframework.boot.spring.boot.starter.validation
     implementation libs.org.springframework.boot.spring.boot.starter.actuator
+    implementation libs.nl.web.push
+    implementation libs.bouncy.castle
+    implementation libs.apache.httpcomponents
+    implementation libs.jose
 
     testRuntimeOnly libs.org.springframework.boot.spring.boot.devtools
     integrationTestRuntimeOnly libs.org.springframework.boot.spring.boot.devtools

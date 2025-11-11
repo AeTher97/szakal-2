@@ -73,7 +73,7 @@ public class JourneyService {
         ContactJourney savedJourney = contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
         if (!AccessVerificationBean.isUser(contactJourneyCreationDTO.getUser().toString())) {
             notificationService.notify(user,
-                    STR."Zostałeś przypisany do firmy \{company.getName()} w akcji \{campaign.getName()} kliknij by przejść do kontaktu",
+                    STR."Zostałeś przypisany do firmy \{company.getName()} w akcji \{campaign.getName()}",
                     savedJourney.getId());
         }
         wsNotifyingService.sendUpdateAboutJourneys(contactJourneyCreationDTO.getCampaign());
@@ -142,7 +142,7 @@ public class JourneyService {
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
         if (!AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz, kliknij by przejśc do kontaktu",
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz",
                     contactJourney.getId());
         }
         Set<User> usersToNotify = new HashSet<>();
@@ -154,7 +154,7 @@ public class JourneyService {
         });
         usersToNotify.forEach(user -> {
             notificationService.notify(user,
-                    STR."Nowy komentarz w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}, kliknij by przejśc do kontaktu",
+                    STR."Nowy komentarz w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}",
                     contactJourney.getId());
         });
         wsNotifyingService.sendUpdateAboutJourney(id);
@@ -302,7 +302,7 @@ public class JourneyService {
     private void notifyOnJourneyModification(ContactJourney contactJourney) {
         if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany kliknij by przejść do kontaktu",
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany",
                     contactJourney.getId());
         }
     }
@@ -310,7 +310,7 @@ public class JourneyService {
     private void notifyOnJourneyFinished(ContactJourney contactJourney) {
         if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony kliknij by przejść do kontaktu",
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony",
                     contactJourney.getId());
         }
     }
@@ -318,7 +318,7 @@ public class JourneyService {
     private void notifyOnJourneyReopened(ContactJourney contactJourney) {
         if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
             notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty kliknij by przejść do kontaktu",
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty",
                     contactJourney.getId());
         }
     }

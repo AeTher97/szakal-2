@@ -12,6 +12,8 @@ public class JwtConfiguration {
     private String secret;
     private String authExpirationTime;
     private String refreshExpirationTime;
+    private String pushPrivateKey;
+    private String pushPublicKey;
 }
 
 

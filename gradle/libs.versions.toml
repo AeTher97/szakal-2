@@ -19,6 +19,10 @@ org-testcontainers-testcontainers = "1.21.3"
 org-projectlombok-lombok = "1.18.42"
 freefair = "9.0.0"
 
+web-push-version = "5.1.2"
+bouncy-castle-version = "1.82"
+apache-httpcomponents-version = "4.4.16"
+jose-version = "0.9.6"
 
 
 [libraries]
@@ -44,6 +48,10 @@ org-springframework-security-spring-security-test = { module = "org.springframew
 org-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers-junit-jupiter" }
 org-testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "org-testcontainers-postgresql" }
 org-testcontainers-testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "org-testcontainers-testcontainers" }
+nl-web-push = { module = "nl.martijndwars:web-push", version.ref = "web-push-version" }
+bouncy-castle = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncy-castle-version" }
+apache-httpcomponents = { module = "org.apache.httpcomponents:httpcore", version.ref = "apache-httpcomponents-version" }
+jose = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose-version" }
 
 [plugins]
 freefair-lombok = {id = "io.freefair.lombok", version.ref ="freefair"}

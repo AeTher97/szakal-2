@@ -6,6 +6,7 @@ import SecureNavigationRoutes from "../components/navigation/SecureNavigationRou
 import SecureRoute from "../utils/SecureRoute";
 import {useMediumSize} from "../utils/MediaQuery";
 import ReleaseNotesDialog from "../utils/ReleaseNotesDialog";
+import BrowserNotifications from "../components/auth/BrowserNotifications";
 
 const ApplicationScreen = () => {
 
@@ -30,8 +31,8 @@ const ApplicationScreen = () => {
         }
         const shownVersion = parseReleaseNotes(localStorage.getItem("releaseNotesVersion"));
         if (shownVersion) {
-                const currentVersion = parseReleaseNotes(import.meta.env.VITE_SZAKAL_VERSION);
-                return currentVersion.major > shownVersion.major || currentVersion.minor > shownVersion.minor;
+            const currentVersion = parseReleaseNotes(import.meta.env.VITE_SZAKAL_VERSION);
+            return currentVersion.major > shownVersion.major || currentVersion.minor > shownVersion.minor;
         } else {
             return true;
         }
@@ -48,13 +49,13 @@ const ApplicationScreen = () => {
                                         setReleaseNotesShown(false)
                                         localStorage.setItem("releaseNotesVersion", import.meta.env.VITE_SZAKAL_VERSION);
                                     }}/>
+                {!releaseNotesShown && <BrowserNotifications/>}
                 <TopBar/>
                 <AppContent>
                     {!mediumSize && <NavigationBar/>}
                     <SecureNavigationRoutes/>
                 </AppContent>
             </div>
-
         </SecureRoute>
     );
 };

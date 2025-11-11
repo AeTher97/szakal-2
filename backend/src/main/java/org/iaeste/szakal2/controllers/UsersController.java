@@ -1,7 +1,6 @@
 package org.iaeste.szakal2.controllers;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.log4j.Log4j2;
 import org.iaeste.szakal2.exceptions.ResetTokenExpiredException;
 import org.iaeste.szakal2.exceptions.UserNotFoundException;
@@ -164,11 +163,11 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
+    @PutMapping("/{id}/add-push-token")
     @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
     public void addPushNotificationToken(@PathVariable("id") UUID id,
-                                  @RequestBody @NotEmpty String token) {
-        userService.addPushNotificationToken(id, token);
+                                         @RequestBody @Valid PushNotificationSubscriptionDTO pushNotificationSubscriptionDTO) {
+        userService.addPushNotificationToken(id, pushNotificationSubscriptionDTO);
     }
 
 }

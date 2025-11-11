@@ -73,12 +73,17 @@ export const useUserData = (id, refresh) => {
     const {
         put: putUserStatus,
         loading: changeUserStatusLoading
-    } = usePut(`/users/${id}/status`, (content) => setUser(content))
+    } = usePut(`/users/${id}/status`, (content) => setUser(content));
 
     const {
         put: putUserDetails,
         loading: updateUserDetailsLoading
-    } = usePut(`/users/${id}`, (content) => setUser(content))
+    } = usePut(`/users/${id}`, (content) => setUser(content));
+
+    const {
+        put: putPushToken,
+        loading: addPushTokenLoading
+    } = usePut(`/users/${id}/add-push-token`);
 
     const {deleteReq} = useDelete(`/users/${id}`, () => setUser(null))
 
@@ -96,6 +101,7 @@ export const useUserData = (id, refresh) => {
 
         return putPicture(formData)
     }
+
 
     const acceptUser = () => {
         return putAccepted();
@@ -117,6 +123,15 @@ export const useUserData = (id, refresh) => {
         })
     }
 
+    const addPushToken = (subscription) => {
+        const subscriptionObject = JSON.parse(JSON.stringify(subscription));
+        return putPushToken({
+            endpoint: subscriptionObject.endpoint,
+            p256dh: subscriptionObject.keys.p256dh,
+            auth: subscriptionObject.keys.auth
+        });
+    }
+
     return {
         loading,
         user,
@@ -130,7 +145,9 @@ export const useUserData = (id, refresh) => {
         updateUserDetailsLoading,
         updateProfilePicture,
         updatePictureLoading,
-        deleteNotAcceptedUser
+        deleteNotAcceptedUser,
+        addPushToken,
+        addPushTokenLoading
     }
 }
 

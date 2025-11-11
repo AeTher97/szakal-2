@@ -21,10 +21,14 @@ public class NotificationService {
     private static final int MAX_NOTIFICATIONS = 30;
     private final NotificationRepository notificationRepository;
     private final UserService userService;
+    private final PushNotificationService pushNotificationService;
 
-    public NotificationService(NotificationRepository notificationRepository, UserService userService) {
+    public NotificationService(NotificationRepository notificationRepository,
+                               UserService userService,
+                               PushNotificationService pushNotificationService) {
         this.notificationRepository = notificationRepository;
         this.userService = userService;
+        this.pushNotificationService = pushNotificationService;
     }
 
     public void notify(User user, String text) {
@@ -32,14 +36,23 @@ public class NotificationService {
     }
 
     public void notify(User user, String text, UUID journeyId) {
-        notificationRepository.save(Notification.builder()
+        Notification notificationForRepository = Notification.builder()
+                .user(user)
+                .seen(false)
+                .date(LocalDateTime.now())
+                .text(journeyId != null ? text + ", kliknij aby przejść do kontaktu" : null)
+                .journeyId(journeyId)
+                .build();
+
+        Notification pushNotification = Notification.builder()
                 .user(user)
                 .seen(false)
                 .date(LocalDateTime.now())
                 .text(text)
                 .journeyId(journeyId)
-                .build());
-
+                .build();
+        notificationRepository.save(notificationForRepository);
+        pushNotificationService.pushNotification(pushNotification);
     }
 
     public void markSeen(List<UUID> notifications) throws ResourceNotFoundException {

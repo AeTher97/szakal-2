@@ -16,6 +16,7 @@ import java.util.UUID;
 public class TokenFactory {
 
     private static final String ALGORITHM = "HmacSHA512";
+    private static final String PUSH_ALGORITHM = "SHA256withECDSA";
 
     private TokenFactory() {
     }
@@ -63,6 +64,5 @@ public class TokenFactory {
                 .expiration(new Date(System.currentTimeMillis() + refreshExp))
                 .signWith(new SecretKeySpec(key.getBytes(), ALGORITHM)).compact();
     }
-
 
 }
