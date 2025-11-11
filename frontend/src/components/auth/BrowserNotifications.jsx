@@ -4,8 +4,6 @@ import Button from "@mui/joy/Button";
 import {useUserData} from "../../data/UsersData";
 import {useSelector} from "react-redux";
 
-const PUSH_PUBLIC_KEY = "BN559_Wo-kImGW_sdx-ksLO6UizTfjMORSo1Ku4Ge3dd5YTgR-NceGY7_q_5E8krfdNbNg10207MDUPoGeNYG-s";
-
 
 const urlB64ToUint8Array = (base64String) => {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -46,7 +44,7 @@ const BrowserNotifications = () => {
 
                 const subscribeOptions = {
                     userVisibleOnly: true,
-                    applicationServerKey: urlB64ToUint8Array(PUSH_PUBLIC_KEY)
+                    applicationServerKey: urlB64ToUint8Array(import.meta.env.PUSH_PUBLIC_KEY)
                 }
 
                 return registration.pushManager.subscribe(subscribeOptions);
