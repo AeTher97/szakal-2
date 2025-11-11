@@ -455,7 +455,8 @@ CREATE TABLE public.users
     password   character varying(255)         NOT NULL,
     committee character varying(255),
     profile_picture bytea,
-    surname    character varying(255)         NOT NULL
+    surname                  character varying(255) NOT NULL,
+    push_notification_tokens character varying(15000)
 );
 
 

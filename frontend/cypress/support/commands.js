@@ -30,6 +30,8 @@ Cypress.Commands.add("login", (searchForAvatar = true,
                                name = "Admin Admin") => {
 
     cy.visit(`http://${Cypress.env("baseUrl")}`)
+    localStorage.setItem("declinedNotifications", "true")
+
     cy.getByTestId("cypress-login-email")
         .should("exist")
         .type(username);
@@ -45,7 +47,6 @@ Cypress.Commands.add("login", (searchForAvatar = true,
             .should("exist")
         cy.getByTestId("user-avatar")
             .children("div")
-            .children("p")
             .contains(name)
     }
 })
