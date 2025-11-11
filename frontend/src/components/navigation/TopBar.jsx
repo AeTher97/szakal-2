@@ -13,17 +13,17 @@ import JoinGroupDialog from "../users/groups/JoinGroupDialog";
 
 const TopBar = () => {
 
-    const {name, surname, userId, refresh} = useSelector(state => state.auth);
+        const {name, surname, userId, refresh} = useSelector(state => state.auth);
         const {currentCampaign} = useSelector(state => state.campaigns);
 
-    const {user, loading} = useUserData(userId, refresh)
-    const [joinGroupDialogOpen, setJoinGroupDialogOpen] = useState(false);
+        const {user, loading} = useUserData(userId, refresh)
+        const [joinGroupDialogOpen, setJoinGroupDialogOpen] = useState(false);
         const [campaigns, setCampaigns] = useState([]);
         const [campaignValue, setCampaignValue]
             = useState({label: "Wybierz akcje", id: "choose"});
 
         const dispatch = useDispatch();
-    const mediumSize = useMediumSize();
+        const mediumSize = useMediumSize();
         const mobile = useMobileSize();
 
         const campaignsOptions = campaigns.map((campaign) => {
@@ -63,9 +63,9 @@ const TopBar = () => {
             }
         }, [currentCampaign, campaigns])
 
-    const getLocalStorageCampaign = () => {
-        return localStorage.getItem("defaultCampaign")
-    }
+        const getLocalStorageCampaign = () => {
+            return localStorage.getItem("defaultCampaign")
+        }
 
         const getOptionDisabled = (option) => {
             return option.disabled
@@ -108,7 +108,8 @@ const TopBar = () => {
                                   dispatch(changeCampaignAction(inputValue.id))
                               }}
                 />
-                {user && <UserDropdownMenu name={name} surname={surname} image={user.profilePicture} id={userId}/>}
+                {user && <UserDropdownMenu name={name} surname={surname} image={user.profilePicture}
+                                           committee={user.committee} id={userId}/>}
                 {!mobile && <JoinGroupDialog open={joinGroupDialogOpen} close={() => setJoinGroupDialogOpen(false)}/>}
             </div>
         );

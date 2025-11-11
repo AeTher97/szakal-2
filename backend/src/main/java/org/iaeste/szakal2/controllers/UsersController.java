@@ -34,9 +34,9 @@ public class UsersController {
 
 
     @PostMapping
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
         log.info("Registering user");
-        return ResponseEntity.ok(userService.registerUser(createUserDto));
+        return ResponseEntity.ok(UserDTO.fromUser(userService.registerUser(createUserDto)));
     }
 
     @GetMapping
@@ -143,6 +143,17 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/confirm-email")
+    public ResponseEntity<Object> confirmEmail(@Valid @RequestBody RegisterConfirmDTO registerConfirmDTO) {
+        try {
+            userService.confirmEmail(registerConfirmDTO);
+        } catch (ResetTokenExpiredException | UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            log.info("Confirm registration ", e);
+        }
+        return ResponseEntity.ok().build();
+    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityBean.userAcceptance())")
@@ -151,5 +162,11 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}/add-push-token")
+    @PreAuthorize("@accessVerificationBean.isUser(#id.toString())")
+    public void addPushNotificationToken(@PathVariable("id") UUID id,
+                                         @RequestBody @Valid PushNotificationSubscriptionDTO pushNotificationSubscriptionDTO) {
+        userService.addPushNotificationToken(id, pushNotificationSubscriptionDTO);
+    }
 
 }

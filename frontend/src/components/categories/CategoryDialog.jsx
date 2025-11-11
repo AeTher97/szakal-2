@@ -35,7 +35,7 @@ const CategoryDialog = ({open, addCategory, close, localCategory}) => {
                                             limit={name.limit}
                                             isValid={name.isValid}
                                             onChange={name.handleChange}
-                                            placeholder={"Nazwa branży"}/>
+                                            placeholder={"Nazwa kategorii   "}/>
                         </FormControl>
                         <Button type="submit" disabled={!isFormValid}>Zapisz</Button>
                         <Button color={"neutral"} onClick={close}>Anuluj</Button>

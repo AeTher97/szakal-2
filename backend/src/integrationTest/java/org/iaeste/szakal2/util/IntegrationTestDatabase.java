@@ -46,6 +46,10 @@ public class IntegrationTestDatabase {
     protected ContactPersonRepository contactPersonRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    protected PasswordTokenRepository passwordTokenRepository;
+    @Autowired
+    protected RegisterTokenRepository registerTokenRepository;
 
     @Transactional
     public AccessRight createAccessRight(String accessRight) {

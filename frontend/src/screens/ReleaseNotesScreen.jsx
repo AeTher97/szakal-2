@@ -3,6 +3,22 @@ import {ReleaseNotesBullet, ReleaseNotesSection, ReleaseNotesTitle} from "../uti
 
 export const releaseNotes = [
     <>
+        <ReleaseNotesTitle title={"Szakal 1.4"}/>
+        <div style={{overflowY: "auto"}}>
+            <ReleaseNotesSection title={"Nowe funkcjonalności"}>
+                <ReleaseNotesBullet title={"Powiadomienia o zmianach w Twoich kontaktach"}
+                                    description={"Jeśli wyrazisz zgodę na Twoje urządzenie będą przychodzić powiadomienia push gdy ktoś zamieści komentarz albo wydarzenie kontaktowe w Twoim kontakcie.."}/>
+                <ReleaseNotesBullet title={"Potwierdzanie adresu E-mail"}
+                                    description={"Przez zdarzające sie błędy w adresach E-mail, które uniemożliwiały resetowanie hasła, E-mail musi być teraz potwierdzony po rejestacji"}/>
+            </ReleaseNotesSection>
+            <ReleaseNotesSection title={"Naprawione błędy"}>
+                <ReleaseNotesBullet title={"Poprawione placeholdery w wielu miejscach"}/>
+                <ReleaseNotesBullet
+                    title={"Rejestracja użytkowników nie pozwala już stwierdzić jakie E-maile są w użytku"}/>
+            </ReleaseNotesSection>
+        </div>
+    </>,
+    <>
         <ReleaseNotesTitle title={"Szakal 1.3"}/>
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>

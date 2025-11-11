@@ -35,6 +35,8 @@ public abstract class IntegrationTestWithTools extends IntegrationTest {
         integrationTestDatabase.getCommentRepository().truncate();
         integrationTestDatabase.getJourneyRepository().deleteAll();
         integrationTestDatabase.getCompanyRepository().deleteAll();
+        integrationTestDatabase.getRegisterTokenRepository().deleteAll();
+        integrationTestDatabase.getPasswordTokenRepository().deleteAll();
         integrationTestDatabase.getUsersRepository().deleteAll();
         integrationTestDatabase.getCampaignRepository().deleteAll();
         integrationTestDatabase.getRolesRepository().deleteAll();

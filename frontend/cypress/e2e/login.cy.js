@@ -2,9 +2,10 @@ describe('Login', () => {
     const username = "administrator@szakal.org"
     const password = "administrator"
 
-
     it('passes', () => {
         cy.visit(`http://${Cypress.env("baseUrl")}`)
+        localStorage.setItem("declinedNotifications", "true")
+
         cy.getByTestId("cypress-login-email")
             .should("exist")
             .type(username);
@@ -18,7 +19,6 @@ describe('Login', () => {
             .should("exist")
         cy.getByTestId("user-avatar")
             .children("div")
-            .children("p")
             .contains("Admin Admin")
     })
 })

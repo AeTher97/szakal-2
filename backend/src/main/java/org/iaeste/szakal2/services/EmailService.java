@@ -30,26 +30,40 @@ public class EmailService {
     public EmailService(FailedEmailRepository failedEmailRepository, JavaMailSender javaMailSender) {
         this.failedEmailRepository = failedEmailRepository;
         this.javaMailSender = javaMailSender;
-        log.info("Using email account " + System.getenv("EMAIL_USERNAME") + " to send notifications");
+        log.info(STR."Using email account \{System.getenv("EMAIL_USERNAME")} to send notifications");
     }
 
-    public void sendHtmlMessage(String to, String subject, String content) {
-        sendHtmlMessage(to, subject, content, null);
+    public boolean sendHtmlMessage(String to, String subject, String content) {
+        return sendHtmlMessage(to, subject, content, null, true);
     }
 
-    public void sendHtmlMessage(String to, String subject, String content, Attachment attachment) {
-        log.info("Sending html email to " + to);
+    public boolean sendHtmlMessage(String to, String subject, String content, Attachment attachment) {
+        return sendHtmlMessage(to, subject, content, null, true);
+    }
+
+    public boolean sendHtmlMessage(String to, String subject, String content, boolean saveOnFailure) {
+        return sendHtmlMessage(to, subject, content, null, saveOnFailure);
+    }
+
+    public boolean sendHtmlMessage(String to, String subject, String content, Attachment attachment, boolean saveOnFailure) {
+        log.info(STR."Sending html email to \{to}");
         try {
-            executorService.submit(new SendMessageTask(javaMailSender, to, subject, content, attachment, this));
+            executorService
+                    .submit(new SendMessageTask(javaMailSender, to, subject, content, attachment, this))
+                    .get();
+            return true;
         } catch (Exception e) {
             //don't propagate this exception to callers to avoid weird errors, save email for later and handle it here
-            log.error("Failed to send email " + e.getMessage());
-            saveFailedEmail(FailedEmail.builder()
-                    .recipient(to)
-                    .subject(subject)
-                    .content(content)
-                    .date(new Date())
-                    .build());
+            log.error(STR."Failed to send email \{e.getMessage()}");
+            if(saveOnFailure) {
+                saveFailedEmail(FailedEmail.builder()
+                        .recipient(to)
+                        .subject(subject)
+                        .content(content)
+                        .date(new Date())
+                        .build());
+            }
+            return false;
         }
     }
 
@@ -57,7 +71,7 @@ public class EmailService {
     public void resendEmails() {
         log.info("Resending failed emails");
         List<FailedEmail> failedEmailList = failedEmailRepository.findAll();
-        log.info(failedEmailList.size() + " failed emails found");
+        log.info(STR."\{failedEmailList.size()} failed emails found");
         failedEmailList.forEach(failedEmail -> {
             sendHtmlMessage(failedEmail.getRecipient(), failedEmail.getSubject(), failedEmail.getContent());
             failedEmailRepository.delete(failedEmail);
@@ -102,7 +116,7 @@ public class EmailService {
 
                 javaMailSender.send(mimeMessage);
             } catch (Exception e) {
-                log.error("Failed sending email " + e.getMessage());
+                log.error(STR."Failed sending email \{e.getMessage()}");
                 if (attachment == null) {
                     // dont save attachment emails
                     emailService.saveFailedEmail(FailedEmail.builder()

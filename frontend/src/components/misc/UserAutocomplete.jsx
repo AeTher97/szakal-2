@@ -77,8 +77,7 @@ const UserAutocomplete = ({
             renderOption={(props, option) => (
                 <AutocompleteOption {...props} key={option.id}>
                     <ListItemDecorator style={{ marginInlineEnd: 5 }}>
-                        <UserAvatar id={option.id} name={option.name} surname={option.surname}
-                                    image={option.profilePicture}
+                        <UserAvatar id={option.id} name={option.name} surname={option.surname} image={option.profilePicture}
                             text={false} />
                     </ListItemDecorator>
                     <ListItemContent sx={{ fontSize: 'sm' }}>

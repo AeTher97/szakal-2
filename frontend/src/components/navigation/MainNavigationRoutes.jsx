@@ -10,6 +10,8 @@ import PasswordResetScreen from "../../screens/PasswordResetScreen";
 import UpdatePasswordScreen from "../../screens/UpdatePasswordScreen";
 import GoogleAnalyticsTracker from "./GoogleAnalyticsTracker";
 import ReleaseNotesScreen from "../../screens/ReleaseNotesScreen";
+import ConfirmEmailScreen from "../../screens/ConfirmEmailScreen";
+import ConfirmEmailMessageScreen from "../../screens/ConfirmEmailMessageScreen";
 
 export const MainNavigationRoutes = () => {
 
@@ -25,6 +27,8 @@ export const MainNavigationRoutes = () => {
             <Route path={"/not-accepted"} element={<SecureRoute>
                 <NotAcceptedScreen/>
             </SecureRoute>}/>
+            <Route path={"/confirm-email-message"} element={<ConfirmEmailMessageScreen/>}/>
+            <Route path={"/confirm-email"} element={<ConfirmEmailScreen/>}/>
             <Route path={"/*"} element={<NotFoundScreen/>}/>
         </Routes>
         <GoogleAnalyticsTracker/>

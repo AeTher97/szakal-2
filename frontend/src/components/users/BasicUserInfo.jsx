@@ -111,7 +111,7 @@ const BasicUserInfo = ({
                             </div>
                             <div style={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
                                 <InputWithLimit label={"Komitet"} disabled={!isUser}
-                                                placeholder={"AGH"}
+                                                placeholder={"Komitet"}
                                                 value={committee.value}
                                                 limit={committee.limit}
                                                 isValid={committee.isValid}

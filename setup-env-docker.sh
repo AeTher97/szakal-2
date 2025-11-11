@@ -12,4 +12,4 @@ until [ "$(docker inspect -f '{{.State.Running}}' postgres-end-to-end)" == "true
   sleep 1;
 done;
 
-docker run --name Szakal --env=JWT_SECRET=fdsih59543u98gufdoh857y4u9yhtrytr4564876984jy6uth6iu43u4983hjytrpoew-=00- --env=HEROKU_APP_DEFAULT_DOMAIN_NAME=localhost:8080 --env=DATABASE_USERNAME=postgres --env=DATABASE_URL=postgres-end-to-end:5432/szakal --env=DATABASE_PASSWORD=postgres -p 8080:8080 -d --network=szakal-network szakal:latest
+docker run --name Szakal --env=JWT_SECRET=fdsih59543u98gufdoh857y4u9yhtrytr4564876984jy6uth6iu43u4983hjytrpoew-=00- --env=HEROKU_APP_DEFAULT_DOMAIN_NAME=localhost:8080 --env=DATABASE_USERNAME=postgres --env=DATABASE_URL=postgres-end-to-end:5432/szakal --env=DATABASE_PASSWORD=postgres --env=PUSH_PRIVATE_KEY=Rz46lYFvjztu-TBT-Uqcgvb9qKSBXt86oero9wxORxk --env=PUSH_PUBLIC_KEY=BLvkp-9zb95S8uFdfRod1QPKCu8tgivS9BJLtKN9fCavAKh6qchPXHrREKiGathnr43OCLQNE_aEL5i3lIOXYyI -p 8080:8080 -d --network=szakal-network szakal:latest

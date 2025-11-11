@@ -5,8 +5,8 @@
       <env name="DATABASE_PASSWORD" value="postgres" />
       <env name="DATABASE_URL" value="localhost:5432/szakal" />
       <env name="DATABASE_USERNAME" value="postgres" />
+      <env name="HEROKU_APP_DEFAULT_DOMAIN_NAME" value="localhost:3000" />
       <env name="JWT_SECRET" value="fdsih59543u98gufdoh857y4u9yhtrytr4564876984jy6uth6iu43u4983hjytrpoew-=00-" />
-      <env name="HEROKU_APP_DEFAULT_DOMAIN_NAME" value="xd.com" />
     </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="szakal-2.backend.main" />

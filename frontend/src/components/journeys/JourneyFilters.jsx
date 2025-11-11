@@ -77,7 +77,7 @@ const JourneyFilters = () => {
                        onChange={(e) => {
                            updateSearch(COMPANY_NAME, e.target.value);
                        }}
-                       size="sm" placeholder="Szukaj"
+                       size="sm" placeholder="Nazwa Firmy"
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
@@ -119,7 +119,7 @@ const JourneyFilters = () => {
                        onChange={(e) => {
                            updateSearch(USER, e.target.value);
                        }}
-                       size="sm" placeholder="Szukaj"
+                       size="sm" placeholder="Imię Nazwisko lub E-Mail"
                        startDecorator={<PersonIcon/>}/>
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">

@@ -49,7 +49,7 @@ const UsersList = () => {
                     <div style={{minWidth: 100}}>
                         <FormLabel>Użytkownik</FormLabel>
                         <Input
-                            placeholder="Szukaj"
+                            placeholder="Imię Nazwisko lub E-Mail"
                             value={searchName}
                             onChange={(e) => setSearchName(e.target.value)}
                             startDecorator={<SearchIcon/>}
@@ -60,7 +60,7 @@ const UsersList = () => {
                     <div style={{minWidth: 100}}>
                         <FormLabel>Komitet</FormLabel>
                         <Input
-                            placeholder="Szukaj"
+                            placeholder="Nazwa Komitetu"
                             value={searchCommittee}
                             onChange={(e) => setSearchCommittee(e.target.value)}
                             startDecorator={<SearchIcon/>}

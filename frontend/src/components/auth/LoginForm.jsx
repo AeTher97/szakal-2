@@ -65,7 +65,7 @@ const LoginForm = ({redirectBack}) => {
                         color={error ? "danger" : "neutral"}
                         name="email"
                         type="email"
-                        placeholder="johndoe@email.com"
+                        placeholder="Adres E-mail"
                         value={email.value}
                         limit={email.limit}
                         isValid={email.isValid}
@@ -79,7 +79,7 @@ const LoginForm = ({redirectBack}) => {
                         color={error ? "danger" : "neutral"}
                         name="password"
                         type="password"
-                        placeholder="password"
+                        placeholder="Hasło"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />

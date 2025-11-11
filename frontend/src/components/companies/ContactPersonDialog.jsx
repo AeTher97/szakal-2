@@ -117,7 +117,7 @@ const ContactPersonDialog = ({
                                 value={committee.value}
                                 onChange={(e) => {
                                     committee.setValue(e.target.value)
-                                }} placeholder={"AGH"}/>
+                                }} placeholder={"Komitet"}/>
                         </FormControl>}
                         <InputWithLimit
                             label={"Telefon"}

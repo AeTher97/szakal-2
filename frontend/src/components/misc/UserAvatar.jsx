@@ -25,12 +25,14 @@ const UserAvatar = ({
                     size={size}>
                 {name[0]}{surname[0]}
             </Avatar>
-            {(!mobile || overrideMobile) && text && !hideName &&
-                <>
-                    <Typography level={bold ? "title-lg" : "title-md"}>{name} {surname}</Typography>
-                    {committee && <Typography level={"body-sm"}>- {committee}</Typography>}
-                </>
-            }
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start"}}>
+                {(!mobile || overrideMobile) && text && !hideName &&
+                    <>
+                        <Typography level={bold ? "title-lg" : "title-md"}>{name} {surname}</Typography>
+                        {committee && <Typography level={"body-xs"}>{committee}</Typography>}
+                    </>
+                }
+            </div>
         </div>
     );
 };
@@ -38,6 +40,7 @@ const UserAvatar = ({
 UserAvatar.propTypes = {
     name: PropTypes.string,
     surname: PropTypes.string,
+    committee: PropTypes.string,
     text: PropTypes.bool,
     size: PropTypes.string,
     overrideMobile: PropTypes.bool,
