@@ -79,6 +79,8 @@ tasks.register('integrationTest', Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 
+    environment "HEROKU_APP_DEFAULT_DOMAIN_NAME", "localhost:3000"
+
     useJUnitPlatform()
 }
 

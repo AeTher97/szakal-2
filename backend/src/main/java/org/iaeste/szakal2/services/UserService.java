@@ -100,9 +100,9 @@ public class UserService {
     }
 
     @Transactional
-    public void registerUser(UserCreationDTO userCreationDTO) {
+    public User registerUser(UserCreationDTO userCreationDTO) {
         if (usersRepository.findUserByEmailIgnoreCase(userCreationDTO.getEmail()).isPresent()) {
-            return;
+            return User.builder().build();
             // Do not leak information about what emails are taken
         }
         User user = User.fromCreationDTO(userCreationDTO);
@@ -120,6 +120,8 @@ public class UserService {
         if (!successfulEmailSend) {
             throw new RuntimeException("Coś poszło nie tak");
         }
+
+        return user;
     }
 
     public UserDTO modifyUserRoles(UUID userId, UserRoleModificationDTO userRoleModificationDTO) {

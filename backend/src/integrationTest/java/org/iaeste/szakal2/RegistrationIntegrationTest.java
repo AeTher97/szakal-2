@@ -3,7 +3,6 @@ package org.iaeste.szakal2;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.hamcrest.Matchers;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
 import org.iaeste.szakal2.models.entities.User;
 import org.iaeste.szakal2.services.UserService;
@@ -46,7 +45,7 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
         AssertionsForClassTypes.assertThat(user.getCreatedAt()).isNotNull();
         AssertionsForClassTypes.assertThat(user.getEmail()).isEqualTo("emtail@gmail.com");
         AssertionsForClassTypes.assertThat(user.isAccepted()).isFalse();
-        AssertionsForClassTypes.assertThat(user.isActive()).isTrue();
+        AssertionsForClassTypes.assertThat(user.isActive()).isFalse();
     }
 
     @Test
@@ -92,7 +91,7 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
 
 
     @Test
-    public void failsToRegisterIfEmailTaken() {
+    public void registersEmptyUserWhenEmailTaken() {
         userService.registerUser(UserCreationDTO.builder()
                 .email("taken-email@gmail.com")
                 .password("Password123!")
@@ -114,8 +113,7 @@ public class RegistrationIntegrationTest extends IntegrationTestWithTools {
                 .when()
                 .post("/api/users")
                 .then()
-                .statusCode(400)
-                .body("error", Matchers.equalTo("Email already taken"));
+                .statusCode(200);
     }
 
 }

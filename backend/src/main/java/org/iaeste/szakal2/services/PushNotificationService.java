@@ -6,12 +6,14 @@ import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Subscription;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.iaeste.szakal2.configuration.JwtConfiguration;
 import org.iaeste.szakal2.models.dto.user.PushNotificationSubscriptionDTO;
 import org.iaeste.szakal2.models.entities.Notification;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.security.Security;
 import java.util.List;
 
 @Slf4j
@@ -23,6 +25,7 @@ public class PushNotificationService {
 
     public PushNotificationService(JwtConfiguration jwtConfiguration, UserService userService) throws GeneralSecurityException {
         this.userService = userService;
+        Security.addProvider(new BouncyCastleProvider());
         pushService = new PushService();
         pushService.setPrivateKey(jwtConfiguration.getPushPrivateKey());
         pushService.setPublicKey(jwtConfiguration.getPushPublicKey());

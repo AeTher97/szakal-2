@@ -3,6 +3,23 @@ import {ReleaseNotesBullet, ReleaseNotesSection, ReleaseNotesTitle} from "../uti
 
 export const releaseNotes = [
     <>
+        <ReleaseNotesTitle title={"Szakal 1.4"}/>
+        <div style={{overflowY: "auto"}}>
+            <ReleaseNotesSection title={"Nowe funkcjonalności"}>
+                <ReleaseNotesBullet title={"Ładniejsza formatka do wrzucania zdjęć profilowych"}
+                                    description={"Możliwe jest przciąganie zdjęcia profilowego do przeglądarki i wygląda to ładniej."}/>
+            </ReleaseNotesSection>
+            <ReleaseNotesSection title={"Naprawione błędy"}>
+                <ReleaseNotesBullet title={"Poprawione placeholdery w wielu miejscach"}
+                                    description={"Tokeny resetu hasła są usuwane dla tych użytkowników automatycznie, usuwanie nie rzuca już Internal Server Error."}/>
+                <ReleaseNotesBullet
+                    title={"Rejestracja użytkowników nie pozwala już stwierdzić jakie E-maile są w użytku"}
+                    description={"Tokeny resetu hasła są usuwane dla tych użytkowników automatycznie, usuwanie nie rzuca już Internal Server Error."}/>
+
+            </ReleaseNotesSection>
+        </div>
+    </>,
+    <>
         <ReleaseNotesTitle title={"Szakal 1.3"}/>
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>

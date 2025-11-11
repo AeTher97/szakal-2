@@ -63,16 +63,20 @@ public class User {
     @NotNull
     private boolean active;
     @ManyToMany(fetch = FetchType.LAZY)
+    @Singular
     private Set<Role> roles;
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
+    @Singular
     private Set<ContactJourney> contactJourneys;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
+    @Singular
     private Set<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
+    @Singular
     private Set<UserGroup> userGroups;
     @JsonIgnore
     @Column(length = 15000)

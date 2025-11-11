@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.iaeste.szakal2.services.InitService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.security.Security;
 import java.util.Properties;
 
 import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
@@ -38,7 +36,6 @@ public class SzakalBackend {
         if (envPort != null && envDyno != null) {
             System.getProperties().put("server.port", envPort);
         }
-        Security.addProvider(new BouncyCastleProvider());
 
         SpringApplication.run(SzakalBackend.class, args);
     }

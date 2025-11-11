@@ -34,10 +34,9 @@ public class UsersController {
 
 
     @PostMapping
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserCreationDTO createUserDto) {
         log.info("Registering user");
-        userService.registerUser(createUserDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(UserDTO.fromUser(userService.registerUser(createUserDto)));
     }
 
     @GetMapping
