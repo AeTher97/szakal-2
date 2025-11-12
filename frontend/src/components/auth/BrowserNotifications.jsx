@@ -44,7 +44,7 @@ const BrowserNotifications = () => {
 
                 const subscribeOptions = {
                     userVisibleOnly: true,
-                    applicationServerKey: urlB64ToUint8Array(import.meta.env.PUSH_PUBLIC_KEY)
+                    applicationServerKey: urlB64ToUint8Array(import.meta.env.VITE_PUSH_PUBLIC_KEY)
                 }
 
                 return registration.pushManager.subscribe(subscribeOptions);
