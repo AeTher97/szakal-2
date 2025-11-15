@@ -300,10 +300,7 @@ public class JourneyService {
     private void notifyOwnerOnJourneyComment(ContactJourney contactJourney) {
         if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
             notificationService.notify(contactJourney.getUser(),
-                    STR."""
-                    Twój kontakt z firmą \{contactJourney.getCompany().getName()}
-                    w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz
-                    """,
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz",
                     contactJourney.getId());
         }
     }
@@ -327,10 +324,7 @@ public class JourneyService {
 
         usersToNotify.forEach(user -> {
             notificationService.notify(user,
-                    STR."""
-                    \{addedComment ? "Nowy komentarz" : "Nowa zmiana"} w kontakcie z firmą
-                     \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}
-                    """,
+                    STR."\{addedComment ? "Nowy komentarz" : "Nowa zmiana"} w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}",
                     contactJourney.getId());
         });
     }
