@@ -48,7 +48,7 @@ public class NotificationService {
                 .user(user)
                 .seen(false)
                 .date(LocalDateTime.now())
-                .text(text.replaceAll("\n", ""))
+                .text(text.replaceAll("\n", " "))
                 .journeyId(journeyId)
                 .build();
 
