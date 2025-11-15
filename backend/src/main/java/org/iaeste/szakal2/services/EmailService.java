@@ -38,7 +38,7 @@ public class EmailService {
     }
 
     public boolean sendHtmlMessage(String to, String subject, String content, Attachment attachment) {
-        return sendHtmlMessage(to, subject, content, null, true);
+        return sendHtmlMessage(to, subject, content, attachment, true);
     }
 
     public boolean sendHtmlMessage(String to, String subject, String content, boolean saveOnFailure) {
