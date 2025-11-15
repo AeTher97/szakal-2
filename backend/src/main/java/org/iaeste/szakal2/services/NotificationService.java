@@ -40,7 +40,7 @@ public class NotificationService {
                 .user(user)
                 .seen(false)
                 .date(LocalDateTime.now())
-                .text(journeyId != null ? text + ", kliknij aby przejść do kontaktu" : null)
+                .text(journeyId != null ? STR."\{text}, kliknij aby przejść do kontaktu" : null)
                 .journeyId(journeyId)
                 .build();
 
@@ -51,6 +51,7 @@ public class NotificationService {
                 .text(text)
                 .journeyId(journeyId)
                 .build();
+
         notificationRepository.save(notificationForRepository);
         pushNotificationService.pushNotification(pushNotification);
     }

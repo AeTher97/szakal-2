@@ -33,6 +33,7 @@ public class JourneyService {
     private final WsNotifyingService wsNotifyingService;
     private final ContactEventRepository contactEventRepository;
     private final CommentRepository commentRepository;
+    private final FavouriteJourneyService favouriteJourneyService;
 
     public JourneyService(ContactJourneyRepository contactJourneyRepository,
                           UserService userService,
@@ -42,7 +43,7 @@ public class JourneyService {
                           NotificationService notificationService,
                           WsNotifyingService wsNotifyingService,
                           ContactEventRepository contactEventRepository,
-                          CommentRepository commentRepository) {
+                          CommentRepository commentRepository, FavouriteJourneyService favouriteJourneyService) {
         this.contactJourneyRepository = contactJourneyRepository;
         this.userService = userService;
         this.companyService = companyService;
@@ -52,6 +53,20 @@ public class JourneyService {
         this.wsNotifyingService = wsNotifyingService;
         this.contactEventRepository = contactEventRepository;
         this.commentRepository = commentRepository;
+        this.favouriteJourneyService = favouriteJourneyService;
+        favouriteJourneyService.setJourneyService(this);
+    }
+
+    private static boolean isCommentOwner(Comment comment) {
+        return comment.getUser().getId().equals(SecurityUtils.getUserId());
+    }
+
+    private static boolean isContactEventOwner(ContactEvent contactEvent) {
+        return contactEvent.getUser().getId().equals(SecurityUtils.getUserId());
+    }
+
+    private static boolean isNotJourneyOwner(ContactJourney contactJourney) {
+        return !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString());
     }
 
     @Transactional
@@ -61,6 +76,7 @@ public class JourneyService {
         Campaign campaign = campaignService.getCampaignById(contactJourneyCreationDTO.getCampaign());
         Optional<ContactJourney> contactJourneyOptional = contactJourneyRepository
                 .findContactJourneyByCampaignAndCompany(campaign, company);
+
         if (contactJourneyOptional.isPresent()) {
             ContactJourney contactJourney = contactJourneyOptional.get();
             if (contactJourney.getUser() != null) {
@@ -70,6 +86,7 @@ public class JourneyService {
                 return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
             }
         }
+
         ContactJourney savedJourney = contactJourneyRepository.save(contactJourneyFromDto(user, company, campaign));
         if (!AccessVerificationBean.isUser(contactJourneyCreationDTO.getUser().toString())) {
             notificationService.notify(user,
@@ -78,6 +95,7 @@ public class JourneyService {
         }
         wsNotifyingService.sendUpdateAboutJourneys(contactJourneyCreationDTO.getCampaign());
         wsNotifyingService.sendUpdateAboutSummary(contactJourneyCreationDTO.getCampaign());
+
         return ContactJourneyDetailsDTO
                 .fromContactJourney(savedJourney);
     }
@@ -85,32 +103,37 @@ public class JourneyService {
     @Transactional
     public ContactJourneyDetailsDTO updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
-                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
             contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
-            notifyOnJourneyModification(contactJourney);
-            wsNotifyingService.sendUpdateAboutJourney(id);
-            wsNotifyingService.sendUpdateAboutJourneys(contactJourney.getCampaignId());
+
+            notifyOwnerOnJourneyModification(contactJourney);
+
+            sendsWsJourneyPageUpdate(id, contactJourney);
+
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
         }
     }
 
     @Transactional
     public ContactJourneyDetailsDTO addContactEvent(UUID id, ContactEventCreationDTO contactEventCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
-                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
             contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
             contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
             contactJourney.setLastInteraction(LocalDateTime.now());
-            notifyOnJourneyModification(contactJourney);
-            wsNotifyingService.sendUpdateAboutJourney(id);
-            wsNotifyingService.sendUpdateAboutJourneys(contactJourney.getCampaignId());
+
+            notifyOwnerOnJourneyModification(contactJourney);
+            notifyFollowersOnJourneyUpdate(contactJourney, false);
+
+            sendsWsJourneyPageUpdate(id, contactJourney);
+
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
         }
     }
 
@@ -119,7 +142,7 @@ public class JourneyService {
         ContactJourney contactJourney = getJourneyById(journeyId);
         ContactEvent contactEvent = getContactEventById(contactEventEditDTO.getEventId());
 
-        if (contactEvent.getUser().getId().equals(SecurityUtils.getUserId())) {
+        if (isContactEventOwner(contactEvent)) {
             contactEvent.setDescription(contactEventEditDTO.getDescription());
             contactEvent.setEventType(ContactStatus.valueOf(contactEventEditDTO.getContactStatus()));
             contactEvent.setEdited(true);
@@ -140,23 +163,10 @@ public class JourneyService {
     public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
         contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
-        if (!AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz",
-                    contactJourney.getId());
-        }
-        Set<User> usersToNotify = new HashSet<>();
-        contactJourney.getComments().forEach(comment -> {
-            if (!AccessVerificationBean.isUser(comment.getUser().getId().toString())
-                    && !comment.getUser().getId().equals(contactJourney.getUser().getId())) {
-                usersToNotify.add(comment.getUser());
-            }
-        });
-        usersToNotify.forEach(user -> {
-            notificationService.notify(user,
-                    STR."Nowy komentarz w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}",
-                    contactJourney.getId());
-        });
+
+        notifyOwnerOnJourneyComment(contactJourney);
+        notifyFollowersOnJourneyUpdate(contactJourney, true);
+
         wsNotifyingService.sendUpdateAboutJourney(id);
         return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
@@ -166,7 +176,7 @@ public class JourneyService {
         ContactJourney contactJourney = getJourneyById(journeyId);
         Comment comment = getCommentById(commentEditDTO.getCommentId());
 
-        if (comment.getUser().getId().equals(SecurityUtils.getUserId())) {
+        if (isCommentOwner(comment)) {
             comment.setCommentValue(commentEditDTO.getComment());
             comment.setEdited(true);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
@@ -178,10 +188,13 @@ public class JourneyService {
     @Transactional
     public ContactJourneyDetailsDTO finishJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
-                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
             contactJourney.setFinished(true);
-            notifyOnJourneyFinished(contactJourney);
+
+            notifyOwnerOnJourneyFinished(contactJourney);
+            notifyFollowersOnJourneyUpdate(contactJourney, false);
+
             wsNotifyingService.sendUpdateAboutJourney(id);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
@@ -192,10 +205,13 @@ public class JourneyService {
     @Transactional
     public ContactJourneyDetailsDTO reopenJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
-                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()))) {
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
             contactJourney.setFinished(false);
-            notifyOnJourneyReopened(contactJourney);
+
+            notifyOwnerOnJourneyReopened(contactJourney);
+            notifyFollowersOnJourneyUpdate(contactJourney, false);
+
             wsNotifyingService.sendUpdateAboutJourney(id);
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
@@ -206,27 +222,33 @@ public class JourneyService {
     @Transactional
     public ContactJourneyDetailsDTO removeUserFromJourney(UUID id) {
         ContactJourney contactJourney = getJourneyById(id);
-        if (contactJourney.getUser().getId().equals(SecurityUtils.getUserId()) ||
-                AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue())) {
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
             contactJourney.setUser(null);
+
             wsNotifyingService.sendUpdateAboutJourney(id);
+            notifyFollowersOnJourneyUpdate(contactJourney, false);
+
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
         }
     }
 
     public ContactJourneyDetailsDTO getJourneyDTOById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
+
         if (journeyOptional.isEmpty()) {
             throw new ResourceNotFoundException(STR."""
                     ContactJourney with id \{id} does not exist""");
         }
+
         return ContactJourneyDetailsDTO.fromContactJourney(journeyOptional.get());
     }
 
     public ContactJourney getJourneyById(UUID id) {
         Optional<ContactJourney> journeyOptional = contactJourneyRepository.findContactJourneyById(id);
+
         if (journeyOptional.isEmpty()) {
             throw new ResourceNotFoundException(STR."""
                     ContactJourney with id \{id} does not exist""");
@@ -238,10 +260,84 @@ public class JourneyService {
                                                       ContactJourneySearch journeySearch) {
         Page<ContactJourney> contactJourneyPage
                 = contactJourneyRepository.findAll(new JourneySpecification(journeySearch), pageable);
+
         List<ContactJourney> contactJourneyList = contactJourneyRepository
                 .findAllById(contactJourneyPage.getContent().stream().map(ContactJourney::getId).toList());
+
         return new PageImpl<>(contactJourneyList.stream().map(ContactJourneyListingDTO::fromContactJourney).toList(),
                 pageable, contactJourneyPage.getTotalElements());
+    }
+
+    private boolean isJourneyOwnerOrCanModifyAllJourneys(ContactJourney contactJourney) {
+        return AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
+                (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()));
+    }
+
+    private void notifyOwnerOnJourneyModification(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany",
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyOwnerOnJourneyFinished(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony",
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyOwnerOnJourneyReopened(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty",
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyOwnerOnJourneyComment(ContactJourney contactJourney) {
+        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
+            notificationService.notify(contactJourney.getUser(),
+                    STR."""
+                    Twój kontakt z firmą \{contactJourney.getCompany().getName()}
+                    w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz
+                    """,
+                    contactJourney.getId());
+        }
+    }
+
+    private void notifyFollowersOnJourneyUpdate(ContactJourney contactJourney, boolean addedComment) {
+        Set<User> usersToNotify = new HashSet<>();
+
+        contactJourney.getComments().forEach(comment -> {
+            if (!isCommentOwner(comment)
+                    && !comment.getUser().getId().equals(contactJourney.getUser().getId())) {
+                usersToNotify.add(comment.getUser());
+            }
+        });
+
+        favouriteJourneyService.getFavouriteJourneysForJourney(contactJourney.getId())
+                .forEach(favouriteJourney -> {
+                    if (favouriteJourney.getUserId() != SecurityUtils.getUserId()) {
+                        usersToNotify.add(userService.getUserById(favouriteJourney.getUserId()));
+                    }
+                });
+
+        usersToNotify.forEach(user -> {
+            notificationService.notify(user,
+                    STR."""
+                    \{addedComment ? "Nowy komentarz" : "Nowa zmiana"} w kontakcie z firmą
+                     \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}
+                    """,
+                    contactJourney.getId());
+        });
+    }
+
+    private void sendsWsJourneyPageUpdate(UUID id, ContactJourney contactJourney) {
+        wsNotifyingService.sendUpdateAboutJourney(id);
+        wsNotifyingService.sendUpdateAboutJourneys(contactJourney.getCampaignId());
     }
 
     private Comment commentFromDTO(ContactJourney contactJourney, CommentCreationDTO commentCreationDTO) {
@@ -255,6 +351,7 @@ public class JourneyService {
 
     private Comment getCommentById(UUID commentId) {
         Optional<Comment> commentOptional = commentRepository.findCommentById(commentId);
+
         if (commentOptional.isEmpty()) {
             throw new ResourceNotFoundException(STR."""
                     Comment with id \{commentId} does not exist""");
@@ -264,6 +361,7 @@ public class JourneyService {
 
     private ContactEvent contactEventFromDTO(ContactJourney contactJourney, ContactEventCreationDTO contactEventCreationDTO) {
         User user = userService.getUserById(contactEventCreationDTO.getUser());
+
         Optional<ContactPerson> contactPersonOptional = contactPersonRepository.findContactPersonById(contactEventCreationDTO.getContactPerson());
 
         return ContactEvent.builder()
@@ -278,6 +376,7 @@ public class JourneyService {
 
     private ContactEvent getContactEventById(UUID eventId) {
         Optional<ContactEvent> contactEventOptional = contactEventRepository.findContactEventById(eventId);
+
         if (contactEventOptional.isEmpty()) {
             throw new ResourceNotFoundException(STR."""
                     ContactEvent with id \{eventId} does not exist""");
@@ -297,29 +396,5 @@ public class JourneyService {
                 .comments(new HashSet<>())
                 .contactEvents(new HashSet<>())
                 .build();
-    }
-
-    private void notifyOnJourneyModification(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyOnJourneyFinished(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyOnJourneyReopened(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString())) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty",
-                    contactJourney.getId());
-        }
     }
 }

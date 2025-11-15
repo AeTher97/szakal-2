@@ -1,5 +1,6 @@
 package org.iaeste.szakal2.services;
 
+import lombok.Setter;
 import org.iaeste.szakal2.exceptions.ResourceExistsException;
 import org.iaeste.szakal2.models.dto.favourite.journey.FavouriteJourneyDTO;
 import org.iaeste.szakal2.models.dto.favourite.journey.FavouriteJourneyListingDTO;
@@ -17,21 +18,16 @@ import java.util.UUID;
 public class FavouriteJourneyService {
 
     private final FavouriteJourneyRepository favouriteJourneyRepository;
-    private final JourneyService journeyService;
+    @Setter
+    private JourneyService journeyService;
 
-    public FavouriteJourneyService(FavouriteJourneyRepository favouriteJourneyRepository, JourneyService journeyService) {
+    public FavouriteJourneyService(FavouriteJourneyRepository favouriteJourneyRepository) {
         this.favouriteJourneyRepository = favouriteJourneyRepository;
-        this.journeyService = journeyService;
     }
 
-    public List<FavouriteJourneyListingDTO> getFavouriteJourneysListing() {
+    public List<FavouriteJourneyListingDTO> getFavouriteJourneysListingForCurrentUser() {
         return favouriteJourneyRepository.findFavouriteJourneyByUserId(SecurityUtils.getUserId())
                 .stream().map(FavouriteJourneyListingDTO::fromFavouriteJourney).toList();
-    }
-
-
-    private List<FavouriteJourney> getFavouriteJourneys() {
-        return favouriteJourneyRepository.findFavouriteJourneyByUserId(SecurityUtils.getUserId());
     }
 
     public FavouriteJourneyListingDTO addFavouriteJourney(FavouriteJourneyDTO favouriteJourneyDTO) {
@@ -52,4 +48,13 @@ public class FavouriteJourneyService {
 
         favouriteJourneyOptional.ifPresent(favouriteJourneyRepository::delete);
     }
+
+    public List<FavouriteJourney> getFavouriteJourneysForJourney(UUID journeyId) {
+        return favouriteJourneyRepository.findFavouriteJourneyByContactJourneyId(journeyId);
+    }
+
+    private List<FavouriteJourney> getFavouriteJourneys() {
+        return favouriteJourneyRepository.findFavouriteJourneyByUserId(SecurityUtils.getUserId());
+    }
+
 }

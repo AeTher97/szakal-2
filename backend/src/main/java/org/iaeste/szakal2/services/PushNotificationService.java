@@ -22,17 +22,30 @@ public class PushNotificationService {
 
     private final PushService pushService;
     private final UserService userService;
+    private boolean initialized = false;
 
     public PushNotificationService(JwtConfiguration jwtConfiguration, UserService userService) throws GeneralSecurityException {
         this.userService = userService;
         Security.addProvider(new BouncyCastleProvider());
         pushService = new PushService();
+        if (jwtConfiguration.getPushPrivateKey() == null || jwtConfiguration.getPushPublicKey() == null) {
+            log.info("No push notification keys provided, push notifications will not be sent.");
+            return;
+        }
+        if (System.getenv("EMAIL_USERNAME") == null) {
+            log.info("No email username provided, push notifications will not be sent.");
+            return;
+        }
         pushService.setPrivateKey(jwtConfiguration.getPushPrivateKey());
         pushService.setPublicKey(jwtConfiguration.getPushPublicKey());
         pushService.setSubject(STR."mailto:\{System.getenv("EMAIL_USERNAME")}");
+        initialized = true;
     }
 
     public void pushNotification(Notification notification) {
+        if (!initialized) {
+            return;
+        }
         List<PushNotificationSubscriptionDTO> pushNotificationTokens = notification.getUser().getPushNotificationTokens();
         pushNotificationTokens.forEach(token -> pushToDevice(notification, token));
     }

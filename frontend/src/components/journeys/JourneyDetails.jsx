@@ -50,8 +50,7 @@ const JourneyDetails = () => {
         closeJourney,
         reopenJourney,
         removeUser
-    }
-            = useJourney(location.pathname.split("/")[3]);
+    } = useJourney(location.pathname.split("/")[3]);
         const {hasRight} = useAccessRightsHelper()
         const mobile = useMobileSize();
 

@@ -42,6 +42,5 @@ public class WsNotifyingService {
 
     public void sendUpdateAboutSummary(UUID campaignId) {
         sendUpdateToTopic(STR."\{SUMMARY_TOPIC}/\{campaignId}");
-
     }
 }

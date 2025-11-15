@@ -15,5 +15,8 @@ public interface FavouriteJourneyRepository extends JpaRepository<FavouriteJourn
     @EntityGraph(value = "FavouriteJourney.full", type = EntityGraph.EntityGraphType.LOAD)
     List<FavouriteJourney> findFavouriteJourneyByUserId(UUID id);
 
+    @EntityGraph(value = "FavouriteJourney.full", type = EntityGraph.EntityGraphType.LOAD)
+    List<FavouriteJourney> findFavouriteJourneyByContactJourneyId(UUID journeyId);
+
     Optional<FavouriteJourney> findFavouriteJourneyById(UUID id);
 }

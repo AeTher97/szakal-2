@@ -21,7 +21,7 @@ public class FavouriteJourneyController {
 
     @GetMapping
     public List<FavouriteJourneyListingDTO> getFavouriteJourneys() {
-        return favouriteJourneyService.getFavouriteJourneysListing();
+        return favouriteJourneyService.getFavouriteJourneysListingForCurrentUser();
     }
 
     @PostMapping
