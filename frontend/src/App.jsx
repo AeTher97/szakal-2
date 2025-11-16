@@ -8,23 +8,20 @@ import {stores} from "./redux/Stores";
 import AuthProvider from "./components/auth/AuthProvider";
 import {MainNavigationRoutes} from "./components/navigation/MainNavigationRoutes";
 import {closeAlert} from "./redux/AlertActions";
+import {usePageTitle} from "./utils/PageTitle";
 
 const AppWithAuth = () => {
 
     const {theme} = useSelector(state => state.theme);
     const {setMode} = useColorScheme();
 
+    usePageTitle();
+
     useEffect(() => {
         setMode(theme)
         document.getElementById("body")
             .style.backgroundColor = theme === "light" ? "rgb(255,255,255)" : "rgb(11, 13, 14)";
     }, [theme]);
-
-    useEffect(() => {
-        if (isDevEnv()) {
-            document.title = "Szakal 2 (Development)";
-        }
-    }, []);
 
     return <>
         <AuthProvider/>
@@ -56,24 +53,11 @@ const AppWithCss = () => {
 };
 
 function App() {
-
     return (
         <Provider store={stores}>
             <AppWithCss/>
         </Provider>
     );
-}
-
-export const setDefaultTitle = () => {
-    if (isDevEnv()) {
-        document.title = "Szakal 2 (Development)";
-    } else {
-        document.title = "Szakal 2";
-    }
-}
-
-export const isDevEnv = () => {
-    return import.meta.env.DEV;
 }
 
 export default App;

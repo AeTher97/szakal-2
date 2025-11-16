@@ -13,8 +13,8 @@ import PasswordChangeDialog from "./PasswordChangeDialog";
 import {useAccessRightsHelper} from "../../utils/AccessRightsHelper";
 import {USER_ACCEPTANCE, USER_MANAGEMENT, USER_ROLE_GRANTING} from "../../utils/AccessRightsList";
 import {useMobileSize} from "../../utils/MediaQuery";
-import {isDevEnv, setDefaultTitle} from "../../App";
 import PropTypes from "prop-types";
+import {usePageTitle} from "../../utils/PageTitle";
 
 const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -58,13 +58,9 @@ const UserDetails = ({userId}) => {
 
     useEffect(() => {
         setLocalUser(user)
-        if (user) {
-            document.title = `${user.name} ${user.surname} ${isDevEnv() ? "(Development)" : ""}`;
-            return () => {
-                setDefaultTitle();
-            }
-        }
     }, [user])
+
+    usePageTitle(`${user?.name} ${user?.surname}`, user)
 
     const renderActions = () => {
         return <div style={{paddingBottom: mobile ? 5 : 0, display: "flex"}}>

@@ -16,7 +16,7 @@ import JourneyContactEvents from "./cards/JourneyContactEvents";
 import JourneyComments from "./cards/JourneyComments";
 import {useMobileSize} from "../../utils/MediaQuery";
 import {Star, StarOutline} from "@mui/icons-material";
-import {isDevEnv, setDefaultTitle} from "../../App";
+import {usePageTitle} from "../../utils/PageTitle";
 
 
 export const contactStatusOptions
@@ -63,14 +63,13 @@ const JourneyDetails = () => {
         useEffect(() => {
             if (journey) {
                 dispatch(addKnownItem(location.pathname.split("/")[3], `Kontakt z ${journey.company.name}`));
-                document.title = `Kontakt z ${journey.company.name} (${journey.campaign.name}) ${isDevEnv() ? "(Development)" : ""}`;
                 return () => {
                     dispatch(removeKnownItem(location.pathname.split("/")[4]))
-                    setDefaultTitle();
                 }
             }
         }, [location, journey]);
 
+    usePageTitle(`Kontakt z ${journey?.company.name} (${journey?.campaign.name})`, journey)
 
         const isUser = journey?.user && (userId === journey.user.id);
         const favouriteJourneyObject = favouriteJourneys.find(favouriteJourney => {

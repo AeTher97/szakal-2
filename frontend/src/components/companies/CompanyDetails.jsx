@@ -18,7 +18,7 @@ import {COMPANY_MODIFICATION} from "../../utils/AccessRightsList";
 import Button from "@mui/joy/Button";
 import {useConfirmationDialog} from "../misc/ConfirmationDialog";
 import {useMobileSize} from "../../utils/MediaQuery";
-import {isDevEnv, setDefaultTitle} from "../../App";
+import {usePageTitle} from "../../utils/PageTitle";
 
 
 const CompanyDetails = () => {
@@ -53,12 +53,10 @@ const CompanyDetails = () => {
     useEffect(() => {
         if (company) {
             setLocalCompany(company)
-            document.title = `${company.name} ${isDevEnv() ? "(Development)" : ""}`;
-            return () => {
-                setDefaultTitle()
-            }
         }
     }, [company]);
+
+    usePageTitle(`${company?.name}`, company);
 
     const thisCampaignJourney = company ?
         company.contactJourneys.filter(journey => journey.campaign.id === currentCampaign)[0] : null;
