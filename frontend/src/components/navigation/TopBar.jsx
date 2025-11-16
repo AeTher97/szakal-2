@@ -31,7 +31,8 @@ const TopBar = () => {
                 label: campaign.name,
                 id: campaign.id
             }
-        });
+        }).sort((a, b) => a.label.localeCompare(b.label));
+
         campaignsOptions.push({id: "choose", label: "Wybierz", disabled: true})
 
         useEffect(() => {

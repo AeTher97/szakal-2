@@ -13,9 +13,8 @@ const JourneyUser = ({user}) => {
                 </CardContent>
                 <Divider inset={"context"}/>
                 {user && <CardContent>
-                    <UserAvatar name={user.name} surname={user.surname} id={user.id}
+                    <UserAvatar name={user.name} surname={user.surname} id={user.id} email={user.email}
                                 image={user.profilePicture} committee={user.committee} overrideMobile/>
-                    <Typography>{user.email}</Typography>
                 </CardContent>}
                 {!user &&
                     <CardContent>

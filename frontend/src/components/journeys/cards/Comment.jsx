@@ -24,6 +24,7 @@ const Comment = ({comment, userId, editComment}) => {
                     id={comment.user.id}
                     name={comment.user.name}
                     surname={comment.user.surname}
+                    email={comment.user.email}
                     image={comment.user.profilePicture}
                     text={false}
                     size={"sm"}

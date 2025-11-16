@@ -99,7 +99,7 @@ public class ScheduledContactService {
                         Dnia \{ scheduledContact.getContactDate().format(dateFormatter) }
                         o godzinie: \{ scheduledContact.getContactDate().format(timeFormatter) } masz
                         zaplanowany kontakt z firmą:
-                        \{ scheduledContact.getCompany().getName() },  \{ scheduledContact.getNote().isEmpty() ? "notatka: " + scheduledContact.getNote() : "" }
+                        \{scheduledContact.getCompany().getName()},  \{!scheduledContact.getNote().isEmpty() ? STR."notatka: \{scheduledContact.getNote()}" : ""}
                         """ ;
             try {
                 notificationService.notify(userService.getUserById(scheduledContact.getUser().getId()), info);

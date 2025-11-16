@@ -74,6 +74,7 @@ const ContactEvent = ({event, journey, editContactEvent, contactStatusOptions, u
                                 id={event.user.id}
                                 name={event.user.name}
                                 surname={event.user.surname}
+                                email={event.user.email}
                                 image={event.user.profilePicture}
                                 text={false}
                                 size={"sm"}/>

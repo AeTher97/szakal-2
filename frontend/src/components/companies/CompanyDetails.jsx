@@ -124,7 +124,6 @@ const CompanyDetails = () => {
                     alignItems: "stretch",
                     gap: 10,
                     padding: "5px 0 5px 0",
-                    paddingBottom: 50,
                     overflow: "hidden"
                 }}>
                     <CompanyContactData localCompany={localCompany}

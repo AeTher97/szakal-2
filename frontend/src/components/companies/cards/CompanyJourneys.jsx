@@ -19,14 +19,19 @@ const CompanyJourneys = ({localCompany}) => {
                     {localCompany.contactJourneys.map((journey, i) => <div key={journey.id}
                                                                            style={{
                                                                                display: "flex",
-                                                                               flexDirection: "column"
+                                                                               flexDirection: "row",
+                                                                               flexWrap: "wrap",
+                                                                               gap: 10
                                                                            }}>
-                        <LinkWithRouter
-                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} {contactStatusUtils(journey.contactStatus)}</LinkWithRouter>
-                        {journey.user ? <UserAvatar id={journey.user.id} name={journey.user.name}
-                                                    surname={journey.user.surname} committee={journey.user.committee}/>
+                        {journey.user ?
+                            <UserAvatar id={journey.user.id} name={journey.user.name} email={journey.user.email}
+                                        surname={journey.user.surname} committee={journey.user.committee}
+                                        size={"sm"} overrideMobile={true}/>
                             : "Brak przypisanego użytkownika"}
                         {i !== localCompany.contactJourneys.length - 1 && <Divider inset={"context"}/>}
+                        <LinkWithRouter
+                            to={`/secure/journeys/${journey.id}`}>{journey.campaign.name} - {contactStatusUtils(journey.contactStatus)}
+                        </LinkWithRouter>
                     </div>)}
                 </CardContent>
             </CardOverflow>

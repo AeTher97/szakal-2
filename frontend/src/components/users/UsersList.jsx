@@ -102,7 +102,7 @@ const UsersList = () => {
                                 <ListItemButton>
                                     <ListItemDecorator>
                                         <UserAvatar image={user.profilePicture} name={user.name} id={user.id}
-                                                    committee={user.committee}
+                                                    committee={user.committee} email={user.email}
                                                     surname={user.surname} bold={false} overrideMobile={true}/>
                                     </ListItemDecorator>
                                     <ListItemContent>

@@ -7,9 +7,9 @@ export const releaseNotes = [
         <div style={{overflowY: "auto"}}>
             <ReleaseNotesSection title={"Nowe funkcjonalności"}>
                 <ReleaseNotesBullet title={"Powiadomienia o zmianach w Twoich kontaktach"}
-                                    description={"Jeśli wyrazisz zgodę na Twoje urządzenie będą przychodzić powiadomienia push gdy ktoś zamieści komentarz albo wydarzenie kontaktowe w Twoim kontakcie.."}/>
+                                    description={"Jeśli wyrazisz zgodę na Twoje urządzenie będą przychodzić powiadomienia push gdy ktoś zamieści komentarz albo wydarzenie kontaktowe w Twoim kontakcie."}/>
                 <ReleaseNotesBullet title={"Potwierdzanie adresu E-mail"}
-                                    description={"Przez zdarzające sie błędy w adresach E-mail, które uniemożliwiały resetowanie hasła, E-mail musi być teraz potwierdzony po rejestacji"}/>
+                                    description={"Przez zdarzające sie błędy w adresach E-mail, które uniemożliwiały resetowanie hasła, E-mail musi być teraz potwierdzony po rejestacji."}/>
             </ReleaseNotesSection>
             <ReleaseNotesSection title={"Naprawione błędy"}>
                 <ReleaseNotesBullet title={"Poprawione placeholdery w wielu miejscach"}/>
@@ -33,7 +33,7 @@ export const releaseNotes = [
                 <ReleaseNotesBullet title={"Dodawanie i modyfikacja kategorii"}
                                     description={"Dodawanie i modyfikacja kategori nie rzuca już błędu bad request."}/>
                 <ReleaseNotesBullet title={"Sortowanie"}
-                                    description={"Zmiana rozmiaru strony nie resetuje już sortowania kolumn"}/>
+                                    description={"Zmiana rozmiaru strony nie resetuje już sortowania kolumn."}/>
             </ReleaseNotesSection>
         </div>
     </>,
