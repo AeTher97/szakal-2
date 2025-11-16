@@ -24,7 +24,7 @@ const CompanyJourneys = ({localCompany}) => {
                             <div
                                 style={{
                                     display: "flex",
-                                    flexDirection: "row",
+                                    flexDirection: mobile ? "column" : "row",
                                     flexWrap: "wrap",
                                     justifyContent: "space-between",
                                     gap: 5,
