@@ -133,7 +133,6 @@ const CompanyDetails = () => {
                     <CompanyAddress localCompany={localCompany}
                                     updateAddress={updateAddress}
                                     updateAddressLoading={updatingAddress}/>
-                    <CompanyJourneys localCompany={localCompany}/>
                     <CompanyCategories categoriesList={localCompany.categories}
                                        setCategories={(getCategories) => {
                                            setLocalCompany(old => {
@@ -147,6 +146,7 @@ const CompanyDetails = () => {
                                        updateCategories={updateCategories}
                                        updateCategoriesLoading={updatingCategories}
                     />
+                    <CompanyJourneys localCompany={localCompany}/>
                     <CompanyContactPeople addContactPerson={addContactPerson}
                                           modifyContactPerson={modifyContactPerson}
                                           contactPeople={company.contactPeople || []}

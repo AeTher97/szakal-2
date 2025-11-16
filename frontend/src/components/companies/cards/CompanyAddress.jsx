@@ -33,7 +33,7 @@ const CompanyAddress = ({localCompany, updateAddress, updateAddressLoading}) => 
     }, [localCompany])
 
     return (
-        <Card sx={{maxWidth: 640, minWidth: mobile ? 300 : 450, flex: 1, display: "flex"}} color={"primary"}>
+        <Card sx={{maxWidth: 640, minWidth: mobile ? 250 : 350, flex: 0, display: "flex"}} color={"primary"}>
 
             <CardContent style={{flex: 0}}>
                 <Typography level={"title-md"}>Adres</Typography>

@@ -4,11 +4,14 @@ import LinkWithRouter from "../../misc/LinkWithRouter";
 import {contactStatusUtils} from "../../../utils/ContactStatusUtils";
 import PropTypes from "prop-types";
 import UserAvatar from "../../misc/UserAvatar";
+import {useMobileSize} from "../../../utils/MediaQuery";
 
 const CompanyJourneys = ({localCompany}) => {
 
+    const mobile = useMobileSize();
+
     return (
-        <Card sx={{flex: 1, minWidth: 250}} variant={"soft"}>
+        <Card sx={{flex: 1, minWidth: mobile ? 250 : 800}} variant={"soft"}>
             <CardOverflow>
                 <CardContent>
                     <Typography level={"title-md"}>Kontakty</Typography>
@@ -21,8 +24,9 @@ const CompanyJourneys = ({localCompany}) => {
                             <div
                                 style={{
                                     display: "flex",
-                                    flexDirection: "column",
+                                    flexDirection: "row",
                                     flexWrap: "wrap",
+                                    justifyContent: "space-between",
                                     gap: 5,
                                     paddingBottom: 10,
                                     paddingTop: 10
