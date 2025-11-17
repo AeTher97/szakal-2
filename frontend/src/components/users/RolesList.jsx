@@ -17,7 +17,7 @@ const RolesList = () => {
 
 
     return (
-        <Card variant={"outlined"} sx={{flex: 3, minWidth: 300}}>
+        <Card variant={"outlined"} sx={{flex: 1, minWidth: {xs: 200, sm: 375, lg: 400}}}>
 
             {roles &&
                 <CardOverflow>

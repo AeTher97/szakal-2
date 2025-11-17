@@ -5,7 +5,7 @@ import SummaryTab from "../tabs/SummaryTab";
 import CompaniesTab from "../tabs/CompaniesTab";
 import CustomBreadcrumbs from "../misc/CustomBreadcrumbs";
 import CategoriesTab from "../tabs/CategoriesTab";
-import CampaignsHome from "../tabs/CampaignsTab";
+import CampaignsTab from "../tabs/CampaignsTab";
 import NotFoundScreen from "../../screens/NotFoundScreen";
 import JourneysTab from "../tabs/JourneysTab";
 import UserJourneysTab from "../tabs/UserJourneysTab";
@@ -21,7 +21,7 @@ const SecureNavigationRoutes = () => {
             <Route path={"journeys/*"} element={<JourneysTab/>}/>
             <Route path={"users/*"} element={<UsersTab/>}/>
             <Route path={"categories/*"} element={<CategoriesTab/>}/>
-            <Route path={"campaigns/*"} element={<CampaignsHome/>}/>
+            <Route path={"campaigns/*"} element={<CampaignsTab/>}/>
             <Route path={"user-journeys/*"} element={<UserJourneysTab/>}/>
             <Route path={"home"} element={<SummaryTab/>}/>
             <Route path={"profile"} element={<ProfileTab/>}/>

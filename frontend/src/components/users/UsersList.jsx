@@ -38,15 +38,15 @@ const UsersList = () => {
     }, [searchRole, searchCommittee, searchName]);
 
     return (
-        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: {xs: 300, sm: 350, lg: 450}}}>
+        <Card variant={"outlined"} sx={{padding: 0, paddingBottom: 1, flex: 3, minWidth: {xs: 250, sm: 400, lg: 500}}}>
             <CardContent sx={{padding: 0}}>
                 <div style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
-                    gap: "1rem",
-                    margin: "1rem",
+                    display: "flex",
+                    gap: 10,
+                    padding: 10,
+                    flexWrap: "wrap"
                 }}>
-                    <div style={{minWidth: 100}}>
+                    <div style={{minWidth: 100, flex: 1}}>
                         <FormLabel>Użytkownik</FormLabel>
                         <Input
                             placeholder="Imię Nazwisko lub E-Mail"
@@ -57,7 +57,7 @@ const UsersList = () => {
                             data-testid={"search-name"}
                         />
                     </div>
-                    <div style={{minWidth: 100}}>
+                    <div style={{minWidth: 100, flex: 1}}>
                         <FormLabel>Komitet</FormLabel>
                         <Input
                             placeholder="Nazwa Komitetu"
@@ -68,7 +68,7 @@ const UsersList = () => {
                             data-testid={"search-committee"}
                         />
                     </div>
-                    <div style={{minWidth: 100}}>
+                    <div style={{minWidth: 100, flex: 1}}>
                         <FormLabel>Rola</FormLabel>
                         <Select
                             placeholder="Wszystkie"

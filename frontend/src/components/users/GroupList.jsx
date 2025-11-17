@@ -16,7 +16,7 @@ const GroupList = () => {
     const [addGroupOpen, setAddGroupOpen] = useState(false);
 
     return (
-        <Card variant={"outlined"} sx={{flex: 2, minWidth: 300}}>
+        <Card variant={"outlined"} sx={{flex: 2, minWidth: 250}}>
             {groups &&
                 <CardOverflow>
                     <CardContent orientation={"horizontal"} sx={{display: "flex", justifyContent: "space-between"}}>
