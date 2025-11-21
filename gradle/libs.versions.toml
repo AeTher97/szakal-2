@@ -17,7 +17,7 @@ org-testcontainers-postgresql = "1.21.3"
 org-testcontainers-testcontainers = "1.21.3"
 
 org-projectlombok-lombok = "1.18.42"
-freefair = "9.0.0"
+freefair = "9.1.0"
 
 web-push-version = "5.1.2"
 bouncy-castle-version = "1.82"
