@@ -23,7 +23,7 @@ RUN dos2unix gradlew \
 && chmod +x ./gradlew \
 && ./gradlew build
 
-FROM amazoncorretto:21
+FROM amazoncorretto:25
 COPY --from=codebuilder /src/backend/build/libs/backend-1.0.0.jar  szakal.jar
 
 EXPOSE 8080
