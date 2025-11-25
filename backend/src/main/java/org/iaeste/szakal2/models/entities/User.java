@@ -1,14 +1,13 @@
 package org.iaeste.szakal2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.lang.Strings;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.iaeste.szakal2.models.dto.user.PushNotificationSubscriptionDTO;
 import org.iaeste.szakal2.models.dto.user.UserCreationDTO;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -129,24 +128,13 @@ public class User {
             return new ArrayList<>();
         }
         return new ArrayList<>(Arrays.stream(mergedTokenString.split("},"))
-                .map(string -> {
-                    try {
-                        return new ObjectMapper().readValue(string + "}", PushNotificationSubscriptionDTO.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .map(string -> new ObjectMapper().readValue(string + "}", PushNotificationSubscriptionDTO.class))
                 .toList());
     }
 
     private static String getMergedTokenString(List<PushNotificationSubscriptionDTO> tokens) {
-        return tokens.stream().map(token -> {
-            try {
-                return new ObjectMapper().writeValueAsString(token);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.joining(","));
+        return tokens.stream().map(token -> new ObjectMapper()
+                .writeValueAsString(token)).collect(Collectors.joining(","));
     }
 
 }
