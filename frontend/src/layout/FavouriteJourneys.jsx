@@ -67,7 +67,7 @@ const FavouriteJourneys = () => {
                                     <Typography sx={theme => ({
                                         color: `${!finished ? theme.vars.palette.text.primary : theme.vars.palette.warning.solidDisabledColor}`
                                     })}
-                                                level={"title-sm"}>{formatLocalDate(favouriteJourney.contactJourney.journeyStart)}</Typography>
+                                                level={"title-sm"}>{formatLocalDate(favouriteJourney.contactJourney.lastInteraction)}</Typography>
                                 </div>
                             </div>
                         </LinkWithRouter>
