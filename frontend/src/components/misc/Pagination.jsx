@@ -61,12 +61,14 @@ const Pagination = ({
         <div style={{display: "flex", justifyContent: "space-between", margin, flexWrap: "wrap"}}>
             <div style={{display: "flex", gap: 5}}>
                 {showFirstPageButton &&
-                    <Button style={{visibility: firstPageButtonVisible ? "visible" : "hidden"}}
+                    <Button startDecorator={<FirstPageIcon/>}
+                            style={{visibility: firstPageButtonVisible ? "visible" : "hidden"}}
                             size={"sm"} variant={"outlined"} onClick={() => setPage(1)}
-                            color={"neutral"}><FirstPageIcon/>{concise ? "" : "Pierwsza"}</Button>}
-                <Button size={"sm"} variant={"outlined"} onClick={() => setPage(currentPage - 1)}
+                            color={"neutral"}>{concise ? "" : "Pierwsza"}</Button>}
+                <Button startDecorator={<KeyboardArrowLeft/>}
+                        size={"sm"} variant={"outlined"} onClick={() => setPage(currentPage - 1)}
                         style={{visibility: currentPage !== 1 ? "visible" : "hidden"}}
-                        color={"neutral"}><KeyboardArrowLeft/>{concise ? "" : "Poprzednia"}</Button>
+                        color={"neutral"}>{concise ? "" : "Poprzednia"}</Button>
             </div>
             <div style={{display: "flex", gap: 5}} data-testid="pagination-pages-container">
                 {low > 1 && <Typography>...</Typography>}
@@ -81,15 +83,17 @@ const Pagination = ({
             </div>
             <div style={{display: "flex", gap: 5}}>
                 <Button
-                    style={{visibility: notLastPage ? "visible" : "hidden"}} size={"sm"}
+                    endDecorator={<KeyboardArrowRight/>}
+                    style={{visibility: notLastPage ? "visible" : "hidden", justifyContent: "center"}} size={"sm"}
                     variant={"outlined"} onClick={() => {
                     setPage(currentPage + 1)
                 }}
-                    color={"neutral"}><KeyboardArrowRight/>{concise ? "" : "Następna"}</Button>
-                {showLastPageButton && <Button style={{visibility: lastPageButtonVisible ? "visible" : "hidden"}}
+                    color={"neutral"}>{concise ? "" : "Następna"}</Button>
+                {showLastPageButton && <Button endDecorator={<LastPageIcon/>}
+                                               style={{visibility: lastPageButtonVisible ? "visible" : "hidden"}}
                                                size={"sm"} variant={"outlined"} onClick={() => {
                     setPage(numberOfPages)
-                }} color={"neutral"}>{concise ? "" : "Ostatnia"}<LastPageIcon/>
+                }} color={"neutral"}>{concise ? "" : "Ostatnia"}
                 </Button>
                 }
             </div>
