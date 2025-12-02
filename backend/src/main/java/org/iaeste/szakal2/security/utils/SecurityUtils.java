@@ -18,4 +18,8 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    public static boolean isUser(UUID userId) {
+        return getUserId().equals(userId);
+    }
+
 }

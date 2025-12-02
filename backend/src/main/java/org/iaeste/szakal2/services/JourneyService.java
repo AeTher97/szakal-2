@@ -18,7 +18,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -33,7 +36,6 @@ public class JourneyService {
     private final WsNotifyingService wsNotifyingService;
     private final ContactEventRepository contactEventRepository;
     private final CommentRepository commentRepository;
-    private final FavouriteJourneyService favouriteJourneyService;
 
     public JourneyService(ContactJourneyRepository contactJourneyRepository,
                           UserService userService,
@@ -53,21 +55,8 @@ public class JourneyService {
         this.wsNotifyingService = wsNotifyingService;
         this.contactEventRepository = contactEventRepository;
         this.commentRepository = commentRepository;
-        this.favouriteJourneyService = favouriteJourneyService;
-        favouriteJourneyService.setJourneyService(this);
     }
 
-    private static boolean isCommentOwner(Comment comment) {
-        return comment.getUser().getId().equals(SecurityUtils.getUserId());
-    }
-
-    private static boolean isContactEventOwner(ContactEvent contactEvent) {
-        return contactEvent.getUser().getId().equals(SecurityUtils.getUserId());
-    }
-
-    private static boolean isNotJourneyOwner(ContactJourney contactJourney) {
-        return !AccessVerificationBean.isUser(contactJourney.getUser().getId().toString());
-    }
 
     @Transactional
     public ContactJourneyDetailsDTO createJourney(ContactJourneyCreationDTO contactJourneyCreationDTO) {
@@ -100,41 +89,12 @@ public class JourneyService {
                 .fromContactJourney(savedJourney);
     }
 
-    @Transactional
-    public ContactJourneyDetailsDTO updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
-        ContactJourney contactJourney = getJourneyById(id);
-
-        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
-            contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
-
-            notifyOwnerOnJourneyModification(contactJourney);
-
-            sendsWsJourneyPageUpdate(id, contactJourney);
-
-            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
-        } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
-        }
+    private static boolean isCommentOwner(Comment comment) {
+        return comment.getUser().getId().equals(SecurityUtils.getUserId());
     }
 
-    @Transactional
-    public ContactJourneyDetailsDTO addContactEvent(UUID id, ContactEventCreationDTO contactEventCreationDTO) {
-        ContactJourney contactJourney = getJourneyById(id);
-
-        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
-            contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
-            contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
-            contactJourney.setLastInteraction(LocalDateTime.now());
-
-            notifyOwnerOnJourneyModification(contactJourney);
-            notifyFollowersOnJourneyUpdate(contactJourney, false);
-
-            sendsWsJourneyPageUpdate(id, contactJourney);
-
-            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
-        } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
-        }
+    private static boolean isContactEventOwner(ContactEvent contactEvent) {
+        return contactEvent.getUser().getId().equals(SecurityUtils.getUserId());
     }
 
     @Transactional
@@ -160,15 +120,20 @@ public class JourneyService {
     }
 
     @Transactional
-    public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
+    public ContactJourneyDetailsDTO updateJourneyStatus(UUID id, ContactJourneyStatusUpdatingDTO contactJourneyStatusUpdatingDTO) {
         ContactJourney contactJourney = getJourneyById(id);
-        contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
 
-        notifyOwnerOnJourneyComment(contactJourney);
-        notifyFollowersOnJourneyUpdate(contactJourney, true);
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
+            contactJourney.setContactStatus(contactJourneyStatusUpdatingDTO.getContactStatus());
 
-        wsNotifyingService.sendUpdateAboutJourney(id);
-        return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+            notificationService.notifyOnJourneyStatusChange(contactJourney);
+
+            sendsWsJourneyPageUpdate(id, contactJourney);
+
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
+        }
     }
 
     @Transactional
@@ -186,37 +151,33 @@ public class JourneyService {
     }
 
     @Transactional
-    public ContactJourneyDetailsDTO finishJourney(UUID id) {
+    public ContactJourneyDetailsDTO addContactEvent(UUID id, ContactEventCreationDTO contactEventCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
 
         if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
-            contactJourney.setFinished(true);
+            contactJourney.getContactEvents().add(contactEventFromDTO(contactJourney, contactEventCreationDTO));
+            contactJourney.setContactStatus(contactEventCreationDTO.getContactStatus());
+            contactJourney.setLastInteraction(LocalDateTime.now());
 
-            notifyOwnerOnJourneyFinished(contactJourney);
-            notifyFollowersOnJourneyUpdate(contactJourney, false);
+            notificationService.notifyOnJourneyContactEvent(contactJourney);
 
-            wsNotifyingService.sendUpdateAboutJourney(id);
+            sendsWsJourneyPageUpdate(id, contactJourney);
+
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+            throw new BadCredentialsException("Insufficient privileges to modify someone else's journey");
         }
     }
 
     @Transactional
-    public ContactJourneyDetailsDTO reopenJourney(UUID id) {
+    public ContactJourneyDetailsDTO addComment(UUID id, CommentCreationDTO commentCreationDTO) {
         ContactJourney contactJourney = getJourneyById(id);
+        contactJourney.getComments().add(commentFromDTO(contactJourney, commentCreationDTO));
 
-        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
-            contactJourney.setFinished(false);
+        notificationService.notifyOnJourneyComment(contactJourney);
 
-            notifyOwnerOnJourneyReopened(contactJourney);
-            notifyFollowersOnJourneyUpdate(contactJourney, false);
-
-            wsNotifyingService.sendUpdateAboutJourney(id);
-            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
-        } else {
-            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
-        }
+        wsNotifyingService.sendUpdateAboutJourney(id);
+        return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
     }
 
     @Transactional
@@ -227,7 +188,6 @@ public class JourneyService {
             contactJourney.setUser(null);
 
             wsNotifyingService.sendUpdateAboutJourney(id);
-            notifyFollowersOnJourneyUpdate(contactJourney, false);
 
             return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
         } else {
@@ -271,62 +231,6 @@ public class JourneyService {
     private boolean isJourneyOwnerOrCanModifyAllJourneys(ContactJourney contactJourney) {
         return AccessVerificationBean.hasRole(Authority.JOURNEY_MODIFICATION_FOR_OTHERS.getValue()) ||
                 (contactJourney.getUser() != null && contactJourney.getUser().getId().equals(SecurityUtils.getUserId()));
-    }
-
-    private void notifyOwnerOnJourneyModification(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zmodyfikowany",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyOwnerOnJourneyFinished(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został zakończony",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyOwnerOnJourneyReopened(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} został ponwnie otwarty",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyOwnerOnJourneyComment(ContactJourney contactJourney) {
-        if (contactJourney.getUser() != null && isNotJourneyOwner(contactJourney)) {
-            notificationService.notify(contactJourney.getUser(),
-                    STR."Twój kontakt z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()} ma nowy komentarz",
-                    contactJourney.getId());
-        }
-    }
-
-    private void notifyFollowersOnJourneyUpdate(ContactJourney contactJourney, boolean addedComment) {
-        Set<User> usersToNotify = new HashSet<>();
-
-        contactJourney.getComments().forEach(comment -> {
-            if (!isCommentOwner(comment)
-                    && !comment.getUser().getId().equals(contactJourney.getUser().getId())) {
-                usersToNotify.add(comment.getUser());
-            }
-        });
-
-        favouriteJourneyService.getFavouriteJourneysForJourney(contactJourney.getId())
-                .forEach(favouriteJourney -> {
-                    if (favouriteJourney.getUserId() != SecurityUtils.getUserId()) {
-                        usersToNotify.add(userService.getUserById(favouriteJourney.getUserId()));
-                    }
-                });
-
-        usersToNotify.forEach(user -> {
-            notificationService.notify(user,
-                    STR."\{addedComment ? "Nowy komentarz" : "Nowa zmiana"} w kontakcie z firmą \{contactJourney.getCompany().getName()} w akcji \{contactJourney.getCampaign().getName()}",
-                    contactJourney.getId());
-        });
     }
 
     private void sendsWsJourneyPageUpdate(UUID id, ContactJourney contactJourney) {
@@ -390,5 +294,37 @@ public class JourneyService {
                 .comments(new HashSet<>())
                 .contactEvents(new HashSet<>())
                 .build();
+    }
+
+    @Transactional
+    public ContactJourneyDetailsDTO finishJourney(UUID id) {
+        ContactJourney contactJourney = getJourneyById(id);
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
+            contactJourney.setFinished(true);
+
+            notificationService.notifyOnJourneyFinished(contactJourney);
+
+            wsNotifyingService.sendUpdateAboutJourney(id);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
+    }
+
+    @Transactional
+    public ContactJourneyDetailsDTO reopenJourney(UUID id) {
+        ContactJourney contactJourney = getJourneyById(id);
+
+        if (isJourneyOwnerOrCanModifyAllJourneys(contactJourney)) {
+            contactJourney.setFinished(false);
+
+            notificationService.notifyOnJourneyReopened(contactJourney);
+
+            wsNotifyingService.sendUpdateAboutJourney(id);
+            return ContactJourneyDetailsDTO.fromContactJourney(contactJourneyRepository.save(contactJourney));
+        } else {
+            throw new BadCredentialsException("Insufficient privileges to modify someone elses journey");
+        }
     }
 }

@@ -17,8 +17,15 @@ public class AccessVerificationBean {
 
     public static boolean isUser(String id) {
         try {
-            return UUID.fromString(SecurityContextHolder.getContext()
-                    .getAuthentication().getPrincipal().toString()).equals(UUID.fromString(id));
+            return SecurityUtils.isUser(UUID.fromString(id));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public static boolean isUser(UUID id) {
+        try {
+            return SecurityUtils.isUser(id);
         } catch (IllegalArgumentException e) {
             return false;
         }
