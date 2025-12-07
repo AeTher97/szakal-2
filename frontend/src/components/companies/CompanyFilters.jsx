@@ -194,6 +194,7 @@ const CompanyFilters = () => {
         }}>
             {hasRight(COMPANY_MODIFICATION) &&
                 <Button style={{flex: mobile ? 1 : 0}} color={"primary"}
+                        data-testid="add-company-button"
                         onClick={() => {
                             setAddCompanyOpen(true)
                         }}><AddIcon/>Dodaj</Button>}
