@@ -70,7 +70,7 @@ const JourneyFilters = () => {
             gap: 15,
             alignItems: "flex-end"
         }}>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+            <FormControl sx={{flex: 1}} size="sm">
                 <FormLabel>Szukaj firmy</FormLabel>
                 <Input data-testid="journey-search-company-name"
                        value={searchNotSubmittedValue.companyName || ""}

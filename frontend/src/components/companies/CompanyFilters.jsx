@@ -80,14 +80,13 @@ const CompanyFilters = () => {
             e.preventDefault();
             applySearch();
         }} style={{
-            marginBottom: 5,
             marginTop: 10,
             display: "flex",
             flexWrap: "wrap",
             gap: 15,
             alignItems: "flex-end"
         }}>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+            <FormControl sx={{flex: 1}} size="sm">
                 <FormLabel>Szukaj firmy</FormLabel>
                 <Input data-testid="company-search-name"
                        value={searchNotSubmittedValue.name || ""}
@@ -185,17 +184,29 @@ const CompanyFilters = () => {
         </form>
     }
 
+    const renderActions = () => {
+        return <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 5,
+            justifyContent: "flex-end",
+            paddingBottom: mobile ? 15 : 0
+        }}>
+            {hasRight(COMPANY_MODIFICATION) &&
+                <Button style={{flex: mobile ? 1 : 0}} color={"primary"}
+                        onClick={() => {
+                            setAddCompanyOpen(true)
+                        }}><AddIcon/>Dodaj</Button>}
+        </div>
+    }
+
     return (
         <div style={{display: "flex", overflow: "auto", flexDirection: "column", paddingBottom: 10}}>
             <TabHeader>
                 <Typography level="h2">Firmy</Typography>
-                <div>
-                    {hasRight(COMPANY_MODIFICATION) && <Button onClick={() => {
-                        setAddCompanyOpen(true)
-                    }} data-testid="add-company-button"><AddIcon/>Dodaj</Button>}
-                </div>
+                {!mobile && renderActions()}
             </TabHeader>
-
+            {mobile && renderActions()}
 
             {mobile ? <AccordionGroup variant={"outlined"} transion={"0.2s ease"} sx={{
                 borderRadius: 'sm', marginBottom: 1

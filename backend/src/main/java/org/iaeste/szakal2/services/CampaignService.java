@@ -104,9 +104,8 @@ public class CampaignService {
             if (i >= top10.size()) {
                 continue;
             }
-            String fullName = sortedTop10.keySet().stream().toList().get(i);
-            int count = sortedTop10.get(fullName);
-            top10DTO.addUser(fullName, count);
+            Map.Entry<String, Integer> entry = sortedTop10.entrySet().stream().toList().get(i);
+            top10DTO.addUser(entry.getKey(), entry.getValue());
         }
 
         return top10DTO;
