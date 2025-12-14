@@ -95,8 +95,10 @@ const AuthProvider = () => {
             }
 
             if (result) {
+                console.log("Refresh successful")
                 request.headers['Authorization'] = `Bearer ${result.authToken}`;
             }
+            console.log("No refresh result")
         }
 
         if (!request.headers['Authorization'] && accessToken) {

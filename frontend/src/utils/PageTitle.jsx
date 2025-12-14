@@ -17,7 +17,6 @@ export const usePageTitle = (title = "Szakal 2", trigger = null) => {
     }
 
     useEffect(() => {
-        console.log("firing this")
         if (isDevEnv()) {
             document.title = `${title} (Development)`;
         } else {
