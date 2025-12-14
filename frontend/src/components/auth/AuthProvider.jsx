@@ -48,15 +48,15 @@ const AuthProvider = () => {
 
     const checkIfAnotherTabRefreshedToken = () => {
         const tokenIsPresentInStorage = localStorage.getItem("accessToken");
-        const tokenRefreshedByDifferentTab = !tokenIsPresentInStorage ? false :
-            accessToken !== localStorage.getItem("accessToken");
+        const tokenRefreshedByDifferentTab = tokenIsPresentInStorage ? accessToken
+            !== localStorage.getItem("accessToken") : false;
 
         let newToken = null;
 
         const refreshPresent = cookieExists("AUTHENTICATED");
 
         if (tokenRefreshedByDifferentTab) {
-            console.debug("Token was refreshed in a different tab");
+            console.log("Token was refreshed in a different tab");
             newToken = localStorage.getItem("accessToken");
             const {expirationTime: switchedTokenExpiration} = decodeToken(newToken);
             dispatch(tokenSwitchedByAnotherTabAction(newToken, switchedTokenExpiration));
@@ -73,13 +73,13 @@ const AuthProvider = () => {
         const {tokenExpired, refreshPresent, currentToken} = checkIfAnotherTabRefreshedToken();
 
         if (tokenExpired && !refreshPresent) {
-            console.debug("Cancelled with token expired", tokenExpired,
+            console.log("Cancelled with token expired, refresh is not present", tokenExpired,
                 "refreshPresent", refreshPresent);
             return abortSignal(request);
         }
 
         if (tokenExpired && refreshPresent) {
-            console.debug("Attempting token refresh");
+            console.log("Attempting token refresh");
             const result = await getAuthToken()
                 .then((payload) => {
                     return payload;
