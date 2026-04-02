@@ -1,6 +1,5 @@
 package org.iaeste.szakal2.security.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,7 @@ import org.iaeste.szakal2.security.RefreshTokenAuthentication;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
