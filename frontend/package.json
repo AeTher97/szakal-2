@@ -55,6 +55,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^15.8.1"
+    "cypress": "^16.1.1"
   }
 }
