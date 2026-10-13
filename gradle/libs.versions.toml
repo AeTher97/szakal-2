@@ -22,7 +22,7 @@ freefair = "9.1.0"
 web-push-version = "5.1.2"
 bouncy-castle-version = "1.83"
 apache-httpcomponents-version = "4.4.16"
-jose-version = "0.9.6"
+jose-version = "0.9.7"
 
 
 [libraries]
