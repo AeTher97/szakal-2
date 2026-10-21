@@ -15,6 +15,10 @@ export const releaseNotes = [
                 <ReleaseNotesBullet title={"Poprawione placeholdery w wielu miejscach"}/>
                 <ReleaseNotesBullet
                     title={"Rejestracja użytkowników nie pozwala już stwierdzić jakie E-maile są w użytku"}/>
+                <ReleaseNotesBullet
+                    title={"Dodawanie ulubionych kontaktów zostało naprawione"}/>
+                <ReleaseNotesBullet
+                    title={"Stabilność stron przy sortowaniu kontaktów została poprawiona"}/>
             </ReleaseNotesSection>
         </div>
     </>,
