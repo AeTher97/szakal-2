@@ -101,6 +101,7 @@ public class JourneyController {
                                                              @RequestParam(required = false) UUID userId,
                                                              @RequestParam(required = false) UUID campaignId,
                                                              @RequestParam(required = false) String companyName,
+                                                             @RequestParam(required = false) String phone,
                                                              @RequestParam(required = false) String status,
                                                              @RequestParam(required = false) String detailedStatus,
                                                              @RequestParam(required = false) String eventText,
@@ -112,6 +113,7 @@ public class JourneyController {
                 ContactJourneySearch
                         .builder()
                         .companyName(companyName)
+                        .phone(phone)
                         .status(status)
                         .detailedStatus(detailedStatus)
                         .eventText(eventText)

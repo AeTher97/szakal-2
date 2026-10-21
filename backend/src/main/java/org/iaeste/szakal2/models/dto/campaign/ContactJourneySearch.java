@@ -17,6 +17,7 @@ public class ContactJourneySearch {
     private UUID campaignId;
     private UUID userId;
     private String companyName;
+    private String phone;
     private String status;
     private String user;
     private String detailedStatus;

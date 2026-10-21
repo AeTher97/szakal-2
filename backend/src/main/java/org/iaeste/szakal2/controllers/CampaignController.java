@@ -56,6 +56,7 @@ public class CampaignController {
     public Page<ContactJourneyListingDTO> getCampaignContactJourneys(@PathVariable("id") UUID id,
                                                                      @RequestParam(defaultValue = "10") int pageSize,
                                                                      @RequestParam(required = false) String companyName,
+                                                                     @RequestParam(required = false) String phone,
                                                                      @RequestParam(required = false) String status,
                                                                      @RequestParam(required = false) String detailedStatus,
                                                                      @RequestParam(required = false) String user,
@@ -66,6 +67,7 @@ public class CampaignController {
                 ContactJourneySearch
                         .builder()
                         .companyName(companyName)
+                        .phone(phone)
                         .campaignId(id)
                         .status(status)
                         .detailedStatus(detailedStatus)

@@ -21,6 +21,7 @@ export const useCurrentCampaignJourneyList = (search, searchLoaded, page = 0,) =
         }, [currentCampaign, page, search, wsState],
         [{name: "pageNumber", value: page},
             {name: "companyName", value: search.companyName},
+            {name: "phone", value: search.phone},
             {name: "status", value: search.status},
             {name: "detailedStatus", value: search.detailedStatus},
             {name: "user", value: search.user},

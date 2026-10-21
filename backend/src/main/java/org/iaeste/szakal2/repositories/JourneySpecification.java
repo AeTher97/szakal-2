@@ -57,6 +57,11 @@ public class JourneySpecification implements Specification<ContactJourney> {
                     wrapWithPercent(criteria.getCompanyName().toLowerCase())));
         }
 
+        if (criteria.getPhone() != null) {
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(COMPANY).get("phone")),
+                    wrapWithPercent(criteria.getPhone().toLowerCase())));
+        }
+
         if (criteria.getStatus() != null) {
             if (criteria.getStatus().equals("in-progress")) {
                 predicateList.add(criteriaBuilder.isFalse(root.get(FINISHED)));

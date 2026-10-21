@@ -39,6 +39,7 @@ const COMMITTEE = "committee";
 const CAMPAIGN_NAME = "campaignName";
 const SORT = "sort";
 const PAGE_SIZE = "pageSize";
+const PHONE = "phone";
 
 const CompanyFilters = () => {
 
@@ -59,7 +60,7 @@ const CompanyFilters = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT, PAGE_SIZE],
+    } = useSearchWithPagination([NAME, CATEGORY, STATUS, HAS_ALUMNI, ALUMNI_DESCRIPTION, COMMITTEE, CAMPAIGN_NAME, SORT, PAGE_SIZE, PHONE],
         [{name: SORT, value: "name,ASC"}, {name: PAGE_SIZE, value: 10}]);
 
     const {categories} = useCategories(searchLoaded);
@@ -83,7 +84,7 @@ const CompanyFilters = () => {
             marginTop: 10,
             display: "flex",
             flexWrap: "wrap",
-            gap: 15,
+            gap: 10,
             alignItems: "flex-end"
         }}>
             <FormControl sx={{flex: 1}} size="sm">
@@ -95,6 +96,17 @@ const CompanyFilters = () => {
                        }}
                        size="sm" placeholder="Nazwa Firmy"
                        startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
+                <FormLabel>
+                    Numer telefonu
+                </FormLabel>
+                <Input data-testid="company-search-phone"
+                       value={searchNotSubmittedValue.phone || ""}
+                       style={{minWidth: 170, maxWidth: 105}}
+                       onChange={(e) => {
+                           updateSearch(PHONE, e.target.value);
+                       }} placeholder={"999999999"}/>
             </FormControl>
             {categories &&
                 <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
@@ -128,44 +140,44 @@ const CompanyFilters = () => {
                     <Option data-testid="company-search-status-all" value={""}>Wszystkie</Option>
                 </Select>
             </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Posiada alumna
-                </FormLabel>
-                <Select data-testid="company-search-has-alumni"
-                        value={!searchNotSubmittedValue.hasAlumni ? "" : searchNotSubmittedValue.hasAlumni}
-                        style={{minWidth: 120}}
-                        onChange={(e, value) => {
-                            updateSearch(HAS_ALUMNI, value);
-                        }}>
-                    <Option data-testid="company-search-has-alumni-all" value={""}>Tak/Nie</Option>
-                    <Option data-testid="company-search-has-alumni-yes" value={true}>Tak</Option>
-                </Select>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Opis alumna
-                </FormLabel>
-                <Input data-testid="company-search-alumni-description"
-                       value={searchNotSubmittedValue.alumniDescription || ""}
-                       style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           updateSearch(ALUMNI_DESCRIPTION, e.target.value);
-                       }} placeholder={"Opis Alumna"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
-            <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
-                <FormLabel>
-                    Komitet alumna
-                </FormLabel>
-                <Input data-testid="company-search-alumni-committee"
-                       value={searchNotSubmittedValue.committee || ""}
-                       style={{minWidth: 80, maxWidth: 105}}
-                       onChange={(e) => {
-                           updateSearch(COMMITTEE, e.target.value)
-                       }} placeholder={"Komitet"}
-                       startDecorator={<SearchIcon/>}/>
-            </FormControl>
+{/*             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}> */}
+{/*                 <FormLabel> */}
+{/*                     Posiada alumna */}
+{/*                 </FormLabel> */}
+{/*                 <Select data-testid="company-search-has-alumni" */}
+{/*                         value={!searchNotSubmittedValue.hasAlumni ? "" : searchNotSubmittedValue.hasAlumni} */}
+{/*                         style={{minWidth: 120}} */}
+{/*                         onChange={(e, value) => { */}
+{/*                             updateSearch(HAS_ALUMNI, value); */}
+{/*                         }}> */}
+{/*                     <Option data-testid="company-search-has-alumni-all" value={""}>Tak/Nie</Option> */}
+{/*                     <Option data-testid="company-search-has-alumni-yes" value={true}>Tak</Option> */}
+{/*                 </Select> */}
+{/*             </FormControl> */}
+{/*             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}> */}
+{/*                 <FormLabel> */}
+{/*                     Opis alumna */}
+{/*                 </FormLabel> */}
+{/*                 <Input data-testid="company-search-alumni-description" */}
+{/*                        value={searchNotSubmittedValue.alumniDescription || ""} */}
+{/*                        style={{minWidth: 80, maxWidth: 105}} */}
+{/*                        onChange={(e) => { */}
+{/*                            updateSearch(ALUMNI_DESCRIPTION, e.target.value); */}
+{/*                        }} placeholder={"Opis Alumna"} */}
+{/*                        startDecorator={<SearchIcon/>}/> */}
+{/*             </FormControl> */}
+{/*             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}> */}
+{/*                 <FormLabel> */}
+{/*                     Komitet alumna */}
+{/*                 </FormLabel> */}
+{/*                 <Input data-testid="company-search-alumni-committee" */}
+{/*                        value={searchNotSubmittedValue.committee || ""} */}
+{/*                        style={{minWidth: 80, maxWidth: 105}} */}
+{/*                        onChange={(e) => { */}
+{/*                            updateSearch(COMMITTEE, e.target.value) */}
+{/*                        }} placeholder={"Komitet"} */}
+{/*                        startDecorator={<SearchIcon/>}/> */}
+{/*             </FormControl> */}
             <FormControl size={"sm"} sx={{flex: mobile ? 1 : 0}}>
                 <FormLabel>
                     Akcja

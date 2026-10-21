@@ -22,6 +22,7 @@ export const useCompanyListWithCampaign = (campaignId, search, locks, currentPag
         [{name: "campaign", value: campaignId},
             {name: "pageNumber", value: currentPage},
             {name: "name", value: search.name},
+            {name: "phone", value: search.phone},
             {name: "category", value: search.category},
             {name: "status", value: search.status},
             {name: "hasAlumni", value: search.hasAlumni},

@@ -508,7 +508,7 @@ COPY public.access_rights (id, code, description) FROM stdin;
 02c74921-443f-4e93-9cc3-c60d50a45c49	role_modification	Modyfikacja definicji roli
 effafd0b-b8c2-44d6-a9db-394908bcd092	user_role_granting	Modyfikacja roli użytkownika
 da5e5354-c9c8-4883-8ebd-abf43732abe7	company_modification	Modyfikacja firm
-71a7e96a-3f60-47d5-948e-bc38facbc9cc	category_modification	Modyfikacja branż
+71a7e96a-3f60-47d5-948e-bc38facbc9cc	category_modification	Modyfikacja kategorii
 3e979033-81de-4765-9d72-c25c92dc2fc2	user_acceptance	Akceptowanie użytkowników
 9e30921e-91e8-4f0c-ab7f-f7c71b20f93b	user_management	Deaktywowanie użytkowników
 44ddeea9-053f-4f71-8d69-3c6cbd76cc82	journey_creation	Przypisywanie firm do siebie
@@ -654,7 +654,7 @@ COPY public.comments (id, comment, date, contact_journey_id, user_id, edited) FR
 
 COPY public.companies (id, deleted, deleted_date, email, fax, insert_date, name, phone, update_date, www, address_id,
                        updated_by_id) FROM stdin;
-19327774-cc15-4fa4-9456-d26ea6809dd3	f	\N	test@email.com	\N	2024-11-07 22:15:12.558527	Company 01		2024-11-07 22:15:12.5585	test.com	78e344e9-bbf4-4dd2-bf67-17fcdbd04bec	c13f6b7a-af82-409d-8910-c71f82ee8aa7
+19327774-cc15-4fa4-9456-d26ea6809dd3	f	\N	test@email.com	\N	2024-11-07 22:15:12.558527	Company 01	112233	2024-11-07 22:15:12.5585	test.com	78e344e9-bbf4-4dd2-bf67-17fcdbd04bec	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 613d4b2a-69ab-4460-9aa6-524c62545c83	f	\N		\N	2024-11-08 18:31:09.438261	Company 02		2024-11-08 18:31:09.438261		b22777a4-70a4-4557-934c-a62cbbf28908	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 631fb1f6-3297-4417-b051-2aff9cf5a18d	f	\N		\N	2024-11-08 18:31:11.993878	Company 03		2024-11-08 18:31:11.993878		01d64e85-1ced-401a-be5b-bdcf73dea922	c13f6b7a-af82-409d-8910-c71f82ee8aa7
 c51b8fb6-8d38-43ca-a71e-da122fb10ef5	f	\N		\N	2024-11-08 18:31:14.71191	Company 04		2024-11-08 18:31:14.71191		d969f053-6627-4a71-a7e5-e1a8cd7072ce	c13f6b7a-af82-409d-8910-c71f82ee8aa7

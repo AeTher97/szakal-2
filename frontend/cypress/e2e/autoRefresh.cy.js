@@ -83,7 +83,7 @@ describe("Auto refresh on adding and modifying companies and contact journeys", 
         cy.getByTestId("cypress-company-email")
             .should("have.value", "test@email.com")
         cy.getByTestId("cypress-company-phone")
-            .should("have.value", "")
+            .should("have.value", "112233")
         cy.getByTestId("cypress-company-website")
             .should("have.value", "test.com")
         cy.getByTestId("cypress-company-city")

@@ -15,7 +15,7 @@ const CompanyJourneys = ({localCompany}) => {
             <CardOverflow>
                 <CardContent>
                     <Typography level={"title-md"}>Kontakty</Typography>
-                    <Typography level={"body-sm"}>Historia poprzednich kontaktów</Typography>
+                    <Typography level={"body-sm"}>Historia kontaktów</Typography>
                 </CardContent>
                 <Divider inset={"context"}/>
                 <CardContent style={{paddingTop: 0}}>

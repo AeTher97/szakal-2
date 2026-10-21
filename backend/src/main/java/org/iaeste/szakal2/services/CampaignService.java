@@ -73,7 +73,7 @@ public class CampaignService {
     }
 
     public Page<Campaign> getCampaigns(Pageable pageable) {
-        return campaignRepository.findAllByOrderByNameDesc(pageable);
+        return campaignRepository.findAllByOrderByStartDateDesc(pageable);
     }
 
     public List<Campaign> getCampaigns(List<UUID> userList) {

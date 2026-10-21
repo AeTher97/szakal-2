@@ -49,7 +49,7 @@ const CompanyCategories = ({
             <CardContent>
                 {categoriesList?.map(category => renderCategory(category))}
                 {categoriesList && categoriesList.length === 0 &&
-                    <Typography style={{alignSelf: "center"}}>Brak branż</Typography>}
+                    <Typography style={{alignSelf: "center"}}>Brak kategorii</Typography>}
             </CardContent>
             <Divider/>
             <CardActions sx={{flexWrap: "wrap", maxWidth: dialog ? 200 : -1}} buttonFlex={"1"}>

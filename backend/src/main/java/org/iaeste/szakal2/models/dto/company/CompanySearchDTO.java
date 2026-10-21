@@ -22,4 +22,5 @@ public class CompanySearchDTO {
     private String alumniDescription;
     private String campaignName;
     private String committee;
+    private String phone;
 }

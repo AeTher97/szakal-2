@@ -38,6 +38,10 @@ public class CompanySpecification implements Specification<Company> {
             predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(name), wrapWithPercent(criteria.getName().toLowerCase())));
         }
 
+        if(criteria.getPhone() != null){
+            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("phone")), wrapWithPercent(criteria.getPhone().toLowerCase())));
+        }
+
         if (criteria.getCategory() != null) {
             CriteriaQuery<CompanyCategory> companyCategoryCriteriaQuery = criteriaBuilder.createQuery(CompanyCategory.class);
             Root<CompanyCategory> companyCategoryRoot = companyCategoryCriteriaQuery.from(CompanyCategory.class);
@@ -91,6 +95,7 @@ public class CompanySpecification implements Specification<Company> {
                             wrapWithPercent(criteria.getCampaignName().toLowerCase()))
             );
         }
+
         predicateList.add(criteriaBuilder.isFalse(root.get("deleted")));
 
         return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));

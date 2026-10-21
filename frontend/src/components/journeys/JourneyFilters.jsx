@@ -27,6 +27,7 @@ import {v4 as uuidv4} from 'uuid';
 
 
 const COMPANY_NAME = "companyName";
+const PHONE = "phone";
 const STATUS = "status";
 const DETAILED_STATUS = "detailedStatus";
 const USER = "user";
@@ -48,7 +49,7 @@ const JourneyFilters = () => {
         applySearch,
         updateCurrentPage,
         updatePageNumber
-    } = useSearchWithPagination([COMPANY_NAME, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT, PAGE_SIZE],
+    } = useSearchWithPagination([COMPANY_NAME, PHONE, STATUS, DETAILED_STATUS, CURRENT_PAGE, SORT, EVENT_TEXT, PAGE_SIZE],
         [{name: SORT, value: "companyName,ASC"}, {name: PAGE_SIZE, value: 10}]);
 
     const {journeys, loading, totalCount, pagesNumber}
@@ -67,7 +68,7 @@ const JourneyFilters = () => {
             marginTop: 10,
             display: "flex",
             flexWrap: "wrap",
-            gap: 15,
+            gap: 10,
             alignItems: "flex-end"
         }}>
             <FormControl sx={{flex: 1}} size="sm">
@@ -78,6 +79,16 @@ const JourneyFilters = () => {
                            updateSearch(COMPANY_NAME, e.target.value);
                        }}
                        size="sm" placeholder="Nazwa Firmy"
+                       startDecorator={<SearchIcon/>}/>
+            </FormControl>
+            <FormControl sx={{flex: mobile ? 1 : 0, maxWidth: 150}} size="sm">
+                <FormLabel>Numer telefonu</FormLabel>
+                <Input data-testid="journey-search-phone"
+                       value={searchNotSubmittedValue.phone || ""}
+                       onChange={(e) => {
+                           updateSearch(PHONE, e.target.value);
+                       }}
+                       size="sm" placeholder="999999999"
                        startDecorator={<SearchIcon/>}/>
             </FormControl>
             <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
@@ -122,7 +133,7 @@ const JourneyFilters = () => {
                        size="sm" placeholder="Imię Nazwisko lub E-Mail"
                        startDecorator={<PersonIcon/>}/>
             </FormControl>
-            <FormControl sx={{flex: mobile ? 1 : 0}} size="sm">
+            <FormControl sx={{flex: mobile ? 1 : 0, maxWidth: 150}} size="sm">
                 <FormLabel>Wydarzenie kontaktowe</FormLabel>
                 <Input data-testid="journey-search-contact-event-text"
                        value={searchNotSubmittedValue.eventText || ""}

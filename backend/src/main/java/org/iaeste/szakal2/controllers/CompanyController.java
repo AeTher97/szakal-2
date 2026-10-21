@@ -78,6 +78,7 @@ public class CompanyController {
                                                 @RequestParam int pageNumber,
                                                 @RequestParam(required = false) UUID campaign,
                                                 @RequestParam(required = false) String name,
+                                                @RequestParam(required = false) String phone,
                                                 @RequestParam(required = false) ContactStatus contactStatus,
                                                 @RequestParam(required = false) String category,
                                                 @RequestParam(required = false) String status,
@@ -107,6 +108,7 @@ public class CompanyController {
                         .alumniDescription(alumniDescription)
                         .campaignName(campaignName)
                         .committee(committee)
+                        .phone(phone)
                         .name(name).build(), pageable)
                 .map(company -> CompanyListingDTO.fromCompany(company, campaign));
     }

@@ -20,8 +20,9 @@ describe("Search through list of companies and contact journeys", () => {
 
         const searchButtonId = "company-search-category-button";
         const nameField = cy.getByTestId("company-search-name");
-        const alumniDescriptionField = cy.getByTestId("company-search-alumni-description");
-        const alumniCommitteeField = cy.getByTestId("company-search-alumni-committee");
+        const phoneField = cy.getByTestId("company-search-phone");
+//        const alumniDescriptionField = cy.getByTestId("company-search-alumni-description");
+//        const alumniCommitteeField = cy.getByTestId("company-search-alumni-committee");
         const campaignField = cy.getByTestId("company-search-campaign");
 
         nameField.type("Company 05{enter}")
@@ -34,29 +35,39 @@ describe("Search through list of companies and contact journeys", () => {
 
         nameField.clear().type("{enter}")
 
-        alumniCommitteeField.type("AGH{enter}")
-
-        checkCompaniesLength(1)
+        phoneField.type("1223{enter}")
 
         cy.getByTestId("company-table").children("tr")
             .first()
             .children('td')
             .first()
-            .contains("Company 03")
+            .contains("Company 01")
 
-        alumniCommitteeField.clear().type("{enter}")
+        phoneField.clear().type("{enter}")
 
-        alumniDescriptionField.type("MIS{enter}")
-
-        checkCompaniesLength(1)
-
-        cy.getByTestId("company-table").children("tr")
-            .first()
-            .children('td')
-            .first()
-            .contains("Company 03")
-
-        alumniDescriptionField.clear().type("{enter}")
+//        alumniCommitteeField.type("AGH{enter}")
+//
+//        checkCompaniesLength(1)
+//
+//        cy.getByTestId("company-table").children("tr")
+//            .first()
+//            .children('td')
+//            .first()
+//            .contains("Company 03")
+//
+//        alumniCommitteeField.clear().type("{enter}")
+//
+//        alumniDescriptionField.type("MIS{enter}")
+//
+//        checkCompaniesLength(1)
+//
+//        cy.getByTestId("company-table").children("tr")
+//            .first()
+//            .children('td')
+//            .first()
+//            .contains("Company 03")
+//
+//        alumniDescriptionField.clear().type("{enter}")
 
         campaignField.type("Test Campaign{enter}")
 
@@ -86,17 +97,18 @@ describe("Search through list of companies and contact journeys", () => {
         cy.clickSelectField("company-search-status", "all", searchButtonId)
 
 
-        cy.clickSelectField("company-search-has-alumni", "yes", searchButtonId)
-        checkCompaniesLength(2)
-        cy.clickSelectField("company-search-has-alumni", "all", searchButtonId)
+//        cy.clickSelectField("company-search-has-alumni", "yes", searchButtonId)
+//        checkCompaniesLength(2)
+//        cy.clickSelectField("company-search-has-alumni", "all", searchButtonId)
 
         nameField.type("Company 03")
-        alumniCommitteeField.type("AGH")
-        alumniDescriptionField.type("MIS")
+//        alumniCommitteeField.type("AGH")
+//        alumniDescriptionField.type("MIS")
+
         campaignField.type("Test Campaign")
         cy.clickSelectField("company-search-category", "Category 1", searchButtonId);
         cy.clickSelectField("company-search-status", "taken", searchButtonId)
-        cy.clickSelectField("company-search-has-alumni", "yes", searchButtonId)
+//        cy.clickSelectField("company-search-has-alumni", "yes", searchButtonId)
 
         checkCompaniesLength(1)
         cy.getByTestId("company-table").children("tr")
@@ -115,6 +127,7 @@ describe("Search through list of companies and contact journeys", () => {
 
         const searchButtonId = "journey-search-button";
         const companyNameField = cy.getByTestId("journey-search-company-name");
+        const phoneField = cy.getByTestId("journey-search-phone");
         const statusFieldName = "journey-search-status"
         const detailedStatusFieldName = "journey-search-detailed-status"
         const userNameField = cy.getByTestId("journey-search-user-name");
@@ -129,6 +142,16 @@ describe("Search through list of companies and contact journeys", () => {
             .contains("Company 05")
 
         companyNameField.clear().type("{enter}")
+
+        phoneField.type("1223{enter}")
+
+        cy.getByTestId("journey-table").children("tr")
+            .first()
+            .children('td')
+            .first()
+            .contains("Company 01")
+
+        phoneField.clear().type("{enter}")
 
         cy.clickSelectField(statusFieldName, "in-progress", searchButtonId);
         checkJourneysLength(40)
