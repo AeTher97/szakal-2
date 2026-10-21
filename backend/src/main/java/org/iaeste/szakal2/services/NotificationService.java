@@ -27,7 +27,8 @@ public class NotificationService {
 
     public NotificationService(NotificationRepository notificationRepository,
                                UserService userService,
-                               PushNotificationService pushNotificationService, FavouriteJourneyService favouriteJourneyService) {
+                               PushNotificationService pushNotificationService,
+                               FavouriteJourneyService favouriteJourneyService) {
         this.notificationRepository = notificationRepository;
         this.userService = userService;
         this.pushNotificationService = pushNotificationService;

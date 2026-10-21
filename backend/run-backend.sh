@@ -16,7 +16,7 @@ OPTIONS="
 -Dserver.port=8080
 -Dspring.profiles.active=development
 --enable-preview
--DDATABASE_URL=localhost:5432/szakal
+-DATABASE_URL=localhost:5432/szakal
 -DJWT_SECRET=fdsih59543u98gufdoh857y4u9yhtrytr4564876984jy6uth6iu43u4983hjytrpoew-=00-
 -DDATABASE_USERNAME=postgres
 -DDATABASE_PASSWORD=postgres

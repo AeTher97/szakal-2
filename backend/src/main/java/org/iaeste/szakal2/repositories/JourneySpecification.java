@@ -37,9 +37,9 @@ public class JourneySpecification implements Specification<ContactJourney> {
                     .when(ContactStatus.getInLocalOrder().get(i).name(), i);
         }
         if (ascending) {
-            criteriaQuery.orderBy(criteriaBuilder.asc(contactJourneyCase));
+            criteriaQuery.orderBy(criteriaBuilder.asc(contactJourneyCase), criteriaBuilder.asc(root.get("id")));
         } else {
-            criteriaQuery.orderBy(criteriaBuilder.desc(contactJourneyCase));
+            criteriaQuery.orderBy(criteriaBuilder.desc(contactJourneyCase), criteriaBuilder.desc(root.get("id")));
         }
     }
 
@@ -120,11 +120,11 @@ public class JourneySpecification implements Specification<ContactJourney> {
             switch (criteria.getSzakalSort().getColumnName()) {
                 case "detailedStatus" -> addCases(root, query, criteriaBuilder, asc);
                 case "user" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("user").get(SURNAME)) :
-                        criteriaBuilder.desc(root.get("user").get(SURNAME)));
+                        criteriaBuilder.desc(root.get("user").get(SURNAME)), criteriaBuilder.asc(root.get("id")));
                 case "companyName" -> query.orderBy(asc ? criteriaBuilder.asc(root.get(COMPANY).get("name")) :
-                        criteriaBuilder.desc(root.get(COMPANY).get("name")));
+                        criteriaBuilder.desc(root.get(COMPANY).get("name")), criteriaBuilder.asc(root.get("id")));
                 case "startDate" -> query.orderBy(asc ? criteriaBuilder.asc(root.get("journeyStart")) :
-                        criteriaBuilder.desc(root.get("journeyStart")));
+                        criteriaBuilder.desc(root.get("journeyStart")), criteriaBuilder.asc(root.get("id")));
                 case LAST_INTERACTION -> {
                     final Date minDate = new Date(0L);
                     GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -134,7 +134,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
                     Order lastInteractionOrder = asc ?
                             criteriaBuilder.asc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), maxDate)) :
                             criteriaBuilder.desc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), minDate));
-                    query.orderBy(lastInteractionOrder);
+                    query.orderBy(lastInteractionOrder,  criteriaBuilder.asc(root.get("id")));
                 }
                 default -> throw new IllegalArgumentException("Sort not supported");
             }

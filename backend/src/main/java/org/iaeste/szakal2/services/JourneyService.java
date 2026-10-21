@@ -45,7 +45,8 @@ public class JourneyService {
                           NotificationService notificationService,
                           WsNotifyingService wsNotifyingService,
                           ContactEventRepository contactEventRepository,
-                          CommentRepository commentRepository, FavouriteJourneyService favouriteJourneyService) {
+                          CommentRepository commentRepository,
+                          FavouriteJourneyService favouriteJourneyService) {
         this.contactJourneyRepository = contactJourneyRepository;
         this.userService = userService;
         this.companyService = companyService;
@@ -55,6 +56,7 @@ public class JourneyService {
         this.wsNotifyingService = wsNotifyingService;
         this.contactEventRepository = contactEventRepository;
         this.commentRepository = commentRepository;
+        favouriteJourneyService.setJourneyService(this);
     }
 
 

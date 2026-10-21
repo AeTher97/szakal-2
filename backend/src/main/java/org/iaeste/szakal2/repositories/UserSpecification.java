@@ -50,7 +50,8 @@ public class UserSpecification implements Specification<User> {
             query.orderBy(asc ? criteriaBuilder.asc(criteriaBuilder.concat(root.get("name"),
                     criteriaBuilder.concat(" ", root.get("surname")))) :
                     criteriaBuilder.desc(criteriaBuilder.concat(root.get("name"),
-                            criteriaBuilder.concat(" ", root.get("surname")))));
+                            criteriaBuilder.concat(" ", root.get("surname")))),
+                    criteriaBuilder.asc(root.get("id")));
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
