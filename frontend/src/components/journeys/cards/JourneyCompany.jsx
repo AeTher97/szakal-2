@@ -19,7 +19,7 @@ const JourneyCompany = ({company}) => {
                         </LinkWithRouter>
                     </div>
                     <div style={{gap: 10, display: "flex"}}>
-                        <Typography>
+                        <Typography level={"title-md"}>
                             Email
                         </Typography>
                         <Typography style={{wordBreak: "break-word"}}>

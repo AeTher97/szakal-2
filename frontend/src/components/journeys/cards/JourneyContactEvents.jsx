@@ -51,7 +51,6 @@ const JourneyContactEvents = ({addContactEvent, editContactEvent, journey}) => {
                 }>
                     <div style={{display: "flex"}}>
                         <Stack spacing={1} style={{flex: 1}}>
-                            <Typography level={"title-lg"}>Nowe wydarzenie</Typography>
                             <FormControl error={contactEventError}>
                                 <Select value={contactStatus} onChange={(e, newValue) => {
                                     setContactStatus(newValue);

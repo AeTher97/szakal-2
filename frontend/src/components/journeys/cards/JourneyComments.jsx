@@ -29,13 +29,12 @@ const JourneyComments = ({addComment, editComment, journey}) => {
             }}>
                 <div style={{display: "flex"}}>
                     <Stack spacing={1} style={{flex: 1}}>
-                        <Typography level={"title-lg"}>Dodaj komentarz</Typography>
                         <TextAreaWithLimit minRows={2} required
                                            value={comment.value}
                                            limit={comment.limit}
                                            isValid={comment.isValid}
                                            onChange={comment.handleChange}
-                                           placeholder={"Komentarz"}
+                                           placeholder={"Dodaj komentarz"}
                                            data-testid="add-comment-textarea"
                         />
                         <Button type={"submit"} disabled={!isFormValid}
