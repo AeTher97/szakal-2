@@ -10,6 +10,8 @@ export const releaseNotes = [
                                     description={"Jeśli wyrazisz zgodę na Twoje urządzenie będą przychodzić powiadomienia push gdy ktoś zamieści komentarz albo wydarzenie kontaktowe w Twoim kontakcie."}/>
                 <ReleaseNotesBullet title={"Potwierdzanie adresu E-mail"}
                                     description={"Przez zdarzające sie błędy w adresach E-mail, które uniemożliwiały resetowanie hasła, E-mail musi być teraz potwierdzony po rejestacji."}/>
+                <ReleaseNotesBullet title={"Wyszukiwanie firm i kontaktów po numerze telefonu"}
+                                    description={"Dodane filtry które pozwalają znaleźć kontakt jeśli ktoś oddzwoni."}/>
             </ReleaseNotesSection>
             <ReleaseNotesSection title={"Naprawione błędy"}>
                 <ReleaseNotesBullet title={"Poprawione placeholdery w wielu miejscach"}/>
