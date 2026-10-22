@@ -39,7 +39,22 @@ public class CompanySpecification implements Specification<Company> {
         }
 
         if(criteria.getPhone() != null){
-            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("phone")), wrapWithPercent(criteria.getPhone().toLowerCase())));
+            Join<Company, ContactPerson> contactPersonJoin = root.join("contactPeople", JoinType.LEFT);
+
+            Expression<String> companyPhoneCleaned = criteriaBuilder.lower(
+                    criteriaBuilder.function("REPLACE", String.class, root.get("phone"), criteriaBuilder.literal(" "), criteriaBuilder.literal(""))
+            );
+            Predicate companyPhone = criteriaBuilder.like(
+                    companyPhoneCleaned,
+                    wrapWithPercent(criteria.getPhone().replace(" ", "").toLowerCase()));
+
+            Expression<String> personPhoneCleaned = criteriaBuilder.lower(
+                    criteriaBuilder.function("REPLACE", String.class, contactPersonJoin.get("phone"), criteriaBuilder.literal(" "), criteriaBuilder.literal(""))
+            );
+            Predicate contactPersonPhone = criteriaBuilder.like(personPhoneCleaned,
+                    wrapWithPercent(criteria.getPhone().replace(" ", "").toLowerCase()));
+
+            predicateList.add(criteriaBuilder.or(companyPhone, contactPersonPhone));
         }
 
         if (criteria.getCategory() != null) {

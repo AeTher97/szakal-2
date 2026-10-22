@@ -58,16 +58,31 @@ public class JourneySpecification implements Specification<ContactJourney> {
         }
 
         if (criteria.getPhone() != null) {
-            predicateList.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(COMPANY).get("phone")),
-                    wrapWithPercent(criteria.getPhone().toLowerCase())));
+            String cleanedParam = wrapWithPercent(criteria.getPhone().replace(" ", "").toLowerCase());
+
+            Join<ContactJourney, Company> companyJoin = root.join(COMPANY, JoinType.INNER);
+            Join<Company, ContactPerson> contactPersonJoin = companyJoin.join("contactPeople",
+                    JoinType.LEFT);
+
+            Expression<String> companyPhoneCleaned = criteriaBuilder.lower(
+                    criteriaBuilder.function("REPLACE", String.class, companyJoin.get("phone"),
+                            criteriaBuilder.literal(" "), criteriaBuilder.literal(""))
+            );
+            Predicate companyPhone = criteriaBuilder.like(companyPhoneCleaned, cleanedParam);
+
+            Expression<String> personPhoneCleaned = criteriaBuilder.lower(
+                    criteriaBuilder.function("REPLACE", String.class, contactPersonJoin.get("phone"),
+                            criteriaBuilder.literal(" "), criteriaBuilder.literal(""))
+            );
+            Predicate phonePredicate = criteriaBuilder.like(personPhoneCleaned, cleanedParam);
+
+            predicateList.add(criteriaBuilder.or(companyPhone, phonePredicate));
         }
 
-        if (criteria.getStatus() != null) {
-            if (criteria.getStatus().equals("in-progress")) {
-                predicateList.add(criteriaBuilder.isFalse(root.get(FINISHED)));
-            } else if (criteria.getStatus().equals(FINISHED)) {
-                predicateList.add(criteriaBuilder.isTrue(root.get(FINISHED)));
-            }
+        if (criteria.getStatus() != null && criteria.getStatus().equals("in-progress")) {
+            predicateList.add(criteriaBuilder.isFalse(root.get(FINISHED)));
+        } else if (criteria.getStatus() != null && criteria.getStatus().equals(FINISHED)) {
+            predicateList.add(criteriaBuilder.isTrue(root.get(FINISHED)));
         }
 
         if (criteria.getDetailedStatus() != null) {
@@ -139,7 +154,7 @@ public class JourneySpecification implements Specification<ContactJourney> {
                     Order lastInteractionOrder = asc ?
                             criteriaBuilder.asc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), maxDate)) :
                             criteriaBuilder.desc(criteriaBuilder.coalesce(root.get(LAST_INTERACTION), minDate));
-                    query.orderBy(lastInteractionOrder,  criteriaBuilder.asc(root.get("id")));
+                    query.orderBy(lastInteractionOrder, criteriaBuilder.asc(root.get("id")));
                 }
                 default -> throw new IllegalArgumentException("Sort not supported");
             }

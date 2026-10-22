@@ -786,7 +786,7 @@ d4060b2d-86f4-4aec-b439-ae3d0f621f05	3646865f-dbfd-4823-9641-5b5c1d74f85b	UNABLE
 --
 
 COPY public.contact_persons (id, comment, committee, email, is_alumni, name, phone, "position", company_id) FROM stdin;
-50fbc0b6-0272-4462-8fbd-565cbf10e5ed	MIS	AGH		t	Alumn 1			631fb1f6-3297-4417-b051-2aff9cf5a18d
+50fbc0b6-0272-4462-8fbd-565cbf10e5ed	MIS	AGH		t	Alumn 1	445566		631fb1f6-3297-4417-b051-2aff9cf5a18d
 158f30f4-2f06-4b8b-abfd-3b293f5988d6	JAR	UMED		t	Alumn 2			19327774-cc15-4fa4-9456-d26ea6809dd3
 \.
 

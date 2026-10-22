@@ -45,6 +45,16 @@ describe("Search through list of companies and contact journeys", () => {
 
         phoneField.clear().type("{enter}")
 
+        phoneField.type("445566{enter}")
+
+        cy.getByTestId("company-table").children("tr")
+            .first()
+            .children('td')
+            .first()
+            .contains("Company 03")
+
+        phoneField.clear().type("{enter}")
+
 //        alumniCommitteeField.type("AGH{enter}")
 //
 //        checkCompaniesLength(1)
@@ -110,6 +120,8 @@ describe("Search through list of companies and contact journeys", () => {
         cy.clickSelectField("company-search-status", "taken", searchButtonId)
 //        cy.clickSelectField("company-search-has-alumni", "yes", searchButtonId)
 
+        phoneField.type("445566")
+
         checkCompaniesLength(1)
         cy.getByTestId("company-table").children("tr")
             .first()
@@ -150,6 +162,16 @@ describe("Search through list of companies and contact journeys", () => {
             .children('td')
             .first()
             .contains("Company 01")
+
+        phoneField.clear().type("{enter}")
+
+        phoneField.type("445566{enter}")
+
+        cy.getByTestId("journey-table").children("tr")
+            .first()
+            .children('td')
+            .first()
+            .contains("Company 03")
 
         phoneField.clear().type("{enter}")
 
@@ -204,11 +226,25 @@ describe("Search through list of companies and contact journeys", () => {
         checkJourneysLength(1)
 
 
-        contactEventTextField.clear().type("Barter{enter}")
+        contactEventTextField.clear().type("Barter")
         userNameField.type("admin admin")
         cy.clickSelectField(detailedStatusFieldName, "BARTER", searchButtonId);
         cy.clickSelectField(statusFieldName, "in-progress", searchButtonId);
         companyNameField.type("Company 04{enter}")
         checkJourneysLength(1)
+
+        contactEventTextField.clear().type("interested")
+        userNameField.type("admin admin")
+        cy.clickSelectField(detailedStatusFieldName, "NOT_INTERESTED", searchButtonId);
+        cy.clickSelectField(statusFieldName, "in-progress", searchButtonId);
+        companyNameField.clear().type("Company 03")
+        phoneField.type("445566{enter}")
+
+        checkJourneysLength(1)
+        cy.getByTestId("journey-table").children("tr")
+            .first()
+            .children('td')
+            .first()
+            .contains("Company 03")
     })
 })
